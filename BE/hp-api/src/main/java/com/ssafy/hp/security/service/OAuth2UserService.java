@@ -25,7 +25,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // OAuth로 넘어온 사용자 profile scope가 전처리되는 메서드
-
         OAuth2User oAuth2User = super.loadUser(userRequest);
         try {
             return proccessOAuth2User(userRequest, oAuth2User);
@@ -40,9 +39,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User proccessOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         // 기존 회원인지 신규 회원인지 판단
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if (StringUtils.isEmpty(oAuth2UserInfo.getUserEmail())) {
-            throw new NotFoundException("불러온 이메일이 존재하지 않습니다.");
-        }
 
         // 고유 아이디를 이용하여 가입 여부를 조회
         Optional<User> userOptional = userRepository.findByUserName(oAuth2UserInfo.getUserName());

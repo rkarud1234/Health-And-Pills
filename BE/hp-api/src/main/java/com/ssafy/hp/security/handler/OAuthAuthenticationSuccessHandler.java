@@ -20,7 +20,6 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        System.out.println("OAuthAuthenticationSuccessHandler.onAuthenticationSuccess");
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
                 .build().toString();
 
