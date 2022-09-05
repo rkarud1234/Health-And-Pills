@@ -1,5 +1,10 @@
+import { useSelector } from "react-redux";
+import Footer from "../components/layouts/Footer";
 const Pill = () => {
-  return <div>영양제 페이지</div>;
+  const user = useSelector((state) => state.user);
+  return <>
+    {!user.isLogin ? <Footer /> : <></>}
+  </>;
 };
 
 export default Pill;
