@@ -1,4 +1,4 @@
-package com.ssafy.hp.user.oauth;
+package com.ssafy.hp.security.oauth;
 
 import com.ssafy.hp.user.domain.type.Provider;
 import lombok.*;
