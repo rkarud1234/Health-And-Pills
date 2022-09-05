@@ -2,6 +2,8 @@ package com.ssafy.hp.user.domain;
 
 
 import com.ssafy.hp.common.BaseEntity;
+import com.ssafy.hp.user.domain.type.Provider;
+import com.ssafy.hp.user.domain.type.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +23,8 @@ public class User extends BaseEntity {
 
     private String userName;
 
-    private String userProvider;
+    @Enumerated(EnumType.STRING)
+    private Provider userProvider;
 
     private String userProviderId;
 
