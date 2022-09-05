@@ -1,0 +1,13 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation(project(":hp-common"))
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
