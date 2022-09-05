@@ -21,18 +21,22 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    private String userName;
 
     @Enumerated(EnumType.STRING)
     private Provider userProvider;
 
     private String userProviderId;
 
+    private String userName;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static User createUser(Role role) {
+    public static User createUser(Provider userProvider, String userProviderId, String userName, Role role) {
         User user = new User();
+        user.userProvider = userProvider;
+        user.userProviderId = userProviderId;
+        user.userName = userName;
         user.role = role;
         return user;
     }
