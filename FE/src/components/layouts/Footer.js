@@ -41,7 +41,7 @@ const Footer = () => {
           </Link>
         </li>
         <li>
-          <Link to="/">
+          <Link to="/profile">
             <i className="fas fa-user"></i>
           </Link>
         </li>
