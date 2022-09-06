@@ -1,6 +1,5 @@
 import GradationButton from "../components/buttons/GradationButton";
 import MenuButton from "../components/buttons/MenuButton";
-import PillCard from "../components/cards/PillCard";
 import Footer from "../components/layouts/Footer";
 import Header from "../components/layouts/Header";
 import { useSelector } from "react-redux";
@@ -8,7 +7,12 @@ import { useState } from "react";
 import Modal from "../components/modals/Modal";
 import SocialLoginContent from "../components/modals/contents/SocialLoginContent";
 import styled from "styled-components";
+import ModalCloseButton from "../components/buttons/ModalCloseButton";
 
+const colorTheme = {
+  borderColor: "#39F2AC",
+  bgColor: "#39F2AC",
+};
 const HomeWrapper = styled.div`
   padding: 100px 20px 0px 20px;
 `;
@@ -37,25 +41,60 @@ const UserNameLine = styled.div`
   background-color: ${(props) => props.bgColor};
 `;
 
-const UserContent = styled.div`
+const UserContent = styled.button`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 20px 10px 20px 15px;
-  border: 1px solid #5367fa;
+  border: ${(props) => props.border};
+  background-color: transparent;
   border-radius: 10px;
-  background-color: #5367fa;
-  color: white;
   font-size: 20px;
   margin-top: 20px;
+  cursor: pointer;
   & div i {
     margin-right: 10px;
   }
+  @media screen and (max-width: 420px) {
+    font-size: 14px;
+  }
 `;
+const IconWrapper = styled.div`
+  width: 35px;
+  text-align: center;
+`;
+
+const ChartWapper = styled.div`
+  background-color: transparent;
+  border: 1px solid ${colorTheme.bgColor};
+  height: 40vh;
+  border-radius: 5px;
+  max-height: 400px;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InbodyButton = styled.button`
+  background-color: ${(props) => props.bgColor};
+  width: ${(props) => props.width};
+  padding: ${(props) => props.padding};
+  font-size: ${(props) => props.fontSize};
+  border-radius: ${(props) => props.borerRadius};
+  color: ${(props) => props.color};
+`;
+
 const Landing = () => {
   const [modalState, setModalState] = useState(false);
 
   const openModal = () => {
     setModalState(true);
+  };
+
+  const closeModal = () => {
+    setModalState(false);
   };
   return (
     <>
@@ -65,7 +104,12 @@ const Landing = () => {
         rightNone={true}
       />
       <div>
-        <Modal isOpen={modalState} modalContent={<SocialLoginContent />} />
+        <Modal
+          isOpen={modalState}
+          modalContent={<SocialLoginContent />}
+          closeButton={<ModalCloseButton onClick={closeModal} />}
+          close={closeModal}
+        />
         랜딩페이지 이미지
         <GradationButton
           text={"간단가입하고 시작하기"}
@@ -88,7 +132,7 @@ const Main = ({ user }) => {
           <div style={{ marginBottom: "10px" }}>
             <UserTitle>
               단무지
-              <UserNameLine bgColor={"#5367FA"} />
+              <UserNameLine bgColor={colorTheme.bgColor} />
             </UserTitle>
             <span>님</span>
           </div>
@@ -100,19 +144,23 @@ const Main = ({ user }) => {
       </HomeTitleWrapper>
       <div>
         <div>
-          <UserContent>
-            <div>
-              <i className="fa-solid fa-cloud-question"></i>당신의 신체 나이가
-              궁금하다면?
+          <UserContent border={`1px solid ${colorTheme.bgColor}`}>
+            <div style={{ display: "flex" }}>
+              <IconWrapper>
+                <i className="fa-solid fa-cloud-question"></i>
+              </IconWrapper>
+              당신의 신체 나이가 궁금하다면?
             </div>
             <div>
               <i className="fa-solid fa-chevron-right"></i>
             </div>
           </UserContent>
-          <UserContent>
-            <div>
-              <i className="fa-solid fa-calendar-star"></i>진행중인 이벤트
-              보러가기
+          <UserContent border={`1px solid ${colorTheme.bgColor}`}>
+            <div style={{ display: "flex" }}>
+              <IconWrapper>
+                <i className="fa-solid fa-calendar-star"></i>
+              </IconWrapper>
+              진행중인 이벤트 보러가기
             </div>
             <div>
               <div>
@@ -122,7 +170,18 @@ const Main = ({ user }) => {
           </UserContent>
         </div>
       </div>
-      <div>메인</div>
+      <ChartWapper>
+        <InbodyButton
+          bgColor={colorTheme.bgColor}
+          padding={"20px"}
+          width={"240px"}
+          fontSize={"18px"}
+          borerRadius={"6px"}
+          color={"#fff"}
+        >
+          인바디 정보를 입력해주세요
+        </InbodyButton>
+      </ChartWapper>
     </HomeWrapper>
   );
 };
@@ -132,7 +191,6 @@ const Home = () => {
     <>
       {!user.isLogin ? <Main user={user} /> : <Landing />}
       {!user.isLogin ? <Footer /> : <></>}
-      <PillCard />
     </>
   );
 };
