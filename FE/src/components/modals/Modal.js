@@ -52,6 +52,8 @@ const ModalContent = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
+  width: 100%;
+  height: 100%;
 `;
 const Modal = ({
   isOpen,
@@ -64,6 +66,7 @@ const Modal = ({
   borderWidth,
   zIndex,
   bgColor,
+  closeButton,
 }) => {
   return (
     <ModalWrapper
@@ -78,6 +81,7 @@ const Modal = ({
         borderColor={borderColor}
         borderWidth={borderWidth}
       >
+        {closeButton ? closeButton : <></>}
         <ModalContent>{modalContent}</ModalContent>
       </ModalContentWrapper>
     </ModalWrapper>
