@@ -1,8 +1,8 @@
 package com.ssafy.hp.user.domain.type;
 
-public enum ExercisePurpose {
+public enum ExPurpose {
     다이어트,
     보디빌딩,
     건강관리,
-    기타
+    기타,
 }
