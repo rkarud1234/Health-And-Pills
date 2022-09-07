@@ -21,7 +21,6 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-
     @Enumerated(EnumType.STRING)
     private Provider userProvider;
 
@@ -31,6 +30,9 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private UserProfile userProfile;
 
     public static User createUser(Provider userProvider, String userProviderId, String userName, Role role) {
         User user = new User();
