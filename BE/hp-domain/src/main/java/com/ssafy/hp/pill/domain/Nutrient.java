@@ -23,6 +23,6 @@ public class Nutrient {
     @NotNull
     private String nutrientName;
 
-    @OneToMany(mappedBy = "nutrient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "nutrient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillNutrient> pillNutrients = new ArrayList<>();
 }

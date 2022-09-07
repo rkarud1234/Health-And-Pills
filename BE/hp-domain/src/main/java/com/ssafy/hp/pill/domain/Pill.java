@@ -42,7 +42,10 @@ public class Pill extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN pillDomestic;
 
-    @OneToMany(mappedBy = "pill", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillNutrient> pillNutrients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PillWarning> pillWarnings = new ArrayList<>();
 }
 

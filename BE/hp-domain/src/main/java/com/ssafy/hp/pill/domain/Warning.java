@@ -23,6 +23,6 @@ public class Warning {
     @NotNull
     private String warningContent;
 
-    @OneToMany(mappedBy = "warning", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "warning", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillWarning> pillWarnings = new ArrayList<>();
 }
