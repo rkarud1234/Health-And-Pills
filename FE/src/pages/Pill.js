@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import Footer from "../components/layouts/Footer";
 import Carousel from "../components/carousel/Carousel";
 import imgUrl from '../assets/togetherX.jpg'
-
+import RecomPills from "./Pills/RecomPills";
 const Pill = () => {
   const user = useSelector((state) => state.user);
   const images = [
@@ -15,6 +15,7 @@ const Pill = () => {
   ]
   return <>
     <Carousel images={images} />
+    <RecomPills />
     {!user.isLogin ? <Footer /> : <></>}
   </>;
 };
