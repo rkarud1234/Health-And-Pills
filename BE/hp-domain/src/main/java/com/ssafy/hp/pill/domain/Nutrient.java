@@ -1,5 +1,6 @@
 package com.ssafy.hp.pill.domain;
 
+import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Nutrient {
     @Column(name = "nutrient_id")
     private int nutrientId;
 
+    @NotNull
     private String nutrientName;
 
     @OneToMany(mappedBy = "nutrient", cascade = CascadeType.ALL)

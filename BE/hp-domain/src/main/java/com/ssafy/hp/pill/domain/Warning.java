@@ -1,5 +1,6 @@
 package com.ssafy.hp.pill.domain;
 
+import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Warning {
     @Column(name = "warning_id")
     private int warningId;
 
+    @NotNull
     private String warningContent;
 
     @OneToMany(mappedBy = "warning", cascade = CascadeType.ALL)
