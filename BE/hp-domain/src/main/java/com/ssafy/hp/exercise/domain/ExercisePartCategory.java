@@ -23,8 +23,7 @@ public class ExercisePartCategory {
 
     private String exercisePartCategoryName;
 
-    // 캐스케이드랑 feech lazy 달자
-    @OneToMany(mappedBy = "exercisePartCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exercisePartCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ExercisePart> exerciseParts = new ArrayList<>();
 
 
