@@ -16,8 +16,14 @@ public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_profile_id")
-    private Long userProfileId;
+    private Long userId;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "user_profile_id")
+    private User user;
 
+    private String userProfileNickname;
 
+    private String userProfileBirthday;
 }
