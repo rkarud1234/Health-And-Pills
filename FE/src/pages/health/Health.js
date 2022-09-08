@@ -4,10 +4,6 @@ import Footer from "../../components/layouts/Footer";
 import HealthFind from "./HealthFind";
 import HealthRecommend from "./HealthRecommend";
 
-const Health = () => {
-  const [healthPage, setHealthPage] = useState("health");
-
-
   const TapWrapper = styled.div`
     width: 100vw;
   `
@@ -19,29 +15,32 @@ const Health = () => {
     cursor: pointer;
   `
 
+const Health = () => {
+  const [healthPage, setHealthPage] = useState("healthRecommend");
+  const tabPage = {
+    healthRecommend: <HealthRecommend/>,
+    healthFind: <HealthFind/>
+  }
+
   return (
     <>
       <TapWrapper>
         <HealthButton
-          onClick = {() => setHealthPage("health")}
-          textColor = {healthPage === "health" ? "#39f2ac" : "#7b7b7b"}
+          onClick = {() => setHealthPage("healthRecommend")}
+          textColor = {healthPage === "healthRecommend" ? "#39C18E" : "#7b7b7b"}
         >
           추천 운동 보기
         </HealthButton>
         |
         <HealthButton
           onClick = {() => setHealthPage("healthFind")}
-          textColor = {healthPage === "health" ? "#7b7b7b" : "#39f2ac"}
+          textColor = {healthPage === "healthRecommend" ? "#7b7b7b" : "#39f2ac"}
         >
           직접 운동 찾기
         </HealthButton>
       </TapWrapper>
       <div>
-        {healthPage === "health" ? (
-          <HealthRecommend />
-        ) : (
-          <HealthFind />
-        )}
+        {tabPage[healthPage]}
       </div>
       <Footer/>
     </>

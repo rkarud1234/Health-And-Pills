@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import HealthFindType from "./HealthFindType"
-import HealthFindPart from "./HealthFindPart"
+import HealthFindPart from "./HealthFindPart/HealthFindPart"
 
   const TapWrapper = styled.div`
     width: 100vw;
@@ -16,6 +16,10 @@ import HealthFindPart from "./HealthFindPart"
 
 const HealthFind = () => {
   const [healthFindPage, setHealthFindPage] = useState("healthType")
+  const tabPage = {
+    healthType: <HealthFindType/>,
+    healthPart: <HealthFindPart/>
+  }
 
 
   return (
@@ -36,11 +40,7 @@ const HealthFind = () => {
         </HealthButton>
       </TapWrapper>
       <div>
-        {healthFindPage === "healthType" ? (
-          <HealthFindType />
-        ) : (
-          <HealthFindPart />
-        )}
+        {tabPage[healthFindPage]}
       </div>
     </>
   )
