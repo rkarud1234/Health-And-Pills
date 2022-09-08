@@ -29,11 +29,12 @@ const StyledPillCardContentWrapper = styled.div`
   }
 `;
 
-const PillCard = ({ text, rating, width, height, padding }) => {
+const PillCard = ({ text, rating, width, height, padding, url }) => {
+
   return (
     <StyledPillCard width={width} height={height}>
       <StyledPillCardImgWrapper padding={padding}>
-        <img src={process.env.PUBLIC_URL + "logo512.png"} />
+        {url ? <img src={url} /> : <img src={process.env.PUBLIC_URL + "logo512.png"} />}
       </StyledPillCardImgWrapper>
       <StyledPillCardContentWrapper padding={padding}>
         <span>{text}</span>
