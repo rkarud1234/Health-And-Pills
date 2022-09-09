@@ -10,11 +10,16 @@ import styled from "styled-components";
 import ModalCloseButton from "../components/buttons/ModalCloseButton";
 
 const colorTheme = {
-  borderColor: "#39F2AC",
-  bgColor: "#39F2AC",
+  borderColor: "#537CFE",
+  bgColor: "#537CFE",
+  bgColorFrom: "#537CFE",
+  bgColorTo: "#6A53FE",
 };
 const HomeWrapper = styled.div`
-  padding: 100px 20px 0px 20px;
+  padding: 80px 20px 0px 20px;
+  @media screen and (max-width: 280px) {
+    padding: 50px 20px 0px 20px;
+  }
 `;
 const HomeTitleWrapper = styled.div`
   display: flex;
@@ -25,6 +30,22 @@ const HomeTitleWrapper = styled.div`
 const UserTitleWrapper = styled.div`
   font-size: 30px;
   font-weight: 600;
+  position: relative;
+  opacity: 0;
+  animation: fadeIn 1s linear;
+  animation-delay: 0.1s;
+  animation-fill-mode: forwards;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @media screen and (max-width: 280px) {
+    font-size: 20px;
+  }
 `;
 const UserTitle = styled.div`
   position: relative;
@@ -34,11 +55,22 @@ const UserTitle = styled.div`
 
 const UserNameLine = styled.div`
   position: absolute;
-  height: 10px;
-  width: 100%;
+  height: 8px;
   bottom: -4px;
+  /* width: 100%; */
   z-index: -1;
   background-color: ${(props) => props.bgColor};
+  animation: lineDraw 0.2s linear;
+  animation-delay: 1.5s;
+  animation-fill-mode: forwards;
+  @keyframes lineDraw {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
 `;
 
 const UserContent = styled.button`
@@ -47,7 +79,13 @@ const UserContent = styled.button`
   justify-content: space-between;
   padding: 20px 10px 20px 15px;
   border: ${(props) => props.border};
-  background-color: transparent;
+  color: ${(props) => props.color};
+  background: linear-gradient(
+    to bottom,
+    ${colorTheme.bgColorFrom},
+    ${colorTheme.bgColorTo}
+  );
+  /* background-color: ${(props) => props.bgColor}; */
   border-radius: 10px;
   font-size: 20px;
   margin-top: 20px;
@@ -56,12 +94,17 @@ const UserContent = styled.button`
     margin-right: 10px;
   }
   @media screen and (max-width: 420px) {
-    font-size: 14px;
+    font-size: 16px;
+  }
+  @media screen and (max-width: 280px) {
+    font-size: 10px;
   }
 `;
 const IconWrapper = styled.div`
   width: 35px;
   text-align: center;
+  display: flex;
+  align-items: center;
 `;
 
 const ChartWapper = styled.div`
@@ -78,12 +121,20 @@ const ChartWapper = styled.div`
 `;
 
 const InbodyButton = styled.button`
-  background-color: ${(props) => props.bgColor};
+  background: linear-gradient(
+    to bottom,
+    ${colorTheme.bgColorFrom},
+    ${colorTheme.bgColorTo}
+  );
   width: ${(props) => props.width};
   padding: ${(props) => props.padding};
   font-size: ${(props) => props.fontSize};
   border-radius: ${(props) => props.borerRadius};
   color: ${(props) => props.color};
+  @media screen and (max-width: 280px) {
+    font-size: 10px;
+    width: 80%;
+  }
 `;
 
 const Landing = () => {
@@ -127,7 +178,7 @@ const Main = ({ user }) => {
   console.log(user);
   return (
     <HomeWrapper>
-      <HomeTitleWrapper>
+      <HomeTitleWrapper style={{ position: "relative" }}>
         <UserTitleWrapper>
           <div style={{ marginBottom: "10px" }}>
             <UserTitle>
@@ -139,12 +190,17 @@ const Main = ({ user }) => {
           <div>안녕하세요</div>
         </UserTitleWrapper>
         <div>
+          {/* <HeartBeat /> */}
           <img src={process.env.PUBLIC_URL + "pill.png"} />
         </div>
       </HomeTitleWrapper>
       <div>
         <div>
-          <UserContent border={`1px solid ${colorTheme.bgColor}`}>
+          <UserContent
+            border={"none"}
+            color={"#fff"}
+            bgColor={colorTheme.bgColor}
+          >
             <div style={{ display: "flex" }}>
               <IconWrapper>
                 <i className="fa-solid fa-cloud-question"></i>
@@ -155,7 +211,11 @@ const Main = ({ user }) => {
               <i className="fa-solid fa-chevron-right"></i>
             </div>
           </UserContent>
-          <UserContent border={`1px solid ${colorTheme.bgColor}`}>
+          <UserContent
+            border={"none"}
+            color={"#fff"}
+            bgColor={colorTheme.bgColor}
+          >
             <div style={{ display: "flex" }}>
               <IconWrapper>
                 <i className="fa-solid fa-calendar-star"></i>
@@ -172,9 +232,8 @@ const Main = ({ user }) => {
       </div>
       <ChartWapper>
         <InbodyButton
-          bgColor={colorTheme.bgColor}
           padding={"20px"}
-          width={"240px"}
+          width={"280px"}
           fontSize={"18px"}
           borerRadius={"6px"}
           color={"#fff"}
