@@ -3,6 +3,7 @@ package com.ssafy.hp.auth.controller;
 import com.ssafy.hp.auth.response.TokenResponse;
 import com.ssafy.hp.auth.service.AuthService;
 import com.ssafy.hp.config.LoginUser;
+import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-    private AuthService authService;
+    private final AuthService authService;
 
     //토큰 재발급
     @PostMapping("/refresh")
-    public ResponseEntity generateAccessToken(@LoginUser Long userId, @RequestHeader("Authorization") String refreshToken){
-        TokenResponse token = authService.generateAccessToken(userId, refreshToken.substring(7));
+    public ResponseEntity generateAccessToken(@LoginUser User user, @RequestHeader("Authorization") String refreshToken){
+        TokenResponse token = authService.generateAccessToken(user.getUserId(), refreshToken.substring(7));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header("accessToken", token.getAccessToken())
