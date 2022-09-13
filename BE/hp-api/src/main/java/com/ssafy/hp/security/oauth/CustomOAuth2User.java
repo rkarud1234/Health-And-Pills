@@ -12,7 +12,7 @@ import java.util.*;
 @Data
 public class CustomOAuth2User implements OAuth2User {
 
-    private Long userId;
+    private int userId;
     private Provider userProvider;
     private String userProviderId;
     private String userName;
@@ -21,7 +21,7 @@ public class CustomOAuth2User implements OAuth2User {
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public CustomOAuth2User(Long userId, Provider userProvider, String userProviderId, String userName, Role role, Collection<? extends GrantedAuthority> authorities) {
+    public CustomOAuth2User(int userId, Provider userProvider, String userProviderId, String userName, Role role, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.userProvider = userProvider;
         this.userProviderId = userProviderId;
