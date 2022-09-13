@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 // import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import PillCard from '../../components/cards/PillCard.js'
 
 
@@ -29,21 +30,24 @@ padding: 16px 0px 24px;
 
 const RecomPills = ({ pills, type }) => {
   // const user = useSelector((state) => state.user);
+  const navigate = useNavigate()
   const username = '춘식이'
 
   // 클릭 앤 드래그로 스크롤 이동시키기
   const scrollRef = useRef(null);
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState();
-
+  const [startPageX, setStartPageX] = useState();
+  const [endPageX, setendPageX] = useState();
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
-
+    setStartPageX(e.pageX)
     setStartX(e.pageX + scrollRef.current.scrollLeft);
   };
 
-  const onDragEnd = () => {
+  const onDragEnd = (e) => {
+    setendPageX(e.pageX)
     setIsDrag(false);
   };
 
@@ -66,6 +70,7 @@ const RecomPills = ({ pills, type }) => {
       <TextDiv>
         {text}
       </TextDiv>
+
       <FlexBox
         ref={scrollRef}
         onMouseDown={onDragStart}
@@ -74,9 +79,17 @@ const RecomPills = ({ pills, type }) => {
         onMouseLeave={onDragEnd}
       >
         {pills ? pills.map(pill => {
-          return (<CardDiv key={pill.id}>
-            <PillCard url={pill.url} text={pill.text} rating={pill.rating} />
-          </CardDiv>)
+          return (
+            <CardDiv
+              key={pill.id}
+              onClick={() => {
+                if (startPageX === endPageX) {
+                  navigate(`/pill/detail/${pill.id}`)
+                }
+              }}>
+              <PillCard url={pill.url} text={pill.text} rating={pill.rating} />
+            </CardDiv>
+          )
         }) : <></>}
       </FlexBox>
     </>
