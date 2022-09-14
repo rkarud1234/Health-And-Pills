@@ -39,11 +39,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #f6f6f6;
-	-ms-user-select: none;
-  	-moz-user-select: -moz-none;
-  	-khtml-user-select: none;
-  	-webkit-user-select: none;
-  	user-select: none;
+	overflow-x: hidden;
 }
 ol, ul {
 	list-style: none;
