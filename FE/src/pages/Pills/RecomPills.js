@@ -63,6 +63,8 @@ const RecomPills = ({ pills, type }) => {
     text = <Text>'{username}' 님을 위한 맞춤 영양제 추천</Text>
   } else if (type === 'age') {
     text = <Text>20대 여성이 많이 찾는 영양제 추천</Text>
+  } else if (type === 'pill') {
+    text = <Text>이런 제품은 어떠신가요?</Text>
   }
 
   return (
