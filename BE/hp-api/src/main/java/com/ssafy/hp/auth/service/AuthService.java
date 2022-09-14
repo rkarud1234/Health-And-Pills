@@ -4,7 +4,7 @@ import com.ssafy.hp.auth.response.TokenResponse;
 
 public interface AuthService {
 
-    TokenResponse login(String kakaoToken, String fcmToken);
+    TokenResponse generateToken(int userId);
 
-    TokenResponse generateAccessToken(Long userId, String refreshToken);
+    TokenResponse generateAccessToken(int userId, String refreshToken);
 }

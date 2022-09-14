@@ -1,7 +1,11 @@
 package com.ssafy.hp.security.handler;
 
+import com.ssafy.hp.auth.response.TokenResponse;
+import com.ssafy.hp.auth.service.AuthService;
+import com.ssafy.hp.security.oauth.CustomOAuth2User;
 import com.ssafy.hp.security.util.*;
 import lombok.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.*;
 import org.springframework.security.core.context.*;
 import org.springframework.security.web.authentication.*;
@@ -16,10 +20,16 @@ import java.io.*;
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final String AUTHENTICATION_REDIRECT_URI = "http://127.0.0.1:5500/";
-    private final JwtUtil jwtUtil;
+    private final AuthService authService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+        TokenResponse tokenResponse = authService.generateToken(customOAuth2User.getUserId());
+        response.addHeader(HttpHeaders.AUTHORIZATION, tokenResponse.getAccessToken());
+        response.addHeader("refreshToken", tokenResponse.getRefreshToken());
+
+
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
                 .build().toString();
 
