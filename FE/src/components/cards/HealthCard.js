@@ -2,7 +2,12 @@ import { useState } from "react";
 import styled from "styled-components";
 import BookMark from "../buttons/BookMark";
 import UnBookMark from "../buttons/UnBookMark";
+import { Link } from "react-router-dom";
 
+const HealthCardWrapper = styled.div`
+  background-color: transparent;
+  padding: 4px;
+`
 
 const StyledHealthCard = styled.div`
   border-radius: 12px;
@@ -12,16 +17,22 @@ const StyledHealthCard = styled.div`
   height: ${(props) => props.height};
   padding:  "6px 8px 6px 8px";
   cursor: pointer;
+  justify-content: space-between;
+  position: relative;
   /* background: linear-gradient(#537CFE, #6A53FE);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; */
 `
 
 const StyledHealthNameWrapper = styled.div`
-  display: inline-block;
+  display: flex;
   font-size: 1rem;
   padding: ${(props) => props.padding};
   font-weight: ${(props) => props.fontWeight};
+  text-align: center;
+  background: linear-gradient(#537CFE, #6A53FE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 
 const HealthInfoWrapper = styled.div`
@@ -30,8 +41,13 @@ const HealthInfoWrapper = styled.div`
 `
 
 const BookMarkWrapper = styled.div`
-  display: inline-block;
   background-color: ${({ color }) => color};
+  position: absolute;
+  top: -8px;
+  right: 16px;
+  width: 15px;
+  height: 20px;
+
 `
 
 const HealthCard = ({ width, height, padding, fontWeight }) => {
@@ -39,35 +55,43 @@ const HealthCard = ({ width, height, padding, fontWeight }) => {
 
   return (
     <>
-      <StyledHealthCard width={width} height={height}>
-
-        <StyledHealthNameWrapper padding={padding} fontWeight={fontWeight}>
-          운동 이름
-          <BookMarkWrapper
-            onClick = {() => setBookMark(!bookMark)}
-            >
-            <div>
-              {bookMark === false ? (
-                <BookMark/>
-              ) : (
-                <UnBookMark/>
-              )}
-            </div>
-          </BookMarkWrapper>
-        </StyledHealthNameWrapper>
-        <HealthInfoWrapper>
-          무산소/어쩌고
-        </HealthInfoWrapper>
-      </StyledHealthCard>
+      <HealthCardWrapper> 
+        <StyledHealthCard width={width} height={height}>
+            <BookMarkWrapper onClick = {() => setBookMark(!bookMark)}>
+              {/* <div> */}
+                {bookMark === false ? (
+                  <BookMark/>
+                ) : (
+                  <UnBookMark/>
+                )}
+              {/* </div> */}
+            </BookMarkWrapper>
+          <StyledHealthNameWrapper padding="4px" fontWeight={fontWeight}>
+            <Link to="/healthDetail">
+            운동 이름
+            </Link>
+          </StyledHealthNameWrapper>
+          <HealthInfoWrapper>
+            무산소/어쩌고
+          </HealthInfoWrapper>
+        </StyledHealthCard>
+      </HealthCardWrapper>
     </>
   );
 };
 
 export default HealthCard;
 
-HealthCard.defaultProps = {
+StyledHealthCard.defaultProps = {
   width: "120px",
   height: "60px",
-  padding: "6px 8px 6px 8px",
+  // padding: "6px 8px 6px 8px",
   fontWeight: "600",
 }
+
+// HealthCard.defaultProps = {
+//   width: "120px",
+//   height: "60px",
+//   // padding: "6px 8px 6px 8px",
+//   fontWeight: "600",
+// }
