@@ -44,4 +44,5 @@ token:
     expiration_time: 86400000 #하루
   refresh_token:
     expiration_time: 604800000 #30일
+    expiration_date: 30
   secret: secret
