@@ -1,15 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const StyledBackButton = styled.button``;
+const StyledBackButton = styled.button`
+  background-color: transparent;
+`;
 
-const BackButton = () => {
-  const navigate = useNavigate();
-  const onHandleBack = () => {
-    navigate(-1);
-  };
+const BackButton = ({ onClick }) => {
   return (
-    <StyledBackButton onClick={onHandleBack}>
+    <StyledBackButton onClick={onClick}>
       <i className="fas fa-chevron-left"></i>
     </StyledBackButton>
   );
