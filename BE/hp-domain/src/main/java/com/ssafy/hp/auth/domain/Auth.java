@@ -17,14 +17,18 @@ import java.util.concurrent.TimeUnit;
 public class Auth {
 
     @Id
-    private Long userId;
+    private int userId;
 
     private String refreshToken;
 
-    public static Auth createAuth(Long userId, String refreshToken){
+    @TimeToLive(unit = TimeUnit.DAYS)
+    private Long expiration;
+
+    public static Auth createAuth(int userId, String refreshToken, Long expiration){
         Auth auth = new Auth();
         auth.userId = userId;
         auth.refreshToken = refreshToken;
+        auth.expiration = expiration;
         return auth;
     }
 

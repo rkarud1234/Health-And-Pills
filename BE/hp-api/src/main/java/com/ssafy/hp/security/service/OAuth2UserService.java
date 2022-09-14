@@ -1,6 +1,8 @@
 package com.ssafy.hp.security.service;
 
 import com.ssafy.hp.*;
+import com.ssafy.hp.auth.response.TokenResponse;
+import com.ssafy.hp.auth.service.AuthService;
 import com.ssafy.hp.security.oauth.*;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
@@ -15,6 +17,8 @@ import org.springframework.security.oauth2.core.user.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
+
+import static com.ssafy.hp.NotFoundException.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +52,6 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         } else {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
         }
-
         return CustomOAuth2User.create(user, oAuth2User.getAttributes());
     }
 
