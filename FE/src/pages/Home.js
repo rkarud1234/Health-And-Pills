@@ -220,7 +220,7 @@ const Main = ({ user }) => {
               <IconWrapper>
                 <i className="fa-solid fa-calendar-star"></i>
               </IconWrapper>
-              <a href="http://j7b203.p.ssafy.io/oauth2/authorization/google">
+              <a href="https://j7b203.p.ssafy.io/oauth2/authorization/google">
                 진행중인 이벤트 보러가기
               </a>
             </div>
@@ -240,7 +240,7 @@ const Main = ({ user }) => {
           borerRadius={"6px"}
           color={"#fff"}
         >
-          <a href="http://j7b203.p.ssafy.io/oauth2/authorization/kakao">
+          <a href="https://j7b203.p.ssafy.io/oauth2/authorization/kakao">
             인바디 정보를 입력해주세요
           </a>
         </InbodyButton>
