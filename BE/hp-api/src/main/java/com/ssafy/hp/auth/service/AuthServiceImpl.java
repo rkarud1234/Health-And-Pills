@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
     //토큰 재발급
     @Override
-    public TokenResponse generateAccessToken(int userId, String refreshToken) {
+    public TokenResponse regenerateAccessToken(int userId, String refreshToken) {
         Auth findAuth = authRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(AUTH_NOT_FOUND));
 
