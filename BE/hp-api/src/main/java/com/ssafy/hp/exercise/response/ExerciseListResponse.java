@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExerciseListResponse {
-    String exerciseName; // 운동이름
+    private String exerciseName; // 운동이름
 
-    Aerobic aerobic; // 유무산소
+    private Aerobic aerobic; // 유무산소
 
-    Integer exercisePart; // 운동부위
+    private Integer exercisePart; // 운동부위
 
-    Integer exerciseCategory; // 운동 분류
+    private Integer exerciseCategory; // 운동 분류
 
-    YN bookmark; // 북마크여부
+    private YN bookmark; // 북마크여부
 
-    YN doing; // 운동중여부
+    private YN doing; // 운동중여부
 }
