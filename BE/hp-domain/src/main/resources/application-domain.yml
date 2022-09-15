@@ -19,7 +19,7 @@ spring:
 #    generate-ddl: true
 
   redis:
-    host: localhost
+    host: j7b203.p.ssafy.io
     port: 6379
 
 logging:
