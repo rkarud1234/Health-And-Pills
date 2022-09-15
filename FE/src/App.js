@@ -5,6 +5,7 @@ import HealthDetail from "./pages/health/HealthDetail";
 import Home from "./pages/Home";
 import Pill from "./pages/Pill";
 import Profile from "./pages/user/Profile";
+import Schedule from "./pages/Schedule";
 import GlobalStyle from "./styled/GlobalStyle";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/health" element={<Health />} />
           <Route path="/healthDetail" element={<HealthDetail />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/schedule" element={<Schedule />} />
         </Routes>
       </div>
     </>
