@@ -12,6 +12,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
     List<Exercise> findByExerciseCategory(Integer category, Pageable pageable);
 
     // 운동 부위별 조회
-    List<Exercise> findByExercisePart(Integer part, Pageable pageable);
+//    List<Exercise> findByExercisePart(Integer part, Pageable pageable);
 }
 
