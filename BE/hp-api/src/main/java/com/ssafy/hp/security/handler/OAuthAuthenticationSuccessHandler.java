@@ -31,6 +31,8 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
 
 
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
+                .queryParam("accesstoken", tokenResponse.getAccessToken())
+                .queryParam("refreshtoken", tokenResponse.getRefreshToken())
                 .build().toString();
 
         getRedirectStrategy().sendRedirect(request, response, target);
