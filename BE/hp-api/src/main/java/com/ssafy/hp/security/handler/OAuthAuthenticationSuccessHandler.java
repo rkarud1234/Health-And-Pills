@@ -19,7 +19,7 @@ import java.io.*;
 @RequiredArgsConstructor
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final String AUTHENTICATION_REDIRECT_URI = "http://127.0.0.1:5500/";
+    private final String AUTHENTICATION_REDIRECT_URI = "https://j7b203.p.ssafy.io";
     private final AuthService authService;
 
     @Override
@@ -29,8 +29,9 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
         response.addHeader(HttpHeaders.AUTHORIZATION, tokenResponse.getAccessToken());
         response.addHeader("refreshToken", tokenResponse.getRefreshToken());
 
-
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
+                .queryParam("accesstoken", tokenResponse.getAccessToken())
+                .queryParam("refreshtoken", tokenResponse.getRefreshToken())
                 .build().toString();
 
         getRedirectStrategy().sendRedirect(request, response, target);
