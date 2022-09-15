@@ -28,6 +28,7 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
         TokenResponse tokenResponse = authService.generateToken(customOAuth2User.getUserId());
         response.addHeader(HttpHeaders.AUTHORIZATION, tokenResponse.getAccessToken());
         response.addHeader("refreshToken", tokenResponse.getRefreshToken());
+        // test
 
 
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
