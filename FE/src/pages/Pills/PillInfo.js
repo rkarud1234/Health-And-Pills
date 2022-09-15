@@ -19,7 +19,10 @@ font-size: 24px;
 const InfoDiv = styled.div`
 margin: 8px 48px 24px;
 background-color: #D9D9D9;
-height: 30vh;
+height: 20vh;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 `
 const DetailDiv = styled.div`
 margin: 8px 8px 24px 8px;
@@ -42,6 +45,8 @@ const PillInfo = ({ id }) => {
     { id: 5, text: '오메가3', rating: 4.7, url: Omega3, detail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
     { id: 6, text: '종합비타민', rating: 4.9, url: Cmbzmulti, detail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
   ]
+
+  let searchQuery = pills[id - 1].text.replaceAll(' ', '%20')
 
   const [isShowMore, setIsShowMore] = useState(false)
   const textLimit = useRef(170)
@@ -66,7 +71,16 @@ const PillInfo = ({ id }) => {
         </div>
       </LabelDiv>
       <InfoDiv>
-        약에 대한 간단한 효능 설명이 텍스트로 작성됩니다.
+        <TextDiv>
+          약에 대한 간단한 효능 설명이 텍스트로 작성됩니다.
+        </TextDiv>
+        <TextDiv>
+          <a
+            href={`https://search.shopping.naver.com/search/all?query=${searchQuery}&cat_id=&frm=NVSHATC`}
+            target="_blank"
+            rel="noreferrer"
+          >이 제품 구매하러 가기(링크)</a>
+        </TextDiv>
       </InfoDiv>
       <DetailDiv>
         <TextDiv style={{ borderBottom: '1px solid #595959', display: 'flex', justifyContent: 'space-between' }}>
