@@ -24,12 +24,12 @@ public interface ExerciseService {
     ExerciseDetailResponse findByExerciseId(Integer exerciseId);
 
     // 운동중 상태 변경
-    void updateUserExerciseDoingByExerciseId(Long ExerciseId, YN check);
+    void updateUserExerciseDoingByExercise(Integer ExerciseId, YN yn);
 
     // 좋아요 상태 변경
-    void updateUserExerciseLikeByExerciseId(Long ExerciseId, YN check);
+    void updateUserExerciseLikeByExerciseId(Integer ExerciseId, YN yn);
 
     // 북마크 상태 변경
-    void updateUserExerciseBookmarkByExerciseId(Long ExerciseId, YN check);
+    void updateUserExerciseBookmarkByExerciseId(Integer ExerciseId, YN yn);
 
 }
