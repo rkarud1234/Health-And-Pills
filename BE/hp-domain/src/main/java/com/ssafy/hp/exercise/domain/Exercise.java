@@ -1,6 +1,7 @@
 package com.ssafy.hp.exercise.domain;
 
 import com.ssafy.hp.common.BaseEntity;
+import com.ssafy.hp.user.domain.*;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class Exercise extends BaseEntity {
     @JoinColumn(name = "exercise_category_id")
     private ExerciseCategory exerciseCategory;
 
-//    @OneToMany(mappedBy = 'exercise')
-//    private UserExercise userExercise;
+    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserExercise> userExercises = new ArrayList<>();
 
 }
