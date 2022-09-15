@@ -6,5 +6,5 @@ public interface AuthService {
 
     TokenResponse generateToken(int userId);
 
-    TokenResponse generateAccessToken(int userId, String refreshToken);
+    TokenResponse regenerateAccessToken(int userId, String refreshToken);
 }
