@@ -19,7 +19,7 @@ import java.io.*;
 @RequiredArgsConstructor
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final String AUTHENTICATION_REDIRECT_URI = "http://127.0.0.1:5500/";
+    private final String AUTHENTICATION_REDIRECT_URI = "https://j7b203.p.ssafy.io";
     private final AuthService authService;
 
     @Override
