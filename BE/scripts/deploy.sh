@@ -2,14 +2,14 @@
 
 echo $PASSWORD | docker login -u $USERNAME --password-stdin
 
-RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://j7b203.p.ssafy.io/api/port)
+RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://j7b203.p.ssafy.io/api/port)
 
 echo "> 응답 코드 $RESPONSE_CODE"
 if [ $RESPONSE_CODE -ge 400 ]
 then
     CURRENT_PORT=8082
 else
-    CURRENT_PORT=$(curl -s http://j7b203.p.ssafy.io/api/port)
+    CURRENT_PORT=$(curl -s https://j7b203.p.ssafy.io/api/port)
 fi
 
 echo "> 현재 구동중인 포트 $CURRENT_PORT"

@@ -1,6 +1,6 @@
 package com.ssafy.hp.user.response;
 
-import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.user.domain.UserPill;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,21 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPillResponse {
-    // 회원영양제번호 영양제번호 복용중여부 북마크여부
-    private int userPillId;
-
-    private int pillId;
-
-    private YN userPillTaking;
-
-    private YN userPillBookmark;
+    private int id;
+    private int relatedItemId;
+    private String name;
+    private double rating;
+    private String img;
 
     public static UserPillResponse from(UserPill userPill){
         UserPillResponse userPillResponse = new UserPillResponse();
-        userPillResponse.userPillId = userPill.getUserPillId();
-        userPillResponse.pillId = userPill.getPill().getPillId();
-        userPillResponse.userPillTaking = userPill.getUserPillTaking();
-        userPillResponse.userPillBookmark = userPill.getUserPillBookmark();
+        userPillResponse.id = userPill.getUserPillId();
+        userPillResponse.relatedItemId = userPill.getPill().getPillId();
+        userPillResponse.name = userPill.getPill().getPillName();
+        userPillResponse.img = userPill.getPill().getPillThumbnail();
         return userPillResponse;
     }
 }
