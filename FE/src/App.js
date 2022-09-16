@@ -3,6 +3,7 @@ import "./App.css";
 import Health from "./pages/Health";
 import Home from "./pages/Home";
 import Pill from "./pages/Pill";
+import PillDetail from "./pages/PillDetail";
 import GlobalStyle from "./styled/GlobalStyle";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pills" element={<Pill />} />
+          <Route path="/pill/detail/:id" element={<PillDetail />} />
           <Route path="/health" element={<Health />} />
         </Routes>
       </div>
