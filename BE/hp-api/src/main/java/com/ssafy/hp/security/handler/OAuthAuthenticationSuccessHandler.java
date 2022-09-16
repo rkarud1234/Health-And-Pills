@@ -8,6 +8,7 @@ import com.ssafy.hp.security.oauth.CustomOAuth2User;
 import com.ssafy.hp.security.util.*;
 import lombok.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.*;
 import org.springframework.security.core.context.*;
 import org.springframework.security.web.authentication.*;
@@ -31,11 +32,11 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
         response.addHeader(HttpHeaders.AUTHORIZATION, tokenResponse.getAccessToken());
         response.addHeader("refreshToken", tokenResponse.getRefreshToken());
 
-        String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
-                .queryParam("accesstoken", tokenResponse.getAccessToken())
-                .queryParam("refreshtoken", tokenResponse.getRefreshToken())
-                .build().toString();
-
-        getRedirectStrategy().sendRedirect(request, response, target);
+//        String target = UriComponentsBuilder.fromUriString()
+//                .queryParam("accesstoken", tokenResponse.getAccessToken())
+//                .queryParam("refreshtoken", tokenResponse.getRefreshToken())
+//                .build().toString();
+        response.setStatus(HttpStatus.OK.value());
+        //getRedirectStrategy().sendRedirect(request, response, );
     }
 }
