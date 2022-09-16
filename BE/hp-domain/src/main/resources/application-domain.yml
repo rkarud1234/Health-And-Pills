@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hp?useSSL=false&useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://j7b203.p.ssafy.io:3306/hp?useSSL=false&useUnicode=true&autoReconnect=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Seoul
     username: root
-    password: root
+    password: He110W0r1d@
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -19,7 +19,7 @@ spring:
 #    generate-ddl: true
 
   redis:
-    host: localhost
+    host: j7b203.p.ssafy.io
     port: 6379
 
 logging:

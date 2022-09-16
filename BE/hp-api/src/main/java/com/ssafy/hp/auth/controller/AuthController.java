@@ -20,8 +20,8 @@ public class AuthController {
 
     //토큰 재발급
     @PostMapping("/refresh")
-    public ResponseEntity generateAccessToken(@LoginUser User user, @RequestHeader("Authorization") String refreshToken){
-        TokenResponse token = authService.generateAccessToken(user.getUserId(), refreshToken.substring(7));
+    public ResponseEntity regenerateAccessToken(@LoginUser User user, @RequestHeader("Authorization") String refreshToken){
+        TokenResponse token = authService.regenerateAccessToken(user.getUserId(), refreshToken.substring(7));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header("accessToken", token.getAccessToken())

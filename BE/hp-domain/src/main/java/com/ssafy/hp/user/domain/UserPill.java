@@ -3,6 +3,7 @@ package com.ssafy.hp.user.domain;
 
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.pill.domain.Pill;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,10 @@ public class UserPill extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User users;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pill_id")
+    private Pill pill;
 
     @Enumerated(EnumType.STRING)
     private YN userPillTaking;

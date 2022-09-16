@@ -2,6 +2,7 @@ package com.ssafy.hp.user.domain;
 
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.exercise.domain.Exercise;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,10 @@ public class UserExercise extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User users;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exercise_id")
+    private Exercise exercise;
 
     @Enumerated(EnumType.STRING)
     private YN userExerciseDoing;

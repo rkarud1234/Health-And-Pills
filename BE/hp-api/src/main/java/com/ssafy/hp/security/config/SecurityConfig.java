@@ -8,17 +8,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.*;
+import org.springframework.security.web.authentication.*;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터 체인에 등록이 됨
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true)
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -43,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**").permitAll()
+                .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/login/oauth2/**/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users", "/api/users/login").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
@@ -58,11 +70,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(oAuth2UserService)
                 .and()
                 .successHandler(oAuthAuthenticationSuccessHandler)
-                .failureHandler(
-                        (request, response, exception) -> {
-                            System.out.println("fail");
-                        }
-                );
+                .failureHandler(new AuthenticationFailureHandler() {
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    }
+                });
+
     }
 
     @Bean

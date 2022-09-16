@@ -2,6 +2,7 @@ package com.ssafy.hp.pill.domain;
 
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.user.domain.UserPill;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -51,6 +52,9 @@ public class Pill extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private YN pillDomestic;
+
+    @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserPill> userPills = new ArrayList<>();
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillNutrient> pillNutrients = new ArrayList<>();
