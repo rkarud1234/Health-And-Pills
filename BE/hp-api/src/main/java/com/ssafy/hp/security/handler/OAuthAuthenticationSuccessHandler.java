@@ -2,6 +2,8 @@ package com.ssafy.hp.security.handler;
 
 import com.ssafy.hp.auth.response.TokenResponse;
 import com.ssafy.hp.auth.service.AuthService;
+import com.ssafy.hp.exercise.*;
+import com.ssafy.hp.exercise.domain.*;
 import com.ssafy.hp.security.oauth.CustomOAuth2User;
 import com.ssafy.hp.security.util.*;
 import lombok.*;
