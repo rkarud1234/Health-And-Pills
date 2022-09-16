@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,15 +30,24 @@ public class Pill extends BaseEntity {
     @NotNull
     private String pillCompanyName;
 
-    private LocalDateTime pillExpirationDate;
+    private String pillExpirationDate;
 
+    @Column(columnDefinition = "TEXT")
     private String pillTakeProcess;
-
+    
+    @Column(columnDefinition = "TEXT")
     private String pillTakeWarning;
 
+    @Column(columnDefinition = "TEXT")
     private String pillContent;
 
     private String pillThumbnail;
+
+    @ColumnDefault("0")
+    private int reviewCount;
+
+    @ColumnDefault("0")
+    private double reviewAverage;
 
     @Enumerated(EnumType.STRING)
     private YN pillDomestic;
