@@ -8,6 +8,7 @@ import { useState } from "react";
 import Modal from "../components/modals/Modal";
 import ModalCloseButton from "../components/buttons/ModalCloseButton";
 import ScheduleCreate from "../components/modals/contents/ScheduleCreate";
+import ScheduleUpdateDelete from "../components/modals/contents/ScheduleUpdateDelete";
 
 const BackWrapper = styled.div`
   background-color: #EAEFF1;
@@ -27,30 +28,34 @@ const ButtonWrapper = styled.div`
   /* height: 120px; */
 `
 
-const ScheduleListWrapper = styled.div`
+const ScheduleListWrapper = styled.button`
   background-color: transparent;
 `
 
 
 const Schedule = () => {
-  const [modalState, setModalState] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [schedulePage, setSchedulePage] = useState("");
+  const modalPage = {
+    scheduleCreate: <ScheduleCreate/>,
+    scheduleUpdateDelete: <ScheduleUpdateDelete/>
+  };
 
   const openModal = () => {
-    setModalState(true);
+    setIsOpen(true);
   };
 
   const closeModal = () => {
-    setModalState(false);
+    setIsOpen(false);
   };
 
   return (
     <>
       <Modal
-          isOpen={modalState}
-          modalContent={<ScheduleCreate />}
-          closeButton={<ModalCloseButton onClick={closeModal} />}
-          close={closeModal}
-        />
+        isOpen={isOpen}
+        modalContent={modalPage[schedulePage]}
+        closeButton={<ModalCloseButton onClick={closeModal} />}
+      />
       <Header leftNone={true} leftChildren={<BackButton />}/>
         <BackWrapper>
           <WeeklyWrapper>
@@ -62,12 +67,24 @@ const Schedule = () => {
             <DailyCard/>
             <DailyCard/>
           </WeeklyWrapper>
-          <ButtonWrapper onClick={openModal}>
-              <SchedulePlusButton/>
+          <ButtonWrapper
+            onClick={() => {
+              openModal();
+              setSchedulePage("scheduleCreate");
+            }}
+          >
+            <SchedulePlusButton/>
           </ButtonWrapper>
-          <ScheduleListWrapper>
-            일정 목록
-          </ScheduleListWrapper>
+          <div>
+            <ScheduleListWrapper
+              onClick={() => {
+                openModal();
+                setSchedulePage("scheduleUpdateDelete");
+              }}
+            >
+              시간 아이콘 이름 완료여부쳌박
+            </ScheduleListWrapper>
+          </div>
         </BackWrapper>
       <Footer/>
     </>
