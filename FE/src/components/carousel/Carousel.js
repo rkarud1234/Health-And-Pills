@@ -36,7 +36,6 @@ const DivPre = styled.div`
 
 const Carousel = (props) => {
   const images = props.images
-
   const settings = {
     infinite: true,
     speed: 500,

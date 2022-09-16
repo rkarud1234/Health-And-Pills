@@ -1,9 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Health from "./pages/Health";
+import Health from "./pages/health/Health";
 import Home from "./pages/Home";
 import Pill from "./pages/Pill";
 import PillDetail from "./pages/PillDetail";
+import Profile from "./pages/user/Profile";
 import GlobalStyle from "./styled/GlobalStyle";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/pills" element={<Pill />} />
           <Route path="/pill/detail/:id" element={<PillDetail />} />
           <Route path="/health" element={<Health />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </>
