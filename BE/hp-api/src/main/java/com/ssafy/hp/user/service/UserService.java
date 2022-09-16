@@ -5,7 +5,9 @@ import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
 import com.ssafy.hp.user.response.UserExerciseResponse;
 import com.ssafy.hp.user.response.UserInfoResponse;
 import com.ssafy.hp.user.response.UserPillResponse;
-import com.ssafy.hp.user.response.UserReviewResponse;
+import com.ssafy.hp.user.response.UserReviewPillResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,15 +17,23 @@ public interface UserService {
 
     // 타회원 정보 조회
 
-    //나의 운동정보 리스트 조회
-    List<UserExerciseResponse> findExerciseByUserId(int userId);
+    // 나의 운동중 운동리스트 조회
+    Page<UserExerciseResponse> findTakingExerciseByUserId(int userId, Pageable pageable);
 
+    // 북마크 운동리스트 조회
+    Page<UserExerciseResponse> findBookmarkExerciseByUserId(int userId, Pageable pageable);
 
-    // 나의 영양제 정보 리스트 조회
-    List<UserPillResponse> findPillByUserId(int userId);
+    // 좋아요 운동리스트 조회
+    Page<UserExerciseResponse> findLikeExerciseByUserId(int userId, Pageable pageable);
 
-    // 나의 리뷰 리스트 조회
-    List<UserReviewResponse> findReviewByUserId(int userId);
+    // 나의 복용중 영양제리스트 조회
+    Page<UserPillResponse> findTakingPillByUserId(int userId, Pageable pageable);
+
+    // 북마크 영양제리스트 조회
+    Page<UserPillResponse> findBookmarkPillByUserId(int userId, Pageable pageable);
+
+    // 평점 영양제리스트 조회
+    Page<UserReviewPillResponse> findReviewPillByUserId(int userId, Pageable pageable);
 
     // 운동 목적 & 운동 횟수 수정
     void updateUserExercise(int userId, UpdateUserExerciseRequest request);
