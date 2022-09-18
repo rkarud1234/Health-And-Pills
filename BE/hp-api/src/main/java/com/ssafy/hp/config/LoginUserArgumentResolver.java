@@ -17,8 +17,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isIntegerClass = Integer.class.equals(parameter.getParameterType());
-        return isLoginUserAnnotation && isIntegerClass;
+        boolean isLongClass = Long.class.equals(parameter.getParameterType());
+        return isLoginUserAnnotation && isLongClass;
     }
 
     @Override
@@ -27,6 +27,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Integer.valueOf((String) authentication.getPrincipal());
+        return Long.valueOf((String) authentication.getPrincipal());
     }
 }
