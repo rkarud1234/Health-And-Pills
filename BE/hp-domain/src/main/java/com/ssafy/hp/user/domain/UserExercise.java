@@ -37,13 +37,13 @@ public class UserExercise extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private YN userExerciseBookmark;
 
-    public static UserExercise createUserExercise(User user, Exercise exercise, YN userExerciseDoing, YN userExerciseLike, YN userExerciseBookmark) {
+    public static UserExercise createUserExercise(User user, Exercise exercise) {
         UserExercise userExercise = new UserExercise();
         userExercise.users = user;
         userExercise.exercise = exercise;
-        userExercise.userExerciseDoing = userExerciseDoing;
-        userExercise.userExerciseLike = userExerciseLike;
-        userExercise.userExerciseBookmark = userExerciseBookmark;
+        userExercise.userExerciseDoing = YN.N;
+        userExercise.userExerciseLike = null;
+        userExercise.userExerciseBookmark = YN.N;
 
         return userExercise;
     }

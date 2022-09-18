@@ -22,6 +22,11 @@ import static com.ssafy.hp.NotFoundException.*;
 @Transactional(readOnly = true)
 public class ExerciseServiceImpl implements ExerciseService {
 
+    private static final int CMD_DOING = 1;
+    private static final int CMD_LIKE = 2;
+    private static final int CMD_BOOKMARK = 3;
+
+
     private final ExerciseRepository exerciseRepository;
     private final ExerciseCategoryRepository exerciseCategoryRepository;
     private final ExercisePartRepository exercisePartRepository;
@@ -37,7 +42,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     // 해당 운동의 카테고리를 반환
-    private ExerciseCategory findByExerciseCategory(Integer exerciseCategoryId) {
+    private ExerciseCategory findExerciseCategoryById(Integer exerciseCategoryId) {
         return exerciseCategoryRepository.findById(exerciseCategoryId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
     }
@@ -45,7 +50,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     // 운동 종류별 조회
     @Override
     public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer exerciseCategoryId, Pageable pageable) {
-        ExerciseCategory exerciseCategory = findByExerciseCategory(exerciseCategoryId);
+        ExerciseCategory exerciseCategory = findExerciseCategoryById(exerciseCategoryId);
         Page<Exercise> exercises = exerciseRepository.findByExerciseCategory(exerciseCategory, pageable);
 
         // TODO : 북마크,좋아요 여부 연결해야함
@@ -62,7 +67,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         // TODO : 북마크,좋아요 여부 연결해야함
         return exerciseQueryRepository.findExerciseByExercisePartCategory(exercisePartCategory, pageable)
                 .map(exercise -> ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise),
-                        findByExerciseCategory(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(), YN.N, YN.N));
+                        findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(), YN.N, YN.N));
     }
 
     // 운동 상세정보 조회
@@ -72,40 +77,40 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.EXERCISE_NOT_FOUND));
         // TODO : 북마크,좋아요 여부 연결해야함
         return ExerciseDetailResponse.from(exercise, findExercisePartByExercise(exercise),
-                findByExerciseCategory(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
+                findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
                 YN.N, YN.N, YN.N);
     }
 
     @Override
     @Transactional
-    public void updateUserExerciseDoingByExercise(User user, Integer exerciseId, YN yn) {
+    public void updateUserExerciseByUserAndExercise(User user, Integer exerciseId, YN yn, int cmd) {
         User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(findUser, exercise);
-        System.out.println("ExerciseServiceImpl.updateUserExerciseDoingByExercise");
 
         if (userExercise.isPresent()) {
             // 이미 컬럼이 있으면 해당 컬럼을 업데이트 해주면 됨
-            System.out.println("있음");
-            userExercise.get().updateUserExerciseDoing(yn);
+            updateExerciseUserByCmd(userExercise.get(), yn, cmd);
         } else {
             // 처음 등록되는 컬럼이라면 컬럼을 추가한다
-            System.out.println("없음");
-            UserExercise newUserExercise = UserExercise.createUserExercise(findUser, exercise, yn, null, YN.N);
+            UserExercise newUserExercise = UserExercise.createUserExercise(findUser, exercise);
+            updateExerciseUserByCmd(newUserExercise, yn, cmd);
             userExerciseRepository.save(newUserExercise);
         }
     }
 
-    @Override
-    public void updateUserExerciseLikeByExerciseId(User user, Integer ExerciseId, YN yn) {
-
-    }
-
-    @Override
-    public void updateUserExerciseBookmarkByExerciseId(User user, Integer ExerciseId, YN yn) {
-
+    private void updateExerciseUserByCmd(UserExercise userExercise, YN yn, int cmd) {
+        if (cmd == CMD_DOING) {
+            userExercise.updateUserExerciseDoing(yn);
+        } else if (cmd == CMD_LIKE) {
+            userExercise.updateUserExerciseLike(yn);
+        } else if (cmd == CMD_BOOKMARK) {
+            userExercise.updateUserExerciseBookmark(yn);
+        } else {
+            throw new InvalidException(InvalidException.INVALID_REQUEST);
+        }
     }
 }

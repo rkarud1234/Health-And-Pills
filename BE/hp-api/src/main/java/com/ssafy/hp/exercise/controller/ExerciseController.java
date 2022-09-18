@@ -19,6 +19,9 @@ import javax.validation.*;
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
+    private static final int CMD_DOING = 1;
+    private static final int CMD_LIKE = 2;
+    private static final int CMD_BOOKMARK = 3;
 
     // 운동 종류별 조회
     @GetMapping("/category")
@@ -52,13 +55,21 @@ public class ExerciseController {
     // 운동중 상태 변경
     @PostMapping("/doing")
     public ResponseEntity<Void> updateUserExerciseDoingByExercise(@LoginUser User user, @RequestBody @Valid ExerciseCheckRequest request) {
-        System.out.println("ExerciseController.updateUserExerciseDoingByExercise");
-        exerciseService.updateUserExerciseDoingByExercise(user, request.getExerciseId(), request.getCheck());
+        exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), request.getCheck(), CMD_DOING);
         return ResponseEntity.ok().build();
     }
 
     // 운동 좋아요 상태 변경
+    @PostMapping("/like")
+    public ResponseEntity<Void> updateUserExerciseLikeByExercise(@LoginUser User user, @RequestBody @Valid ExerciseCheckRequest request) {
+        exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), request.getCheck(), CMD_LIKE);
+        return ResponseEntity.ok().build();
+    }
 
     // 운동 북마크 상태 변경
-
+    @PostMapping("/bookmark")
+    public ResponseEntity<Void> updateUserExerciseBookmarkByExercise(@LoginUser User user, @RequestBody @Valid ExerciseCheckRequest request) {
+        exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), request.getCheck(), CMD_BOOKMARK);
+        return ResponseEntity.ok().build();
+    }
 }

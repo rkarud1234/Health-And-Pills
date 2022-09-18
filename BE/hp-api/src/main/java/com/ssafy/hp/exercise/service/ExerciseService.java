@@ -24,13 +24,6 @@ public interface ExerciseService {
     // 운동 상세정보 조회
     ExerciseDetailResponse findByExerciseId(User user, Integer exerciseId);
 
-    // 운동중 상태 변경
-    void updateUserExerciseDoingByExercise(User user, Integer ExerciseId, YN yn);
-
-    // 좋아요 상태 변경
-    void updateUserExerciseLikeByExerciseId(User user, Integer ExerciseId, YN yn);
-
-    // 북마크 상태 변경
-    void updateUserExerciseBookmarkByExerciseId(User user, Integer ExerciseId, YN yn);
-
+    // 운동중, 좋아요, 북마크 상태 변경
+    void updateUserExerciseByUserAndExercise(User user, Integer ExerciseId, YN yn, int cmd);
 }
