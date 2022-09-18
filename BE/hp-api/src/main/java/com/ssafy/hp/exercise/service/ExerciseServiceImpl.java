@@ -58,6 +58,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                         findByExerciseCategory(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(), YN.N, YN.N));
     }
 
+    // 운동 상세정보 조회
     @Override
     public ExerciseDetailResponse findByExerciseId(Integer exerciseId) {
         return null;
