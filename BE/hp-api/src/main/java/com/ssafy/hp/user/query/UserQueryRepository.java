@@ -3,9 +3,7 @@ package com.ssafy.hp.user.query;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.exercise.domain.Exercise;
-import com.ssafy.hp.exercise.domain.QExercise;
 import com.ssafy.hp.pill.domain.PillReview;
-import com.ssafy.hp.user.domain.QUserExercise;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserExercise;
 import com.ssafy.hp.user.domain.UserPill;
@@ -32,6 +30,7 @@ public class UserQueryRepository {
     public Page<UserExercise> findTakingExerciseByUserId(User user, Pageable pageable){
         QueryResults<Exercise> result = queryFactory
                 .select(exercise)
+                .join(userExercise.exercise,exercise).fetchJoin()
                 .from(userExercise)
                 .where(userExercise.users.eq(user),
                         userExercise.userExerciseDoing.eq(Y)
