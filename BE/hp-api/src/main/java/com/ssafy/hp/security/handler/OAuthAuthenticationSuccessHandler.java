@@ -1,5 +1,8 @@
 package com.ssafy.hp.security.handler;
 
+import com.ssafy.hp.NotFoundException;
+import com.ssafy.hp.auth.AuthRepository;
+import com.ssafy.hp.auth.domain.Auth;
 import com.ssafy.hp.auth.response.TokenResponse;
 import com.ssafy.hp.auth.service.AuthService;
 import com.ssafy.hp.exercise.*;
@@ -18,11 +21,14 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
 
+import static com.ssafy.hp.NotFoundException.AUTH_NOT_FOUND;
+
 @RequiredArgsConstructor
 @Component
 public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final String AUTHENTICATION_REDIRECT_URI = "https://j7b203.p.ssafy.io/social/redirect";
     private final AuthService authService;
+    private final AuthRepository authRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -31,9 +37,11 @@ public class OAuthAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
         response.addHeader(HttpHeaders.AUTHORIZATION, tokenResponse.getAccessToken());
         response.addHeader("refreshToken", tokenResponse.getRefreshToken());
 
+        Auth findAuth = authRepository.findById(customOAuth2User.getUserId()).orElseThrow(() -> new NotFoundException(AUTH_NOT_FOUND));
+
         String target = UriComponentsBuilder.fromUriString(AUTHENTICATION_REDIRECT_URI)
                 .queryParam("accesstoken", tokenResponse.getAccessToken())
-                .queryParam("refreshtoken", tokenResponse.getRefreshToken())
+                .queryParam("findAuth refreshtoken", findAuth.getRefreshToken())
                 .build().toString();
 
         getRedirectStrategy().sendRedirect(request, response, target);
