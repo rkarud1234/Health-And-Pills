@@ -22,7 +22,7 @@ public class Exercise extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_id")
-    private int exerciseId;
+    private Integer exerciseId;
 
     @NotNull
     private String ExerciseName;
