@@ -2,10 +2,7 @@ package com.ssafy.hp.user.query;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.hp.exercise.domain.Exercise;
-import com.ssafy.hp.exercise.domain.QExercise;
 import com.ssafy.hp.pill.domain.PillReview;
-import com.ssafy.hp.user.domain.QUserExercise;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserExercise;
 import com.ssafy.hp.user.domain.UserPill;
@@ -30,27 +27,54 @@ public class UserQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public Page<UserExercise> findTakingExerciseByUserId(User user, Pageable pageable){
-        QueryResults<Exercise> result = queryFactory
-                .select(exercise)
+        QueryResults<UserExercise> result = queryFactory
+                .select(userExercise)
                 .from(userExercise)
+                .join(userExercise.exercise, exercise).fetchJoin()
                 .where(userExercise.users.eq(user),
                         userExercise.userExerciseDoing.eq(Y)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
-        List<Exercise> content = result.getResults();
-        long total = result.getTotal();
 
-        return null;
+        List<UserExercise> content = result.getResults();
+        long total = result.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public Page<UserExercise> findBookmarkExerciseByUserId(User user, Pageable pageable){
-        return null;
+        QueryResults<UserExercise> result = queryFactory
+                .select(userExercise)
+                .from(userExercise)
+                .join(userExercise.exercise, exercise).fetchJoin()
+                .where(userExercise.users.eq(user),
+                        userExercise.userExerciseBookmark.eq(Y)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<UserExercise> content = result.getResults();
+        long total = result.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public Page<UserExercise> findLikeExerciseByUserId(User user, Pageable pageable){
-        return null;
+        QueryResults<UserExercise> result = queryFactory
+                .select(userExercise)
+                .from(userExercise)
+                .join(userExercise.exercise, exercise).fetchJoin()
+                .where(userExercise.users.eq(user),
+                        userExercise.userExerciseLike.eq(Y)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<UserExercise> content = result.getResults();
+        long total = result.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public Page<UserPill> findTakingPillByUserId(User user, Pageable pageable){
