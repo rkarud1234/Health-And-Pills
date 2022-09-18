@@ -32,21 +32,25 @@ public class ExerciseServiceImpl implements ExerciseService {
         return exerciseQueryRepository.findExercisePartByExercise(exercise).toArray(size -> new String[size]);
     }
 
+    // 운동 종류별 조회
     @Override
     public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer category, Pageable pageable) {
         ExerciseCategory exerciseCategory = exerciseCategoryRepository.findById(category)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
-        List<Exercise> exercises = exerciseRepository.findByExerciseCategory(exerciseCategory, pageable);
+        Page<Exercise> exercises = exerciseRepository.findByExerciseCategory(exerciseCategory, pageable);
 
         // TODO : 북마크,좋아요 여부 연결해야함
-        // TODO : 운동부위 짜서 붙여야함
-        return new PageImpl<>(exercises.stream().map(exercise ->
-                        ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise), exerciseCategory.getExerciseCategoryName(), YN.N, YN.N))
-                .collect(Collectors.toList()));
+        return exercises.map(exercise ->
+                ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise), exerciseCategory.getExerciseCategoryName(), YN.N, YN.N));
     }
 
+    // 운동 부위별 조회
     @Override
     public Page<ExerciseListResponse> findByExercisePart(Integer part, Pageable pageable) {
+        ExercisePart exercisePart = exercisePartRepository.findById(part)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
+
+
         return null;
     }
 
