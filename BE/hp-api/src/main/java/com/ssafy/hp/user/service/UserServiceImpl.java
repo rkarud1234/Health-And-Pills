@@ -43,50 +43,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserExerciseResponse> findTakingExerciseByUserId(int userId, Pageable pageable) {
-        User findUser = userRepository.findById(userId)
+    public Page<UserExerciseResponse> findTakingExerciseByUserId(User user, Pageable pageable) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserExercise> findExerciseList = userQueryRepository.findTakingExerciseByUserId(userId, pageable);
+        Page<UserExercise> findExerciseList = userQueryRepository.findTakingExerciseByUserId(user, pageable);
         return findExerciseList.map(UserExerciseResponse::from);
     }
 
     @Override
-    public Page<UserExerciseResponse> findBookmarkExerciseByUserId(int userId, Pageable pageable) {
-        User findUser = userRepository.findById(userId)
+    public Page<UserExerciseResponse> findBookmarkExerciseByUserId(User user, Pageable pageable) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserExercise> findExerciseList = userQueryRepository.findBookmarkExerciseByUserId(userId, pageable);
+        Page<UserExercise> findExerciseList = userQueryRepository.findBookmarkExerciseByUserId(user, pageable);
         return findExerciseList.map(UserExerciseResponse::from);
     }
 
     @Override
-    public Page<UserExerciseResponse> findLikeExerciseByUserId(int userId, Pageable pageable) {
-        User findUser = userRepository.findById(userId)
+    public Page<UserExerciseResponse> findLikeExerciseByUserId(User user, Pageable pageable) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserExercise> findExerciseList = userQueryRepository.findLikeExerciseByUserId(userId, pageable);
+        Page<UserExercise> findExerciseList = userQueryRepository.findLikeExerciseByUserId(user, pageable);
         return findExerciseList.map(UserExerciseResponse::from);
     }
 
     @Override
-    public Page<UserPillResponse> findTakingPillByUserId(int userId, Pageable pageable) {
-        User findUser = userRepository.findById(userId)
+    public Page<UserPillResponse> findTakingPillByUserId(User user, Pageable pageable) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserPill> findPillList = userQueryRepository.findTakingPillByUserId(userId, pageable);
+        Page<UserPill> findPillList = userQueryRepository.findTakingPillByUserId(user, pageable);
         return findPillList.map(UserPillResponse::from);
     }
 
     @Override
-    public Page<UserPillResponse> findBookmarkPillByUserId(int userId, Pageable pageable) {
-        User findUser = userRepository.findById(userId)
+    public Page<UserPillResponse> findBookmarkPillByUserId(User user, Pageable pageable) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserPill> findPillList = userQueryRepository.findBookmarkPillByUserId(userId, pageable);
+        Page<UserPill> findPillList = userQueryRepository.findBookmarkPillByUserId(user, pageable);
         return findPillList.map(UserPillResponse::from);
     }
 
     @Override
-    public Page<UserReviewPillResponse> findReviewPillByUserId(int userId, Pageable pageable) {
-        User findUser = userRepository.findById(userId)
+    public Page<UserReviewPillResponse> findReviewPillByUserId(User user, Pageable pageable) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<PillReview> findPillList = userQueryRepository.findReviewPillByUserId(userId, pageable);
+        Page<PillReview> findPillList = userQueryRepository.findReviewPillByUserId(user, pageable);
         return findPillList.map(UserReviewPillResponse::from);
     }
 

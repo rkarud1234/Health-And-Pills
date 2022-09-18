@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/exercise")
     public ResponseEntity<Page<UserExerciseResponse>> findTakingExerciseByUserId(@LoginUser User user,
                                                                                  @PageableDefault(size = 15) Pageable pageable){
-        Page<UserExerciseResponse> body = userService.findTakingExerciseByUserId(user.getUserId(), pageable);
+        Page<UserExerciseResponse> body = userService.findTakingExerciseByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/exercise/bookmark")
     public ResponseEntity<Page<UserExerciseResponse>> findBookmarkExerciseByUserId(@LoginUser User user,
                                                                                    @PageableDefault(size = 15) Pageable pageable){
-        Page<UserExerciseResponse> body = userService.findBookmarkExerciseByUserId(user.getUserId(), pageable);
+        Page<UserExerciseResponse> body = userService.findBookmarkExerciseByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
@@ -55,7 +55,7 @@ public class UserController {
     @GetMapping("/like")
     public ResponseEntity<Page<UserExerciseResponse>> findLikeExerciseByUserId(@LoginUser User user,
                                                                                @PageableDefault(size = 15) Pageable pageable){
-        Page<UserExerciseResponse> body = userService.findLikeExerciseByUserId(user.getUserId(), pageable);
+        Page<UserExerciseResponse> body = userService.findLikeExerciseByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/pill")
     public ResponseEntity<Page<UserPillResponse>> findTakingPillByUserId(@LoginUser User user,
                                                                          @PageableDefault(size = 15) Pageable pageable){
-        Page<UserPillResponse> body = userService.findTakingPillByUserId(user.getUserId(), pageable);
+        Page<UserPillResponse> body = userService.findTakingPillByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
@@ -72,7 +72,7 @@ public class UserController {
     @GetMapping("/pill/bookmark")
     public ResponseEntity<Page<UserPillResponse>> findBookmarkPillByUserId(@LoginUser User user,
                                                                            @PageableDefault(size = 15) Pageable pageable){
-        Page<UserPillResponse> body = userService.findBookmarkPillByUserId(user.getUserId(), pageable);
+        Page<UserPillResponse> body = userService.findBookmarkPillByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping("/review")
     public ResponseEntity<Page<UserReviewPillResponse>> findReviewPillByUserId(@LoginUser User user,
                                                                                @PageableDefault(size = 15) Pageable pageable){
-        Page<UserReviewPillResponse> body = userService.findReviewPillByUserId(user.getUserId(), pageable);
+        Page<UserReviewPillResponse> body = userService.findReviewPillByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 

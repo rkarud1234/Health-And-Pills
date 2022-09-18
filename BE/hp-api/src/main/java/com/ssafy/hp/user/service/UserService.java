@@ -1,5 +1,6 @@
 package com.ssafy.hp.user.service;
 
+import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
 import com.ssafy.hp.user.response.UserExerciseResponse;
@@ -18,22 +19,22 @@ public interface UserService {
     // 타회원 정보 조회
 
     // 나의 운동중 운동리스트 조회
-    Page<UserExerciseResponse> findTakingExerciseByUserId(int userId, Pageable pageable);
+    Page<UserExerciseResponse> findTakingExerciseByUserId(User user, Pageable pageable);
 
     // 북마크 운동리스트 조회
-    Page<UserExerciseResponse> findBookmarkExerciseByUserId(int userId, Pageable pageable);
+    Page<UserExerciseResponse> findBookmarkExerciseByUserId(User user, Pageable pageable);
 
     // 좋아요 운동리스트 조회
-    Page<UserExerciseResponse> findLikeExerciseByUserId(int userId, Pageable pageable);
+    Page<UserExerciseResponse> findLikeExerciseByUserId(User user, Pageable pageable);
 
     // 나의 복용중 영양제리스트 조회
-    Page<UserPillResponse> findTakingPillByUserId(int userId, Pageable pageable);
+    Page<UserPillResponse> findTakingPillByUserId(User user, Pageable pageable);
 
     // 북마크 영양제리스트 조회
-    Page<UserPillResponse> findBookmarkPillByUserId(int userId, Pageable pageable);
+    Page<UserPillResponse> findBookmarkPillByUserId(User user, Pageable pageable);
 
     // 평점 영양제리스트 조회
-    Page<UserReviewPillResponse> findReviewPillByUserId(int userId, Pageable pageable);
+    Page<UserReviewPillResponse> findReviewPillByUserId(User user, Pageable pageable);
 
     // 운동 목적 & 운동 횟수 수정
     void updateUserExercise(int userId, UpdateUserExerciseRequest request);
