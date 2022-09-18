@@ -1,5 +1,6 @@
 package com.ssafy.hp.config;
 
+import com.ssafy.hp.user.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
@@ -17,8 +18,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isLongClass = Long.class.equals(parameter.getParameterType());
-        return isLoginUserAnnotation && isLongClass;
+        boolean isUserClass = User.class.equals(parameter.getParameterType());
+        return isLoginUserAnnotation && isUserClass;
     }
 
     @Override
@@ -27,6 +28,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Long.valueOf((String) authentication.getPrincipal());
+        return (User) authentication.getPrincipal();
     }
 }
