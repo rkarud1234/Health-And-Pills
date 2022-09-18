@@ -1,6 +1,7 @@
 package com.ssafy.hp.exercise.domain;
 
 import com.ssafy.hp.common.BaseEntity;
+import com.ssafy.hp.exercise.type.*;
 import com.ssafy.hp.user.domain.UserExercise;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
@@ -35,6 +36,9 @@ public class Exercise extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_category_id")
     private ExerciseCategory exerciseCategory;
+
+    @Enumerated(EnumType.STRING)
+    private Aerobic exerciseAerobic;
 
     @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserExercise> userExercises = new ArrayList<>();
