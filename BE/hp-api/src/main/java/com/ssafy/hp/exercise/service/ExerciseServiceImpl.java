@@ -29,7 +29,7 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     // 해당 운동의 운동부위 배열을 반환
     private String[] findExercisePartByExercise(Exercise exercise) {
-        return exerciseQueryRepository.findExercisePartByExercise(exercise).toArray(size -> new String[size]);
+        return exerciseQueryRepository.findExercisePartByExercise(exercise).toArray(String[]::new);
     }
 
     // 운동 종류별 조회
