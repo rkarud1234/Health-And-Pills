@@ -14,7 +14,7 @@ public class ExerciseDetailResponse {
 
     private Aerobic aerobic; // 유무산소
 
-    private Integer exercisePart; // 운동부위
+    private String[] exerciseParts; // 운동부위
 
     private Integer exerciseCategory; // 운동 분류
 
