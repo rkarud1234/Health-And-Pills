@@ -40,7 +40,10 @@ public class ExerciseController {
     // {스쿼트}와 유사한 운동 추천
 
     // 운동 상세정보 조회
-//    @GetMapping("/{exercise_id}")
-//    ExerciseDetailResponse findByExerciseId(@PathVariable("exercise_id") Integer exerciseId);
+    @GetMapping("/{exercise_id}")
+    ResponseEntity<ExerciseDetailResponse> findByExerciseId(@LoginUser User user, @PathVariable("exercise_id") Integer exerciseId){
+        ExerciseDetailResponse body = exerciseService.findByExerciseId(user, exerciseId);
+        return ResponseEntity.ok().body(body);
+    }
 
 }

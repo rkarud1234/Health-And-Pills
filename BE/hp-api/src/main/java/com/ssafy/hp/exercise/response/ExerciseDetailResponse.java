@@ -13,6 +13,8 @@ import lombok.*;
 public class ExerciseDetailResponse {
     private String exerciseName; // 운동이름
 
+    private String exerciseContent; // 운동설명
+
     private Aerobic aerobic; // 유무산소
 
     private String[] exerciseParts; // 운동부위
@@ -29,6 +31,7 @@ public class ExerciseDetailResponse {
     public static ExerciseDetailResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, YN bookmark, YN doing, YN like) {
         ExerciseDetailResponse exerciseDetailResponse = new ExerciseDetailResponse();
         exerciseDetailResponse.exerciseName = exercise.getExerciseName();
+        exerciseDetailResponse.exerciseContent = exercise.getExerciseContent();
         exerciseDetailResponse.aerobic = exercise.getExerciseAerobic();
         exerciseDetailResponse.exerciseParts = exerciseParts;
         exerciseDetailResponse.exerciseCategory = exerciseCategory;

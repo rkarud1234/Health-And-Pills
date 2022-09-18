@@ -22,7 +22,7 @@ public interface ExerciseService {
     // {스쿼트}와 유사한 운동 추천
 
     // 운동 상세정보 조회
-    ExerciseDetailResponse findByExerciseId(Integer exerciseId);
+    ExerciseDetailResponse findByExerciseId(User user, Integer exerciseId);
 
     // 운동중 상태 변경
     void updateUserExerciseDoingByExercise(Integer ExerciseId, YN yn);

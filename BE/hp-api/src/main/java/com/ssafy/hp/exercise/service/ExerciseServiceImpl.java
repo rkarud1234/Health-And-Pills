@@ -60,8 +60,12 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     // 운동 상세정보 조회
     @Override
-    public ExerciseDetailResponse findByExerciseId(Integer exerciseId) {
-        return null;
+    public ExerciseDetailResponse findByExerciseId(User user, Integer exerciseId) {
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.EXERCISE_NOT_FOUND));
+        return ExerciseDetailResponse.from(exercise, findExercisePartByExercise(exercise),
+                findByExerciseCategory(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
+                YN.N, YN.N, YN.N);
     }
 
     @Override
