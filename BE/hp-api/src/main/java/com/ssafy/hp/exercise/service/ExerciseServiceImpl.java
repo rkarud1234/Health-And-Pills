@@ -12,9 +12,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
-import java.util.*;
-import java.util.stream.*;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,11 +29,16 @@ public class ExerciseServiceImpl implements ExerciseService {
         return exerciseQueryRepository.findExercisePartByExercise(exercise).toArray(String[]::new);
     }
 
+    // 해당 운동의 카테고리를 반환
+    private ExerciseCategory findByExerciseCategory(Integer exerciseCategoryId) {
+        return exerciseCategoryRepository.findById(exerciseCategoryId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
+    }
+
     // 운동 종류별 조회
     @Override
-    public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer category, Pageable pageable) {
-        ExerciseCategory exerciseCategory = exerciseCategoryRepository.findById(category)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
+    public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer exerciseCategoryId, Pageable pageable) {
+        ExerciseCategory exerciseCategory = findByExerciseCategory(exerciseCategoryId);
         Page<Exercise> exercises = exerciseRepository.findByExerciseCategory(exerciseCategory, pageable);
 
         // TODO : 북마크,좋아요 여부 연결해야함
@@ -46,12 +48,14 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     // 운동 부위별 조회
     @Override
-    public Page<ExerciseListResponse> findByExercisePart(Integer part, Pageable pageable) {
-        ExercisePart exercisePart = exercisePartRepository.findById(part)
+    public Page<ExerciseListResponse> findByExercisePart(User user, Integer part, Pageable pageable) {
+        ExercisePartCategory exercisePartCategory = exercisePartCategoryRepository.findById(part)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
 
-
-        return null;
+        // TODO : 북마크,좋아요 여부 연결해야함
+        return exerciseQueryRepository.findExerciseByExercisePartCategory(exercisePartCategory, pageable)
+                .map(exercise -> ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise),
+                        findByExerciseCategory(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(), YN.N, YN.N));
     }
 
     @Override

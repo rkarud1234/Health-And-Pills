@@ -20,12 +20,16 @@ public class ExerciseController {
     // 운동 종류별 조회
     @GetMapping("/category")
     ResponseEntity<Page<ExerciseListResponse>> findByExerciseCategory(@LoginUser User user, @RequestParam Integer category, @PageableDefault(size = 10) Pageable pageable) {
-        Page<ExerciseListResponse> body = exerciseService.findByExerciseCategory(null, category, pageable);
+        Page<ExerciseListResponse> body = exerciseService.findByExerciseCategory(user, category, pageable);
         return ResponseEntity.ok().body(body);
     }
-//
-//    // 운동 부위별 조회
-//    Page<ExerciseListResponse> findByExercisePart(@RequestParam Integer part, Pageable pageable);
+
+    // 운동 부위별 조회
+    @GetMapping("/part")
+    ResponseEntity<Page<ExerciseListResponse>> findByExercisePart(@LoginUser User user, @RequestParam Integer part, @PageableDefault(size = 10) Pageable pageable) {
+        Page<ExerciseListResponse> body = exerciseService.findByExercisePart(user, part, pageable);
+        return ResponseEntity.ok().body(body);
+    }
 
     // 베스트 10 운동 추천
 

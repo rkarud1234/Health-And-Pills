@@ -1,12 +1,15 @@
 package com.ssafy.hp.exercise.query;
 
+import com.querydsl.core.*;
 import com.querydsl.jpa.impl.*;
 import com.ssafy.hp.exercise.domain.*;
 import lombok.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
 
+import static com.ssafy.hp.exercise.domain.QExercise.exercise;
 import static com.ssafy.hp.exercise.domain.QExercisePart.exercisePart;
 import static com.ssafy.hp.exercise.domain.QExercisePartCategory.exercisePartCategory;
 
@@ -24,6 +27,21 @@ public class ExerciseQueryRepository {
                 .on(exercisePartCategory.eq(exercisePart.exercisePartCategory))
                 .where(exercisePart.exercise.eq(exercise))
                 .fetch();
+    }
+
+    // 해당 부위의 운동들을 반환
+
+    public Page<Exercise> findExerciseByExercisePartCategory(ExercisePartCategory exercisePartCategory, Pageable pageable) {
+        List<Exercise> results = queryFactory
+                .selectFrom(exercise)
+                .join(exercisePart)
+                .on(exercise.eq(exercisePart.exercise))
+                .where(exercisePart.exercisePartCategory.eq(exercisePartCategory))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return new PageImpl<>(results);
     }
 
 }

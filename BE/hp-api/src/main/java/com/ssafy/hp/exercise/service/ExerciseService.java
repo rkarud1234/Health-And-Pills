@@ -11,7 +11,7 @@ public interface ExerciseService {
     Page<ExerciseListResponse> findByExerciseCategory(User user, Integer category, Pageable pageable);
 
     // 운동 부위별 조회
-    Page<ExerciseListResponse> findByExercisePart(Integer part, Pageable pageable);
+    Page<ExerciseListResponse> findByExercisePart(User user, Integer part, Pageable pageable);
 
     // 베스트 10 운동 추천
 
