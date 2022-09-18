@@ -4,6 +4,7 @@ import com.ssafy.hp.*;
 import com.ssafy.hp.common.type.*;
 import com.ssafy.hp.exercise.*;
 import com.ssafy.hp.exercise.domain.*;
+import com.ssafy.hp.exercise.query.*;
 import com.ssafy.hp.exercise.response.*;
 import com.ssafy.hp.user.domain.*;
 import lombok.*;
@@ -24,6 +25,13 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExercisePartRepository exercisePartRepository;
     private final ExercisePartCategoryRepository exercisePartCategoryRepository;
 
+    private final ExerciseQueryRepository exerciseQueryRepository;
+
+    // 해당 운동의 운동부위 배열을 반환
+    private String[] findExercisePartByExercise(Exercise exercise) {
+        return exerciseQueryRepository.findExercisePartByExercise(exercise).toArray(size -> new String[size]);
+    }
+
     @Override
     public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer category, Pageable pageable) {
         ExerciseCategory exerciseCategory = exerciseCategoryRepository.findById(category)
@@ -33,7 +41,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         // TODO : 북마크,좋아요 여부 연결해야함
         // TODO : 운동부위 짜서 붙여야함
         return new PageImpl<>(exercises.stream().map(exercise ->
-                        ExerciseListResponse.from(exercise, new String[]{"팔"}, exerciseCategory.getExerciseCategoryName(), YN.N, YN.N))
+                        ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise), exerciseCategory.getExerciseCategoryName(), YN.N, YN.N))
                 .collect(Collectors.toList()));
     }
 

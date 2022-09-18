@@ -20,7 +20,6 @@ public class ExerciseController {
     // 운동 종류별 조회
     @GetMapping("/category")
     ResponseEntity<Page<ExerciseListResponse>> findByExerciseCategory(@LoginUser User user, @RequestParam Integer category, @PageableDefault(size = 10) Pageable pageable) {
-        System.out.println("user.getUserId() = " + user.getUserId());
         Page<ExerciseListResponse> body = exerciseService.findByExerciseCategory(null, category, pageable);
         return ResponseEntity.ok().body(body);
     }
