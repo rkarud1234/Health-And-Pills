@@ -15,8 +15,8 @@ import static com.ssafy.hp.exercise.domain.QExercisePartCategory.exercisePartCat
 public class ExerciseQueryRepository {
     private final JPAQueryFactory queryFactory;
 
+    // 해당 운동의 운동부위를 반환
     public List<String> findExercisePartByExercise(Exercise exercise) {
-        System.out.println("exercise.getExerciseName() = " + exercise.getExerciseName());
         return queryFactory
                 .select(exercisePartCategory.exercisePartCategoryName)
                 .from(exercisePartCategory)
