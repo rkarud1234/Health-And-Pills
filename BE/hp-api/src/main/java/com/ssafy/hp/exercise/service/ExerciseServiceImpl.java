@@ -6,11 +6,16 @@ import com.ssafy.hp.exercise.*;
 import com.ssafy.hp.exercise.domain.*;
 import com.ssafy.hp.exercise.query.*;
 import com.ssafy.hp.exercise.response.*;
+import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
 import lombok.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
+
+import java.util.*;
+
+import static com.ssafy.hp.NotFoundException.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseCategoryRepository exerciseCategoryRepository;
     private final ExercisePartRepository exercisePartRepository;
     private final ExercisePartCategoryRepository exercisePartCategoryRepository;
+    private final UserRepository userRepository;
+    private final UserExerciseRepository userExerciseRepository;
 
     private final ExerciseQueryRepository exerciseQueryRepository;
 
@@ -63,23 +70,42 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseDetailResponse findByExerciseId(User user, Integer exerciseId) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.EXERCISE_NOT_FOUND));
+        // TODO : 북마크,좋아요 여부 연결해야함
         return ExerciseDetailResponse.from(exercise, findExercisePartByExercise(exercise),
                 findByExerciseCategory(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
                 YN.N, YN.N, YN.N);
     }
 
     @Override
-    public void updateUserExerciseDoingByExercise(Integer ExerciseId, YN yn) {
+    @Transactional
+    public void updateUserExerciseDoingByExercise(User user, Integer exerciseId, YN yn) {
+        User findUser = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
+        Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(findUser, exercise);
+        System.out.println("ExerciseServiceImpl.updateUserExerciseDoingByExercise");
+
+        if (userExercise.isPresent()) {
+            // 이미 컬럼이 있으면 해당 컬럼을 업데이트 해주면 됨
+            System.out.println("있음");
+            userExercise.get().updateUserExerciseDoing(yn);
+        } else {
+            // 처음 등록되는 컬럼이라면 컬럼을 추가한다
+            System.out.println("없음");
+            UserExercise newUserExercise = UserExercise.createUserExercise(findUser, exercise, yn, null, YN.N);
+            userExerciseRepository.save(newUserExercise);
+        }
+    }
+
+    @Override
+    public void updateUserExerciseLikeByExerciseId(User user, Integer ExerciseId, YN yn) {
 
     }
 
     @Override
-    public void updateUserExerciseLikeByExerciseId(Integer ExerciseId, YN yn) {
-
-    }
-
-    @Override
-    public void updateUserExerciseBookmarkByExerciseId(Integer ExerciseId, YN yn) {
+    public void updateUserExerciseBookmarkByExerciseId(User user, Integer ExerciseId, YN yn) {
 
     }
 }
