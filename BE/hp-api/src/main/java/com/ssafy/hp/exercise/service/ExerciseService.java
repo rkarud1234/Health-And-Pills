@@ -2,12 +2,13 @@ package com.ssafy.hp.exercise.service;
 
 import com.ssafy.hp.common.type.*;
 import com.ssafy.hp.exercise.response.*;
+import com.ssafy.hp.user.domain.*;
 import org.springframework.data.domain.*;
 
 public interface ExerciseService {
 
     // 운동 종류별 조회
-    Page<ExerciseListResponse> findByExerciseCategory(Integer category, Pageable pageable);
+    Page<ExerciseListResponse> findByExerciseCategory(User user, Integer category, Pageable pageable);
 
     // 운동 부위별 조회
     Page<ExerciseListResponse> findByExercisePart(Integer part, Pageable pageable);
