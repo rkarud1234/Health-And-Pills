@@ -1,6 +1,7 @@
 package com.ssafy.hp.security.service;
 
 import com.ssafy.hp.NotFoundException;
+import com.ssafy.hp.security.oauth.*;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class UserDetailService implements UserDetailsService {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(String.valueOf(findUser.getRole())));
 
-        return new org.springframework.security.core.userdetails.User(String.valueOf(findUser.getUserId()), "", authorities);
+        LoginUserDetails loginUserDetails = new LoginUserDetails(String.valueOf(findUser.getUserId()), "", authorities);
+        loginUserDetails.setUser(findUser);
+        return loginUserDetails;
     }
 }
