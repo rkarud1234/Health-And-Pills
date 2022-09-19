@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 // import { SuccessAlert } from "../../utils/sweetAlert";
@@ -12,6 +13,10 @@ const SocialLogin = () => {
   sessionStorage.setItem("ACCESS_TOKEN", accessToken);
   sessionStorage.setItem("REFRESH_TOKEN", refreshToken);
   console.log("냥냥");
+  useEffect(() => {
+    navigate("/", { replace: true });
+  }, []);
+
   // dispatch(getUserProfile());
   // SuccessAlert("로그인되었습니다", navigate);
   return <></>;

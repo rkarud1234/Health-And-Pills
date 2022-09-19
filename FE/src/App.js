@@ -7,6 +7,7 @@ import Pill from "./pages/Pill";
 import PillDetail from "./pages/PillDetail";
 import Profile from "./pages/user/Profile";
 import Schedule from "./pages/Schedule";
+import SocialLogin from "./pages/user/SocialLogin";
 import GlobalStyle from "./styled/GlobalStyle";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/healthDetail" element={<HealthDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/social/redirect" element={<SocialLogin />} />
         </Routes>
       </div>
     </>
