@@ -17,7 +17,7 @@ public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_profile_id")
-    private int userId;
+    private Integer userId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
@@ -49,5 +49,20 @@ public class UserProfile extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_purpose_id")
     private ExercisePurpose exercisePurpose;
+
+    // 운동목적 & 운동횟수 수정
+    public void updateUserExercise(ExercisePurpose  exercisePurpose, int exerciseTimes) {
+        this.exercisePurpose = exercisePurpose;
+        this.exerciseTimes = exerciseTimes;
+    }
+
+    // 인바디 수정
+    public void updateUserInbody(double userProfileHeight, double userProfileWeight, double userProfileFat, double userProfileSkeleton, double userProfileWater) {
+        this.userProfileHeight = userProfileHeight;
+        this.userProfileWeight = userProfileWeight;
+        this.userProfileFat = userProfileFat;
+        this.userProfileSkeleton = userProfileSkeleton;
+        this.userProfileWater = userProfileWater;
+    }
 
 }

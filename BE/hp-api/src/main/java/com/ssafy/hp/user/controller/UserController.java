@@ -1,23 +1,19 @@
 package com.ssafy.hp.user.controller;
 
-import com.ssafy.hp.auth.response.TokenResponse;
 import com.ssafy.hp.config.LoginUser;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
-import com.ssafy.hp.user.response.UserExerciseResponse;
-import com.ssafy.hp.user.response.UserInfoResponse;
-import com.ssafy.hp.user.response.UserPillResponse;
-import com.ssafy.hp.user.response.UserReviewResponse;
+import com.ssafy.hp.user.response.*;
 import com.ssafy.hp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RequestMapping("/api/users")
 @RestController
@@ -39,24 +35,52 @@ public class UserController {
         return null;
     }
 
-    // 나의 운동중, 좋아요, 북마크 한 운동정보 리스트 조회
+    // 나의 운동중 운동리스트 조회
     @GetMapping("/exercise")
-    public ResponseEntity<List<UserExerciseResponse>> findExerciseByUserId(@LoginUser User user){
-        List<UserExerciseResponse> body = userService.findExerciseByUserId(user.getUserId());
+    public ResponseEntity<Page<UserExerciseResponse>> findTakingExerciseByUserId(@LoginUser User user,
+                                                                                 @PageableDefault(size = 15) Pageable pageable){
+        Page<UserExerciseResponse> body = userService.findTakingExerciseByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
-    // 나의 복용중 북마크 한 영양제 정보 리스트 조회
+    // 나의 북마크 운동리스트 조회
+    @GetMapping("/exercise/bookmark")
+    public ResponseEntity<Page<UserExerciseResponse>> findBookmarkExerciseByUserId(@LoginUser User user,
+                                                                                   @PageableDefault(size = 15) Pageable pageable){
+        Page<UserExerciseResponse> body = userService.findBookmarkExerciseByUserId(user, pageable);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // 나의 좋아요 운동리스트 조회
+    @GetMapping("/like")
+    public ResponseEntity<Page<UserExerciseResponse>> findLikeExerciseByUserId(@LoginUser User user,
+                                                                               @PageableDefault(size = 15) Pageable pageable){
+        Page<UserExerciseResponse> body = userService.findLikeExerciseByUserId(user, pageable);
+        return ResponseEntity.ok().body(body);
+    }
+
+
+    // 나의 복용중 영양제리스트 조회
     @GetMapping("/pill")
-    public ResponseEntity<List<UserPillResponse>> findPillByUserId(@LoginUser User user){
-        List<UserPillResponse> body = userService.findPillByUserId(user.getUserId());
+    public ResponseEntity<Page<UserPillResponse>> findTakingPillByUserId(@LoginUser User user,
+                                                                         @PageableDefault(size = 15) Pageable pageable){
+        Page<UserPillResponse> body = userService.findTakingPillByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 
-    // 나의 평점 & 리뷰 영양제 리스트 조회
+    // 나의 북마크 영양제리스트 조회
+    @GetMapping("/pill/bookmark")
+    public ResponseEntity<Page<UserPillResponse>> findBookmarkPillByUserId(@LoginUser User user,
+                                                                           @PageableDefault(size = 15) Pageable pageable){
+        Page<UserPillResponse> body = userService.findBookmarkPillByUserId(user, pageable);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // 나의 평점&리뷰 영양제리스트 조회
     @GetMapping("/review")
-    public ResponseEntity<List<UserReviewResponse>> findReviewByUserId(@LoginUser User user){
-        List<UserReviewResponse> body = userService.findReviewByUserId(user.getUserId());
+    public ResponseEntity<Page<UserReviewPillResponse>> findReviewPillByUserId(@LoginUser User user,
+                                                                               @PageableDefault(size = 15) Pageable pageable){
+        Page<UserReviewPillResponse> body = userService.findReviewPillByUserId(user, pageable);
         return ResponseEntity.ok().body(body);
     }
 

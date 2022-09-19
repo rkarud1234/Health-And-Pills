@@ -26,11 +26,6 @@ import java.io.*;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터 체인에 등록이 됨
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true)
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -55,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**", "/login/oauth2/**/**").permitAll()
+                .antMatchers("/ws-stomp/**", "/api/port", "/actuator/health", "/oauth2/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users", "/api/users/login").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
