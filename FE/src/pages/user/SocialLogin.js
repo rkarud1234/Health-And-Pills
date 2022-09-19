@@ -12,6 +12,7 @@ const SocialLogin = () => {
   sessionStorage.setItem("ACCESS_TOKEN", accessToken);
   sessionStorage.setItem("REFRESH_TOKEN", refreshToken);
   console.log("냥냥");
+  navigate("/");
   // dispatch(getUserProfile());
   // SuccessAlert("로그인되었습니다", navigate);
   return <></>;
