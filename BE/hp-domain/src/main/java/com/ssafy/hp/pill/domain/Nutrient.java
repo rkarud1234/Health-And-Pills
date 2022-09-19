@@ -18,7 +18,7 @@ public class Nutrient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nutrient_id")
-    private int nutrientId;
+    private Integer nutrientId;
 
     @NotNull
     private String nutrientName;

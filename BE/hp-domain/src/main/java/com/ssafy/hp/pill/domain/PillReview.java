@@ -17,7 +17,7 @@ public class PillReview extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pill_review_id")
-    private int pillReviewId;
+    private Integer pillReviewId;
 
     private int pillReviewScore;
 

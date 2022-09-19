@@ -23,7 +23,7 @@ public class Pill extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pill_id")
-    private int pillId;
+    private Integer pillId;
 
     @NotNull
     private String pillName;
@@ -44,10 +44,8 @@ public class Pill extends BaseEntity {
 
     private String pillThumbnail;
 
-    @ColumnDefault("0")
     private int reviewCount;
 
-    @ColumnDefault("0")
     private double reviewAverage;
 
     @Enumerated(EnumType.STRING)
