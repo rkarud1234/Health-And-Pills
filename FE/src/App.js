@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Pill from "./pages/Pill";
 import PillDetail from "./pages/PillDetail";
 import Profile from "./pages/user/Profile";
+import SocialLogin from "./pages/user/SocialLogin copy";
 import GlobalStyle from "./styled/GlobalStyle";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/pill/detail/:id" element={<PillDetail />} />
           <Route path="/health" element={<Health />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/social/redirect" element={<SocialLogin />} />
         </Routes>
       </div>
     </>
