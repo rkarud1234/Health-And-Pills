@@ -17,7 +17,7 @@ public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_profile_id")
-    private int userId;
+    private Integer userId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
