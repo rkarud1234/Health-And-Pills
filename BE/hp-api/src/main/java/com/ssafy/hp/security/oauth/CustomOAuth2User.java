@@ -6,7 +6,6 @@ import lombok.*;
 import org.springframework.security.core.*;
 import org.springframework.security.core.authority.*;
 import org.springframework.security.oauth2.core.user.*;
-
 import java.util.*;
 
 @Data
@@ -21,20 +20,27 @@ public class CustomOAuth2User implements OAuth2User {
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public CustomOAuth2User(int userId, Provider userProvider, String userProviderId, String userName, Role role, Collection<? extends GrantedAuthority> authorities) {
+    public CustomOAuth2User(int userId, Provider userProvider, String userProviderId, String userName, Role role, Collection<? extends GrantedAuthority> authorities,Map<String, Object> attributes) {
         this.userId = userId;
         this.userProvider = userProvider;
         this.userProviderId = userProviderId;
         this.userName = userName;
         this.role = role;
         this.authorities = authorities;
+        this.attributes = attributes;
     }
 
     public static CustomOAuth2User create(User user, Map<String, Object> attributes) {
         List<GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority(String.valueOf(user.getRole())));
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(user.getUserId(), user.getUserProvider(), user.getUserProviderId(), user.getUserName(), user.getRole(), authorities);
-        customOAuth2User.setAttributes(attributes);
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(
+                user.getUserId(),
+                user.getUserProvider(),
+                user.getUserProviderId(),
+                user.getUserName(),
+                user.getRole(),
+                authorities,
+                attributes);
 
         return customOAuth2User;
     }
@@ -51,6 +57,6 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return userName;
+        return String.valueOf(userId);
     }
 }

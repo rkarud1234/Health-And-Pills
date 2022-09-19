@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface UserExerciseRepository extends JpaRepository<UserExercise, Integer> {
     Optional<UserExercise> findUserExerciseByUsersAndExercise(User user, Exercise exercise);
+    Optional<UserExercise> findByUsersAndExercise(User user, Exercise exercise);
 }

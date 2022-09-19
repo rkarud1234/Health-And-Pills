@@ -39,4 +39,27 @@ public class UserExercise extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     private YN userExerciseBookmark;
+
+    public static UserExercise createUserExercise(User user, Exercise exercise) {
+        UserExercise userExercise = new UserExercise();
+        userExercise.users = user;
+        userExercise.exercise = exercise;
+        userExercise.userExerciseDoing = YN.N;
+        userExercise.userExerciseLike = null;
+        userExercise.userExerciseBookmark = YN.N;
+
+        return userExercise;
+    }
+
+    public void updateUserExerciseDoing(YN doing) {
+        this.userExerciseDoing = doing;
+    }
+
+    public void updateUserExerciseLike(YN like) {
+        this.userExerciseLike = like;
+    }
+
+    public void updateUserExerciseBookmark(YN bookmark) {
+        this.userExerciseBookmark = bookmark;
+    }
 }

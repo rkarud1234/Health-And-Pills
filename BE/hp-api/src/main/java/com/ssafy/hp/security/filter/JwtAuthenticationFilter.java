@@ -1,5 +1,6 @@
 package com.ssafy.hp.security.filter;
 
+import com.ssafy.hp.security.oauth.*;
 import com.ssafy.hp.security.service.UserDetailService;
 import com.ssafy.hp.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,10 @@ public class JwtAuthenticationFilter extends GenericFilter {
 
         if (StringUtils.hasText(jwtToken) && jwtUtil.isValidToken(jwtToken)) {
             UserDetails userDetails = userDetailService.loadUserByUsername(jwtUtil.getSubject(jwtToken));
+            LoginUserDetails loginUserDetails = (LoginUserDetails) userDetails;
 
             Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(loginUserDetails.getUser(), null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);
