@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Pill from "./pages/Pill";
 import PillDetail from "./pages/PillDetail";
 import Profile from "./pages/user/Profile";
-import SocialLogin from "./pages/user/SocialLogin copy";
+import SocialLogin from "./pages/user/SocialLogin";
 import GlobalStyle from "./styled/GlobalStyle";
 
 function App() {
