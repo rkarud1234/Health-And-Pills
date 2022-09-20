@@ -21,14 +21,14 @@ public class ExerciseDetailResponse {
 
     private String exerciseCategory; // 운동 분류
 
-    private YN bookmark; // 북마크여부
+    private String bookmark; // 북마크여부
 
-    private YN doing; // 운동중여부
+    private String doing; // 운동중여부
 
-    private YN like; // 좋아요여부
+    private String like; // 좋아요여부
 
 
-    public static ExerciseDetailResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, YN bookmark, YN doing, YN like) {
+    public static ExerciseDetailResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, String bookmark, String doing, String like) {
         ExerciseDetailResponse exerciseDetailResponse = new ExerciseDetailResponse();
         exerciseDetailResponse.exerciseName = exercise.getExerciseName();
         exerciseDetailResponse.exerciseContent = exercise.getExerciseContent();
