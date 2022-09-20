@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logIn, getProfile } from "../actions/user";
+import { profile } from "../actions/user";
 
 const initialState = {
   isLogin: false,
@@ -9,30 +9,23 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  // 동기적 action
-  // 내부적 action
   reducers: {
-    logOut(state, action) {
-      state.data = null;
+    logOut: () => initialState,
+    logIn: () => {
+      return {
+        ...initialState,
+        isLogin: true,
+      };
     },
   },
-  // 비동기적 action
-  // 외부적 action
   extraReducers: (builder) =>
     builder
-      .addCase(logIn.pending, (state, action) => {})
-      .addCase(logIn.fulfilled, (state, action) => {
-        state.isLogin = true;
-      })
-      .addCase(logIn.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-
-      .addCase(getProfile.pending, (state, action) => {})
-      .addCase(getProfile.fulfilled, (state, action) => {
+      .addCase(profile.pending, (state, action) => {})
+      .addCase(profile.fulfilled, (state, action) => {
         state.data = action.payload;
       })
-      .addCase(getProfile.rejected, (state, action) => {}),
+      .addCase(profile.rejected, (state, action) => {}),
 });
 
 export default userSlice;
+export const { logOut, logIn } = userSlice.actions;
