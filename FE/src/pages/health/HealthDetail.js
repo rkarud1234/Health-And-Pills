@@ -7,10 +7,13 @@ import UnBookMark from "../../components/buttons/UnBookMark";
 import { useState, useEffect } from "react";
 import ThumbsUp from "../../components/buttons/ThumbsUp";
 import ThumbsDown from "../../components/buttons/ThumbsDown";
+import ThumbsUped from "../../components/buttons/ThumbsUped";
+import ThumbsDowned from "../../components/buttons/ThumbsDowned";
 import HealthCard from "../../components/cards/HealthCard";
-import ExcercisingCheckBox from "../../components/buttons/ExcercisingCheckBox";
-import { getExerciseDetail } from "../../api/HealthAPI";
-import { getExerciseItemReco } from "../../api/HealthAPI";
+import Exercising from "../../components/buttons/Exercising";
+import UnExercising from "../../components/buttons/UnExercising";
+import { getExerciseDetail, getExerciseItemReco, exerciseBookMark, exerciseDoing } from "../../api/HealthAPI";
+import { client } from "../../api";
 
 const BlockWrapper = styled.div`
   background-color: transparent;
@@ -71,9 +74,18 @@ const RecomThumbWrapper = styled.div`
   font-size: large;
 `
 
-const HealthDetail = ({ width, height, border, justifyContent, backgroundColor, borderRadius, display }) => {
+const HealthDetail = ({
+   width, 
+   height, 
+   border, 
+   justifyContent, 
+   backgroundColor, 
+   borderRadius, 
+   exerciseId
+  }) => {
   const [exer, setExer] = useState({
     exerciseName: "",
+    exerciseContent: "",
     aerobic: "",
     exerciseParts: [],
     exerciseCategory: "",
@@ -91,22 +103,43 @@ const HealthDetail = ({ width, height, border, justifyContent, backgroundColor, 
     doing: "",
     like: "",
   })
-  // const [bookMark, setBookMark] = useState(false)
+
+//   // 운동 상세 정보 조회
+//   const getDetail = async () => {
+//     await getExerciseDetail(1);
+//   // if (response.status === 200) {
+//   //   console.log(response)
+//   // } else{
+//   //   console.log(error)
+//   // }}
+//   setExer({...response.data})
+//   console.log(response)
+// };
+//   useEffect(() => {
+//     getDetail();
+//   }, []);
 
   // 운동 상세 정보 조회
-  const getDetail = await getExerciseDetail(data);
-  if (response.status === 200) {
-    setExer([...response.data])
-  };
+  const getDetail = async() => {
+    await client
+      .get(`/exercise/1`)
+      .then((response) => {
+        if (response.status === 200)
+        setExer({...response.data})
+        console.log(response.data)
+      })
+      .catch((error) => console.log(error));
+  }
   useEffect(() => {
     getDetail();
   }, []);
 
   // 현재 운동과 유사한 운동 추천 받기
-  const getReco = await getExerciseItemReco(data);
+  const getReco = async () => {
+    await getExerciseItemReco(data);
   if (response.status === 200) {
     setRecoExer([...response.data])
-  };
+  }};
   useEffect(() => {
     getReco();
   }, []);
@@ -116,43 +149,41 @@ const HealthDetail = ({ width, height, border, justifyContent, backgroundColor, 
     <>
       <Header leftNone={true} leftChildren={<BackButton />}/>
       <BlockWrapper>
-        <HealthWrapper width={width} height={height} border={border} justifyContent={justifyContent} backgroundColor={backgroundColor} borderRadius={borderRadius}>
+        <HealthWrapper>
           <NameWrapper>
-            운동 이름
+            {exer.exerciseName}
           </NameWrapper>
-          <ExcercisingCheckBox></ExcercisingCheckBox>
-          <ButtonWrapper onClick = {() => setBookMark(!bookMark)} width="40px">
-              {bookMark === false ? (<BookMark/>) : (<UnBookMark/>)}
+          <ButtonWrapper>
+            {exer.doing === "Y" ? <Exercising/> : <UnExercising/>}
+          </ButtonWrapper>
+          <ButtonWrapper  width="60px">
+            {exer.bookmark === "N" ? <BookMark/> : <UnBookMark/>}
           </ButtonWrapper>
         </HealthWrapper>
       </BlockWrapper>
       <BlockWrapper>
-        <HealthWrapper width={width} height={height} border={border} backgroundColor={backgroundColor} borderRadius={borderRadius}>
+        <HealthWrapper>
           <NameWrapper>
-            운동 분류
+            {exer.aerobic} | {exer.exerciseParts} | {exer.exerciseCategory}
           </NameWrapper>
           <ButtonWrapper width="80px">
             <ThumbsWrapper>
-              <ThumbsUp/>
-              <ThumbsContentWrapper>
-                좋아요
-              </ThumbsContentWrapper>
+              {exer.like === "Y" ? <ThumbsUped/> : <ThumbsUp/>}
+              <ThumbsContentWrapper>좋아요</ThumbsContentWrapper>
             </ThumbsWrapper>
             <ThumbsWrapper>
-              <ThumbsDown/>
-              <ThumbsContentWrapper>
-                별로예요
-              </ThumbsContentWrapper>
+              {exer.like === "N" ? <ThumbsDowned/> : <ThumbsDown/>}
+              <ThumbsContentWrapper>싫어요</ThumbsContentWrapper>
             </ThumbsWrapper>
           </ButtonWrapper>
         </HealthWrapper>
       </BlockWrapper>
       <BlockWrapper>
-        <HealthWrapper width={width} height="100px" border={border} backgroundColor={backgroundColor} borderRadius={borderRadius}>
-          운동 설명 들어갈 곳
+        <HealthWrapper height="100px">
+          {exer.exerciseContent}
         </HealthWrapper>
         <BlockWrapper>
-          <HealthWrapper width={width} height="120px" border={border} backgroundColor="#FFB6B6" borderRadius="none" display="block">
+          <HealthWrapper height="120px" backgroundColor="#FFB6B6" borderRadius="none" display="block">
             <YoutubeRecomWrapper>
               <YoutubeIconWrapper>
                 <i class="fa-brands fa-youtube"/>
@@ -163,15 +194,13 @@ const HealthDetail = ({ width, height, border, justifyContent, backgroundColor, 
         </BlockWrapper>
       </BlockWrapper>
       <BlockWrapper>
-        <HealthWrapper width={width} height={height} border={border} backgroundColor="transparent" borderRadius={borderRadius}
-          justifyContent={"start"}
-        >
+        <HealthWrapper backgroundColor="transparent" justifyContent={"start"}>
           <RecomThumbWrapper>
             <i className="fa-regular fa-thumbs-up"/>
           </RecomThumbWrapper>
           'ㅇㅇㅇ'와 유사한 운동 추천
         </HealthWrapper>
-        <HealthWrapper width={width} height={height} border={border} backgroundColor="transparent" justifyContent="space-between">
+        <HealthWrapper backgroundColor="transparent" justifyContent="space-between">
           <HealthCard/><HealthCard/><HealthCard/>
         </HealthWrapper>
       </BlockWrapper>
