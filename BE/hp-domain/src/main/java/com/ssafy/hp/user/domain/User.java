@@ -39,6 +39,9 @@ public class User extends BaseEntity {
     @NotNull
     private Role role;
 
+    @NotNull
+    private String userNickname;
+
     @OneToOne(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserProfile userProfile;
 
@@ -52,12 +55,13 @@ public class User extends BaseEntity {
     private List<PillReview> pillReviews = new ArrayList<>();
 
 
-    public static User createUser(Provider userProvider, String userProviderId, String userName, Role role) {
+    public static User createUser(Provider userProvider, String userProviderId, String userName, Role role, String userNickname) {
         User user = new User();
         user.userProvider = userProvider;
         user.userProviderId = userProviderId;
         user.userName = userName;
         user.role = role;
+        user.userNickname = userNickname;
         return user;
     }
 
