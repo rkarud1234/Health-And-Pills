@@ -62,5 +62,8 @@ public class Pill extends BaseEntity {
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillReview> pillReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PillFunctionality> pillFunctionalities = new ArrayList<>();
 }
 
