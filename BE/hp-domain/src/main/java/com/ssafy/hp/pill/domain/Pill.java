@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class Pill extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pill_id")
-    private int pillId;
+    private Integer pillId;
 
     @NotNull
     private String pillName;
@@ -30,15 +31,22 @@ public class Pill extends BaseEntity {
     @NotNull
     private String pillCompanyName;
 
-    private LocalDateTime pillExpirationDate;
+    private String pillExpirationDate;
 
+    @Column(columnDefinition = "TEXT")
     private String pillTakeProcess;
-
+    
+    @Column(columnDefinition = "TEXT")
     private String pillTakeWarning;
 
+    @Column(columnDefinition = "TEXT")
     private String pillContent;
 
     private String pillThumbnail;
+
+    private int reviewCount;
+
+    private double reviewAverage;
 
     @Enumerated(EnumType.STRING)
     private YN pillDomestic;
@@ -54,5 +62,8 @@ public class Pill extends BaseEntity {
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillReview> pillReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PillFunctionality> pillFunctionalities = new ArrayList<>();
 }
 

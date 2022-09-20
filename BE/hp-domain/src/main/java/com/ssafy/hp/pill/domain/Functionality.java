@@ -14,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Nutrient {
+public class Functionality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "nutrient_id")
-    private Integer nutrientId;
+    @Column(name = "functionality_id")
+    private Integer functionality_id;
 
     @NotNull
-    private String nutrientName;
+    private String functionality_content;
 
-    @OneToMany(mappedBy = "nutrient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PillNutrient> pillNutrients = new ArrayList<>();
+    @OneToMany(mappedBy = "functionality", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PillFunctionality> pillFunctionalities = new ArrayList<>();
 }
