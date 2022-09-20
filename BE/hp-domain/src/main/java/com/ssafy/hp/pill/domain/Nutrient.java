@@ -20,7 +20,7 @@ public class Nutrient {
     @Column(name = "nutrient_id")
     private Integer nutrientId;
 
-    @NotNull
+    @Column(nullable = false)
     private String nutrientName;
 
     @OneToMany(mappedBy = "nutrient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
