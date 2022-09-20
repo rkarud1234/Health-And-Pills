@@ -7,15 +7,18 @@ import java.util.*;
 public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 
     private Map<String, Object> attributesAccount;
+    private Map<String, Object> attributesProfile;
+
 
     public KakaoOAuth2UserInfo(Map<String, Object> attributes) {
         super(attributes);
         this.attributesAccount = (Map<String, Object>) attributes.get("kakao_account");
+        this.attributesProfile = (Map<String, Object>) attributesAccount.get("profile");
     }
 
     @Override
     public String getUserNickname() {
-        return attributesAccount.get("name").toString();
+        return attributesProfile.get("nickname").toString();
     }
 
 
