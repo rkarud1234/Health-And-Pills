@@ -57,11 +57,11 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
         Provider userProvider = Provider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId());
-//        String userEmail = oAuth2UserInfo.getUserEmail();
+        String userNickname = oAuth2UserInfo.getUserNickname();
         String userProviderId = oAuth2UserInfo.getUserProviderId();
         String userName = oAuth2UserInfo.getUserName();
 
-        User user = User.createUser(userProvider, userProviderId, userName, Role.ROLE_USER);
+        User user = User.createUser(userProvider, userProviderId, userName, Role.ROLE_USER, userNickname);
 
         return userRepository.save(user);
     }
