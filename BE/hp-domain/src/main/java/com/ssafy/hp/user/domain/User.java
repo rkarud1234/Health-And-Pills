@@ -5,11 +5,11 @@ import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.user.domain.type.Provider;
 import com.ssafy.hp.user.domain.type.Role;
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reactor.util.annotation.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,21 +25,21 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Integer userId;
 
-    @NotNull
+    @Column(nullable = false)
     private String userName;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private Provider userProvider;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProviderId;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private Role role;
 
-    @NotNull
+    @Column(nullable = false)
     private String userNickname;
 
     @OneToOne(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

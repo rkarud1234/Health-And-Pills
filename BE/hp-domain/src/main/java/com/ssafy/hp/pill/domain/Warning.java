@@ -20,7 +20,7 @@ public class Warning {
     @Column(name = "warning_id")
     private Integer warningId;
 
-    @NotNull
+    @Column(nullable = false)
     private String warningContent;
 
     @OneToMany(mappedBy = "warning", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
