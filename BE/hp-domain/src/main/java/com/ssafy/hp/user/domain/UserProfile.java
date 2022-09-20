@@ -50,6 +50,17 @@ public class UserProfile extends BaseEntity {
     @JoinColumn(name = "exercise_purpose_id")
     private ExercisePurpose exercisePurpose;
 
+    // 필수정보 등록
+    public static UserProfile createUserProfile(String userProfileNickname, String userProfileBirthday, String userProfileGender, int exerciseTimes, ExercisePurpose exercisePurpose){
+        UserProfile userProfile = new UserProfile();
+        userProfile.userProfileNickname = userProfileNickname;
+        userProfile.userProfileBirthday = userProfileBirthday;
+        userProfile.userProfileGender = userProfileGender;
+        userProfile.exerciseTimes = exerciseTimes;
+        userProfile.exercisePurpose = exercisePurpose;
+        return userProfile;
+    }
+
     // 운동목적 & 운동횟수 수정
     public void updateUserExercise(ExercisePurpose  exercisePurpose, int exerciseTimes) {
         this.exercisePurpose = exercisePurpose;
