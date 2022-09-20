@@ -24,13 +24,13 @@ public class UserProfile extends BaseEntity {
     @JoinColumn(name = "user_profile_id")
     private User users;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProfileNickname;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProfileBirthday;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProfileGender;
 
     private double userProfileHeight;
@@ -43,7 +43,7 @@ public class UserProfile extends BaseEntity {
 
     private double userProfileWater;
 
-    @NotNull
+    @Column(nullable = false)
     private int exerciseTimes;
 
     @ManyToOne(fetch = FetchType.LAZY)

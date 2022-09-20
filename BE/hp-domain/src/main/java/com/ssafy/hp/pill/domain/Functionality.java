@@ -20,7 +20,7 @@ public class Functionality {
     @Column(name = "functionality_id")
     private Integer functionality_id;
 
-    @NotNull
+    @Column(nullable = false)
     private String functionality_content;
 
     @OneToMany(mappedBy = "functionality", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

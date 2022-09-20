@@ -31,10 +31,10 @@ public class UserPill extends BaseEntity {
     private Pill pill;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private YN userPillTaking;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private YN userPillBookmark;
 }
