@@ -1,7 +1,5 @@
 package com.ssafy.hp.pill.domain;
 
-import com.ssafy.hp.common.BaseEntity;
-import com.ssafy.hp.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,22 +11,17 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class PillReview extends BaseEntity {
+public class PillFunctionality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pill_review_id")
-    private Integer pillReviewId;
-
-    private int pillReviewScore;
-
-    private String pillReviewContent;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User users;
+    @Column(name = "pill_functionality_id")
+    private Integer pillFunctionalityId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pill_id")
     private Pill pill;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "functionality_id")
+    private Functionality functionality;
 }
