@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         ExercisePurpose findExerciserPurpose = exercisePurposeRepository.findById(request.getExercisePurposeId())
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
 
-        UserProfile userProfile = UserProfile.createUserProfile(findUser.getUserNickname(), request.getUserProfileBirthday(), request.getUserProfileGender(), request.getExerciseTimes(), findExerciserPurpose);
+        UserProfile userProfile = UserProfile.createUserProfile(findUser, findUser.getUserNickname(), request.getUserProfileBirthday(), request.getUserProfileGender(), request.getExerciseTimes(), findExerciserPurpose);
         userProfileRepository.save(userProfile);
     }
 
