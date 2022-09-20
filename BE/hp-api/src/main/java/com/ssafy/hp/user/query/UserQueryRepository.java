@@ -27,7 +27,7 @@ public class UserQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public Page<UserExercise> findTakingExerciseByUserId(User user, Pageable pageable){
-        QueryResults<UserExercise> result = queryFactory
+        List<UserExercise> result = queryFactory
                 .select(userExercise)
                 .from(userExercise)
                 .join(userExercise.exercise, exercise).fetchJoin()
@@ -36,11 +36,9 @@ public class UserQueryRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
+                .fetch();
 
-        List<UserExercise> content = result.getResults();
-        long total = result.getTotal();
-        return new PageImpl<>(content, pageable, total);
+        return new PageImpl<>(result);
     }
 
     public Page<UserExercise> findBookmarkExerciseByUserId(User user, Pageable pageable){
