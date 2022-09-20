@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/exercise")
@@ -71,5 +72,19 @@ public class ExerciseController {
     public ResponseEntity<Void> updateUserExerciseBookmarkByExercise(@LoginUser User user, @RequestBody @Valid ExerciseCheckRequest request) {
         exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), request.getCheck(), CMD_BOOKMARK);
         return ResponseEntity.ok().build();
+    }
+
+    // 운동 카테고리 반환
+    @GetMapping("/categories")
+    public ResponseEntity<List<ExerciseCategoryResponse>> findAllExerciseCategory() {
+        List<ExerciseCategoryResponse> body = exerciseService.findAllExerciseCategory();
+        return ResponseEntity.ok().body(body);
+    }
+
+    // 운동 카테고리 반환
+    @GetMapping("/part-categories")
+    public ResponseEntity<List<ExercisePartCategoryResponse>> findAllExercisePartCategory() {
+        List<ExercisePartCategoryResponse> body = exerciseService.findAllExercisePartCategory();
+        return ResponseEntity.ok().body(body);
     }
 }

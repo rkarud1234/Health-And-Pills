@@ -5,6 +5,8 @@ import com.ssafy.hp.exercise.response.*;
 import com.ssafy.hp.user.domain.*;
 import org.springframework.data.domain.*;
 
+import java.util.*;
+
 public interface ExerciseService {
 
     // 운동 종류별 조회
@@ -26,4 +28,8 @@ public interface ExerciseService {
 
     // 운동중, 좋아요, 북마크 상태 변경
     void updateUserExerciseByUserAndExercise(User user, Integer ExerciseId, YN yn, int cmd);
+
+    List<ExerciseCategoryResponse> findAllExerciseCategory();
+
+    List<ExercisePartCategoryResponse> findAllExercisePartCategory();
 }

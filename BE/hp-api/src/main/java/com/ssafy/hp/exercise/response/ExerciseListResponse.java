@@ -22,11 +22,11 @@ public class ExerciseListResponse {
 
     private String exerciseCategory; // 운동 분류
 
-    private YN bookmark; // 북마크여부
+    private String bookmark; // 북마크여부
 
-    private YN doing; // 운동중여부
+    private String doing; // 운동중여부
 
-    public static ExerciseListResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, YN bookmark, YN doing) {
+    public static ExerciseListResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, String bookmark, String doing) {
         ExerciseListResponse exerciseListResponse = new ExerciseListResponse();
         exerciseListResponse.exerciseName = exercise.getExerciseName();
         exerciseListResponse.aerobic = exercise.getExerciseAerobic();
