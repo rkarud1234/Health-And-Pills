@@ -15,7 +15,7 @@ public class PillNutrient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pill_nutrient_id")
-    private int pillNutrientId;
+    private Integer pillNutrientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pill_id")

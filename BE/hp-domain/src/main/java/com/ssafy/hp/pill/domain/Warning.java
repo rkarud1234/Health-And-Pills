@@ -18,7 +18,7 @@ public class Warning {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "warning_id")
-    private int warningId;
+    private Integer warningId;
 
     @NotNull
     private String warningContent;
