@@ -85,19 +85,19 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     @Transactional
     public void updateUserExerciseByUserAndExercise(User user, Integer exerciseId, YN yn, int cmd) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(findUser, exercise);
+        Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(user, exercise);
 
         if (userExercise.isPresent()) {
             // 이미 컬럼이 있으면 해당 컬럼을 업데이트 해주면 됨
             updateExerciseUserByCmd(userExercise.get(), yn, cmd);
         } else {
             // 처음 등록되는 컬럼이라면 컬럼을 추가한다
-            UserExercise newUserExercise = UserExercise.createUserExercise(findUser, exercise);
+            UserExercise newUserExercise = UserExercise.createUserExercise(user, exercise);
             updateExerciseUserByCmd(newUserExercise, yn, cmd);
             userExerciseRepository.save(newUserExercise);
         }
@@ -105,12 +105,16 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     public List<ExerciseCategoryResponse> findAllExerciseCategory() {
-        return exerciseCategoryRepository.findAll().stream().map(ExerciseCategoryResponse::from).collect(Collectors.toList());
+        return exerciseCategoryRepository.findAll()
+                .stream().map(ExerciseCategoryResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ExercisePartCategoryResponse> findAllExercisePartCategory() {
-        return exercisePartCategoryRepository.findAll().stream().map(ExercisePartCategoryResponse::from).collect(Collectors.toList());
+        return exercisePartCategoryRepository.findAll()
+                .stream().map(ExercisePartCategoryResponse::from)
+                .collect(Collectors.toList());
     }
 
     private void updateExerciseUserByCmd(UserExercise userExercise, YN yn, int cmd) {
