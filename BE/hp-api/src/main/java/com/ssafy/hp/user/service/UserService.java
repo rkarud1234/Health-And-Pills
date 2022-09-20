@@ -1,6 +1,8 @@
 package com.ssafy.hp.user.service;
 
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.request.CreateUserInbodyRequest;
+import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
 import com.ssafy.hp.user.response.*;
@@ -10,6 +12,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UserService {
+    // 필수정보 등록
+    void createUserProfile(User user, CreateUserProfileRequest request);
+
     //내정보 조회
     UserInfoResponse findUser(int userId);
 

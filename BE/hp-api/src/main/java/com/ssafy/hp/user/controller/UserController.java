@@ -1,7 +1,10 @@
 package com.ssafy.hp.user.controller;
 
+import com.ssafy.hp.DuplicateException;
 import com.ssafy.hp.config.LoginUser;
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.request.CreateUserInbodyRequest;
+import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
 import com.ssafy.hp.user.response.*;
@@ -20,6 +23,13 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    // 필수정보 등록 (이름, 생년월일, 성별, 운동목적, 운동횟수)
+    @PostMapping
+    public ResponseEntity<Void> createUserProfile(@LoginUser User user, @RequestBody @Valid CreateUserProfileRequest request) {
+        userService.createUserProfile(user, request);
+        return ResponseEntity.ok().build();
+    }
 
     // 내정보 조회 (기본정보, 운동목적, 운동횟수, 인바디)
     // 조인 해야함
@@ -109,7 +119,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    // 인바디 수정
+    // 내정보 인바디정보 등록&수정
     @PutMapping("/inbody")
     public  ResponseEntity<Void> updateUserInbody(@LoginUser User user,
                                             @RequestBody @Valid UpdateUserInbodyRequest request){
@@ -118,7 +128,7 @@ public class UserController {
     }
 
     // 회원 로그아웃
-    @PostMapping
+    @PostMapping("/logout")
     public ResponseEntity<Void> logout(@LoginUser User user){
         userService.logout(user.getUserId());
         return ResponseEntity.ok().build();
