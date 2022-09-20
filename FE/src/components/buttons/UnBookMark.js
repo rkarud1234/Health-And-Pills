@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { exerciseBookMark } from "../../api/HealthAPI";
 
 const MarkStyled = styled.button`
   border: none;
@@ -14,8 +15,21 @@ const MarkStyled = styled.button`
 
 const UnBookMark = () => {
 
+  // 북마크 --> exerciseId 나중에 변수로 바꾸기
+  const onHandleBookMark = async (e) => {
+    const data = {
+      exerciseId : 1,
+      // exerciseId: state.exerciseId,
+      check: "N"
+    };
+    const response = await exerciseBookMark(data);
+    if (response.status === 200) {
+      console.log("언북마크됐")
+    } else {console.log(response)}
+  };
+
   return (
-    <MarkStyled>
+    <MarkStyled onClick={onHandleBookMark}>
       <i className="fa-solid fa-bookmark"/>
     </MarkStyled>
   );
