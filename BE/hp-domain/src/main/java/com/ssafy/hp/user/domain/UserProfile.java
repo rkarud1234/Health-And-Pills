@@ -51,8 +51,9 @@ public class UserProfile extends BaseEntity {
     private ExercisePurpose exercisePurpose;
 
     // 필수정보 등록
-    public static UserProfile createUserProfile(String userProfileNickname, String userProfileBirthday, String userProfileGender, int exerciseTimes, ExercisePurpose exercisePurpose){
+    public static UserProfile createUserProfile(User user, String userProfileNickname, String userProfileBirthday, String userProfileGender, int exerciseTimes, ExercisePurpose exercisePurpose){
         UserProfile userProfile = new UserProfile();
+        userProfile.users = user;
         userProfile.userProfileNickname = userProfileNickname;
         userProfile.userProfileBirthday = userProfileBirthday;
         userProfile.userProfileGender = userProfileGender;
