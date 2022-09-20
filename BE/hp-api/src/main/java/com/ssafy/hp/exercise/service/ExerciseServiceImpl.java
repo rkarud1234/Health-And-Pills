@@ -14,6 +14,7 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 import static com.ssafy.hp.NotFoundException.*;
 
@@ -100,6 +101,16 @@ public class ExerciseServiceImpl implements ExerciseService {
             updateExerciseUserByCmd(newUserExercise, yn, cmd);
             userExerciseRepository.save(newUserExercise);
         }
+    }
+
+    @Override
+    public List<ExerciseCategoryResponse> findAllExerciseCategory() {
+        return exerciseCategoryRepository.findAll().stream().map(ExerciseCategoryResponse::from).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ExercisePartCategoryResponse> findAllExercisePartCategory() {
+        return exercisePartCategoryRepository.findAll().stream().map(ExercisePartCategoryResponse::from).collect(Collectors.toList());
     }
 
     private void updateExerciseUserByCmd(UserExercise userExercise, YN yn, int cmd) {
