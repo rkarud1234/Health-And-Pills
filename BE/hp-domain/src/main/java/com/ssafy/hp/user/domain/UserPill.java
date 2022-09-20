@@ -4,6 +4,7 @@ package com.ssafy.hp.user.domain;
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
+import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +31,10 @@ public class UserPill extends BaseEntity {
     private Pill pill;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private YN userPillTaking;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private YN userPillBookmark;
 }

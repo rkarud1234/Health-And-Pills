@@ -25,6 +25,7 @@ public class UserController {
     // 조인 해야함
     @GetMapping
     public ResponseEntity<UserInfoResponse> findUser(@LoginUser User user){
+        System.out.println("UserController.findUser");
         UserInfoResponse body = userService.findUser(user.getUserId());
         return ResponseEntity.ok().body(body);
     }
@@ -60,6 +61,14 @@ public class UserController {
     }
 
 
+    // 해당 운동에대한 나의 정보 (운동중여부, 북마크여부, 좋아요 여부)
+    @GetMapping("/exercise/{exercise_id}")
+    public ResponseEntity<UserExerciseInfoResponse> findByExerciseId(@LoginUser User user,
+                                                                     @PathVariable("exercise_id") int exerciserId){
+        UserExerciseInfoResponse body = userService.findByExerciseId(user, exerciserId);
+        return ResponseEntity.ok().body(body);
+    }
+
     // 나의 복용중 영양제리스트 조회
     @GetMapping("/pill")
     public ResponseEntity<Page<UserPillResponse>> findTakingPillByUserId(@LoginUser User user,
@@ -81,6 +90,14 @@ public class UserController {
     public ResponseEntity<Page<UserReviewPillResponse>> findReviewPillByUserId(@LoginUser User user,
                                                                                @PageableDefault(size = 15) Pageable pageable){
         Page<UserReviewPillResponse> body = userService.findReviewPillByUserId(user, pageable);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // 해당 영양제에 대한 나의 정보 조회 (복용중여부, 북마크여부)
+    @GetMapping("/pill/{pill_id}")
+    public ResponseEntity<UserPillInfoResponse> findByPillId(@LoginUser User user,
+                                                             @PathVariable("pill_id") int pillId){
+        UserPillInfoResponse body = userService.findByPillId(user, pillId);
         return ResponseEntity.ok().body(body);
     }
 
