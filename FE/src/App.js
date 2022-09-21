@@ -7,6 +7,8 @@ import PillDetail from "./pages/PillDetail";
 import Profile from "./pages/user/Profile";
 import SocialLogin from "./pages/user/SocialLogin";
 import GlobalStyle from "./styled/GlobalStyle";
+import BodyAgeTest from "./pages/test/BodyAgeTest";
+import Result from "./pages/test/Result";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/health" element={<Health />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/social/redirect" element={<SocialLogin />} />
+          <Route path="/form" element={<BodyAgeTest />} />
+          <Route path="/result/:id" element={<Result />} />
         </Routes>
       </div>
     </>
