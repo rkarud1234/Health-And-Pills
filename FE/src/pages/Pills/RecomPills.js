@@ -88,6 +88,9 @@ const RecomPills = ({ pills, type }) => {
                 if (startPageX === endPageX) {
                   navigate(`/pill/detail/${pill.id}`)
                 }
+                if (document.getElementById('scrollDiv')) {
+                  document.getElementById('scrollDiv').scrollTo(0, 0);
+                }
               }}>
               <PillCard url={pill.url} text={pill.text} rating={pill.rating} />
             </CardDiv>
