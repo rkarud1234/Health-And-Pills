@@ -24,13 +24,13 @@ public class UserProfile extends BaseEntity {
     @JoinColumn(name = "user_profile_id")
     private User users;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProfileNickname;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProfileBirthday;
 
-    @NotNull
+    @Column(nullable = false)
     private String userProfileGender;
 
     private double userProfileHeight;
@@ -43,12 +43,24 @@ public class UserProfile extends BaseEntity {
 
     private double userProfileWater;
 
-    @NotNull
+    @Column(nullable = false)
     private int exerciseTimes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_purpose_id")
     private ExercisePurpose exercisePurpose;
+
+    // 필수정보 등록
+    public static UserProfile createUserProfile(User user, String userProfileNickname, String userProfileBirthday, String userProfileGender, int exerciseTimes, ExercisePurpose exercisePurpose){
+        UserProfile userProfile = new UserProfile();
+        userProfile.users = user;
+        userProfile.userProfileNickname = userProfileNickname;
+        userProfile.userProfileBirthday = userProfileBirthday;
+        userProfile.userProfileGender = userProfileGender;
+        userProfile.exerciseTimes = exerciseTimes;
+        userProfile.exercisePurpose = exercisePurpose;
+        return userProfile;
+    }
 
     // 운동목적 & 운동횟수 수정
     public void updateUserExercise(ExercisePurpose  exercisePurpose, int exerciseTimes) {

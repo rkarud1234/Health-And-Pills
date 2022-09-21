@@ -25,10 +25,10 @@ public class Pill extends BaseEntity {
     @Column(name = "pill_id")
     private Integer pillId;
 
-    @NotNull
+    @Column(nullable = false)
     private String pillName;
 
-    @NotNull
+    @Column(nullable = false)
     private String pillCompanyName;
 
     private String pillExpirationDate;

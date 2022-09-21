@@ -20,7 +20,7 @@ public class ExerciseCategory {
     @Column(name = "exercise_category_id")
     private int exerciseCategoryId;
 
-    @NotNull
+    @Column(nullable = false)
     private String exerciseCategoryName;
 
     @OneToMany(mappedBy = "exerciseCategory", fetch = FetchType.LAZY , cascade = CascadeType.ALL)

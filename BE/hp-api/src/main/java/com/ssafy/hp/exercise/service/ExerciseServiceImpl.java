@@ -8,12 +8,15 @@ import com.ssafy.hp.exercise.query.*;
 import com.ssafy.hp.exercise.response.*;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
+import com.ssafy.hp.user.response.*;
+import com.ssafy.hp.user.service.*;
 import lombok.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import java.util.*;
+import java.util.stream.*;
 
 import static com.ssafy.hp.NotFoundException.*;
 
@@ -29,12 +32,11 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
     private final ExerciseCategoryRepository exerciseCategoryRepository;
-    private final ExercisePartRepository exercisePartRepository;
     private final ExercisePartCategoryRepository exercisePartCategoryRepository;
     private final UserRepository userRepository;
     private final UserExerciseRepository userExerciseRepository;
-
     private final ExerciseQueryRepository exerciseQueryRepository;
+    private final UserService userService;
 
     // 해당 운동의 운동부위 배열을 반환
     private String[] findExercisePartByExercise(Exercise exercise) {
@@ -53,9 +55,15 @@ public class ExerciseServiceImpl implements ExerciseService {
         ExerciseCategory exerciseCategory = findExerciseCategoryById(exerciseCategoryId);
         Page<Exercise> exercises = exerciseRepository.findByExerciseCategory(exerciseCategory, pageable);
 
-        // TODO : 북마크,좋아요 여부 연결해야함
-        return exercises.map(exercise ->
-                ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise), exerciseCategory.getExerciseCategoryName(), YN.N, YN.N));
+        return exercises.map(exercise -> {
+            UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
+            return ExerciseListResponse.from(
+                    exercise,
+                    findExercisePartByExercise(exercise),
+                    exerciseCategory.getExerciseCategoryName(),
+                    userExerciseInfo.getExerciseBookmark(),
+                    userExerciseInfo.getExerciseDoing());
+        });
     }
 
     // 운동 부위별 조회
@@ -64,10 +72,16 @@ public class ExerciseServiceImpl implements ExerciseService {
         ExercisePartCategory exercisePartCategory = exercisePartCategoryRepository.findById(part)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
 
-        // TODO : 북마크,좋아요 여부 연결해야함
         return exerciseQueryRepository.findExerciseByExercisePartCategory(exercisePartCategory, pageable)
-                .map(exercise -> ExerciseListResponse.from(exercise, findExercisePartByExercise(exercise),
-                        findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(), YN.N, YN.N));
+                .map(exercise -> {
+                    UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
+                    return ExerciseListResponse.from(
+                            exercise,
+                            findExercisePartByExercise(exercise),
+                            findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
+                            userExerciseInfo.getExerciseBookmark(),
+                            userExerciseInfo.getExerciseDoing());
+                });
     }
 
     // 운동 상세정보 조회
@@ -75,31 +89,51 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseDetailResponse findByExerciseId(User user, Integer exerciseId) {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.EXERCISE_NOT_FOUND));
-        // TODO : 북마크,좋아요 여부 연결해야함
-        return ExerciseDetailResponse.from(exercise, findExercisePartByExercise(exercise),
+
+        UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
+
+        return ExerciseDetailResponse.from(
+                exercise,
+                findExercisePartByExercise(exercise),
                 findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
-                YN.N, YN.N, YN.N);
+                userExerciseInfo.getExerciseBookmark(),
+                userExerciseInfo.getExerciseDoing(),
+                userExerciseInfo.getExerciseLike());
     }
 
     @Override
     @Transactional
     public void updateUserExerciseByUserAndExercise(User user, Integer exerciseId, YN yn, int cmd) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(findUser, exercise);
+        Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(user, exercise);
 
         if (userExercise.isPresent()) {
             // 이미 컬럼이 있으면 해당 컬럼을 업데이트 해주면 됨
             updateExerciseUserByCmd(userExercise.get(), yn, cmd);
         } else {
             // 처음 등록되는 컬럼이라면 컬럼을 추가한다
-            UserExercise newUserExercise = UserExercise.createUserExercise(findUser, exercise);
+            UserExercise newUserExercise = UserExercise.createUserExercise(user, exercise);
             updateExerciseUserByCmd(newUserExercise, yn, cmd);
             userExerciseRepository.save(newUserExercise);
         }
+    }
+
+    @Override
+    public List<ExerciseCategoryResponse> findAllExerciseCategory() {
+        return exerciseCategoryRepository.findAll()
+                .stream().map(ExerciseCategoryResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ExercisePartCategoryResponse> findAllExercisePartCategory() {
+        return exercisePartCategoryRepository.findAll()
+                .stream().map(ExercisePartCategoryResponse::from)
+                .collect(Collectors.toList());
     }
 
     private void updateExerciseUserByCmd(UserExercise userExercise, YN yn, int cmd) {

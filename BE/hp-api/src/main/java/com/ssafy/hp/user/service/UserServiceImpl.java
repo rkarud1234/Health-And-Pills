@@ -1,5 +1,6 @@
 package com.ssafy.hp.user.service;
 
+import com.ssafy.hp.DuplicateException;
 import com.ssafy.hp.NotFoundException;
 import com.ssafy.hp.auth.AuthRepository;
 import com.ssafy.hp.auth.domain.Auth;
@@ -7,10 +8,10 @@ import com.ssafy.hp.exercise.ExerciseRepository;
 import com.ssafy.hp.exercise.domain.Exercise;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.domain.Pill;
-import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
 import com.ssafy.hp.user.query.UserQueryRepository;
+import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
 import com.ssafy.hp.user.response.*;
@@ -21,6 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Optional;
+
+import static com.ssafy.hp.DuplicateException.USER_DUPLICATE;
 import static com.ssafy.hp.NotFoundException.*;
 
 @Service
@@ -38,46 +42,62 @@ public class UserServiceImpl implements UserService {
     private final UserPillRepository userPillRepository;
 
 
+    @Transactional
+    @Override
+    public void createUserProfile(User user, CreateUserProfileRequest request) {
+        if (userProfileRepository.existsById(user.getUserId())) {
+            throw new DuplicateException(USER_DUPLICATE);
+        }
+        User findUser = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        ExercisePurpose findExerciserPurpose = exercisePurposeRepository.findById(request.getExercisePurposeId())
+                .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
+
+        UserProfile userProfile = UserProfile.createUserProfile(findUser, findUser.getUserNickname(), request.getUserProfileBirthday(), request.getUserProfileGender(), request.getExerciseTimes(), findExerciserPurpose);
+        userProfileRepository.save(userProfile);
+    }
+
     // 회원정보 조회
     @Override
     public UserInfoResponse findUser(int userId) {
+        if (!userProfileRepository.existsById(userId)) {
+            return null;
+        }
         UserProfile findUserProfile = userProfileRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-
         return UserInfoResponse.from(findUserProfile);
     }
 
     @Override
     public Page<UserExerciseResponse> findTakingExerciseByUserId(User user, Pageable pageable) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserExercise> findExerciseList = userQueryRepository.findTakingExerciseByUserId(user, pageable);
-        return findExerciseList.map(UserExerciseResponse::from);
+
+        return userQueryRepository.findTakingExerciseByUserId(user, pageable).map(UserExerciseResponse::from);
     }
 
     @Override
     public Page<UserExerciseResponse> findBookmarkExerciseByUserId(User user, Pageable pageable) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserExercise> findExerciseList = userQueryRepository.findBookmarkExerciseByUserId(user, pageable);
-        return findExerciseList.map(UserExerciseResponse::from);
+
+        return userQueryRepository.findBookmarkExerciseByUserId(user, pageable).map(UserExerciseResponse::from);
     }
 
     @Override
     public Page<UserExerciseResponse> findLikeExerciseByUserId(User user, Pageable pageable) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserExercise> findExerciseList = userQueryRepository.findLikeExerciseByUserId(user, pageable);
-        return findExerciseList.map(UserExerciseResponse::from);
+        return userQueryRepository.findLikeExerciseByUserId(user, pageable).map(UserExerciseResponse::from);
     }
 
     @Override
     public UserExerciseInfoResponse findByExerciseId(User user, int exerciseId) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise findExercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-        UserExercise findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(findUser, findExercise)
+        UserExercise findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise)
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
 
         return UserExerciseInfoResponse.from(findUserExercise);
@@ -85,36 +105,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserPillResponse> findTakingPillByUserId(User user, Pageable pageable) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserPill> findPillList = userQueryRepository.findTakingPillByUserId(user, pageable);
-        return findPillList.map(UserPillResponse::from);
+
+        return userQueryRepository.findTakingPillByUserId(user, pageable).map(UserPillResponse::from);
     }
 
     @Override
     public Page<UserPillResponse> findBookmarkPillByUserId(User user, Pageable pageable) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<UserPill> findPillList = userQueryRepository.findBookmarkPillByUserId(user, pageable);
-        return findPillList.map(UserPillResponse::from);
+
+        return userQueryRepository.findBookmarkPillByUserId(user, pageable).map(UserPillResponse::from);
     }
 
     @Override
     public Page<UserReviewPillResponse> findReviewPillByUserId(User user, Pageable pageable) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        Page<PillReview> findPillList = userQueryRepository.findReviewPillByUserId(user, pageable);
-        return findPillList.map(UserReviewPillResponse::from);
+        return userQueryRepository.findReviewPillByUserId(user, pageable).map(UserReviewPillResponse::from);
     }
 
     @Override
     public UserPillInfoResponse findByPillId(User user, int pillId) {
-        User findUser = userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Pill findPill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        UserPill findUserPill = userPillRepository.findUserPillByUsersAndPill(findUser, findPill)
+        UserPill findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
         return UserPillInfoResponse.from(findUserPill);
     }
 

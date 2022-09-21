@@ -30,14 +30,14 @@ public class UserExercise extends BaseEntity {
     private Exercise exercise;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private YN userExerciseDoing;
 
     @Enumerated(EnumType.STRING)
     private YN userExerciseLike;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private YN userExerciseBookmark;
 
     public static UserExercise createUserExercise(User user, Exercise exercise) {

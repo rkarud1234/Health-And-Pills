@@ -2,6 +2,7 @@ package com.ssafy.hp.user.controller;
 
 import com.ssafy.hp.config.LoginUser;
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
 import com.ssafy.hp.user.response.*;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,13 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    // 필수정보 등록 (이름, 생년월일, 성별, 운동목적, 운동횟수)
+    @PostMapping
+    public ResponseEntity<Void> createUserProfile(@LoginUser User user, @RequestBody @Valid CreateUserProfileRequest request) {
+        userService.createUserProfile(user, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
     // 내정보 조회 (기본정보, 운동목적, 운동횟수, 인바디)
     // 조인 해야함
@@ -106,28 +115,28 @@ public class UserController {
     public ResponseEntity<Void> updateUserExercise(@LoginUser User user,
                                              @RequestBody @Valid UpdateUserExerciseRequest request){
         userService.updateUserExercise(user.getUserId(), request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // 인바디 수정
+    // 내정보 인바디정보 등록&수정
     @PutMapping("/inbody")
     public  ResponseEntity<Void> updateUserInbody(@LoginUser User user,
                                             @RequestBody @Valid UpdateUserInbodyRequest request){
         userService.updateUserInbody(user.getUserId(), request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 회원 로그아웃
-    @PostMapping
+    @PostMapping("/logout")
     public ResponseEntity<Void> logout(@LoginUser User user){
         userService.logout(user.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 회원 탈퇴
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(@LoginUser User user){
         userService.deleteUser(user.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
