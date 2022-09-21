@@ -12,7 +12,7 @@ import ThumbsDowned from "../../components/buttons/ThumbsDowned";
 import HealthCard from "../../components/cards/HealthCard";
 import Exercising from "../../components/buttons/Exercising";
 import UnExercising from "../../components/buttons/UnExercising";
-import { getExerciseDetail, getExerciseItemReco, exerciseBookMark, exerciseDoing } from "../../api/HealthAPI";
+import { exerciseLike, getExerciseDetail, getExerciseItemReco, exerciseBookMark, exerciseDoing } from "../../api/HealthAPI";
 import { client } from "../../api";
 
 const BlockWrapper = styled.div`
@@ -94,24 +94,19 @@ const HealthDetail = ({
     like: "",
   });
 
-  const [recoExer, setRecoExer] = useState({
-    exerciseName: "",
-    aerobic: "",
-    exerciseParts: [],
-    exerciseCategory: "",
-    bookmark: "",
-    doing: "",
-    like: "",
-  })
+  // const [recoExer, setRecoExer] = useState({
+  //   exerciseName: "",
+  //   aerobic: "",
+  //   exerciseParts: [],
+  //   exerciseCategory: "",
+  //   bookmark: "",
+  //   doing: "",
+  //   like: "",
+  // })
 
 //   // 운동 상세 정보 조회
 //   const getDetail = async () => {
-//     await getExerciseDetail(1);
-//   // if (response.status === 200) {
-//   //   console.log(response)
-//   // } else{
-//   //   console.log(error)
-//   // }}
+//     const response = await getExerciseDetail(exerciseId);
 //   setExer({...response.data})
 //   console.log(response)
 // };
@@ -126,24 +121,91 @@ const HealthDetail = ({
       .then((response) => {
         if (response.status === 200)
         setExer({...response.data})
-        console.log(response.data)
       })
       .catch((error) => console.log(error));
   }
   useEffect(() => {
     getDetail();
-  }, []);
+  }, [exer.bookmark, exer.like, exer.doing]);
 
-  // 현재 운동과 유사한 운동 추천 받기
-  const getReco = async () => {
-    await getExerciseItemReco(data);
-  if (response.status === 200) {
-    setRecoExer([...response.data])
-  }};
-  useEffect(() => {
-    getReco();
-  }, []);
+  // // 현재 운동과 유사한 운동 추천 받기
+  // const getReco = async () => {
+  //   await getExerciseItemReco(data);
+  // if (response.status === 200) {
+  //   setRecoExer([...response.data])
+  // }};
+  // useEffect(() => {
+  //   getReco();
+  // }, []);
 
+  // const [params, setParams] = useState({
+  //   key: 'AIzaSyAEl9oBXZwMYo6sy4sycAfdrWhmFgjAyHU',
+  //   part: 'snippet',
+  //   q: `필라테스`,
+  //   maxResults: 3,
+  //   type: 'video',
+  // });
+  
+  // const [videos, setVideos] = useState({
+  //   id: "",
+  //   snippet: [],
+  // })
+
+  // const getYoutube = useCallback(() => {
+  //   axios.get('https://www.googleapis.com/youtube/v3/search', {params})
+  //   .then((response) => {
+  //     if (response.status === 200)
+  //     setVideos([...response.data.items])
+  //     console.log(response.data.items)
+  //     console.log(videos)
+  //   })
+  // })
+  // useEffect(() => {
+  //   getYoutube();
+  // }, [])
+  const onToggleThumbsUp = async (value) => {
+    console.log(value)
+    const data = {
+      exerciseId: 1,
+      check: value
+    };
+    const response = await exerciseLike(data);
+    setExer((prevState)=> {
+      return {
+        ...prevState, like : value
+      }
+    })
+    if (response.status === 200) {
+    } else {console.log(response)}
+  };
+
+  const onToggleBookMark = async (value) => {
+    console.log(value)
+    const data = {
+      exerciseId: 1,
+      check: value
+    };
+    const response = await exerciseBookMark(data);
+    setExer((prevState) => {
+      return {
+        ...prevState, bookmark: value
+      }
+    })
+  };
+
+  const onToggleDoing = async (value) => {
+    console.log(value)
+    const data = {
+      exerciseId: 1,
+      check: value
+    };
+    const response = await exerciseDoing(data);
+    setExer((prevState) => {
+      return {
+        ...prevState, doing: value
+      }
+    })
+  };
 
   return (
     <>
@@ -154,10 +216,10 @@ const HealthDetail = ({
             {exer.exerciseName}
           </NameWrapper>
           <ButtonWrapper>
-            {exer.doing === "Y" ? <Exercising/> : <UnExercising/>}
+            {exer.doing === "Y" ? <Exercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
           </ButtonWrapper>
           <ButtonWrapper  width="60px">
-            {exer.bookmark === "N" ? <BookMark/> : <UnBookMark/>}
+            {exer.bookmark === "N" ? <BookMark onClick={onToggleBookMark}/> : <UnBookMark onClick={onToggleBookMark}/>}
           </ButtonWrapper>
         </HealthWrapper>
       </BlockWrapper>
@@ -168,11 +230,11 @@ const HealthDetail = ({
           </NameWrapper>
           <ButtonWrapper width="80px">
             <ThumbsWrapper>
-              {exer.like === "Y" ? <ThumbsUped/> : <ThumbsUp/>}
+              {exer.like === "Y" ? <ThumbsUped onClick={onToggleThumbsUp}/> : <ThumbsUp onClick={onToggleThumbsUp}/>}
               <ThumbsContentWrapper>좋아요</ThumbsContentWrapper>
             </ThumbsWrapper>
             <ThumbsWrapper>
-              {exer.like === "N" ? <ThumbsDowned/> : <ThumbsDown/>}
+              {exer.like === "N" ? <ThumbsDowned onClick={onToggleThumbsUp}/> : <ThumbsDown onClick={onToggleThumbsUp}/>}
               <ThumbsContentWrapper>싫어요</ThumbsContentWrapper>
             </ThumbsWrapper>
           </ButtonWrapper>
@@ -186,10 +248,21 @@ const HealthDetail = ({
           <HealthWrapper height="120px" backgroundColor="#FFB6B6" borderRadius="none" display="block">
             <YoutubeRecomWrapper>
               <YoutubeIconWrapper>
-                <i class="fa-brands fa-youtube"/>
+                <i className="fa-brands fa-youtube"/>
               </YoutubeIconWrapper>
-              'ㅇㅇㅇ' 유튜브 추천 영상
+              {exer.exerciseName} 유튜브 추천 영상 <br/>
+              {/* {videos[0].snippet.title} <br/>
+              {videos[1].snippet.title} <br/>
+              {videos[2].snippet.title} <br/> */}
             </YoutubeRecomWrapper>
+            {/* <iframe
+            id="ytplayer"
+            type="text/html"
+            width="400"
+            height="200"
+            src="https://www.youtube.com/embed/M7lc1UVf-VE"
+            frameborder="0"
+            allowfullscreen="allowfullscreen"></iframe> */}
           </HealthWrapper>
         </BlockWrapper>
       </BlockWrapper>
@@ -198,7 +271,7 @@ const HealthDetail = ({
           <RecomThumbWrapper>
             <i className="fa-regular fa-thumbs-up"/>
           </RecomThumbWrapper>
-          'ㅇㅇㅇ'와 유사한 운동 추천
+          {exer.exerciseName}와 유사한 운동 추천
         </HealthWrapper>
         <HealthWrapper backgroundColor="transparent" justifyContent="space-between">
           <HealthCard/><HealthCard/><HealthCard/>

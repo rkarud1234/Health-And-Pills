@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { exerciseDoing } from "../../api/HealthAPI";
 
 const ButtonWrapper = styled.div`
   width: 120px;
@@ -12,21 +11,10 @@ const ButtonWrapper = styled.div`
   cursor: pointer;
 `
 
-const UnExercising = () => {
-  const onHandleExercising = async (e) => {
-    const data = {
-      exerciseId: 1,
-      // exerciseId: state.exerciseId,
-      check: "Y"
-    };
-    const response = await exerciseDoing(data);
-    if (response.status === 200) {
-      console.log("운동쳌")
-    } else {console.log(response)}
-  };
+const UnExercising = ({onClick}) => {
 
   return (
-    <ButtonWrapper onClick={onHandleExercising}>
+    <ButtonWrapper onClick={() => onClick("Y")}>
       <i className="fa-regular fa-square-check"></i>
     </ButtonWrapper>
   )

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { exerciseBookMark } from "../../api/HealthAPI";
 
 const MarkStyled = styled.button`
   border: none;
@@ -13,23 +12,10 @@ const MarkStyled = styled.button`
   font-size: large;
 `
 
-const BookMark = () => {
-
-  // 북마크 --> exerciseId 나중에 변수로 바꾸기
-  const onHandleBookMark = async (e) => {
-    const data = {
-      exerciseId : 1,
-      // exerciseId: state.exerciseId,
-      check: "Y"
-    };
-    const response = await exerciseBookMark(data);
-    if (response.status === 200) {
-      console.log("북마크됐")
-    } else {console.log(response)}
-  };
+const BookMark = ({onClick}) => {
 
   return (
-    <MarkStyled onClick={onHandleBookMark}>
+    <MarkStyled onClick={() => onClick("Y")}>
       <i className="fa-regular fa-bookmark"/>
     </MarkStyled>
   );

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { exerciseLike } from "../../api/HealthAPI";
 
 const ThumbWrapper = styled.button`
   background: linear-gradient(#537CFE, #6A53FE);
@@ -8,21 +7,10 @@ const ThumbWrapper = styled.button`
   font-size: large;
 `
 
-const ThumbsDown = () => {
-
-  const onHandleThumbsDown = async (e) => {
-    const data = {
-      exerciseId: 1,
-      check: "N"
-    };
-    const response = await exerciseLike(data);
-    if (response.status === 200) {
-      console.log("싫어요 체크 됨")
-    } else {console.log(response)}
-  };
+const ThumbsDown = ({onClick}) => {
 
   return (
-    <ThumbWrapper onClick={onHandleThumbsDown}>
+    <ThumbWrapper onClick={() => onClick("N")}>
       <i className="fa-regular fa-thumbs-down"></i>
     </ThumbWrapper>
   );
