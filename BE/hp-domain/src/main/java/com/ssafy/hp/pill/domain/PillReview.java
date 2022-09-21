@@ -31,4 +31,18 @@ public class PillReview extends BaseEntity {
     @JoinColumn(name = "pill_id")
     private Pill pill;
 
+    public static PillReview createPillReview(User user, Pill pill, int score, String content) {
+        PillReview pillReview = new PillReview();
+        pillReview.users = user;
+        pillReview.pill = pill;
+        pillReview.pillReviewScore = score;
+        pillReview.pillReviewContent = content;
+        return pillReview;
+    }
+
+    public void updatePillReview(int score, String content) {
+        this.pillReviewScore = score;
+        this.pillReviewContent = content;
+    }
+
 }
