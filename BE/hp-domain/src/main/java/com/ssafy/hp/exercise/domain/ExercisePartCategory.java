@@ -19,7 +19,7 @@ public class ExercisePartCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_part_category_id")
-    private int exercisePartCategoryId;
+    private Integer exercisePartCategoryId;
 
     private String exercisePartCategoryName;
 

@@ -18,7 +18,7 @@ public class ExerciseCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_category_id")
-    private int exerciseCategoryId;
+    private Integer exerciseCategoryId;
 
     @Column(nullable = false)
     private String exerciseCategoryName;

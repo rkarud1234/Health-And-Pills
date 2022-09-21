@@ -17,7 +17,7 @@ public class ExercisePart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exercise_part_id")
-    private int exercisePartId;
+    private Integer exercisePartId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="exercise_part_category_id")
