@@ -13,7 +13,7 @@ const ScrollDiv = styled.div`
 } /* Chrome, Safari, Opera 환경*/
 scrollbar-height: none; /* firefox 환경 */
 overflow-y: scroll;
-height : 86vh;
+height : 82vh;
 `
 
 const Tab = styled.div`
@@ -57,7 +57,7 @@ const PillDetail = () => {
   return (
     <>
       <Header leftNone={true} leftChildren={<BackButton />} />
-      <ScrollDiv>
+      <ScrollDiv id='scrollDiv'>
         {Tabs}
         {tabNum === 1
           ? <PillInfo id={id} />
