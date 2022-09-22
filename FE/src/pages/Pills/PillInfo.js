@@ -19,7 +19,6 @@ font-size: 24px;
 const InfoDiv = styled.div`
 margin: 8px 48px 24px;
 background-color: #D9D9D9;
-height: 20vh;
 display: flex;
 flex-direction: column;
 justify-content: space-between;

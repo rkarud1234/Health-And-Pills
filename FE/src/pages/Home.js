@@ -8,6 +8,7 @@ import Modal from "../components/modals/Modal";
 import SocialLoginContent from "../components/modals/contents/SocialLoginContent";
 import styled from "styled-components";
 import ModalCloseButton from "../components/buttons/ModalCloseButton";
+import { useNavigate } from 'react-router-dom';
 import { profile } from "../store/actions/user";
 
 const colorTheme = {
@@ -181,6 +182,10 @@ const Landing = () => {
 };
 
 const Main = ({ user }) => {
+
+  const navigate = useNavigate()
+  console.log(user);
+
   return (
     <HomeWrapper>
       <HomeTitleWrapper style={{ position: "relative" }}>
@@ -205,6 +210,7 @@ const Main = ({ user }) => {
             border={"none"}
             color={"#fff"}
             bgColor={colorTheme.bgColor}
+            onClick={() => { navigate('/form') }}
           >
             <div style={{ display: "flex" }}>
               <IconWrapper>

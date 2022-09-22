@@ -7,7 +7,7 @@ const TestDiv = styled.div`
 max-width: 500px;
 min-width: 250px;
 margin: 24px auto;
-height: 94vh
+height: auto;
 `
 
 const QContainer = styled.div`
