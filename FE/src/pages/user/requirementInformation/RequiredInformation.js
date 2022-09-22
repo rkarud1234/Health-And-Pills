@@ -28,6 +28,15 @@ const RequiredInformation = () => {
       return { ...prevState, ...information };
     });
   }, []);
+  const createUserInformation = async (data) => {
+    const result = await createProfile(data);
+    if (result.status === 200) {
+      alert("감사합니다.");
+      navigate("/");
+    } else {
+      alert("처리중 에러발생");
+    }
+  };
 
   const onHandleSubmit = useCallback(() => {
     const data = {
@@ -36,9 +45,7 @@ const RequiredInformation = () => {
       exercisePurposeId: requireInformationState.purposeOfExercise,
       exerciseTimes: requireInformationState.timesOfExercise,
     };
-    createProfile(data);
-    alert("감사합니다.");
-    navigate("/");
+    createUserInformation(data);
   }, [requireInformationState]);
   const renderPage = () => {
     switch (typeState) {
