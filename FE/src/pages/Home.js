@@ -266,7 +266,8 @@ const Home = () => {
     if (mainLoader) {
       dispatch(profile());
     }
-  }, [user.data]);
+  }, []);
+  console.log(user);
   if (mainLoader) {
     return (
       <>
