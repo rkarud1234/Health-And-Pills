@@ -8,7 +8,16 @@ import imgUrl from '../assets/togetherX.jpg'
 import Lutein from '../assets/lutein.jpg'
 import Omega3 from '../assets/omega3.jpg'
 import Cmbzmulti from '../assets/cmbzmulti.jpg'
+import styled from "styled-components";
 
+const ScrollDiv = styled.div`
+::-webkit-scrollbar {
+  display: none;
+} /* Chrome, Safari, Opera 환경*/
+scrollbar-height: none; /* firefox 환경 */
+overflow-y: scroll;
+height : 92vh;
+`
 
 const Pill = () => {
   const user = useSelector((state) => state.user);
@@ -30,13 +39,13 @@ const Pill = () => {
     { id: 6, text: '종합비타민', rating: 4.9, url: Cmbzmulti },
   ]
 
-  return <>
+  return <ScrollDiv>
     <SearchPills />
     <Carousel images={images} />
     <RecomPills pills={pills} type='user' />
     <RecomPills pills={pills} type='age' />
     {!user.isLogin ? <Footer /> : <></>}
-  </>;
+  </ScrollDiv>;
 };
 
 export default Pill;
