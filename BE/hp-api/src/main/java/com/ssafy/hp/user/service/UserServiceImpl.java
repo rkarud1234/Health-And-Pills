@@ -97,10 +97,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise findExercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-        UserExercise findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise)
-                .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
+        Optional<UserExercise> findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise);
 
-        return UserExerciseInfoResponse.from(findUserExercise);
+        if (findUserExercise.isEmpty()) {
+            findUserExercise = Optional.of(UserExercise.createUserExercise(user, findExercise));
+        }
+
+        return UserExerciseInfoResponse.from(findUserExercise.get());
     }
 
     @Override
@@ -132,10 +135,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Pill findPill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        UserPill findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill)
-                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+        Optional<UserPill> findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill);
 
-        return UserPillInfoResponse.from(findUserPill);
+        if (findUserPill.isEmpty()) {
+            findUserPill = Optional.of(UserPill.createUserPill(user, findPill));
+        }
+
+        return UserPillInfoResponse.from(findUserPill.get());
     }
 
     @Transactional

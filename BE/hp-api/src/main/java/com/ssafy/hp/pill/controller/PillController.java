@@ -1,6 +1,5 @@
 package com.ssafy.hp.pill.controller;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
 import com.ssafy.hp.config.LoginUser;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
@@ -17,12 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 
 @RequestMapping("/api/pills")
 @RestController
