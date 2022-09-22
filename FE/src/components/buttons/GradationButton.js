@@ -13,6 +13,7 @@ const StyledGradationButton = styled.button`
   color: ${(props) => props.color};
   padding: ${(props) => props.padding};
   font-size: ${(props) => props.fontSize};
+  font-family: ${(props) => props.fontFamily};
 `;
 const GradationButton = ({
   text,
@@ -26,6 +27,7 @@ const GradationButton = ({
   padding,
   fontSize,
   position,
+  fontFamily,
 }) => {
   return (
     <StyledGradationButton
@@ -38,6 +40,7 @@ const GradationButton = ({
       fontSize={fontSize}
       position={position}
       onClick={onClick}
+      fontFamily={fontFamily}
     >
       {text}
     </StyledGradationButton>
@@ -53,6 +56,7 @@ GradationButton.defaultProps = {
   padding: "4px 20px 4px 20px",
   height: "fit-content",
   position: "static",
+  fontFamily: "Nanum Gothic",
 };
 
 export default GradationButton;

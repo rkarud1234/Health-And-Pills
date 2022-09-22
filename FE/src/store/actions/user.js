@@ -1,11 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getProfile } from "../../api/users";
 
-const logIn = createAsyncThunk("user/logIn", async (data, thunkAPI) => {});
-const getProfile = createAsyncThunk(
-  "user/getProfile",
+export const profile = createAsyncThunk(
+  "user/profile",
   async (data, thunkAPI) => {
     const result = await getProfile();
-    return result;
+    return result.data;
   }
 );
-export { logIn, getProfile };
