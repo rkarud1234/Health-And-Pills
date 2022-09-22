@@ -135,10 +135,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Pill findPill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        UserPill findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill)
-                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+        Optional<UserPill> findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill);
 
-        return UserPillInfoResponse.from(findUserPill);
+        if (findUserPill.isEmpty()) {
+            findUserPill = Optional.of(UserPill.createUserPill(user, findPill));
+        }
+
+        return UserPillInfoResponse.from(findUserPill.get());
     }
 
     @Transactional
