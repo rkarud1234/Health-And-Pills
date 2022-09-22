@@ -1,15 +1,13 @@
-import { login, logout } from "./reducers/userSlice";
+import { login, logOut } from "./reducers/userSlice";
 
-const sessionStorageMiddleware = (store) => (next) => (action) => {
+export const sessionStorageMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
-    case login.fulfilled.type:
-      window.sessionStorage.setItem("jwt", action.payload.token);
-      //   agent.setToken(action.payload.token);
-      break;
-
-    case logout.type:
+    // case login.fulfilled.type:
+    // window.sessionStorage.setItem("jwt", action.payload.token);
+    //   agent.setToken(action.payload.token);
+    // break;
+    case logOut.type:
       window.localStorage.removeItem("jwt");
-      //   agent.setToken(undefined);
       break;
     default:
       break;
@@ -17,5 +15,3 @@ const sessionStorageMiddleware = (store) => (next) => (action) => {
 
   return next(action);
 };
-
-export { sessionStorageMiddleware };

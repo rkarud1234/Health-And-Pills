@@ -2,13 +2,14 @@ import GradationButton from "../components/buttons/GradationButton";
 import MenuButton from "../components/buttons/MenuButton";
 import Footer from "../components/layouts/Footer";
 import Header from "../components/layouts/Header";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import Modal from "../components/modals/Modal";
 import SocialLoginContent from "../components/modals/contents/SocialLoginContent";
 import styled from "styled-components";
 import ModalCloseButton from "../components/buttons/ModalCloseButton";
 import { useNavigate } from 'react-router-dom';
+import { profile } from "../store/actions/user";
 
 const colorTheme = {
   borderColor: "#537CFE",
@@ -61,7 +62,7 @@ const UserNameLine = styled.div`
   /* width: 100%; */
   z-index: -1;
   background-color: ${(props) => props.bgColor};
-  animation: lineDraw 0.2s linear;
+  animation: lineDraw 0.1s linear;
   animation-delay: 1.5s;
   animation-fill-mode: forwards;
   @keyframes lineDraw {
@@ -86,7 +87,6 @@ const UserContent = styled.button`
     ${colorTheme.bgColorFrom},
     ${colorTheme.bgColorTo}
   );
-  /* background-color: ${(props) => props.bgColor}; */
   border-radius: 10px;
   font-size: 20px;
   margin-top: 20px;
@@ -155,7 +155,7 @@ const Landing = () => {
         rightChildren={<MenuButton />}
         rightNone={true}
       />
-      <div>
+      <div style={{ height: "100vh", position: "relative" }}>
         <Modal
           isOpen={modalState}
           modalContent={<SocialLoginContent />}
@@ -165,10 +165,16 @@ const Landing = () => {
         랜딩페이지 이미지
         <GradationButton
           text={"간단가입하고 시작하기"}
-          width={"50%"}
+          width={"70%"}
           fontSize={"18px"}
           padding={"10px 20px 10px 20px"}
           onClick={openModal}
+          // style={{
+          //   position: "absolute",
+          //   bottom: "70px",
+          //   left: "50%",
+          //   transform: "translate(-50%, -50%)",
+          // }}
         />
       </div>
     </>
@@ -176,15 +182,17 @@ const Landing = () => {
 };
 
 const Main = ({ user }) => {
+
   const navigate = useNavigate()
   console.log(user);
+
   return (
     <HomeWrapper>
       <HomeTitleWrapper style={{ position: "relative" }}>
         <UserTitleWrapper>
           <div style={{ marginBottom: "10px" }}>
             <UserTitle>
-              단무지
+              {user.userProfileNickname}
               <UserNameLine bgColor={colorTheme.bgColor} />
             </UserTitle>
             <span>님</span>
@@ -223,9 +231,7 @@ const Main = ({ user }) => {
               <IconWrapper>
                 <i className="fa-solid fa-calendar-star"></i>
               </IconWrapper>
-              <a href="https://j7b203.p.ssafy.io/oauth2/authorization/google">
-                진행중인 이벤트 보러가기
-              </a>
+              진행중인 이벤트 보러가기
             </div>
             <div>
               <div>
@@ -243,22 +249,41 @@ const Main = ({ user }) => {
           borerRadius={"6px"}
           color={"#fff"}
         >
-          <a href="https://j7b203.p.ssafy.io/oauth2/authorization/kakao">
-            인바디 정보를 입력해주세요
-          </a>
+          인바디 정보를 입력해주세요
         </InbodyButton>
       </ChartWapper>
     </HomeWrapper>
   );
 };
+
+const loadCheck = () => {
+  return sessionStorage.getItem("ACCESS_TOKEN") !== null ? true : false;
+};
+
 const Home = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  return (
-    <>
-      {!user.isLogin ? <Main user={user} /> : <Landing />}
-      {!user.isLogin ? <Footer /> : <></>}
-    </>
-  );
+  const mainLoader = loadCheck();
+  useEffect(() => {
+    if (mainLoader) {
+      dispatch(profile());
+    }
+  }, []);
+  console.log(user);
+  if (mainLoader) {
+    return (
+      <>
+        {user.isLogin && user.data !== null && user.data !== "" ? (
+          <Main user={user.data} />
+        ) : (
+          <>Loading...</>
+        )}
+        {user.isLogin && user.data !== null ? <Footer /> : <></>}
+      </>
+    );
+  } else {
+    return <Landing />;
+  }
 };
 
 export default Home;
