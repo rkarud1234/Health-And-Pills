@@ -17,23 +17,23 @@
 ===== 요청
 include::{snippets}/api/users/insert/http-request.adoc[]
 ====== Header
-include::{snippets}/api/users/request-headers.adoc[]
+include::{snippets}/api/users/insert/request-headers.adoc[]
 ====== Body
-include::{snippets}/api/users/request-fields.adoc[]
+include::{snippets}/api/users/insert/request-body.adoc[]
 
 ===== 응답
-include::{snippets}/api/users/http-response.adoc[]
+include::{snippets}/api/users/insert/http-response.adoc[]
 
 ==== 내정보 조회 API
 ===== 요청
 include::{snippets}/api/users/search/http-request.adoc[]
 ====== Header
-include::{snippets}/api/users/request-headers.adoc[]
+include::{snippets}/api/users/search/request-headers.adoc[]
 
 ===== 응답
 include::{snippets}/api/users/http-response.adoc[]
 ====== Body
-include::{snippets}/api/users/response-fields.adoc[]
+include::{snippets}/api/users/search/response-fields.adoc[]
 
 ==== 나의 운동중 운동리스트 조회 API
 ===== 요청
