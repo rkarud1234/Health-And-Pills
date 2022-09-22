@@ -1,4 +1,7 @@
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { profile } from "../../../store/actions/user";
 
 const StyeldSocialLoginContent = styled.div`
   width: 100%;
@@ -31,18 +34,24 @@ const GoogleLink = styled.a`
 `;
 const GoogleText = styled.span``;
 const SocialLoginContent = () => {
+  // 임시 코드
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onHandleTempLogin = () => {
+    navigate("/social/redirect");
+  };
   return (
     <StyeldSocialLoginContent>
       <div>LOGO</div>
       <SocialLinkWrapper>
-        <a href="http://localhost:8080/oauth2/authorization/kakao">
+        <a href="https://j7b203.p.ssafy.io/oauth2/authorization/kakao">
           <img
             src={
               process.env.PUBLIC_URL + "social/kakao_login_medium_narrow.png"
             }
           />
         </a>
-        <GoogleLink href="http://localhost:8080/oauth2/authorization/google">
+        <GoogleLink href="https://j7b203.p.ssafy.io/oauth2/authorization/google">
           <img src={process.env.PUBLIC_URL + "social/google_icon.png"} />
           <GoogleText>구글 로그인</GoogleText>
         </GoogleLink>
