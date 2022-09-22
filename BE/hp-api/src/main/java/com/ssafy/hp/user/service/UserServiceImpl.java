@@ -97,10 +97,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise findExercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-        UserExercise findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise)
-                .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
+        Optional<UserExercise> findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise);
 
-        return UserExerciseInfoResponse.from(findUserExercise);
+        if (findUserExercise.isEmpty()) {
+            findUserExercise = Optional.of(UserExercise.createUserExercise(user, findExercise));
+        }
+
+        return UserExerciseInfoResponse.from(findUserExercise.get());
     }
 
     @Override
