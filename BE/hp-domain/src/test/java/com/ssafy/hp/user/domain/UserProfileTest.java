@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserProfileTest {
     public static final User user = User.createUser(Provider.google, "109764055816357512970", "google_109764055816357512970", Role.ROLE_USER, "한싸피");
-    public static final String userProfileNickname = "109764055816357512970";
-    public static final String userProfileBirthday = "google_109764055816357512970";
-    public static final String userProfileGender = "google_109764055816357512970";
+    public static final String userProfileNickname = "한싸피";
+    public static final String userProfileBirthday = "220922";
+    public static final String userProfileGender = "male";
     public static final int exerciseTimes = 1;
     public static final ExercisePurpose exercisePurpose = null;
     public static final double userProfileHeight = 700;

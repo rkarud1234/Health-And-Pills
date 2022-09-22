@@ -13,7 +13,7 @@ public interface UserService {
     void createUserProfile(User user, CreateUserProfileRequest request);
 
     //내정보 조회
-    UserInfoResponse findUser(int userId);
+    UserInfoResponse findUser(User user);
 
     // 타회원 정보 조회
 
@@ -42,14 +42,14 @@ public interface UserService {
     UserPillInfoResponse findByPillId(User user, int pillId);
 
     // 운동 목적 & 운동 횟수 수정
-    void updateUserExercise(int userId, UpdateUserExerciseRequest request);
+    void updateUserExercise(User user, UpdateUserExerciseRequest request);
 
     // 인바디 수정
-    void updateUserInbody(int userId, UpdateUserInbodyRequest request);
+    void updateUserInbody(User user, UpdateUserInbodyRequest request);
 
     // 로그아웃
-    void logout(int userId);
+    void logout(User user);
 
     // 회원 탈퇴
-    void deleteUser(int userId);
+    void deleteUser(User user);
 }
