@@ -20,7 +20,7 @@ function App() {
           <Route path="/pills" element={<Pill />} />
           <Route path="/pill/detail/:id" element={<PillDetail />} />
           <Route path="/health" element={<Health />} />
-          <Route path="/healthDetail" element={<HealthDetail />} />
+          <Route path="/health/detail/:id" element={<HealthDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/social/redirect" element={<SocialLogin />} />
