@@ -1,0 +1,165 @@
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+
+= RESTFUL Notes API Guide
+:doctype: user
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[API]]
+=== 회원
+==== 회원필수정보 등록 API
+===== 요청
+include::{snippets}/api/users/insert/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/request-headers.adoc[]
+====== Body
+include::{snippets}/api/users/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/users/http-response.adoc[]
+
+==== 내정보 조회 API
+===== 요청
+include::{snippets}/api/users/search/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/response-fields.adoc[]
+
+==== 나의 운동중 운동리스트 조회 API
+===== 요청
+include::{snippets}/api/users/exercise/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/exercise/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/exercise/response-fields.adoc[]
+
+==== 나의 북마크 운동리스트 조회 API
+===== 요청
+include::{snippets}/api/users/exercise/bookmark/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/exercise/bookmark/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/exercise/bookmark/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/exercise/bookmark/response-fields.adoc[]
+
+==== 나의 좋아요 운동리스트 조회 API
+===== 요청
+include::{snippets}/api/users/like/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/like/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/like/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/like/response-fields.adoc[]
+
+==== 해당 운동에 대한 나의 정보조회 API
+===== 요청
+include::{snippets}/api/users/exercise/{exercise_id}/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/exercise/{exercise_id}/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/exercise/{exercise_id}/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/exercise/{exercise_id}/response-fields.adoc[]
+
+==== 나의 복용중 영양제리스트 조회 API
+===== 요청
+include::{snippets}/api/users/pill/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/pill/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/pill/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/pill/response-fields.adoc[]
+
+==== 나의 북마크 영양제리스트 조회 API
+===== 요청
+include::{snippets}/api/users/pill/bookmark/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/pill/bookmark/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/pill/bookmark/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/pill/bookmark/response-fields.adoc[]
+
+==== 나의 리뷰 영양제리스트 조회 API
+===== 요청
+include::{snippets}/api/users/review/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/review/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/review/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/review/response-fields.adoc[]
+
+==== 해당 영양제에 대한 나의 정보조회 API
+===== 요청
+include::{snippets}/api/users/pill/{pill_id}/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/pill/{pill_id}/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/pill/{pill_id}/http-response.adoc[]
+====== Body
+include::{snippets}/api/users/pill/{pill_id}/response-fields.adoc[]
+
+==== 나의 운동목적 & 운동횟수 수정 API
+===== 요청
+include::{snippets}/api/users/exercise/update/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/exercise/update/request-headers.adoc[]
+====== Body
+include::{snippets}/api/users/exercise/update/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/users/exercise/update/http-response.adoc[]
+
+==== 나의 인바디정보 등록 & 수정 API
+===== 요청
+include::{snippets}/api/users/inbody/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/inbody/request-headers.adoc[]
+====== Body
+include::{snippets}/api/users/inbody/request-fields.adoc[]
+
+===== 응답
+include::{snippets}/api/users/inbody/http-response.adoc[]
+
+==== 로그아웃 API
+===== 요청
+include::{snippets}/api/users/logout/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/logout/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/logout/http-response.adoc[]
+
+==== 회원탈퇴 API
+===== 요청
+include::{snippets}/api/users/http-request.adoc[]
+====== Header
+include::{snippets}/api/users/request-headers.adoc[]
+
+===== 응답
+include::{snippets}/api/users/http-response.adoc[]
+
