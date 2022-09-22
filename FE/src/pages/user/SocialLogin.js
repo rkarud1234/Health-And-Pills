@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-// import { SuccessAlert } from "../../utils/sweetAlert";
-// import { getUserProfile } from "../../store/actions/user";
+import { profile } from "../../store/actions/user";
 
 const SocialLogin = () => {
   const [searchParams, setSearchParams] = useSearchParams();
