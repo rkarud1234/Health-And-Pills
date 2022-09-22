@@ -34,8 +34,7 @@ public class UserController {
     // 조인 해야함
     @GetMapping
     public ResponseEntity<UserInfoResponse> findUser(@LoginUser User user){
-        System.out.println("UserController.findUser");
-        UserInfoResponse body = userService.findUser(user.getUserId());
+        UserInfoResponse body = userService.findUser(user);
         return ResponseEntity.ok().body(body);
     }
 
@@ -114,7 +113,7 @@ public class UserController {
     @PutMapping("/exercise")
     public ResponseEntity<Void> updateUserExercise(@LoginUser User user,
                                              @RequestBody @Valid UpdateUserExerciseRequest request){
-        userService.updateUserExercise(user.getUserId(), request);
+        userService.updateUserExercise(user, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -122,21 +121,21 @@ public class UserController {
     @PutMapping("/inbody")
     public  ResponseEntity<Void> updateUserInbody(@LoginUser User user,
                                             @RequestBody @Valid UpdateUserInbodyRequest request){
-        userService.updateUserInbody(user.getUserId(), request);
+        userService.updateUserInbody(user, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 회원 로그아웃
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@LoginUser User user){
-        userService.logout(user.getUserId());
+        userService.logout(user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 회원 탈퇴
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(@LoginUser User user){
-        userService.deleteUser(user.getUserId());
+        userService.deleteUser(user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
