@@ -12,13 +12,16 @@ const SocialLogin = () => {
   const dispatch = useDispatch();
   sessionStorage.setItem("ACCESS_TOKEN", accessToken);
   sessionStorage.setItem("REFRESH_TOKEN", refreshToken);
-  console.log("냥냥");
+  const { isLogin, data, loading } = useSelector((state) => state.user);
   useEffect(() => {
-    navigate("/", { replace: true });
-  }, []);
-
-  // dispatch(getUserProfile());
-  // SuccessAlert("로그인되었습니다", navigate);
+    dispatch(profile());
+    if (isLogin && data === "") {
+      navigate("/require");
+    }
+    if (isLogin && data !== "" && data !== null) {
+      navigate("/");
+    }
+  }, [isLogin, data, loading]);
   return <></>;
 };
 
