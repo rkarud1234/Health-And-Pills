@@ -26,8 +26,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 2L 이상" },
         { value: 35, answer: "2. 1L 이상" },
-        { value: 45, answer: "3. 550 ml 이상" },
-        { value: 55, answer: "4. 550 ml 이하" }],
+        { value: 50, answer: "3. 650 ml 이상" },
+        { value: 65, answer: "4. 650 ml 이하" }],
       imgUrl: water
     },
     {
@@ -36,8 +36,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 1시간 이상" },
         { value: 35, answer: "2. 35분 이상" },
-        { value: 45, answer: "3. 35분 미만" },
-        { value: 55, answer: "4. 10분 미만" }],
+        { value: 50, answer: "3. 35분 미만" },
+        { value: 65, answer: "4. 10분 미만" }],
       imgUrl: walking
     },
     {
@@ -46,8 +46,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 피워본 적 없다." },
         { value: 35, answer: "2. 1년 미만" },
-        { value: 45, answer: "3. 5년 미만" },
-        { value: 55, answer: "4. 5년 이상" }],
+        { value: 50, answer: "3. 5년 미만" },
+        { value: 65, answer: "4. 5년 이상" }],
       imgUrl: smoking
     },
     {
@@ -56,8 +56,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 8시간 이상" },
         { value: 35, answer: "2. 6시간 반 이상" },
-        { value: 45, answer: "3. 4시간 이상" },
-        { value: 55, answer: "4. 4시간 미만" }],
+        { value: 50, answer: "3. 4시간 이상" },
+        { value: 65, answer: "4. 4시간 미만" }],
       imgUrl: sleep
     },
     {
@@ -66,8 +66,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 2초 미만" },
         { value: 35, answer: "2. 2~3초" },
-        { value: 45, answer: "3. 3~5초" },
-        { value: 55, answer: "4. 5초 이상" }],
+        { value: 50, answer: "3. 3~5초" },
+        { value: 65, answer: "4. 5초 이상" }],
       imgUrl: hand
     }, {
       qNum: 6,
@@ -75,8 +75,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 눈 위" },
         { value: 35, answer: "2. 코 위" },
-        { value: 45, answer: "3. 입 위" },
-        { value: 55, answer: "4. 턱" }],
+        { value: 50, answer: "3. 입 위" },
+        { value: 65, answer: "4. 턱" }],
       imgUrl: arms
     }, {
       qNum: 7,
@@ -84,8 +84,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 손 전체" },
         { value: 35, answer: "2. 손바닥까지 닿음" },
-        { value: 45, answer: "3. 손가락 마디가 닿음" },
-        { value: 55, answer: "4. 손가락 끝이 닿거나 아예 닿지 않음" }],
+        { value: 50, answer: "3. 손가락 마디가 닿음" },
+        { value: 65, answer: "4. 손가락 끝이 닿거나 아예 닿지 않음" }],
       imgUrl: back
     }, {
       qNum: 8,
@@ -93,8 +93,8 @@ const BodyAgeTest = () => {
       answers: [
         { value: 20, answer: "1. 80초 이상" },
         { value: 35, answer: "2. 75초 이상" },
-        { value: 45, answer: "3. 45초 이상" },
-        { value: 55, answer: "4. 45초 미만" }],
+        { value: 50, answer: "3. 50초 이상" },
+        { value: 65, answer: "4. 50초 미만" }],
       imgUrl: onefoot
     }
   ]
@@ -105,12 +105,16 @@ const BodyAgeTest = () => {
     setNum(num + 1)
     if (num === 8) {
       average = Math.floor((average + value) / 8)
-      if (average < 40) {
+      if (average < 30) {
         navigate('/result/1')
-      } else if (average < 50) {
+      } else if (average < 40) {
         navigate('/result/2')
-      } else {
+      } else if (average < 50) {
         navigate('/result/3')
+      } else if (average < 60) {
+        navigate('/result/4')
+      } else {
+        navigate('/result/5')
       }
     }
   }

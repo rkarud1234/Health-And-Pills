@@ -7,8 +7,16 @@ import { useParams } from 'react-router-dom'
 import twenty from '../../assets/20s.jpg'
 import forty from '../../assets/40s.jpg'
 import sixty from '../../assets/60s.jpg'
-import { HeartBeat } from '../../components/layouts/TestFooter'
+import loading from '../../assets/loading.gif'
 
+const ScrollDiv = styled.div`
+::-webkit-scrollbar {
+  display: none;
+} /* Chrome, Safari, Opera 환경*/
+scrollbar-height: none; /* firefox 환경 */
+overflow-y: scroll;
+height : 100vh;
+`
 
 const Btn = styled.button`
 font-size: 16px;
@@ -37,24 +45,40 @@ font-family: 'GmarketSans';
 const PullBar = styled.div`
 position: relative;
 width: 80%;
-height: 3px;
+height: 2px;
 background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
 border-radius: 4px;
 `
 const ImageBox = styled.div`
+display:flex;
+justify-content: center;
 max-width: 500px;
-min-width: 250px;
-width: 360px;
+min-width: 200px;
 margin: 0 auto 24px;
 `
 const Img = styled.img`
-width: 100%;
-min-width: 250px;
+background-size: contain;
+width: 80%;
+`
+
+const LoadingBox = styled.div`
+display:flex;
+justify-content: center;
+align-items: center;
+flex-direction:column;
+height: 100vh;
+background-color: #F1F2F3;
+`
+
+const Loading = styled.div`
+background: url(${props => props.url});
+background-size: contain;
+width: 150px;
+height: 150px;
 `
 
 const Result = () => {
   const id = useParams().id
-  const average = Math.floor(useSelector(state => state.sum.sum) / 8)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
@@ -64,9 +88,9 @@ const Result = () => {
 
   let imgUrl = ''
 
-  if (id === '1') {
+  if (id === '1' | id === '2') {
     imgUrl = twenty
-  } else if (id === '2') {
+  } else if (id === '3' | id === '4') {
     imgUrl = forty
   } else {
     imgUrl = sixty
@@ -147,20 +171,33 @@ const Result = () => {
     let link = facebook + url
     window.open(link);
   }
+  let ageGroup = ''
 
+  if (id === '1') {
+    ageGroup = 20
+  } else if (id === '2') {
+    ageGroup = 30
+  } else if (id === '3') {
+    ageGroup = 40
+  } else if (id === '4') {
+    ageGroup = 50
+  } else if (id === '5') {
+    ageGroup = 60
+  }
   return (
-    <>
+    <ScrollDiv>
       {!isLoading ?
-        <div style={{ backgroundColor: '#EAEFF1', paddingBottom: '50px' }}>
-          <HeartBeat />
-        </div>
+        <LoadingBox >
+          <TextBox style={{ fontSize: '24px', fontWeight: 'bold' }}>신체나이 분석 중...</TextBox>
+          <Loading url={loading} />
+        </LoadingBox>
         :
         <div style={{ backgroundColor: '#EAEFF1', paddingBottom: '50px' }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <TextBox style={{ paddingTop: '20px' }}>HP가 확인한 당신의 신체 나이는</TextBox>
+            <TextBox style={{ paddingTop: '20px' }}>HP가 확인한 당신의 신체 나이 연령대는</TextBox>
           </div>
           <TextBox style={{ fontSize: '24px', fontWeight: 'bold' }}>
-            <h1>{average}세 입니다.</h1>
+            <h1>{ageGroup}대 입니다.</h1>
           </TextBox>
           <ImageBox>
             <Img src={imgUrl} />
@@ -194,7 +231,7 @@ const Result = () => {
           </div>
         </div>
       }
-    </>
+    </ScrollDiv>
   )
 }
 
