@@ -1,6 +1,8 @@
 package com.ssafy.hp.pill.controller;
 
 import com.ssafy.hp.config.LoginUser;
+import com.ssafy.hp.exercise.request.ExerciseCheckRequest;
+import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
 import com.ssafy.hp.pill.response.PillDetailResponse;
@@ -21,6 +23,10 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 public class PillController {
+
+    private static final int CMD_TAKING = 1;
+    private static final int CMD_BOOKMARK = 2;
+
 
     private final PillServiceImpl pillService;
 
@@ -68,6 +74,20 @@ public class PillController {
         return ResponseEntity.ok().build();
     }
 
+    // 이미지 검색
 
+    // 복용중 상태 변경
+    @PostMapping("/taking")
+    public ResponseEntity<Void> updateUserPillTakingByPill(@LoginUser User user, @RequestBody @Valid PillCheckRequest request) {
+        pillService.updateUserPillByUserAndPill(user, request.getPillId(), request.getCheck(), CMD_TAKING);
+        return ResponseEntity.ok().build();
+    }
+
+    // 영양제 북마크 상태 변경
+    @PostMapping("/bookmark")
+    public ResponseEntity<Void> updateUserPillBookmarkByPill(@LoginUser User user, @RequestBody @Valid PillCheckRequest request) {
+        pillService.updateUserPillByUserAndPill(user, request.getPillId(), request.getCheck(), CMD_BOOKMARK);
+        return ResponseEntity.ok().build();
+    }
 
 }

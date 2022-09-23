@@ -47,4 +47,12 @@ public class UserPill extends BaseEntity {
 
         return userPill;
     }
+
+    public void updateUserPillTaking(YN taking) {
+        this.userPillTaking = taking;
+    }
+
+    public void updateUserPillBookmark(YN bookmark) {
+        this.userPillBookmark = bookmark;
+    }
 }
