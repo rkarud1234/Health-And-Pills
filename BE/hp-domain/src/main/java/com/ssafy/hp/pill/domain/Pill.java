@@ -1,5 +1,6 @@
 package com.ssafy.hp.pill.domain;
 
+import com.ssafy.hp.calendar.domain.Calendar;
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.user.domain.UserPill;
@@ -65,5 +66,8 @@ public class Pill extends BaseEntity {
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillFunctionality> pillFunctionalities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Calendar> calendars = new ArrayList<>();
 }
 

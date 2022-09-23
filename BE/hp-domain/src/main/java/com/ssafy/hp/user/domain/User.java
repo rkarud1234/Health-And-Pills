@@ -1,6 +1,7 @@
 package com.ssafy.hp.user.domain;
 
 
+import com.ssafy.hp.calendar.domain.Calendar;
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.user.domain.type.Provider;
@@ -45,14 +46,17 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserProfile userProfile;
 
-    @OneToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserExercise> userExercises = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserPill> userPills = new ArrayList<>();
 
-    @OneToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillReview> pillReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Calendar> calendars = new ArrayList<>();
 
 
     public static User createUser(Provider userProvider, String userProviderId, String userName, Role role, String userNickname) {
