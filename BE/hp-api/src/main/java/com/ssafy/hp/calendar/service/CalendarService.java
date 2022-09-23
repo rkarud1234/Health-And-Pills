@@ -1,2 +1,4 @@
-package com.ssafy.hp.calendar;public interface CalendarService {
+package com.ssafy.hp.calendar.service;
+
+public interface CalendarService {
 }

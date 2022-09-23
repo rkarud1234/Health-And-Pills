@@ -1,2 +1,11 @@
-package com.ssafy.hp.calendar.service;public class CalendarServiceImpl {
+package com.ssafy.hp.calendar.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CalendarServiceImpl implements CalendarService{
 }
