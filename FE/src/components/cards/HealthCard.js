@@ -17,7 +17,7 @@ const StyledHealthCard = styled.div`
   height: ${(props) => props.height};
   padding:  "6px 8px 6px 8px";
   cursor: pointer;
-  justify-content: space-between;
+  /* justify-content: center; */
   position: relative;
   /* background: linear-gradient(#537CFE, #6A53FE);
   -webkit-background-clip: text;
@@ -50,29 +50,31 @@ const BookMarkWrapper = styled.div`
 
 `
 
-const HealthCard = ({ width, height, padding, fontWeight }) => {
+const HealthCard = ({
+  width, height, padding, fontWeight,
+  exerciseName, aerobic, exerciseParts, exerciseCategory, bookmark, exerciseId
+}) => {
   const [bookMark, setBookMark] = useState(false)
 
   return (
     <>
       <HealthCardWrapper> 
         <StyledHealthCard width={width} height={height}>
-            <BookMarkWrapper onClick = {() => setBookMark(!bookMark)}>
-              {/* <div> */}
+            {/* <BookMarkWrapper onClick = {() => setBookMark(!bookMark)}>
                 {bookMark === false ? (
                   <BookMark/>
                 ) : (
                   <UnBookMark/>
                 )}
-              {/* </div> */}
-            </BookMarkWrapper>
+            </BookMarkWrapper> */}
           <StyledHealthNameWrapper padding="4px" fontWeight={fontWeight}>
-            <Link to="/healthDetail">
-            운동 이름
+            <Link to={`detail/${exerciseId}`}>
+            {exerciseId}
+            {exerciseName}
             </Link>
           </StyledHealthNameWrapper>
           <HealthInfoWrapper>
-            무산소/어쩌고
+            {aerobic} | {exerciseParts} | {bookmark}
           </HealthInfoWrapper>
         </StyledHealthCard>
       </HealthCardWrapper>

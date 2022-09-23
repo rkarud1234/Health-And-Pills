@@ -4,7 +4,7 @@ import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import BookMark from "../../components/buttons/BookMark";
 import UnBookMark from "../../components/buttons/UnBookMark";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ThumbsUp from "../../components/buttons/ThumbsUp";
 import ThumbsDown from "../../components/buttons/ThumbsDown";
 import ThumbsUped from "../../components/buttons/ThumbsUped";
@@ -14,6 +14,8 @@ import Exercising from "../../components/buttons/Exercising";
 import UnExercising from "../../components/buttons/UnExercising";
 import { exerciseLike, getExerciseDetail, getExerciseItemReco, exerciseBookMark, exerciseDoing } from "../../api/HealthAPI";
 import { client } from "../../api";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const BlockWrapper = styled.div`
   background-color: transparent;
@@ -81,7 +83,6 @@ const HealthDetail = ({
    justifyContent, 
    backgroundColor, 
    borderRadius, 
-   exerciseId
   }) => {
   const [exer, setExer] = useState({
     exerciseName: "",
@@ -103,30 +104,32 @@ const HealthDetail = ({
   //   doing: "",
   //   like: "",
   // })
-
-//   // 운동 상세 정보 조회
-//   const getDetail = async () => {
-//     const response = await getExerciseDetail(exerciseId);
-//   setExer({...response.data})
-//   console.log(response)
-// };
-//   useEffect(() => {
-//     getDetail();
-//   }, []);
+  
+  const { exerciseId } = useParams();
 
   // 운동 상세 정보 조회
-  const getDetail = async() => {
-    await client
-      .get(`/exercise/1`)
-      .then((response) => {
-        if (response.status === 200)
-        setExer({...response.data})
-      })
-      .catch((error) => console.log(error));
-  }
+  const getDetail = async () => {
+    const response = await getExerciseDetail(exerciseId);
+  setExer({...response.data})
+  console.log(response)
+  };
   useEffect(() => {
     getDetail();
   }, [exer.bookmark, exer.like, exer.doing]);
+
+  // // 운동 상세 정보 조회
+  // const getDetail = async(exerciseId) => {
+  //   await client
+  //     .get(`/exercise/${exerciseId}`)
+  //     .then((response) => {
+  //       if (response.status === 200)
+  //       setExer({...response.data})
+  //     })
+  //     .catch((error) => console.log(error));
+  // }
+  // useEffect(() => {
+  //   getDetail();
+  // }, [exer.bookmark, exer.like, exer.doing]);
 
   // // 현재 운동과 유사한 운동 추천 받기
   // const getReco = async () => {
@@ -138,38 +141,35 @@ const HealthDetail = ({
   //   getReco();
   // }, []);
 
-  // const [params, setParams] = useState({
-  //   key: 'AIzaSyAEl9oBXZwMYo6sy4sycAfdrWhmFgjAyHU',
-  //   part: 'snippet',
-  //   q: `필라테스`,
-  //   maxResults: 3,
-  //   type: 'video',
-  // });
+  const [params, setParams] = useState({
+    key: 'AIzaSyC5XUXYoD-TVqapYPw-T4_0vo6nsdjbQYg',
+    part: 'snippet',
+    q: `필라테스`,
+    maxResults: 6,
+    type: 'video',
+  });
   
-  // const [videos, setVideos] = useState({
-  //   id: "",
-  //   snippet: [],
-  // })
+  // const [videos, setVideos] = useState({});
 
-  // const getYoutube = useCallback(() => {
+  // const getYoutube = useEffect(() => {
   //   axios.get('https://www.googleapis.com/youtube/v3/search', {params})
   //   .then((response) => {
   //     if (response.status === 200)
   //     setVideos([...response.data.items])
+  //     // setVideos(response.data.items)
   //     console.log(response.data.items)
   //     console.log(videos)
   //   })
-  // })
-  // useEffect(() => {
-  //   getYoutube();
   // }, [])
+
   const onToggleThumbsUp = async (value) => {
     console.log(value)
     const data = {
-      exerciseId: 1,
+      exerciseId: exerciseId,
       check: value
     };
     const response = await exerciseLike(data);
+    // state 값에 변화 줘서 리렌더링 하기
     setExer((prevState)=> {
       return {
         ...prevState, like : value
@@ -182,7 +182,7 @@ const HealthDetail = ({
   const onToggleBookMark = async (value) => {
     console.log(value)
     const data = {
-      exerciseId: 1,
+      exerciseId: exerciseId,
       check: value
     };
     const response = await exerciseBookMark(data);
@@ -196,7 +196,7 @@ const HealthDetail = ({
   const onToggleDoing = async (value) => {
     console.log(value)
     const data = {
-      exerciseId: 1,
+      exerciseId: exerciseId,
       check: value
     };
     const response = await exerciseDoing(data);
@@ -251,9 +251,6 @@ const HealthDetail = ({
                 <i className="fa-brands fa-youtube"/>
               </YoutubeIconWrapper>
               {exer.exerciseName} 유튜브 추천 영상 <br/>
-              {/* {videos[0].snippet.title} <br/>
-              {videos[1].snippet.title} <br/>
-              {videos[2].snippet.title} <br/> */}
             </YoutubeRecomWrapper>
             {/* <iframe
             id="ytplayer"
