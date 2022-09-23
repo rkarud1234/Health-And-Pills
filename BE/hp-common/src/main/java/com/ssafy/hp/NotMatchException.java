@@ -2,7 +2,7 @@ package com.ssafy.hp;
 
 public class NotMatchException extends RuntimeException {
 
-    public static final String USER_NOT_MATCH = "존재하지 않는 회원입니다.";
+    public static final String USER_NOT_MATCH = "회원 정보가 일치하지 않습니다.";
 
 
     public NotMatchException(String message) {
