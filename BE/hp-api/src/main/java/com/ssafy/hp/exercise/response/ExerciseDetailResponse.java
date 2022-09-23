@@ -11,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExerciseDetailResponse {
+    private Integer exerciseId;
+
     private String exerciseName; // 운동이름
 
     private String exerciseContent; // 운동설명
@@ -30,6 +32,7 @@ public class ExerciseDetailResponse {
 
     public static ExerciseDetailResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, String bookmark, String doing, String like) {
         ExerciseDetailResponse exerciseDetailResponse = new ExerciseDetailResponse();
+        exerciseDetailResponse.exerciseId = exercise.getExerciseId();
         exerciseDetailResponse.exerciseName = exercise.getExerciseName();
         exerciseDetailResponse.exerciseContent = exercise.getExerciseContent();
         exerciseDetailResponse.aerobic = exercise.getExerciseAerobic();
