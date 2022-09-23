@@ -8,10 +8,12 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
+import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.pill.domain.QPill;
 import com.ssafy.hp.pill.domain.Warning;
 import com.ssafy.hp.pill.request.SearchRequest;
 import com.ssafy.hp.pill.response.PillListResponse;
+import com.ssafy.hp.pill.response.PillReviewListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,6 +31,7 @@ import static com.ssafy.hp.pill.domain.QPillNutrient.pillNutrient;
 import static com.ssafy.hp.pill.domain.QPillWarning.pillWarning;
 import static com.ssafy.hp.pill.domain.QPillFunctionality.pillFunctionality;
 import static com.ssafy.hp.pill.domain.QWarning.warning;
+import static com.ssafy.hp.pill.domain.QPillReview.pillReview;
 
 @Repository
 @RequiredArgsConstructor
@@ -118,6 +121,16 @@ public class PillQueryRepository {
                 .on(warning.eq(pillWarning.warning))
                 .where(pillWarning.pill.eq(pill))
                 .fetch();
+    }
+
+    public Page<PillReview> findReviewByPillId(int pillId, Pageable pageable) {
+        return new PageImpl<>(
+                queryFactory
+                .selectFrom(pillReview)
+                .where(pillReview.pill.pillId.eq(pillId))
+                .limit(pageable.getPageSize())
+                .fetch()
+        );
     }
 
 }
