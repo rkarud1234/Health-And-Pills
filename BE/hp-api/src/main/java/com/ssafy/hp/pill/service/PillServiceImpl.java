@@ -119,7 +119,7 @@ public class PillServiceImpl implements PillService {
     // 모든 리뷰 조회
     @Override
     public Page<PillReviewListResponse> getReviews(int pillId, Pageable pageable) {
-        return reviewRepository.findAll(pageable)
+        return pillQueryRepository.findReviewByPillId(pillId, pageable)
                 .map(PillReviewListResponse::from);
     }
 
