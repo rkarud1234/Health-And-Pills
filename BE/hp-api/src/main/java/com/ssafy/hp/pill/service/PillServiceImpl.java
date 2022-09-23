@@ -1,7 +1,9 @@
 package com.ssafy.hp.pill.service;
 
+import com.ssafy.hp.InvalidException;
 import com.ssafy.hp.NotFoundException;
 import com.ssafy.hp.NotMatchException;
+import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.ReviewRepository;
 import com.ssafy.hp.pill.domain.Pill;
@@ -13,8 +15,11 @@ import com.ssafy.hp.pill.response.PillListResponse;
 import com.ssafy.hp.pill.response.PillDetailResponse;
 import com.ssafy.hp.pill.response.PillReviewListResponse;
 import com.ssafy.hp.pill.response.PillReviewResponse;
+import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.domain.UserExercise;
+import com.ssafy.hp.user.domain.UserPill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -24,12 +29,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Optional;
+
+import static com.ssafy.hp.NotFoundException.*;
 
 
 @Slf4j
@@ -37,10 +46,15 @@ import java.net.URLConnection;
 @Transactional
 @RequiredArgsConstructor
 public class PillServiceImpl implements PillService {
+
+    private static final int CMD_TAKING = 1;
+    private static final int CMD_BOOKMARK = 2;
+
     private final PillRepository pillRepository;
     private final PillQueryRepository pillQueryRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final UserPillRepository userPillRepository;
 
 //    private String[] findPillNutrientByPill(Pill pill) {
 //        return pillQueryRepository.
@@ -87,7 +101,7 @@ public class PillServiceImpl implements PillService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
 
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if(user.getUserId().equals(pillReview.getUsers().getUserId())) {
+        if (user.getUserId().equals(pillReview.getUsers().getUserId())) {
             throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
         }
         pillReview.updatePillReview(request.getScore(), request.getContent());
@@ -97,12 +111,12 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void deleteReview(User user, int reviewId) {
-       userRepository.findById(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         PillReview pillReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if(user.getUserId().equals(pillReview.getUsers().getUserId())) {
+        if (!user.getUserId().equals(pillReview.getUsers().getUserId())) {
             throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
         }
         reviewRepository.delete(pillReview);
@@ -111,7 +125,7 @@ public class PillServiceImpl implements PillService {
     // 단일 리뷰 조회
     @Override
     public PillReviewResponse getReview(int reviewId) {
-        PillReview result =reviewRepository.findById(reviewId)
+        PillReview result = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
         return PillReviewResponse.from(result);
     }
@@ -131,5 +145,33 @@ public class PillServiceImpl implements PillService {
         return reviewRepository.findByUsers(user, pageable)
                 .map(PillReviewListResponse::from);
     }
-    
+
+    @Override
+    public void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd) {
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        Pill pill = pillRepository.findById(pillId)
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
+        Optional<UserPill> userPill = userPillRepository.findUserPillByUsersAndPill(user, pill);
+
+        if (userPill.isPresent()) {
+            // 이미 컬럼이 있으면 해당 컬럼을 업데이트 해주면 됨
+            updateUserPillByCmd(userPill.get(), check, cmd);
+        } else {
+            UserPill newUserPill = UserPill.createUserPill(user, pill);
+            updateUserPillByCmd(newUserPill, check, cmd);
+            userPillRepository.save(newUserPill);
+        }
+    }
+
+    private void updateUserPillByCmd(UserPill userPill, YN yn, int cmd) {
+        if (cmd == CMD_TAKING) {
+            userPill.updateUserPillTaking(yn);
+        } else if (cmd == CMD_BOOKMARK) {
+            userPill.updateUserPillBookmark(yn);
+        } else {
+            throw new InvalidException(InvalidException.INVALID_REQUEST);
+        }
+    }
 }
