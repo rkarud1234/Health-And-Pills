@@ -14,14 +14,14 @@ public class PillReviewListResponse {
     int reviewId;
     int reviewScore;
     String reviewContent;
-    String userName;
+    String nickName;
 
     public static PillReviewListResponse from(PillReview pillReview) {
         return new PillReviewListResponse(
                 pillReview.getPillReviewId(),
                 pillReview.getPillReviewScore(),
                 pillReview.getPillReviewContent(),
-                pillReview.getUsers().getUserName()
+                pillReview.getUsers().getUserNickname()
         );
     }
 }
