@@ -11,39 +11,30 @@ import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.pill.query.PillQueryRepository;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillListResponse;
 import com.ssafy.hp.pill.response.PillDetailResponse;
+import com.ssafy.hp.pill.response.PillListResponse;
 import com.ssafy.hp.pill.response.PillReviewListResponse;
 import com.ssafy.hp.pill.response.PillReviewResponse;
 import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
-import com.ssafy.hp.user.domain.UserExercise;
 import com.ssafy.hp.user.domain.UserPill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import javax.transaction.Transactional;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Optional;
 
-import static com.ssafy.hp.NotFoundException.*;
+import static com.ssafy.hp.NotFoundException.PILL_NOT_FOUND;
+import static com.ssafy.hp.NotFoundException.USER_NOT_FOUND;
 
 
 @Slf4j
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PillServiceImpl implements PillService {
 
