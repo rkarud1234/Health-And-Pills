@@ -9,6 +9,9 @@ import Profile from "./pages/user/Profile";
 import Schedule from "./pages/Schedule";
 import SocialLogin from "./pages/user/SocialLogin";
 import GlobalStyle from "./styled/GlobalStyle";
+import BodyAgeTest from "./pages/test/BodyAgeTest";
+import Result from "./pages/test/Result";
+import RequiredInformation from "./pages/user/requirementInformation/RequiredInformation";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/social/redirect" element={<SocialLogin />} />
+          <Route path="/require" element={<RequiredInformation />} />
+          <Route path="/form" element={<BodyAgeTest />} />
+          <Route path="/result/:id" element={<Result />} />
         </Routes>
       </div>
     </>

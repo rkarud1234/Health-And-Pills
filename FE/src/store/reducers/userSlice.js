@@ -1,38 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logIn, getProfile } from "../actions/user";
+import { profile } from "../actions/user";
 
 const initialState = {
   isLogin: false,
   data: null,
+  loading: false,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  // 동기적 action
-  // 내부적 action
   reducers: {
-    logOut(state, action) {
-      state.data = null;
+    logOut: () => initialState,
+    logIn: (state) => {
+      return {
+        ...state,
+        isLogin: true,
+      };
     },
   },
-  // 비동기적 action
-  // 외부적 action
   extraReducers: (builder) =>
     builder
-      .addCase(logIn.pending, (state, action) => {})
-      .addCase(logIn.fulfilled, (state, action) => {
-        state.isLogin = true;
+      .addCase(profile.pending, (state, action) => {
+        state.loading = true;
       })
-      .addCase(logIn.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-
-      .addCase(getProfile.pending, (state, action) => {})
-      .addCase(getProfile.fulfilled, (state, action) => {
+      .addCase(profile.fulfilled, (state, action) => {
+        state.loading = false;
         state.data = action.payload;
       })
-      .addCase(getProfile.rejected, (state, action) => {}),
+      .addCase(profile.rejected, (state, action) => {
+        state.loading = false;
+      }),
 });
 
 export default userSlice;
+export const { logOut, logIn } = userSlice.actions;

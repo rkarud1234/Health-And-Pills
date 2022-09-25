@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-// import { SuccessAlert } from "../../utils/sweetAlert";
-// import { getUserProfile } from "../../store/actions/user";
+import { profile } from "../../store/actions/user";
 
 const SocialLogin = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,13 +11,16 @@ const SocialLogin = () => {
   const dispatch = useDispatch();
   sessionStorage.setItem("ACCESS_TOKEN", accessToken);
   sessionStorage.setItem("REFRESH_TOKEN", refreshToken);
-  console.log("냥냥");
+  const { isLogin, data, loading } = useSelector((state) => state.user);
   useEffect(() => {
-    navigate("/", { replace: true });
-  }, []);
-
-  // dispatch(getUserProfile());
-  // SuccessAlert("로그인되었습니다", navigate);
+    dispatch(profile());
+    if (isLogin && data === "") {
+      navigate("/require");
+    }
+    if (isLogin && data !== "" && data !== null) {
+      navigate("/");
+    }
+  }, [isLogin, data, loading]);
   return <></>;
 };
 
