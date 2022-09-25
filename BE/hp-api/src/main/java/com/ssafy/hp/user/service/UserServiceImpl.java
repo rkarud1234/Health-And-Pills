@@ -59,11 +59,11 @@ public class UserServiceImpl implements UserService {
 
     // 회원정보 조회
     @Override
-    public UserInfoResponse findUser(int userId) {
-        if (!userProfileRepository.existsById(userId)) {
+    public UserInfoResponse findUser(User user) {
+        if (!userProfileRepository.existsById(user.getUserId())) {
             return null;
         }
-        UserProfile findUserProfile = userProfileRepository.findById(userId)
+        UserProfile findUserProfile = userProfileRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         return UserInfoResponse.from(findUserProfile);
     }
@@ -97,10 +97,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise findExercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-        UserExercise findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise)
-                .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
+        Optional<UserExercise> findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise);
 
-        return UserExerciseInfoResponse.from(findUserExercise);
+        if (findUserExercise.isEmpty()) {
+            findUserExercise = Optional.of(UserExercise.createUserExercise(user, findExercise));
+        }
+
+        return UserExerciseInfoResponse.from(findUserExercise.get());
     }
 
     @Override
@@ -132,16 +135,19 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Pill findPill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        UserPill findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill)
-                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+        Optional<UserPill> findUserPill = userPillRepository.findUserPillByUsersAndPill(user, findPill);
 
-        return UserPillInfoResponse.from(findUserPill);
+        if (findUserPill.isEmpty()) {
+            findUserPill = Optional.of(UserPill.createUserPill(user, findPill));
+        }
+
+        return UserPillInfoResponse.from(findUserPill.get());
     }
 
     @Transactional
     @Override
-    public void updateUserExercise(int userId, UpdateUserExerciseRequest request) {
-        UserProfile findUserProfile = userProfileRepository.findById(userId)
+    public void updateUserExercise(User user, UpdateUserExerciseRequest request) {
+        UserProfile findUserProfile = userProfileRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         ExercisePurpose findExercisePurpose = exercisePurposeRepository.findById(request.getExercisePurposeId())
                 .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND));
@@ -151,16 +157,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUserInbody(int userId, UpdateUserInbodyRequest request) {
-        UserProfile findUserProfile = userProfileRepository.findById(userId)
+    public void updateUserInbody(User user, UpdateUserInbodyRequest request) {
+        UserProfile findUserProfile = userProfileRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         findUserProfile.updateUserInbody(request.getUserProfileHeight(), request.getUserProfileWeight(), request.getUserProfileFat(), request.getUserProfileSkeleton(), request.getUserProfileWater());
     }
 
     @Override
-    public void logout(int userId) {
-        Auth findAuth = authRepository.findById(userId)
+    public void logout(User user) {
+        Auth findAuth = authRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(AUTH_NOT_FOUND));
 
         authRepository.delete(findAuth);
@@ -168,8 +174,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(int userId) {
-        User findUser = userRepository.findById(userId)
+    public void deleteUser(User user) {
+        User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         userRepository.delete(findUser);
