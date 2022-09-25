@@ -10,4 +10,8 @@ dependencies {
     implementation(project(":hp-common"))
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    implementation group: 'com.google.cloud', name: 'google-cloud-vision', version: '3.1.1'
+
 }

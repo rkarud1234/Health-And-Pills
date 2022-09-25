@@ -5,9 +5,7 @@ import com.ssafy.hp.exercise.request.ExerciseCheckRequest;
 import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillDetailResponse;
-import com.ssafy.hp.pill.response.PillListResponse;
-import com.ssafy.hp.pill.response.PillReviewListResponse;
+import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.pill.service.PillServiceImpl;
 import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +73,11 @@ public class PillController {
     }
 
     // 이미지 검색
+    @GetMapping("/vision")
+    public ResponseEntity<VisionResponse> getDetectText(@Valid byte[] data) {
+        VisionResponse body =  pillService.getDetectText(data);
+        return ResponseEntity.ok().body(body);
+    }
 
     // 복용중 상태 변경
     @PostMapping("/taking")

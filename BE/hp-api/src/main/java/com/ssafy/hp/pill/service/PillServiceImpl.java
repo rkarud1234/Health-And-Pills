@@ -1,8 +1,6 @@
 package com.ssafy.hp.pill.service;
 
-import com.ssafy.hp.InvalidException;
-import com.ssafy.hp.NotFoundException;
-import com.ssafy.hp.NotMatchException;
+import com.ssafy.hp.*;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.ReviewRepository;
@@ -11,10 +9,7 @@ import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.pill.query.PillQueryRepository;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillListResponse;
-import com.ssafy.hp.pill.response.PillDetailResponse;
-import com.ssafy.hp.pill.response.PillReviewListResponse;
-import com.ssafy.hp.pill.response.PillReviewResponse;
+import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
@@ -55,6 +50,7 @@ public class PillServiceImpl implements PillService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final UserPillRepository userPillRepository;
+    private final DetectText detectText;
 
 //    private String[] findPillNutrientByPill(Pill pill) {
 //        return pillQueryRepository.
@@ -172,6 +168,15 @@ public class PillServiceImpl implements PillService {
             userPill.updateUserPillBookmark(yn);
         } else {
             throw new InvalidException(InvalidException.INVALID_REQUEST);
+        }
+    }
+
+    public VisionResponse getDetectText(byte[] data) {
+        try {
+            String result = detectText.detectText(data);
+            return new VisionResponse(result, result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

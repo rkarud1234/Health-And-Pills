@@ -4,10 +4,7 @@ package com.ssafy.hp.pill.service;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillListResponse;
-import com.ssafy.hp.pill.response.PillDetailResponse;
-import com.ssafy.hp.pill.response.PillReviewListResponse;
-import com.ssafy.hp.pill.response.PillReviewResponse;
+import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,5 +37,8 @@ public interface PillService {
 
     // 북마크, 복용중 상태 변경
     void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd);
+
+    // 이미지 감지
+    VisionResponse getDetectText(byte[] data);
 
 }
