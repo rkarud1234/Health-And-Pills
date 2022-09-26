@@ -242,7 +242,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
             <ReviewContainer key={review.reviewId}>
               <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ marginTop: '2px' }}>
-                  {review.userName}
+                  {review.nickName}
                 </div>
                 <div style={{ display: 'flex' }}>
                   <BtnDiv onClick={updatingHandler} style={{ paddingRight: '24px', margin: '0 0' }}>
