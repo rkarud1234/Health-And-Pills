@@ -26,8 +26,6 @@ public class DjangoConnectConfig {
             JSONParser parser = new JSONParser();
             JSONObject object = (JSONObject) parser.parse(line);
             JSONObject response = (JSONObject) object.get("response");
-
-//            System.out.println(response);
             return response;
 
         } catch (IOException e) {

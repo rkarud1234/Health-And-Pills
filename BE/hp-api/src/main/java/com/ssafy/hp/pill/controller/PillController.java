@@ -2,12 +2,12 @@ package com.ssafy.hp.pill.controller;
 
 import com.ssafy.hp.config.LoginUser;
 import com.ssafy.hp.exercise.request.ExerciseCheckRequest;
+import com.ssafy.hp.pill.domain.Functionality;
+import com.ssafy.hp.pill.domain.Nutrient;
 import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillDetailResponse;
-import com.ssafy.hp.pill.response.PillListResponse;
-import com.ssafy.hp.pill.response.PillReviewListResponse;
+import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.pill.service.PillService;
 import com.ssafy.hp.pill.service.PillServiceImpl;
 import com.ssafy.hp.user.domain.User;
@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping("/api/pills")
 @RestController
@@ -56,8 +57,8 @@ public class PillController {
     
     // 리뷰 목록 조회
     @GetMapping("/{pill_id}/review")
-    public ResponseEntity<Page<PillReviewListResponse>> getReviewList(@PageableDefault Pageable page, @PathVariable("pill_id") int pillId) {
-        Page<PillReviewListResponse> body = pillService.getReviews(pillId, page);
+    public ResponseEntity<Page<PillReviewListResponse>> getReviewList(@LoginUser User user, @PageableDefault Pageable page, @PathVariable("pill_id") int pillId) {
+        Page<PillReviewListResponse> body = pillService.getReviews(user, pillId, page);
         return ResponseEntity.ok().body(body);
     }
 
@@ -75,6 +76,18 @@ public class PillController {
         return ResponseEntity.ok().build();
     }
 
+    // 생리활성 기능 목록 조회
+    @GetMapping("/functionalities")
+    public ResponseEntity<List<FunctionalityListResponse>> getFunctionalities() {
+        List<FunctionalityListResponse> body = pillService.getFunctionalities();
+        return ResponseEntity.ok().body(body);
+    }
+    // 기능성원료(영양소) 목록 조회
+    @GetMapping("/nutrients")
+    public ResponseEntity<List<NutrientListResponse>> getNutrients() {
+        List<NutrientListResponse> body = pillService.getNutrients();
+        return ResponseEntity.ok().body(body);
+    }
     // 이미지 검색
 
     // 복용중 상태 변경

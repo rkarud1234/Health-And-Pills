@@ -65,5 +65,11 @@ public class Pill extends BaseEntity {
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillFunctionality> pillFunctionalities = new ArrayList<>();
+
+    public void updatePill(int count, double average) {
+        this.reviewCount = count;
+        this.reviewAverage = average;
+    }
+
 }
 

@@ -21,51 +21,51 @@ public class RecommendController {
     private final RecommendServiceImpl recommendService;
     
     // 베스트 영양제 추천
-    @GetMapping("/pill/best")
+    @GetMapping("/pills/best")
     public ResponseEntity<JSONObject> recommendPillBest(@LoginUser User user) {
-        JSONObject body = recommendService.recommendPill("/pill/best");
+        JSONObject body = recommendService.recommendPill("/pills/best");
         return ResponseEntity.ok().body(body);
     }
     // 사용자 맞춤 영양제 추천
-    @GetMapping("/pill/custom")
+    @GetMapping("/pills/custom")
     public ResponseEntity<JSONObject> recommendPillCustom(@LoginUser User user) {
-        JSONObject body = recommendService.recommendPill("/pill/best");
+        JSONObject body = recommendService.recommendPill("/pills/custom");
         return ResponseEntity.ok().body(body);
     }
     // 유사한 사용자 영양제 추천
-    @GetMapping("pill/user")
+    @GetMapping("pills/user")
     public ResponseEntity<JSONObject> recommendPillItem(@LoginUser User user) {
-        JSONObject body = recommendService.recommendPill("/pill/best");
+        JSONObject body = recommendService.recommendPill("/pills/user");
         return ResponseEntity.ok().body(body);
     }
     // 현재 영양제와 유사한 영양제 추천
-    @GetMapping("pill/item/{pill_id}")
-    public ResponseEntity<JSONObject> recommendPillBest(@LoginUser User user, @PathVariable String pill_id) {
-        JSONObject body = recommendService.recommendPill("/pill/best", pill_id);
+    @GetMapping("pills/item/{pill_id}")
+    public ResponseEntity<JSONObject> recommendPillBest(@LoginUser User user, @PathVariable("pill_id") String pillId) {
+        JSONObject body = recommendService.recommendPill("/pills/item", pillId);
         return ResponseEntity.ok().body(body);
     }
     // 베스트 영양제 추천
-    @GetMapping("/exercise/best")
+    @GetMapping("/exercises/best")
     public ResponseEntity<JSONObject> recommendExerciseBest(@LoginUser User user) {
-        JSONObject body = recommendService.recommendExercise("/exercise/best");
+        JSONObject body = recommendService.recommendExercise("/exercises/best");
         return ResponseEntity.ok().body(body);
     }
     // 사용자 맞춤 영양제 추천
-    @GetMapping("/exercise/custom")
+    @GetMapping("/exercises/custom")
     public ResponseEntity<JSONObject> recommendExerciseCustom(@LoginUser User user) {
-        JSONObject body = recommendService.recommendExercise("/exercise/best");
+        JSONObject body = recommendService.recommendExercise("/exercises/custom");
         return ResponseEntity.ok().body(body);
     }
     // 유사한 사용자 영양제 추천
-    @GetMapping("exercise/user")
+    @GetMapping("exercises/user")
     public ResponseEntity<JSONObject> recommendExerciseItem(@LoginUser User user) {
-        JSONObject body = recommendService.recommendExercise("/exercise/best");
+        JSONObject body = recommendService.recommendExercise("/exercises/user");
         return ResponseEntity.ok().body(body);
     }
     // 현재 영양제와 유사한 영양제 추천
-    @GetMapping("exercise/item/{exericse_id}")
-    public ResponseEntity<JSONObject> recommendExerciseBest(@LoginUser User user, @PathVariable String exercise_id) {
-        JSONObject body = recommendService.recommendExercise("/exercise/best", exercise_id);
+    @GetMapping("exercises/item/{exericse_id}")
+    public ResponseEntity<JSONObject> recommendExerciseBest(@LoginUser User user, @PathVariable("exercise_id") String exerciseId) {
+        JSONObject body = recommendService.recommendExercise("/exercises/item", exerciseId);
         return ResponseEntity.ok().body(body);
     }
 }
