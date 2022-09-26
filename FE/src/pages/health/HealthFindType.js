@@ -1,31 +1,39 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { client } from "../../api";
-import HealthFindBody from "../health/HealthFindPart/HealthFindBody";
-import HealthFindSports from "../health/HealthFindPart/HealthFindSports";
-import HealthFindGigu from "./HealthFindPart/HealthFindGigu";
 import HealthCard from "../../components/cards/HealthCard";
 import { useInView } from "react-intersection-observer";
 import React from "react";
 
-const TapWrapper = styled.div`
-  width: 100vw;
-`
 
 const HealthButton = styled.button`
-background-color: ${({ color }) => color};
-color: ${({ textColor }) => textColor};
-font-size: 16px;
-cursor: pointer;
+  background-color: transparent;
+  color: ${({ textColor }) => textColor};
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+  border: solid 2px;
+  border-radius: 12px;
+  margin: 8px;
+  /* background: linear-gradient(#537CFE, #6A53FE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  font-weight: ${({ fontWeight }) => fontWeight};
+`
+
+const TypeBox = styled.div`
+  width: 500px;
+  padding: 4px;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+  display: none;
+  }
+  overflow: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
 `
 
 const HealthFindType = ({exerciseId}) => {
-  // const [typePage, setTypePage] = useState("body")
-  // const findPage = {
-  //   body: <HealthFindBody/>,
-  //   gigu: <HealthFindGigu/>,
-  //   sports: <HealthFindSports/>
-  // }
 
   const [cate, setCate] = useState([]);
   const [items, setItems] = useState([]);
@@ -34,6 +42,29 @@ const HealthFindType = ({exerciseId}) => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [ref, inView] = useInView();
+
+  // 메뉴 횡스크롤
+  const scrollRef = useRef(null);
+  const [isDrag, setIsDrag] = useState(false);
+  const [startX, setStartX] = useState();
+
+  const onDragStart = (e) => {
+    e.preventDefault();
+    setIsDrag(true);
+
+    setStartX(e.pageX + scrollRef.current.scrollLeft);
+  };
+
+  const onDragEnd = () => {
+    setIsDrag(false);
+  };
+
+  const onDragMove = (e) => {
+    if (isDrag) {
+      scrollRef.current.scrollLeft = startX - e.pageX;
+    }
+  };
+
   // 운동 종류별 반환
   const getExerType = async () => {
     await client
@@ -81,15 +112,26 @@ const HealthFindType = ({exerciseId}) => {
 
   return (
     <>
-    <TapWrapper>
-      {cate.map((cates) => (
-        <HealthButton
-          {...cates} key={cates.exerciseCategoryId}
-          onClick = {() => {onHandleType(cates.exerciseCategoryId); getCateItems(cates.exerciseCategoryId)}}
-        >
-          {cates.exerciseCategoryId}{cates.exerciseCategoryName}
-        </HealthButton>
-      ))}
+      <TypeBox
+        onMouseDown={onDragStart}
+        onMouseMove={onDragMove}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+        ref={scrollRef}
+      >
+
+        {cate.map((cates) => (
+          <HealthButton
+            {...cates} key={cates.exerciseCategoryId}
+            onClick = {() => {onHandleType(cates.exerciseCategoryId); getCateItems(cates.exerciseCategoryId)}}
+            textColor = {cates.exerciseCategoryId === cateNum ? "black" : "#7B7B7B"}
+            fontWeight = {cates.exerciseCategoryId === cateNum ? "bolder" : "normal"}
+          >
+            {/* {cates.exerciseCategoryId} */}
+            {cates.exerciseCategoryName}
+          </HealthButton>
+        ))}
+      </TypeBox>
         {items.map((item, idx) => (
             <React.Fragment key={idx}>
               {items.length - 1 == idx ? (
@@ -114,7 +156,6 @@ const HealthFindType = ({exerciseId}) => {
               )}
             </React.Fragment>
           ))}
-    </TapWrapper>
     </>
   )
 }
