@@ -69,5 +69,11 @@ public class Pill extends BaseEntity {
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Calendar> calendars = new ArrayList<>();
+
+    public void updatePill(int count, double average) {
+        this.reviewCount = count;
+        this.reviewAverage = average;
+    }
+
 }
 

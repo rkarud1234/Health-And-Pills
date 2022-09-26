@@ -13,15 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PillRepository extends JpaRepository<Pill, Integer> {
-
-
-
-    long countByPillNameContaining(String pillName); // 검색 결과에 맞는 영양제 갯수
     long count(); // 영양제 전체 갯수
-    List<Pill> findByPillNameContaining(String pillName, Pageable page); // 영양제 이름 검색
     List<Pill> findAll(); // 영양제 전체 검색
-
-    Optional<Pill> findByPillId(int pillId);
 
 
 
