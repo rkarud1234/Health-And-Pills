@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import ReviewProgress from './ReviewProgress'
 import styled from 'styled-components'
 import { Rating } from '@mui/material'
-
+import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../store/actions/pill'
+import { useDispatch } from 'react-redux'
+import CancelModal from './CancelModal.js'
+import ReviewBox from './ReviewBox'
 
 const Container = styled.div`
 box-sizing: border-box;
@@ -37,6 +40,7 @@ text-fill-color: transparent;
 `
 const ReviewBtn = styled.button`
 display: block;
+font-family: 'GmarketSans';
 background: #EAEFF1;
 border: 1px solid #A6A4A4;
 border-radius: 10px;
@@ -51,14 +55,6 @@ background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
 -webkit-text-fill-color: transparent;
 background-clip: text;
 text-fill-color: transparent;
-`
-const ReviewBox = styled.div`
-box-sizing: border-box;
-margin: 8px 8px;
-
-background: #FFFFFF;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
 `
 const TextBox = styled.textarea`
  width: 92%;
@@ -75,19 +71,19 @@ margin: 8px 12px;
 font-weight: bold;
 cursor: pointer;
 `
+const ReviewContainer = styled.div`
+box-sizing: border-box;
+margin: 8px 8px;
 
-const PillReview = ({ id }) => {
-  const reviews = [
-    { id: 1, rating: 5, user: '김갑경', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-    { id: 2, rating: 5, user: '한다빈', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-    { id: 3, rating: 5, user: '이민우', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-    { id: 4, rating: 5, user: '송상진', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-    { id: 5, rating: 4, user: '김민정', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-    { id: 6, rating: 3, user: '박상협', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-    { id: 7, rating: 2, user: '류현수', review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-  ]
+background: #FFFFFF;
+border: 1px solid #A6A4A4;
+border-radius: 10px;
+`
+
+const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
+  const dispatch = useDispatch()
   const starRating = {
-    starAverage: 4.4,
+    reviewAverage: 4.4,
     fiveRating: 4,
     fourRating: 1,
     threeRating: 1,
@@ -102,28 +98,60 @@ const PillReview = ({ id }) => {
   const twoRating = (starRating.twoRating / reviews.length) * 100 + '%'
   const oneRating = (starRating.oneRating / reviews.length) * 100 + '%'
 
-  const [value, setValue] = useState(3)
+  const [score, setScore] = useState(3)
   const [isOpened, setIsOpened] = useState(false)
+  const [updating, setUpdating] = useState(false)
   const [text, setText] = useState('')
 
-  const registerHandler = () => {
-    // 리뷰 등록 api
-    setText('')
+  const createReviewHandler = () => {
+    const review = {
+      score: score,
+      content: text,
+      pillID: id,
+    }
+    setIsOpened(!isOpened)
+    dispatch(createReviewFetch(review))
+      .then(() => {
+        dispatch(PillReviewFetch(id))
+      })
+  }
+
+  const updateReviewHandler = (reviewId) => {
+    const review = {
+      score: score,
+      content: text,
+      reviewId: reviewId,
+    }
+    setUpdating(!updating)
+    dispatch(updateReviewFetch(review))
+      .then(() => {
+        dispatch(PillReviewFetch(id))
+      })
   }
 
   const cancelHandler = () => {
+    setScore(3)
     setIsOpened(!isOpened)
     setText('')
+  }
+
+  const updatingHandler = () => {
+    setUpdating(!updating)
   }
 
   const textHandler = (e) => {
     setText(e.target.value)
   }
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const showModal = () => {
+    setModalOpen(true);
+  };
+
   return (
     <>
       <Container>
-        {reviews.length === 0
+        {reviewCount === 0
           ? <div style={{ borderBottom: '1px solid #A6A4A4', textAlign: 'center' }}>
             <GradientIcon style={{ marginTop: '32px' }} className="fa-regular fa-message-dots fa-2x"></GradientIcon>
             <div style={{ marginBottom: '32px', marginTop: '16px' }}>
@@ -137,7 +165,7 @@ const PillReview = ({ id }) => {
               </div>
               <ProFlexBox >
                 <LinearStar className="fas fa-star"></LinearStar>
-                <div style={{ fontSize: '32px' }}>{starRating.starAverage}</div>
+                <div style={{ fontSize: '32px' }}>{starRating.reviewAverage}</div>
               </ProFlexBox>
             </div>
             <div style={{ margin: '8px 8px' }}>
@@ -199,67 +227,59 @@ const PillReview = ({ id }) => {
       </Container>
       {
         isOpened ?
-          <ReviewBox>
-            <div style={{ margin: '12px 12px' }}>
-              <div>
-                이 영양제의 효과에 얼마나 만족하시나요?
-              </div>
-              <div>
-                <Rating
-                  name="simple-controlled"
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
-                  size="small"
-                  icon={<GradientIcon className="fas fa-star"></GradientIcon>}
-                  emptyIcon={<i className="fa-thin fa-star"></i>}
-                />
-              </div>
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <TextBox
-                type="text"
-                value={text}
-                autoFocus
-                placeholder="다른 고객님에게 도움이 되도록 영양제에 대한 솔직한 평가를 남겨주세요."
-                onChange={textHandler}
-              />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <BtnDiv onClick={cancelHandler}>
-                닫기
-              </BtnDiv>
-              <BtnDiv ocClick={registerHandler}>
-                등록
-              </BtnDiv>
-            </div>
-          </ReviewBox>
+          <ReviewBox
+            createReviewHandler={createReviewHandler}
+            cancelHandler={cancelHandler}
+            setScore={setScore}
+            textHandler={textHandler}
+            score={score}
+            text={text} />
           : <></>
       }
       {
         reviews ? reviews.map(review => {
-          return (
-            <ReviewBox key={review.id}>
-              <div style={{ padding: '12px 12px', display: 'flex', borderBottom: '1px solid #A6A4A4' }}>
+          return (!updating ?
+            <ReviewContainer key={review.reviewId}>
+              <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ marginTop: '2px' }}>
-                  {review.user}
+                  {review.userName}
                 </div>
+                <div style={{ display: 'flex' }}>
+                  <BtnDiv onClick={updatingHandler} style={{ paddingRight: '24px', margin: '0 0' }}>
+                    수정
+                  </BtnDiv>
+                  <BtnDiv
+                    onClick={showModal}
+                    style={{ margin: '0 0' }}>
+                    삭제
+                  </BtnDiv>
+                </div>
+              </div>
+              {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={review.reviewId} pillID={id} />}
+              <div style={{ borderBottom: '1px solid #A6A4A4' }}>
                 <Rating
-                  style={{ margin: '0px 12px' }}
+                  style={{ padding: '0px 10px 6px' }}
                   name="simple-controlled"
                   readOnly
-                  value={review.rating}
+                  value={review.reviewScore}
                   size="small"
                   icon={<GradientIcon className="fas fa-star"></GradientIcon>}
                   emptyIcon={<i className="fa-thin fa-star"></i>}
                 />
               </div>
               <div style={{ margin: '12px 12px' }}>
-                {review.review}
+                {review.reviewContent}
               </div>
-            </ReviewBox>
-          )
+            </ReviewContainer>
+            : <ReviewBox
+              key={review.reviewId}
+              reviewId={review.reviewId}
+              updatingHandler={updatingHandler}
+              updateReviewHandler={updateReviewHandler}
+              defaultScore={review.reviewScore}
+              defaultText={review.reviewContent}
+              setScore={setScore}
+              textHandler={textHandler} />)
         }) : <></>
       }
     </>

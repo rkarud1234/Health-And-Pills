@@ -44,7 +44,7 @@ const Pill = () => {
     <Carousel images={images} />
     <RecomPills pills={pills} type='user' />
     <RecomPills pills={pills} type='age' />
-    {!user.isLogin ? <Footer /> : <></>}
+    <Footer />
   </ScrollDiv>;
 };
 
