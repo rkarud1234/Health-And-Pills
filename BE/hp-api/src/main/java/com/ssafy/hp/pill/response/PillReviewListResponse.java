@@ -15,13 +15,15 @@ public class PillReviewListResponse {
     int reviewScore;
     String reviewContent;
     String nickName;
+    Boolean isMyReview;
 
-    public static PillReviewListResponse from(PillReview pillReview) {
+    public static PillReviewListResponse from(PillReview pillReview, Boolean isMyReview) {
         return new PillReviewListResponse(
                 pillReview.getPillReviewId(),
                 pillReview.getPillReviewScore(),
                 pillReview.getPillReviewContent(),
-                pillReview.getUsers().getUserNickname()
+                pillReview.getUsers().getUserNickname(),
+                isMyReview
         );
     }
 }

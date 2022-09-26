@@ -123,9 +123,16 @@ public class PillServiceImpl implements PillService {
 
     // 모든 리뷰 조회
     @Override
-    public Page<PillReviewListResponse> getReviews(int pillId, Pageable pageable) {
+    public Page<PillReviewListResponse> getReviews(User user, int pillId, Pageable pageable) {
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
         return pillQueryRepository.findReviewByPillId(pillId, pageable)
-                .map(PillReviewListResponse::from);
+                .map(pillReview -> PillReviewListResponse.from(
+                                pillReview,
+                                user.getUserId().equals(pillReview.getUsers().getUserId())
+                        )
+                );
     }
 
     // 내가 작성한 리뷰 조회
@@ -134,7 +141,7 @@ public class PillServiceImpl implements PillService {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         return reviewRepository.findByUsers(user, pageable)
-                .map(PillReviewListResponse::from);
+                .map(pillReview -> PillReviewListResponse.from(pillReview, true));
     }
 
     @Override
