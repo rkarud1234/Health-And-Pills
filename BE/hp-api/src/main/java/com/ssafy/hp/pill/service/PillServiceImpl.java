@@ -92,7 +92,7 @@ public class PillServiceImpl implements PillService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
 
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if (user.getUserId().equals(pillReview.getUsers().getUserId())) {
+        if (!user.getUserId().equals(pillReview.getUsers().getUserId())) {
             throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
         }
         pillReview.updatePillReview(request.getScore(), request.getContent());
