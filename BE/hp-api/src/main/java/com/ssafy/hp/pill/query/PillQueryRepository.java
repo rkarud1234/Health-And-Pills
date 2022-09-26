@@ -68,33 +68,8 @@ public class PillQueryRepository {
         System.out.println(results.toString());
         System.out.println(results.get(0));
 
-//        List<Pill> pillResult = new ArrayList<>();
-//
-//        for (Tuple tuple : results) {
-//            int pillId = tuple.get(pill.pillId);
-//            String pillName = tuple.get(pill.pillName);
-//            String pillCompanyName = tuple.get(pill.pillCompanyName);
-//            String pillThumbnail = tuple.get(pill.pillThumbnail);
-//            int pillReviewCount = tuple.get(pill.reviewCount);
-//            double pillReviewAverage = tuple.get(pill.reviewAverage);
-//            pillResult.add(new Pill(pillId, pillName, pillCompanyName, pillThumbnail, pillReviewCount, pillReviewAverage));
-//        }
-
         return new PageImpl<>(results);
     }
-
-//    List<Pill> results = queryFactory
-//            .selectFrom(pill)
-//            .distinct()
-//            .join(pillNutrient)
-//            .on(pillNutrient.nutrient.nutrientId.in(test2))
-//            .where(
-//                    pill.pillName.contains(request.getSearch())
-//                            .and(pill.pillDomestic.eq(request.getDomestic()))
-//            )
-//            .offset(pageable.getOffset())
-//            .limit(pageable.getPageSize())
-//            .fetch();
 
     private BooleanExpression searchKeywordEq(String search) {
         return search != null ? pill.pillName.contains(search) : null;
@@ -128,6 +103,7 @@ public class PillQueryRepository {
                 queryFactory
                 .selectFrom(pillReview)
                 .where(pillReview.pill.pillId.eq(pillId))
+                        .orderBy(pillReview.createdDate.desc())
                 .limit(pageable.getPageSize())
                 .fetch()
         );
