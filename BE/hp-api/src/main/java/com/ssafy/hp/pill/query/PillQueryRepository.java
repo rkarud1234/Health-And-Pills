@@ -59,7 +59,7 @@ public class PillQueryRepository {
                          .and(pillNutrient.nutrient.nutrientId.in(materials)))
                  .rightJoin(pillFunctionality)
                  .on(pill.pillId.eq(pillFunctionality.pill.pillId)
-                         .and(pillFunctionality.functionality.functionality_id.in(functionalities)))
+                         .and(pillFunctionality.functionality.functionalityId.in(functionalities)))
                  .where(pill.pillName.isNotNull())
                  .orderBy(pill.pillId.asc())
                  .limit(pageable.getPageSize())

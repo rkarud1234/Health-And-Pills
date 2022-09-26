@@ -18,10 +18,10 @@ public class Functionality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "functionality_id")
-    private Integer functionality_id;
+    private Integer functionalityId;
 
     @Column(nullable = false)
-    private String functionality_content;
+    private String functionalityContent;
 
     @OneToMany(mappedBy = "functionality", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PillFunctionality> pillFunctionalities = new ArrayList<>();

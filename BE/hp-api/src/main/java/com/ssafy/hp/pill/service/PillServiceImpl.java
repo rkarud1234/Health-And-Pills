@@ -4,6 +4,8 @@ import com.ssafy.hp.InvalidException;
 import com.ssafy.hp.NotFoundException;
 import com.ssafy.hp.NotMatchException;
 import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.pill.FunctionalityRepository;
+import com.ssafy.hp.pill.NutrientRepository;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.ReviewRepository;
 import com.ssafy.hp.pill.domain.Pill;
@@ -11,10 +13,7 @@ import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.pill.query.PillQueryRepository;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillDetailResponse;
-import com.ssafy.hp.pill.response.PillListResponse;
-import com.ssafy.hp.pill.response.PillReviewListResponse;
-import com.ssafy.hp.pill.response.PillReviewResponse;
+import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
@@ -28,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ssafy.hp.NotFoundException.PILL_NOT_FOUND;
 import static com.ssafy.hp.NotFoundException.USER_NOT_FOUND;
@@ -47,6 +47,8 @@ public class PillServiceImpl implements PillService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final UserPillRepository userPillRepository;
+    private final FunctionalityRepository functionalityRepository;
+    private final NutrientRepository nutrientRepository;
 
 //    private String[] findPillNutrientByPill(Pill pill) {
 //        return pillQueryRepository.
@@ -157,6 +159,20 @@ public class PillServiceImpl implements PillService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         return reviewRepository.findByUsers(user, pageable)
                 .map(pillReview -> PillReviewListResponse.from(pillReview, true));
+    }
+
+    @Override
+    public List<FunctionalityListResponse> getFunctionalities() {
+        return functionalityRepository.findAll()
+                .stream().map(FunctionalityListResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NutrientListResponse> getNutrients() {
+        return nutrientRepository.findAll()
+                .stream().map(NutrientListResponse::from)
+                .collect(Collectors.toList());
     }
 
     // pill 테이블의 리뷰평균, 갯수 업데이트

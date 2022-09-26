@@ -4,13 +4,12 @@ package com.ssafy.hp.pill.service;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
-import com.ssafy.hp.pill.response.PillListResponse;
-import com.ssafy.hp.pill.response.PillDetailResponse;
-import com.ssafy.hp.pill.response.PillReviewListResponse;
-import com.ssafy.hp.pill.response.PillReviewResponse;
+import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 
 public interface PillService {
@@ -38,6 +37,10 @@ public interface PillService {
     // 내가 작성한 리뷰 조회
     Page<PillReviewListResponse> getMyReviews(User user, Pageable pageable);
 
+    // 생리활성 기능 조회
+    List<FunctionalityListResponse> getFunctionalities();
+    // 기능성 원료(영양소) 조회
+    List<NutrientListResponse> getNutrients();
     // 북마크, 복용중 상태 변경
     void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd);
 
