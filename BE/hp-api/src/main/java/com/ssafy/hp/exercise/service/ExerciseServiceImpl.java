@@ -107,17 +107,17 @@ public class ExerciseServiceImpl implements ExerciseService {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
 
         Optional<UserExercise> userExercise = userExerciseRepository.findByUsersAndExercise(user, exercise);
 
         if (userExercise.isPresent()) {
             // 이미 컬럼이 있으면 해당 컬럼을 업데이트 해주면 됨
-            updateExerciseUserByCmd(userExercise.get(), yn, cmd);
+            updateUserExerciseByCmd(userExercise.get(), yn, cmd);
         } else {
             // 처음 등록되는 컬럼이라면 컬럼을 추가한다
             UserExercise newUserExercise = UserExercise.createUserExercise(user, exercise);
-            updateExerciseUserByCmd(newUserExercise, yn, cmd);
+            updateUserExerciseByCmd(newUserExercise, yn, cmd);
             userExerciseRepository.save(newUserExercise);
         }
     }
@@ -136,7 +136,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .collect(Collectors.toList());
     }
 
-    private void updateExerciseUserByCmd(UserExercise userExercise, YN yn, int cmd) {
+    private void updateUserExerciseByCmd(UserExercise userExercise, YN yn, int cmd) {
         if (cmd == CMD_DOING) {
             userExercise.updateUserExerciseDoing(yn);
         } else if (cmd == CMD_LIKE) {

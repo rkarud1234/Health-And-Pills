@@ -1,11 +1,14 @@
 package com.ssafy.hp.pill.controller;
 
 import com.ssafy.hp.config.LoginUser;
+import com.ssafy.hp.exercise.request.ExerciseCheckRequest;
+import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
 import com.ssafy.hp.pill.response.PillDetailResponse;
 import com.ssafy.hp.pill.response.PillListResponse;
 import com.ssafy.hp.pill.response.PillReviewListResponse;
+import com.ssafy.hp.pill.service.PillService;
 import com.ssafy.hp.pill.service.PillServiceImpl;
 import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,11 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class PillController {
 
-    private final PillServiceImpl pillService;
+    private static final int CMD_TAKING = 1;
+    private static final int CMD_BOOKMARK = 2;
+
+
+    private final PillService pillService;
 
     // 영양제 검색
     @GetMapping("/search")
@@ -35,39 +42,53 @@ public class PillController {
 
     // 영양제 디테일 조회
     @GetMapping("/{pill_id}")
-    public ResponseEntity<PillDetailResponse> findOne(@PathVariable int pill_id) {
-        PillDetailResponse body = pillService.findByPillId(pill_id);
+    public ResponseEntity<PillDetailResponse> findOne(@PathVariable("pill_id") int pillId) {
+        PillDetailResponse body = pillService.findByPillId(pillId);
         return ResponseEntity.ok().body(body);
     }
 
     // 리뷰 작성
     @PostMapping("/{pill_id}/review")
-    public ResponseEntity<Void> createReview(@LoginUser User user, @PathVariable int pill_id, @RequestBody @Valid PillReviewRequest request) {
-        pillService.createReview(user, pill_id, request);
+    public ResponseEntity<Void> createReview(@LoginUser User user, @PathVariable("pill_id") int pillId, @RequestBody @Valid PillReviewRequest request) {
+        pillService.createReview(user, pillId, request);
         return ResponseEntity.ok().build();
     }
     
     // 리뷰 목록 조회
     @GetMapping("/{pill_id}/review")
-    public ResponseEntity<Page<PillReviewListResponse>> getReviewList(@PageableDefault Pageable page, @PathVariable int pill_id) {
-        Page<PillReviewListResponse> body = pillService.getReviews(pill_id, page);
+    public ResponseEntity<Page<PillReviewListResponse>> getReviewList(@PageableDefault Pageable page, @PathVariable("pill_id") int pillId) {
+        Page<PillReviewListResponse> body = pillService.getReviews(pillId, page);
         return ResponseEntity.ok().body(body);
     }
 
     // 리뷰 수정
     @PutMapping("/review/{review_id}")
-    public ResponseEntity<Void> updateReview(@LoginUser User user, @PathVariable int review_id, @RequestBody @Valid PillReviewRequest request) {
-        pillService.updateReview(user, review_id, request);
+    public ResponseEntity<Void> updateReview(@LoginUser User user, @PathVariable("review_id") int reviewId, @RequestBody @Valid PillReviewRequest request) {
+        pillService.updateReview(user, reviewId, request);
         return ResponseEntity.ok().build();
     }
 
     // 리뷰 삭제
     @DeleteMapping("/review/{review_id}")
-    public ResponseEntity<Void> deleteReview(@LoginUser User user, @PathVariable int review_id) {
-        pillService.deleteReview(user, review_id);
+    public ResponseEntity<Void> deleteReview(@LoginUser User user, @PathVariable("review_id") int reviewId) {
+        pillService.deleteReview(user, reviewId);
         return ResponseEntity.ok().build();
     }
 
+    // 이미지 검색
 
+    // 복용중 상태 변경
+    @PostMapping("/taking")
+    public ResponseEntity<Void> updateUserPillTakingByPill(@LoginUser User user, @RequestBody @Valid PillCheckRequest request) {
+        pillService.updateUserPillByUserAndPill(user, request.getPillId(), request.getCheck(), CMD_TAKING);
+        return ResponseEntity.ok().build();
+    }
+
+    // 영양제 북마크 상태 변경
+    @PostMapping("/bookmark")
+    public ResponseEntity<Void> updateUserPillBookmarkByPill(@LoginUser User user, @RequestBody @Valid PillCheckRequest request) {
+        pillService.updateUserPillByUserAndPill(user, request.getPillId(), request.getCheck(), CMD_BOOKMARK);
+        return ResponseEntity.ok().build();
+    }
 
 }
