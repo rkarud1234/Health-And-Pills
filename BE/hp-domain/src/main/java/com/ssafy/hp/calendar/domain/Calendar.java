@@ -49,6 +49,7 @@ public class Calendar {
         calendar.calendarDate = calendarDate;
         calendar.calendarTime = calendarTime;
         calendar.calendarContent = calendarContent;
+        calendar.calendarComplete = YN.N;
         calendar.users = users;
         calendar.exercise = exercise;
         calendar.pill = pill;
