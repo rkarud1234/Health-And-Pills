@@ -11,4 +11,6 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<PillReview, Integer> {
 
     Page<PillReview> findByUsers(User user, Pageable pageable);
+    int countByPillPillId(Integer pillId);
+    List<PillReview> findByPillPillId(Integer pillId);
 }

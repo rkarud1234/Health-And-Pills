@@ -13,7 +13,7 @@ public class PillReviewResponse {
     int reviewId;
     int reviewScore;
     String reviewContent;
-    String userName;
+    String nickName;
     int pillId;
 
     public static PillReviewResponse from(PillReview pillReview) {
@@ -21,7 +21,7 @@ public class PillReviewResponse {
                 pillReview.getPillReviewId(),
                 pillReview.getPillReviewScore(),
                 pillReview.getPillReviewContent(),
-                pillReview.getUsers().getUserName(),
+                pillReview.getUsers().getUserNickname(),
                 pillReview.getPill().getPillId()
         );
     }
