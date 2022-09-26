@@ -9,12 +9,14 @@ import Inbody from "./Inbody";
 import LifeStyle from "./LifeStyle";
 
 const ProfileWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
   height: 100vh;
   padding: 0px 0px 20px 0px;
 `;
 
 const ProfileTitleWrapper = styled.div`
-  padding: 100px 20px 0px 20px;
+  padding: 90px 20px 0px 20px;
   & div:first-child {
     font-size: 35px;
     color: white;
@@ -279,6 +281,12 @@ const TestProfile = () => {
             <button onClick={onHandleLogOut}>로그아웃</button>
           </LogOutBtnWrapper>
         </ContentWrapper>
+        <SlidingMenu
+          {...slidingMenuState}
+          close={closeSlidingMenu}
+          slidingMenuTitle={slidingMenuState.title}
+          contents={renderContent(slidingMenuState.type)}
+        />
       </ProfileWrapper>
       <Footer />
       {/* <div
@@ -290,13 +298,6 @@ const TestProfile = () => {
       >
         <TestFooter />
       </div> */}
-
-      <SlidingMenu
-        {...slidingMenuState}
-        close={closeSlidingMenu}
-        slidingMenuTitle={slidingMenuState.title}
-        contents={renderContent(slidingMenuState.type)}
-      />
     </>
   );
 };
