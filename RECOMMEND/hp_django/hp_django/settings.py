@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': 'hp',
         'USER': secret['DB_USER'],
         'PASSWORD': secret['DB_PASSWORD'],
-        'HOST': 'localhost',
+        'HOST': 'j7b203.p.ssafy.io',
         'PORT': '3306',
     }
 }
