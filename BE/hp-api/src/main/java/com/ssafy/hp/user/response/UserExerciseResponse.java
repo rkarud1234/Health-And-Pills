@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserExerciseResponse {
-    private int id;
-    private int relatedItemId;
+    private Integer id;
+    private Integer relatedItemId;
     private String name;
     private List<String> type;
 

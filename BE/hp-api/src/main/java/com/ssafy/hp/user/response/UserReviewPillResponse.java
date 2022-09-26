@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserReviewPillResponse {
     //리뷰번호 영양제번호 영양제이름 영양제사진 영양제리뷰내용 내가기입한별점
-    private int id;
-    private int relatedItemId;
+    private Integer id;
+    private Integer relatedItemId;
     private String name;
     private String img;
     private String reviewContent;
