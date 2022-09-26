@@ -1,9 +1,19 @@
 package com.ssafy.hp.calendar.controller;
 
+import com.ssafy.hp.calendar.request.CreateCalendarRequest;
+import com.ssafy.hp.calendar.request.UpdateCalendarRequest;
+import com.ssafy.hp.calendar.response.CalendarCountListResponse;
+import com.ssafy.hp.calendar.response.CalendarDetailListResponse;
 import com.ssafy.hp.calendar.service.CalendarService;
+import com.ssafy.hp.config.LoginUser;
+import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping("/api/calendar")
 @RestController
@@ -11,19 +21,55 @@ import org.springframework.web.bind.annotation.RestController;
 public class CalendarController {
     private final CalendarService calendarService;
 
-    // 회원의 일정 조회
+    // 회원의 요일별 영양제 & 운동 갯수 조회
+    @GetMapping
+    public ResponseEntity<List<CalendarCountListResponse>> findListByCalendarDate(@LoginUser User user){
+        List<CalendarCountListResponse> body = calendarService.findListByCalendarDate(user);
+        return ResponseEntity.ok().body(body);
+    }
 
-    // 영양제 일정 등록 (복용중 하지 않았을 경우, 복용중 까지 등록) -> 이름, 내용, 요일, 시간
+    // 요일별 상세 일정 조회 리스트
+    @GetMapping("/{calendar_date}")
+    public ResponseEntity<List<CalendarDetailListResponse>> findByCalendarDate(@LoginUser User user,
+                                                                               @PathVariable("calendar_date")Integer calendarDate){
+        List<CalendarDetailListResponse> body = calendarService.findByCalendarDate(user, calendarDate);
+        return ResponseEntity.ok().body(body);
+    }
 
-    // 운동 일정 등록 (운동중 하지 않았을 경우, 운동중 까지 등록) -> 이름, 내용, 요일, 시간
+    // 일정 등록
+    // (운동 & 영양제 구분한뒤 -> 복용중 or 운동중 하지 않았을 경우, 복용중 or 운동중 까지 등록)
+    // 요일 리스트 분리해서 하나씩 넣기
+    // * 요일당 99개 까지 가능
+    @PostMapping
+    public ResponseEntity<Void> createCalendar(@LoginUser User user,
+                                               @RequestBody @Valid CreateCalendarRequest request){
+        calendarService.createCalendar(user, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
-    // 영양제 일정 수정
 
-    // 운동 일정 수정
+    // 일정 수정
+    @PutMapping("/{calendar_id}")
+    public ResponseEntity<Void> updateCalendar(@LoginUser User user,
+                                               @PathVariable("calendar_id")Integer calendarId,
+                                               @RequestBody @Valid UpdateCalendarRequest request){
+        calendarService.updateCalendar(user, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
-    // 영양제 일정 삭제
+    // 일정 삭제
+    @DeleteMapping("/{calendar_id}")
+    public ResponseEntity<Void> deleteCalendar(@LoginUser User user,
+                                               @PathVariable("calendar_id")Integer calendarId){
+        calendarService.deleteCalendar(user, calendarId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
-    // 운동 일정 삭제
-
-    // 일정 완료
+    // 일정 완료 체크 & 체크해제
+    @PatchMapping("{calendar_id}")
+    public ResponseEntity<Void> updateCalendarComplete(@LoginUser User user,
+                                                       @PathVariable("calendar_id")Integer calendarId){
+        calendarService.updateCalendarComplete(user, calendarId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
