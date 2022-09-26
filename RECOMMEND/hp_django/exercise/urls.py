@@ -1,5 +1,5 @@
 from django.urls import path, include
-from exercise.views import ExerciseListApi, Item
+from exercise.views import ExerciseListApi
 
 urlpatterns = [
     path('custom/', ExerciseListApi.as_view()),
