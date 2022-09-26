@@ -7,6 +7,6 @@ from .serializer import PillSerializer
 
 class PillListApi(APIView):
     def get(self, request):
-        queryset = Pill.objects.all()
+        queryset = Pill.objects.all()[:10]
         serializer = PillSerializer(queryset, many=True)
         return Response(serializer.data)

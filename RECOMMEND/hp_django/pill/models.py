@@ -1,5 +1,6 @@
 from pyexpat import model
 from statistics import mode
+from turtle import ondrag
 from django.db import models
 
 class Pill(models.Model):
@@ -23,3 +24,34 @@ class Pill(models.Model):
     
     def __str__(self):
         return self.pill_name
+
+class PillNutrient(models.Model):
+    class Meta:
+        db_table = 'pill_nutrient'
+
+    pill_nutrient_id = models.AutoField(primary_key=True)
+    pill_id = models.ForeignKey('Pill', related_name='nutrient_pill', on_delete=models.CASCADE)
+    nutrient_id = models.ForeignKey('nutrient', related_name='nutrient', on_delete=models.CASCADE)
+
+class Nutrient(models.Model):
+    class Meta:
+        db_table = 'nutrient'
+
+    nutrient_id = models.AutoField(primary_key=True)
+    nutrient_name = models.CharField(max_length=255)
+
+
+class PillFunctionality(models.Model):
+    class Meta:
+        db_table = 'pill_functionality'
+
+    pill_functionality_id = models.AutoField(primary_key=True)
+    pill_id = models.ForeignKey('Pill', related_name='functionality_pill', on_delete=models.CASCADE)
+    functionality_id = models.ForeignKey('Functionality', related_name='functionality', on_delete=models.CASCADE)
+
+class Functionality(models.Model):
+    class Meta:
+        db_table = 'functionality'
+
+    functionality_id = models.AutoField(primary_key=True)
+    functionality_content = models.CharField(max_length=255)
