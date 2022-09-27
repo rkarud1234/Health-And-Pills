@@ -104,8 +104,6 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     @Transactional
     public void updateUserExerciseByUserAndExercise(User user, Integer exerciseId, YN yn, int cmd) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
 
