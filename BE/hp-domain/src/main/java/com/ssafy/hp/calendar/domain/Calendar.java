@@ -23,6 +23,7 @@ public class Calendar {
     private Integer calendarId;
 
     private Integer calendarDate;
+    //날짜로 저장
 
     private LocalTime calendarTime;
 
@@ -54,5 +55,14 @@ public class Calendar {
         calendar.exercise = exercise;
         calendar.pill = pill;
         return calendar;
+    }
+
+    public void updateCalendar(String calendarContent, LocalTime calendarTime){
+        this.calendarContent = calendarContent;
+        this.calendarTime = calendarTime;
+    }
+
+    public void updateCalendarComplete(YN yn){
+        this.calendarComplete = yn;
     }
 }
