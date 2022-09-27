@@ -38,7 +38,6 @@ public class CalendarController {
 
     // 일정 등록
     // (운동 & 영양제 구분한뒤 -> 복용중 or 운동중 하지 않았을 경우, 복용중 or 운동중 까지 등록)
-    // 요일 리스트 분리해서 하나씩 넣기
     // * 요일당 99개 까지 가능
     @PostMapping
     public ResponseEntity<Void> createCalendar(@LoginUser User user,
@@ -53,7 +52,7 @@ public class CalendarController {
     public ResponseEntity<Void> updateCalendar(@LoginUser User user,
                                                @PathVariable("calendar_id")Integer calendarId,
                                                @RequestBody @Valid UpdateCalendarRequest request){
-        calendarService.updateCalendar(user, request);
+        calendarService.updateCalendar(user, calendarId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -66,7 +65,7 @@ public class CalendarController {
     }
 
     // 일정 완료 체크 & 체크해제
-    @PatchMapping("{calendar_id}")
+    @PatchMapping("/{calendar_id}")
     public ResponseEntity<Void> updateCalendarComplete(@LoginUser User user,
                                                        @PathVariable("calendar_id")Integer calendarId){
         calendarService.updateCalendarComplete(user, calendarId);
