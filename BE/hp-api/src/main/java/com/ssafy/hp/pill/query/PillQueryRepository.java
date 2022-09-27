@@ -48,25 +48,43 @@ public class PillQueryRepository {
 //    order by p.pill_id;
 
     public Page<Pill> findBySearchFilter(SearchRequest request, Pageable pageable) {
-         Integer[] materials = Stream.of(request.getMaterials().split(",")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-         Integer[] functionalities = Stream.of(request.getMaterials().split(",")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
+        //////////////////////////////////////////
+        // 추천알고리즘이 급해서 일단 올립니다.
+        // 테스트코드 작성하면서 리팩토링 하겠습니다 ㅠ
+        //////////////////////////////////////////
+        Integer[] materials = new Integer[0];
+        Integer[] functionalities = new Integer[0];
+
+        if (!request.getMaterials().equals(""))
+            materials = Stream.of(request.getMaterials().split(",")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
+
+        if (!request.getFunctionalities().equals(""))
+            functionalities = Stream.of(request.getMaterials().split(",")).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
 
          List<Pill> results = queryFactory
                  .selectFrom(pill)
                  .distinct()
                  .rightJoin(pillNutrient)
                  .on(pill.pillId.eq(pillNutrient.pill.pillId)
-                         .and(pillNutrient.nutrient.nutrientId.in(materials)))
+                         .and(materials.length != 0 ? pillNutrient.nutrient.nutrientId.in(materials) : pill.isNotNull())
+                 )
                  .rightJoin(pillFunctionality)
                  .on(pill.pillId.eq(pillFunctionality.pill.pillId)
-                         .and(pillFunctionality.functionality.functionalityId.in(functionalities)))
-                 .where(pill.pillName.isNotNull())
+                         .and(functionalities.length != 0 ? pillFunctionality.functionality.functionalityId.in(functionalities) : pill.isNotNull())
+                 )
+                 .where((request.getSearch().equals("") && request.getDomestic() == null) // 국내여부, 키워드 모두 비어있으면
+                         ? pill.isNotNull() // 모든 영양제
+                         : (request.getSearch().equals("") && request.getDomestic() != null)  // 키워드는 없는데 국내여부가 있으면
+                            ? pill.pillDomestic.eq(request.getDomestic()) // 국내여부에 따라 결과 도출
+                            : (!request.getSearch().equals("") && request.getDomestic() == null) // 키워드는 있는데 국내여부가 없으면
+                                ? pill.pillName.contains(request.getSearch()) // 키워드에 맞는 국내외 상관없이 모두 도출
+                                : (!request.getSearch().equals("") && request.getDomestic() != null) // 키워드, 국내여부 모두 값이 있으면
+                                    ? pill.pillName.contains(request.getSearch()).and(pill.pillDomestic.eq(request.getDomestic()))
+                                    : pill.isNotNull()
+                 )
                  .orderBy(pill.pillId.asc())
                  .limit(pageable.getPageSize())
                  .fetch();
-
-        System.out.println(results.toString());
-        System.out.println(results.get(0));
 
         return new PageImpl<>(results);
     }
@@ -77,7 +95,7 @@ public class PillQueryRepository {
     private BooleanExpression domesticEq(YN domestic) {
         return domestic != null ? pill.pillDomestic.eq(domestic) : null;
     }
-    
+
     // 영양제에 포함된 기능성 원료(영양소) 반환
     public List<String> findNutrientByPill(Pill pill) {
         return queryFactory
