@@ -1,5 +1,6 @@
 package com.ssafy.hp.exercise.domain;
 
+import com.ssafy.hp.calendar.domain.Calendar;
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.exercise.type.*;
 import com.ssafy.hp.user.domain.UserExercise;
@@ -42,5 +43,8 @@ public class Exercise extends BaseEntity {
 
     @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserExercise> userExercises = new ArrayList<>();
+
+    @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Calendar> calendars = new ArrayList<>();
 
 }

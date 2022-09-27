@@ -5,7 +5,6 @@ import com.ssafy.hp.user.response.UserExerciseResponse;
 import com.ssafy.hp.user.response.UserPillResponse;
 import com.ssafy.hp.user.response.UserReviewPillResponse;
 import com.ssafy.hp.user.service.UserService;
-import com.ssafy.hp.user.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +17,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.ssafy.hp.CommonFixture.TEST_AUTHORIZATION;
 import static com.ssafy.hp.user.UserFixture.*;
