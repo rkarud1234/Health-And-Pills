@@ -224,4 +224,13 @@ public class PillServiceImpl implements PillService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword) {
+        List<Pill> lists = pillRepository.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
+        for(Pill pill : lists){
+            System.out.println(pill.getPillName());
+        }
+        return lists.stream().map(Pill::getPillName).collect(Collectors.toList());
+    }
 }

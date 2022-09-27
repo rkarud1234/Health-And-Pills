@@ -50,7 +50,7 @@ public class PillController {
         pillService.createReview(user, pillId, request);
         return ResponseEntity.ok().build();
     }
-    
+
     // 리뷰 목록 조회
     @GetMapping("/{pill_id}/review")
     public ResponseEntity<Page<PillReviewListResponse>> getReviewList(@LoginUser User user, @PageableDefault Pageable page, @PathVariable("pill_id") int pillId) {
@@ -78,16 +78,18 @@ public class PillController {
         List<FunctionalityListResponse> body = pillService.getFunctionalities();
         return ResponseEntity.ok().body(body);
     }
+
     // 기능성원료(영양소) 목록 조회
     @GetMapping("/nutrients")
     public ResponseEntity<List<NutrientListResponse>> getNutrients() {
         List<NutrientListResponse> body = pillService.getNutrients();
         return ResponseEntity.ok().body(body);
     }
+
     // 이미지 검색
     @GetMapping("/vision")
     public ResponseEntity<VisionResponse> getDetectText(@Valid byte[] data) {
-        VisionResponse body =  pillService.getDetectText(data);
+        VisionResponse body = pillService.getDetectText(data);
         return ResponseEntity.ok().body(body);
     }
 
@@ -103,6 +105,14 @@ public class PillController {
     public ResponseEntity<Void> updateUserPillBookmarkByPill(@LoginUser User user, @RequestBody @Valid PillCheckRequest request) {
         pillService.updateUserPillByUserAndPill(user, request.getPillId(), request.getCheck(), CMD_BOOKMARK);
         return ResponseEntity.ok().build();
+    }
+
+    // 검색어 미리보기 10개
+    @GetMapping("/search/preview/{keyword}")
+    public ResponseEntity<List<String>> findTop10PillNameByPillNameContainingOrderByPillNameAsc(@PathVariable("keyword") String keyword) {
+        System.out.println("keyword = " + keyword);
+        List<String> body = pillService.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
+        return ResponseEntity.ok().body(body);
     }
 
 }
