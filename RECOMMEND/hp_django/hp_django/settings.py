@@ -29,7 +29,7 @@ with open(os.path.join(BASE_DIR, 'secret_settings.json'), 'r') as f:
 SECRET_KEY = secret['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
