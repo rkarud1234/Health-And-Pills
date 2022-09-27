@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ssafy.hp.CountOutOfBoundsException.CALENDAR_OUT_OF_BOUNDS;
 import static com.ssafy.hp.NotFoundException.*;
@@ -39,14 +41,21 @@ public class CalendarServiceImpl implements CalendarService{
     @Override
     // 회원의 요일별 영양제 & 운동 갯수 조회
     public List<CalendarCountListResponse> findListByCalendarDate(User user) {
-        return null;
+        List<Calendar> findCalendars = calendarQueryRepository.findByUsersAndCalendarDate(user);
+
+        Map<Integer, List<Calendar>> findCalendarsMap = findCalendars.stream()
+                .collect(Collectors.groupingBy(Calendar::getCalendarDate));
+
+        return findCalendarsMap.values().stream()
+                .map(CalendarCountListResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Override
     // 요일별 상세 일정 조회 리스트
     public List<CalendarDetailListResponse> findByCalendarDate(User user, Integer calendarDate) {
-        List<Calendar> findCalendarList = calendarQueryRepository.findByCalendarDate(user, calendarDate);
-        return findCalendarList.stream()
+        List<Calendar> findCalendars = calendarQueryRepository.findByCalendarDate(user, calendarDate);
+        return findCalendars.stream()
                 .map(CalendarDetailListResponse::from)
                 .collect(Collectors.toList());
     }
@@ -60,8 +69,6 @@ public class CalendarServiceImpl implements CalendarService{
     // 운동 등록일때 -> 회원의 ID로 UserExercise에 존재하는지 확인 -> 있으면 일정에만 등록 / 없으면 일정+회원정보에 등록
     // 영양제 등록일떼 -> 회원의 IDfh UserPill에 존재하는지 확인 -> 있으면 일정에만 등록 / 없으면 일정+회원정보에 등록
     public void createCalendar(User user, CreateCalendarRequest request) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         if(calendarRepository.countByCalendarDate(request.getCalendarDate()) >= 99){
             new CountOutOfBoundsException(CALENDAR_OUT_OF_BOUNDS);
         }
@@ -88,8 +95,6 @@ public class CalendarServiceImpl implements CalendarService{
     @Override
     // 일정 수정
     public void updateCalendar(User user, Integer calendarId, UpdateCalendarRequest request) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Calendar findCalendar = calendarRepository.findById(calendarId)
                 .orElseThrow(() -> new NotFoundException(CALENDAR_NOT_FOUND));
 
@@ -100,8 +105,6 @@ public class CalendarServiceImpl implements CalendarService{
     @Override
     // 일정 삭제
     public void deleteCalendar(User user, Integer calendarId) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Calendar findCalendar = calendarRepository.findById(calendarId)
                 .orElseThrow(() -> new NotFoundException(CALENDAR_NOT_FOUND));
 

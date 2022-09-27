@@ -27,16 +27,15 @@ public class CalendarDetailListResponse {
 
     public static CalendarDetailListResponse from(Calendar calendar){
         CalendarDetailListResponse calendarDetailListResponse = new CalendarDetailListResponse();
-        calendarDetailListResponse.exerciseId = calendar.getExercise().getExerciseId();
-        calendarDetailListResponse.pillId = calendar.getPill().getPillId();
         calendarDetailListResponse.calendarDate = calendar.getCalendarDate();
         calendarDetailListResponse.calendarTime = calendar.getCalendarTime();
         calendarDetailListResponse.calendarContent = calendar.getCalendarContent();
         calendarDetailListResponse.calendarComplete = String.valueOf(calendar.getCalendarComplete());
-        if(calendar.getExercise().getExerciseId() == null){
+        if(calendar.getExercise() == null){
+            calendarDetailListResponse.pillId = calendar.getPill().getPillId();
             calendarDetailListResponse.name = calendar.getPill().getPillName();
-        }
-        else {
+        }else{
+            calendarDetailListResponse.exerciseId = calendar.getExercise().getExerciseId();
             calendarDetailListResponse.name = calendar.getExercise().getExerciseName();
         }
         return calendarDetailListResponse;
