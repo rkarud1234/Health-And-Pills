@@ -9,6 +9,7 @@ import Modal from "../components/modals/Modal";
 import ModalCloseButton from "../components/buttons/ModalCloseButton";
 import ScheduleCreate from "../components/modals/contents/ScheduleCreate";
 import ScheduleUpdateDelete from "../components/modals/contents/ScheduleUpdateDelete";
+import { useEffect } from "react";
 
 const BackWrapper = styled.div`
   background-color: #EAEFF1;
@@ -18,14 +19,14 @@ const BackWrapper = styled.div`
 
 const WeeklyWrapper = styled.div`
   display: flex;
-  height: 120px;
+  height: 100px;
   justify-content: space-around;
   /* background-color: transparent; */
 `
 
 const ButtonWrapper = styled.div`
-  align-items: center;
-  /* height: 120px; */
+  height: 120px;
+  text-align: center;
 `
 
 const ScheduleListWrapper = styled.button`
@@ -34,6 +35,7 @@ const ScheduleListWrapper = styled.button`
 
 
 const Schedule = () => {
+  // 모달 설정
   const [isOpen, setIsOpen] = useState(false);
   const [schedulePage, setSchedulePage] = useState("");
   const modalPage = {
@@ -49,6 +51,20 @@ const Schedule = () => {
     setIsOpen(false);
   };
 
+  // 00년 0월 0주차 설정
+  const [date, setDate] = useState({
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+    date: new Date().getDate(),
+    day: new Date().getDay(),
+  });
+  const yearTwo = date.year
+  const yearLastTwo = yearTwo.toString().slice(-2);
+  const weekly = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekDay = weekly[date.day]
+  const monthFirstDay = new Date(date.year, (date.month) - 1, 1).getDay()
+  const nthWeek = ((date.day + monthFirstDay - 1) % 7)
+
   return (
     <>
       <Modal
@@ -58,6 +74,9 @@ const Schedule = () => {
       />
       <Header leftNone={true} leftChildren={<BackButton />}/>
         <BackWrapper>
+          <div style={{textAlign: "center", padding: "12px 0 24px 0"}}>
+            {yearLastTwo}년 {date.month}월 {nthWeek}주차
+          </div>
           <WeeklyWrapper>
             <DailyCard/>
             <DailyCard/>
