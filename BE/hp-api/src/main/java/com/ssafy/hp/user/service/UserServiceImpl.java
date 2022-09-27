@@ -44,6 +44,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public void createFcmToken(User user, String fcmToken) {
+        User findUser = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
+        findUser.updateFcmToken(fcmToken);
+    }
+
+    @Transactional
+    @Override
     public void createUserProfile(User user, CreateUserProfileRequest request) {
         if (userProfileRepository.existsById(user.getUserId())) {
             throw new DuplicateException(USER_DUPLICATE);
