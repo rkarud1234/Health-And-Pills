@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPillResponse {
-    private int id;
-    private int relatedItemId;
+    private Integer id;
+    private Integer relatedItemId;
     private String name;
     private double rating;
     private String img;
