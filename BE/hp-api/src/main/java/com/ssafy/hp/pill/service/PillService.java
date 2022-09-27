@@ -47,4 +47,5 @@ public interface PillService {
     // 이미지 감지
     VisionResponse getDetectText(byte[] data);
 
+    List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword);
 }
