@@ -9,6 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
+
+    //fcm 토큰 받기
+    void createFcmToken(User user, String fcmToken);
+
     // 필수정보 등록
     void createUserProfile(User user, CreateUserProfileRequest request);
 

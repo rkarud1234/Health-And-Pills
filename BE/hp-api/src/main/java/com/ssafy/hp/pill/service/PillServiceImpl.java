@@ -93,8 +93,6 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void updateReview(User user, int reviewId, PillReviewRequest request) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
 
         PillReview pillReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
@@ -114,8 +112,6 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void deleteReview(User user, int reviewId) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         PillReview pillReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
         // 글 작성자와 업데이트 요청한 유저가 다르면
@@ -141,8 +137,6 @@ public class PillServiceImpl implements PillService {
     // 모든 리뷰 조회
     @Override
     public Page<PillReviewListResponse> getReviews(User user, int pillId, Pageable pageable) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         return pillQueryRepository.findReviewByPillId(pillId, pageable)
                 .map(pillReview -> PillReviewListResponse.from(
@@ -155,8 +149,6 @@ public class PillServiceImpl implements PillService {
     // 내가 작성한 리뷰 조회
     @Override
     public Page<PillReviewListResponse> getMyReviews(User user, Pageable pageable) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         return reviewRepository.findByUsers(user, pageable)
                 .map(pillReview -> PillReviewListResponse.from(pillReview, true));
     }
@@ -189,8 +181,6 @@ public class PillServiceImpl implements PillService {
 
     @Override
     public void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd) {
-        userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
 

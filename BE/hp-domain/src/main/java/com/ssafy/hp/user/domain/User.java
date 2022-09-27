@@ -43,6 +43,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String userNickname;
 
+    private String fcmToken;
+
     @OneToOne(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserProfile userProfile;
 
@@ -67,6 +69,10 @@ public class User extends BaseEntity {
         user.role = role;
         user.userNickname = userNickname;
         return user;
+    }
+
+    public void updateFcmToken(String fcmToken){
+        this.fcmToken = fcmToken;
     }
 
 }

@@ -23,6 +23,13 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
+    //fcm 토큰 받기
+    @PostMapping("/fcm")
+    public ResponseEntity<Void> createFcmToken(@LoginUser User user, @RequestBody String fcmToken){
+        userService.createFcmToken(user, fcmToken);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     // 필수정보 등록 (이름, 생년월일, 성별, 운동목적, 운동횟수)
     @PostMapping
     public ResponseEntity<Void> createUserProfile(@LoginUser User user, @RequestBody @Valid CreateUserProfileRequest request) {

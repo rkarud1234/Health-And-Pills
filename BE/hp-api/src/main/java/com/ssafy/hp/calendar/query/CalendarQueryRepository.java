@@ -17,6 +17,13 @@ import static com.ssafy.hp.pill.domain.QPill.pill;
 public class CalendarQueryRepository {
     private final JPAQueryFactory queryFactory;
 
+    public List<Calendar> findByUsersAndCalendarDate(User user){
+        return queryFactory
+                .selectFrom(calendar)
+                .where(calendar.users.eq(user))
+                .fetch();
+    }
+
     public List<Calendar> findByCalendarDate(User user, Integer calendarDate){
         return queryFactory
                 .selectFrom(calendar)
