@@ -23,7 +23,7 @@ public class CalendarFixture {
             = new UpdateCalendarRequest(CONTENT, TIME);
 
     public static final CalendarCountListResponse TEST_CALENDAR_COUNT_LIST_RESPONSE
-            = new CalendarCountListResponse(DATE, COUNT, COUNT);
+            = new CalendarCountListResponse(COUNT, COUNT);
     public static final CalendarDetailListResponse TEST_CALENDAR_DETAIL_LIST_RESPONSE
             = new CalendarDetailListResponse(ID, ID, NAME, DATE, TIME, CONTENT, YN_FIELD);
 }
