@@ -2,9 +2,6 @@ package com.ssafy.hp.calendar.query;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.calendar.domain.Calendar;
-import com.ssafy.hp.calendar.domain.QCalendar;
-import com.ssafy.hp.calendar.response.CalendarDetailListResponse;
-import com.ssafy.hp.pill.domain.QPill;
 import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -25,7 +22,8 @@ public class CalendarQueryRepository {
                 .selectFrom(calendar)
                 .leftJoin(calendar.pill, pill).fetchJoin()
                 .leftJoin(calendar.exercise, exercise).fetchJoin()
-                .where(calendar.calendarDate.eq(calendarDate))
+                .where(calendar.calendarDate.eq(calendarDate),
+                        calendar.users.eq(user))
                 .fetch();
     }
 }
