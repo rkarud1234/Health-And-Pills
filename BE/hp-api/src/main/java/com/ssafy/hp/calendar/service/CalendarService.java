@@ -15,7 +15,7 @@ public interface CalendarService {
 
     void createCalendar(User user, CreateCalendarRequest request);
 
-    void updateCalendar(User user, UpdateCalendarRequest request);
+    void updateCalendar(User user, Integer calendarId, UpdateCalendarRequest request);
 
     void deleteCalendar(User user, Integer calendarId);
 
