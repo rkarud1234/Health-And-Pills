@@ -12,18 +12,23 @@ import com.ssafy.hp.calendar.response.CalendarDetailListResponse;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.exercise.ExerciseRepository;
 import com.ssafy.hp.exercise.domain.Exercise;
+import com.ssafy.hp.exercise.service.ExerciseService;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.domain.Pill;
-import com.ssafy.hp.user.UserRepository;
+import com.ssafy.hp.pill.service.PillService;
+import com.ssafy.hp.user.UserExerciseRepository;
+import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.domain.UserExercise;
+import com.ssafy.hp.user.domain.UserPill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.ssafy.hp.CountOutOfBoundsException.CALENDAR_OUT_OF_BOUNDS;
 import static com.ssafy.hp.NotFoundException.*;
@@ -33,10 +38,13 @@ import static com.ssafy.hp.NotFoundException.*;
 @Transactional(readOnly = true)
 public class CalendarServiceImpl implements CalendarService{
     private final CalendarRepository calendarRepository;
-    private final UserRepository userRepository;
     private final ExerciseRepository exerciseRepository;
     private final PillRepository pillRepository;
     private final CalendarQueryRepository calendarQueryRepository;
+    private final UserPillRepository userPillRepository;
+    private final UserExerciseRepository userExerciseRepository;
+    private final ExerciseService exerciseService;
+    private final PillService pillService;
 
     @Override
     // 회원의 요일별 영양제 & 운동 갯수 조회
@@ -81,11 +89,19 @@ public class CalendarServiceImpl implements CalendarService{
         if (request.getExerciseId() == null){
             Pill findPill = pillRepository.findById(request.getPillId())
                     .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+            Optional<UserPill> findUserPill = userPillRepository.findUserPillByUsersAndPill(user,findPill);
+            if(!findUserPill.isPresent()){
+                pillService.updateUserPillByUserAndPill(user, request.getPillId(), YN.Y, 1);
+            }
             findCalendar = Calendar.createCalendar(request.getCalendarDate(), request.getCalendarTime(), request.getCalendarContent(), user, null, findPill);
         }
         else {
             Exercise findExercise = exerciseRepository.findById(request.getExerciseId())
                     .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
+            Optional<UserExercise> findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise);
+            if(!findUserExercise.isPresent()){
+                exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), YN.Y, 1);
+            }
             findCalendar = Calendar.createCalendar(request.getCalendarDate(), request.getCalendarTime(), request.getCalendarContent(), user, findExercise, null);
         }
         calendarRepository.save(findCalendar);
