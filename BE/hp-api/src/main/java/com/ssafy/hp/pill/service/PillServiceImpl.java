@@ -1,8 +1,6 @@
 package com.ssafy.hp.pill.service;
 
-import com.ssafy.hp.InvalidException;
-import com.ssafy.hp.NotFoundException;
-import com.ssafy.hp.NotMatchException;
+import com.ssafy.hp.*;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.FunctionalityRepository;
 import com.ssafy.hp.pill.NutrientRepository;
@@ -25,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,6 +46,7 @@ public class PillServiceImpl implements PillService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final UserPillRepository userPillRepository;
+    private final DetectText detectText;
     private final FunctionalityRepository functionalityRepository;
     private final NutrientRepository nutrientRepository;
 
@@ -213,6 +213,15 @@ public class PillServiceImpl implements PillService {
             userPill.updateUserPillBookmark(yn);
         } else {
             throw new InvalidException(InvalidException.INVALID_REQUEST);
+        }
+    }
+
+    public VisionResponse getDetectText(byte[] data) {
+        try {
+            String result = detectText.detectText(data);
+            return new VisionResponse(result, result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

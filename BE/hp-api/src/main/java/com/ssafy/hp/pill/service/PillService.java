@@ -44,4 +44,7 @@ public interface PillService {
     // 북마크, 복용중 상태 변경
     void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd);
 
+    // 이미지 감지
+    VisionResponse getDetectText(byte[] data);
+
 }
