@@ -32,4 +32,6 @@ public interface ExerciseService {
     List<ExerciseCategoryResponse> findAllExerciseCategory();
 
     List<ExercisePartCategoryResponse> findAllExercisePartCategory();
+
+    List<List<ExerciseCalendarResponse>> findExerciseByUserExercise(User user, String search);
 }

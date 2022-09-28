@@ -134,6 +134,14 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<List<ExerciseCalendarResponse>> findExerciseByUserExercise(User user, String search) {
+        List<List<ExerciseCalendarResponse>> results = new ArrayList<>();
+//        results.add(exerciseQueryRepository.findExerciseByUserExercise(user, search, YN.Y));
+//        results.add(exerciseQueryRepository.findExerciseByUserExercise(user, search, YN.N));
+        return results;
+    }
+
     private void updateUserExerciseByCmd(UserExercise userExercise, YN yn, int cmd) {
         if (cmd == CMD_DOING) {
             userExercise.updateUserExerciseDoing(yn);

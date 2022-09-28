@@ -26,10 +26,10 @@ public class Exercise extends BaseEntity {
     private Integer exerciseId;
 
     @Column(nullable = false)
-    private String ExerciseName;
+    private String exerciseName;
 
     @Column(nullable = false)
-    private String ExerciseContent;
+    private String exerciseContent;
 
     @OneToMany(mappedBy = "exercise", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ExercisePart> exerciseParts = new ArrayList<>();
