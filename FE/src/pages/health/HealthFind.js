@@ -3,15 +3,18 @@ import styled from "styled-components";
 import HealthFindType from "./HealthFindType"
 import HealthFindPart from "./HealthFindPart/HealthFindPart"
 
-  const TapWrapper = styled.div`
-    width: 100vw;
-  `
-
   const HealthButton = styled.button`
-    background-color: ${({ color }) => color};
-    color: ${({ textColor }) => textColor};
+    /* color: ${({ textColor }) => textColor}; */
+    color: gray;
     font-size: 16px;
     cursor: pointer;
+    background: white;
+    margin: 4px 4px 8px 4px;
+    font-weight: ${({fontWeight}) => fontWeight};
+  `;
+  
+  const PageWrapper = styled.div`
+    border-top: 1px solid gray;
   `
 
 const HealthFind = () => {
@@ -21,27 +24,25 @@ const HealthFind = () => {
     healthPart: <HealthFindPart/>
   }
 
-
   return (
     <>
-      <TapWrapper>
         <HealthButton
           onClick = {() => setHealthFindPage("healthType")}
-          textColor = {healthFindPage === "healthType" ? "#39f2ac" : "#7b7b7b"}
+          fontWeight = {healthFindPage === "healthType" ? "bolder" : "normal"}
         >
+          {console.log(healthFindPage)}
           운동종류별
         </HealthButton>
         |
         <HealthButton
           onClick = {() => setHealthFindPage("healthPart")}
-          textColor = {healthFindPage === "healthType" ? "#7b7b7b" : "#39f2ac"}
+          fontWeight = {healthFindPage === "healthPart" ? "bolder" : "normal"}
         >
           운동부위별
         </HealthButton>
-      </TapWrapper>
-      <div>
+      <PageWrapper>
         {tabPage[healthFindPage]}
-      </div>
+      </PageWrapper>
     </>
   )
 };

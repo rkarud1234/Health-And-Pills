@@ -4,16 +4,20 @@ import Footer from "../../components/layouts/Footer";
 import HealthFind from "./HealthFind";
 import HealthRecommend from "./HealthRecommend";
 
-  const TapWrapper = styled.div`
-    width: 100vw;
-  `
+// const CardWrapper = styled.div`
+//   margin: auto;
+//   align-items: center;
+// `
 
-  const HealthButton = styled.button`
-    background-color: ${({ color }) => color};
-    color: ${({ textColor }) => textColor};
-    font-size: 16px;
-    cursor: pointer;
-  `
+const HealthButton = styled.button`
+  color: ${({ textColor }) => textColor};
+  font-size: 16px;
+  cursor: pointer;
+  background: ${({backgroundColor}) => backgroundColor};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: ${({fontWeight}) => fontWeight};
+`
 
 const Health = () => {
   const [healthPage, setHealthPage] = useState("healthRecommend");
@@ -24,21 +28,21 @@ const Health = () => {
 
   return (
     <>
-      <TapWrapper>
         <HealthButton
           onClick = {() => setHealthPage("healthRecommend")}
-          textColor = {healthPage === "healthRecommend" ? "#39C18E" : "#7b7b7b"}
+          backgroundColor = {healthPage === "healthRecommend" ? "linear-gradient(#537CFE, #6A53FE)" : "gray"}
+          fontWeight = {healthPage === "healthRecommend" ? "bolder" : "normal"}
         >
           추천 운동 보기
         </HealthButton>
         |
         <HealthButton
           onClick = {() => setHealthPage("healthFind")}
-          textColor = {healthPage === "healthRecommend" ? "#7b7b7b" : "#39f2ac"}
+          backgroundColor = {healthPage === "healthFind" ? "linear-gradient(#537CFE, #6A53FE)" : "gray"}
+          fontWeight = {healthPage === "healthFind" ? "bolder" : "normal"}
         >
           직접 운동 찾기
         </HealthButton>
-      </TapWrapper>
       <div>
         {tabPage[healthPage]}
       </div>
