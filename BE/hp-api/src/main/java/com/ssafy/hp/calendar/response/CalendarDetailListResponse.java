@@ -11,6 +11,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CalendarDetailListResponse {
+
+    private Integer calendarId;
     private Integer exerciseId;
 
     private Integer pillId;
@@ -27,6 +29,7 @@ public class CalendarDetailListResponse {
 
     public static CalendarDetailListResponse from(Calendar calendar){
         CalendarDetailListResponse calendarDetailListResponse = new CalendarDetailListResponse();
+        calendarDetailListResponse.calendarId = calendar.getCalendarId();
         calendarDetailListResponse.calendarDate = calendar.getCalendarDate();
         calendarDetailListResponse.calendarTime = calendar.getCalendarTime();
         calendarDetailListResponse.calendarContent = calendar.getCalendarContent();
