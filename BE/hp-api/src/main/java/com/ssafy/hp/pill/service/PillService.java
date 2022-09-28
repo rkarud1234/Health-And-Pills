@@ -2,6 +2,7 @@ package com.ssafy.hp.pill.service;
 
 
 import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
 import com.ssafy.hp.pill.response.*;
@@ -49,4 +50,6 @@ public interface PillService {
     VisionResponse getDetectText(String data);
 
     List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword);
+
+    List<List<PillCalendarResponse>> findPillByUserPill(User user, String search);
 }

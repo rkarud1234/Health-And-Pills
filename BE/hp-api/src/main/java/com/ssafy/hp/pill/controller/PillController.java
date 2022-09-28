@@ -1,6 +1,7 @@
 package com.ssafy.hp.pill.controller;
 
 import com.ssafy.hp.config.LoginUser;
+import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
 import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
@@ -114,6 +115,13 @@ public class PillController {
     public ResponseEntity<List<String>> findTop10PillNameByPillNameContainingOrderByPillNameAsc(@PathVariable("keyword") String keyword) {
         System.out.println("keyword = " + keyword);
         List<String> body = pillService.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // 영양제 일정 등록 시 자동완성 리스트
+    @GetMapping("/calendar-list")
+    public ResponseEntity<List<List<PillCalendarResponse>>> findPillByUserPill(@LoginUser User user, @RequestParam String search) {
+        List<List<PillCalendarResponse>> body = pillService.findPillByUserPill(user, search);
         return ResponseEntity.ok().body(body);
     }
 
