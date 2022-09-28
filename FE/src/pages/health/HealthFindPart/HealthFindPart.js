@@ -2,7 +2,7 @@ import HealthCard from "../../../components/cards/HealthCard";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { client } from "../../../api";
 import styled from "styled-components";
-import { useInView } from "react-intersection-observer";
+// import { useInView } from "react-intersection-observer";
 import React from "react";
 import { Card } from "@mui/material";
 
@@ -49,7 +49,7 @@ const HealthFindPart = () => {
   const [partNum, setPartNum] = useState(1);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [ref, inView] = useInView();
+  // const [ref, inView] = useInView();
 
 
   // 메뉴 횡스크롤
@@ -145,13 +145,13 @@ const HealthFindPart = () => {
                 <React.Fragment key={idx}>
                   {partItems.length - 1 == idx ? (
                     <>
-                      <div ref={ref}>
+                      {/* <div ref={ref}> */}
                         <HealthCard
                           {...item}
                           key={idx}
                         >
                         </HealthCard>
-                      </div>
+                      {/* </div> */}
                     </>
                   ) : (
                     <>
