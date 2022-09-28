@@ -50,31 +50,44 @@ public class ExerciseQueryRepository {
     }
 
     public List<List<ExerciseCalendarResponse>> findExerciseByUserExercise(User user, String search) {
-//        List<Exercise> doing = queryFactory
-//                .selectFrom(exercise)
-//                .join(userExercise)
-//                .on(exercise.eq(userExercise.exercise))
-//                .where(userExercise.users.eq(user)
-//                        .and(userExercise.userExerciseDoing.eq(YN.Y))
-//                        .and(exercise.exerciseName.contains(search)))
-//                .limit(5)
-//                .fetch();
-//
-//        List<Exercise> notDoing = queryFactory
-//                .selectFrom(exercise)
-//                .leftJoin(userExercise)
-//                .on(exercise.eq(userExercise.exercise))
-//                .where(userExercise.users.eq(user)
-//                        .and(userExercise.userExerciseDoing.eq(YN.Y))
-//                        .and(exercise.exerciseName.contains(search)))
-//                .limit(5)
-//                .fetch();
+//        select *
+//                from exercise as e
+        //       join user_exercise u
+        //     on e.exercise_id = u.exercise_id
+        //   where u.user_exercise_doing = "Y"
+        // and e.exercise_name like "%벤치%"
+        //and user_id=34;
+        List<Exercise> doing = queryFactory
+                .selectFrom(exercise)
+                .join(userExercise)
+                .on(exercise.eq(userExercise.exercise))
+                .where(userExercise.userExerciseDoing.eq(YN.Y)
+                        .and(exercise.exerciseName.contains(search))
+                        .and(userExercise.users.eq(user)))
+                .limit(5)
+                .fetch();
 
+//        select *
+//                from exercise
+//        where exercise_name like "%벤치%"
+//        and exercise_id not in (select e.exercise_id
+//        from exercise as e
+//        join user_exercise u
+//        on e.exercise_id = u.exercise_id
+//        where u.user_exercise_doing = "Y"
+//        and e.exercise_name like "%벤치%"
+//        and user_id=34);
+        List<Exercise> notDoing = queryFactory
+                .selectFrom(exercise)
+                .where(exercise.exerciseName.contains(search)
+                        .and(exercise.notIn(doing)))
+                .limit(5)
+                .fetch();
 
-//        return results.stream()
-//                .map(ExerciseCalendarResponse::from)
-//                .collect(Collectors.toList());
+        List<List<ExerciseCalendarResponse>> result = new ArrayList<>();
+        result.add(doing.stream().map(ExerciseCalendarResponse::from).collect(Collectors.toList()));
+        result.add(notDoing.stream().map(ExerciseCalendarResponse::from).collect(Collectors.toList()));
 
-        return null;
+        return result;
     }
 }
