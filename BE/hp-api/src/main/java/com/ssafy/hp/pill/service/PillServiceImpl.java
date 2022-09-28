@@ -2,6 +2,7 @@ package com.ssafy.hp.pill.service;
 
 import com.ssafy.hp.*;
 import com.ssafy.hp.common.type.YN;
+import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
 import com.ssafy.hp.pill.FunctionalityRepository;
 import com.ssafy.hp.pill.NutrientRepository;
 import com.ssafy.hp.pill.PillRepository;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
@@ -206,9 +208,10 @@ public class PillServiceImpl implements PillService {
         }
     }
 
-    public VisionResponse getDetectText(byte[] data) {
+    public VisionResponse getDetectText(String data) {
+        System.out.println("PillServiceImpl.getDetectText");
         try {
-            String result = detectText.detectText(data);
+            String result = detectText.detectText(data.getBytes());
             return new VisionResponse(result, result);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -218,9 +221,14 @@ public class PillServiceImpl implements PillService {
     @Override
     public List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword) {
         List<Pill> lists = pillRepository.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
-        for(Pill pill : lists){
+        for (Pill pill : lists) {
             System.out.println(pill.getPillName());
         }
         return lists.stream().map(Pill::getPillName).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<List<PillCalendarResponse>> findPillByUserPill(User user, String search) {
+        return pillQueryRepository.findPillByUserPill(user, search);
     }
 }

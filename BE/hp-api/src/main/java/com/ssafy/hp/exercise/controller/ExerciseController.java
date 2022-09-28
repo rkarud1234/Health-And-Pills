@@ -87,4 +87,11 @@ public class ExerciseController {
         List<ExercisePartCategoryResponse> body = exerciseService.findAllExercisePartCategory();
         return ResponseEntity.ok().body(body);
     }
+
+    // 운동 일정 등록 시 리스트
+    @GetMapping("/calendar-list")
+    public ResponseEntity<List<List<ExerciseCalendarResponse>>> findExerciseByUserExercise(@LoginUser User user, @RequestParam String search) {
+        List<List<ExerciseCalendarResponse>> body = exerciseService.findExerciseByUserExercise(user, search);
+        return ResponseEntity.ok().body(body);
+    }
 }
