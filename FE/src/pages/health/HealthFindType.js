@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { client } from "../../api";
 import HealthCard from "../../components/cards/HealthCard";
-import { useInView } from "react-intersection-observer";
+// import { useInView } from "react-intersection-observer";
 import React from "react";
 
 
@@ -41,7 +41,7 @@ const HealthFindType = ({exerciseId}) => {
   const [cateNum, setCateNum] = useState(1);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [ref, inView] = useInView();
+  // const [ref, inView] = useInView();
 
   // 메뉴 횡스크롤
   const scrollRef = useRef(null);
@@ -136,13 +136,13 @@ const HealthFindType = ({exerciseId}) => {
             <React.Fragment key={idx}>
               {items.length - 1 == idx ? (
                 <>
-                  <div ref={ref}>
+                  {/* <div ref={ref}> */}
                     <HealthCard
                       {...item}
                       key={idx}
                     >
                     </HealthCard>
-                  </div>
+                  {/* </div> */}
                 </>
               ) : (
                 <>
