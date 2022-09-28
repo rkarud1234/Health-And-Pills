@@ -83,6 +83,7 @@ class CalendarControllerTest extends ControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("[]").type(JsonFieldType.ARRAY).description("결과 배열"),
+                                fieldWithPath("[].calendarId").type(JsonFieldType.NUMBER).description("일정 ID"),
                                 fieldWithPath("[].exerciseId").type(JsonFieldType.NUMBER).description("운동 ID"),
                                 fieldWithPath("[].pillId").type(JsonFieldType.NUMBER).description("영양제 ID"),
                                 fieldWithPath("[].name").type(JsonFieldType.STRING).description("이름"),
