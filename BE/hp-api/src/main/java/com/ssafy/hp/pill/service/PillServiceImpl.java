@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
@@ -206,9 +207,10 @@ public class PillServiceImpl implements PillService {
         }
     }
 
-    public VisionResponse getDetectText(byte[] data) {
+    public VisionResponse getDetectText(String data) {
+        System.out.println("PillServiceImpl.getDetectText");
         try {
-            String result = detectText.detectText(data);
+            String result = detectText.detectText(data.getBytes());
             return new VisionResponse(result, result);
         } catch (IOException e) {
             throw new RuntimeException(e);

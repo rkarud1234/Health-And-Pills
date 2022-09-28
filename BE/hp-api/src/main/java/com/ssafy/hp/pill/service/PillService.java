@@ -8,6 +8,7 @@ import com.ssafy.hp.pill.response.*;
 import com.ssafy.hp.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public interface PillService {
     void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd);
 
     // 이미지 감지
-    VisionResponse getDetectText(byte[] data);
+    VisionResponse getDetectText(String data);
 
     List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword);
 }

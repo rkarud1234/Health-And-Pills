@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -87,8 +88,9 @@ public class PillController {
     }
 
     // 이미지 검색
-    @GetMapping("/vision")
-    public ResponseEntity<VisionResponse> getDetectText(@Valid byte[] data) {
+    @PostMapping("/vision")
+    public ResponseEntity<VisionResponse> getDetectText(@RequestBody @Valid String data) {
+        System.out.println("PillController.getDetectText");
         VisionResponse body = pillService.getDetectText(data);
         return ResponseEntity.ok().body(body);
     }
