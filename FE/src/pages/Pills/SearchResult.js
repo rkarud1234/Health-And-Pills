@@ -2,10 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import PillCard from '../../components/cards/PillCard'
+import HorizPillCard from '../../components/cards/HorizPillCard'
 
 const CardDiv = styled.div`
-margin: 16px 16px
+margin: 0px 16px;
+width: 100%;
 `
 
 const FlexBox = styled.div`
@@ -22,6 +23,7 @@ height: 86vh;
 
 const SearchResult = ({ isSearched }) => {
   const searchResult = useSelector(state => state.search.searchResult).content
+  console.log(searchResult)
   const navigate = useNavigate()
   let text = ''
 
@@ -44,11 +46,13 @@ const SearchResult = ({ isSearched }) => {
                 key={pill.pillId}
                 onClick={() => { navigate(`/pill/detail/${pill.pillId}`) }}
               >
-                <PillCard
-                  text={pill.pillName}
+                <HorizPillCard
+                  name={pill.pillName}
                   url={pill.pillThumbnail}
-                  rating={pill.reviewAverage}
-                ></PillCard>
+                  reviewAverage={pill.reviewAverage}
+                  companyName={pill.pillCompanyName}
+                  reviewCount={pill.reviewCount}
+                ></HorizPillCard>
               </CardDiv>
             )
           })
