@@ -1,10 +1,8 @@
 package com.ssafy.hp.user.query;
 
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.pill.domain.PillReview;
-import com.ssafy.hp.user.UserProfileRepository;
 import com.ssafy.hp.user.domain.*;
 import com.ssafy.hp.user.response.QUserInbodyAverageResponse;
 import com.ssafy.hp.user.response.UserInbodyAverageResponse;
