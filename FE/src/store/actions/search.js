@@ -32,7 +32,6 @@ export const FunctionalitiesFetch = createAsyncThunk(
         }
       })
       .catch(error => {
-        console.log(error)
         alert('생리활성 기능 상세정보를 불러올 수 없습니다.')
         return false
       })
@@ -53,7 +52,6 @@ export const NutrientsFetch = createAsyncThunk(
         }
       })
       .catch(error => {
-        console.log(error)
         alert('영양소 기능 상세정보를 불러올 수 없습니다.')
         return false
       })
@@ -67,14 +65,11 @@ export const SearchPill = createAsyncThunk(
     return client.get(`/pills/search?search=${data.searchWord}&domestic=${data.domestic}&functionalities=${data.functionalityList}&materials=${data.nutrientList}`)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data)
           return res.data
         } else {
-          console.log(res)
         }
       })
       .catch(error => {
-        console.log(error)
         return false
       })
   }
@@ -89,11 +84,9 @@ export const AutoComplete = createAsyncThunk(
         if (res.status === 200) {
           return res.data
         } else {
-          console.log(res)
         }
       })
       .catch(error => {
-        console.log(error)
         return false
       })
   }
