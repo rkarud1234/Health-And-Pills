@@ -40,6 +40,7 @@ import static com.ssafy.hp.pill.domain.QWarning.warning;
 import static com.ssafy.hp.pill.domain.QPillReview.pillReview;
 import static com.ssafy.hp.user.domain.QUserExercise.userExercise;
 import static com.ssafy.hp.user.domain.QUserPill.userPill;
+import static com.ssafy.hp.pill.domain.QFunctionality.functionality;
 
 @Repository
 @RequiredArgsConstructor
@@ -113,6 +114,17 @@ public class PillQueryRepository {
                 .join(pillNutrient)
                 .on(nutrient.eq(pillNutrient.nutrient))
                 .where(pillNutrient.pill.eq(pill))
+                .fetch();
+    }
+
+    // 영양제에 포함된 생리활성기능 반환
+    public List<String> findFunctionalityByPill(Pill pill) {
+        return queryFactory
+                .select(functionality.functionalityContent)
+                .from(functionality)
+                .join(pillFunctionality)
+                .on(functionality.eq(pillFunctionality.functionality))
+                .where(pillFunctionality.pill.eq(pill))
                 .fetch();
     }
 
