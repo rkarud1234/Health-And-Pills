@@ -72,6 +72,7 @@ const Review = () => {
   };
 
   const editReview = async (reviewId, data) => {
+    console.log(data);
     updateMutation.mutate({ reviewId, data });
     closeReviewEdit();
   };

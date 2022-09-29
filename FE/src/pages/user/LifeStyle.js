@@ -1,6 +1,10 @@
-import { useRef, useState } from "react";
+import userEvent from "@testing-library/user-event";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { updateUserExercise } from "../../api/users";
 import GradationButton from "../../components/buttons/GradationButton";
+import { editLifestyle } from "../../store/actions/user";
 
 const LifeStyleWrapper = styled.div`
   padding: 80px 20px;
@@ -94,21 +98,41 @@ const LIFE_STYLE = [
     icon: <i className="fa-solid fa-sparkles"></i>,
   },
 ];
-const LifeStyle = () => {
-  const [lifeStyleState, setLifeStyleState] = useState({
-    purposeOfExercise: 2,
-    numberOfExercise: 1,
-  });
 
+const getEditButtonStatus = (exercisePurposeId, exerciseTimes, lifeStyle) => {
+  return exercisePurposeId !== lifeStyle.exercisePurposeId ||
+    exerciseTimes !== lifeStyle.exerciseTimes
+    ? true
+    : false;
+};
+const LifeStyle = () => {
+  const exercisePurposeId = useSelector(
+    (state) => state.user.data.exercisePurposeId
+  );
+  const exerciseTimes = useSelector((state) => state.user.data.exerciseTimes);
+  const [lifeStyle, setLifeStyle] = useState({
+    exercisePurposeId,
+    exerciseTimes,
+  });
+  const dispatch = useDispatch();
   const purposeButton = useRef();
   const numberSelect = useRef();
+  const editButton = useRef(false);
 
   const onHandleLifeStyle = (e) => {
-    console.log(e.target);
-    console.log(e.target.name);
-    setLifeStyleState({ ...lifeStyleState, [e.target.name]: e.target.value });
+    setLifeStyle({
+      ...lifeStyle,
+      [e.currentTarget.name]: parseInt(e.currentTarget.value),
+    });
   };
-  console.log(lifeStyleState);
+  editButton.current = useMemo(() =>
+    getEditButtonStatus(exercisePurposeId, exerciseTimes, lifeStyle)
+  );
+
+  const onHandleEditLifeStyle = useCallback(async () => {
+    dispatch(editLifestyle(lifeStyle));
+    alert("변경되었습니다.");
+  }, [lifeStyle.exercisePurposeId, lifeStyle.exerciseTimes]);
 
   return (
     <LifeStyleWrapper>
@@ -120,10 +144,9 @@ const LifeStyle = () => {
             value={item.id}
             onClick={onHandleLifeStyle}
             ref={purposeButton}
-            name={"purposeOfExercise"}
-            className={
-              item.id === lifeStyleState.purposeOfExercise ? "active" : ""
-            }
+            type="button"
+            name={"exercisePurposeId"}
+            className={item.id === lifeStyle.exercisePurposeId ? "active" : ""}
           >
             {item.icon}
             <span>{item.title}</span>
@@ -136,26 +159,40 @@ const LifeStyle = () => {
           <select
             ref={numberSelect}
             onChange={onHandleLifeStyle}
-            name={"numberOfExercise"}
+            name={"exerciseTimes"}
+            value={lifeStyle.exerciseTimes}
           >
             {NUMBER_OF_EXERCISE.map((option) => (
-              <option
-                key={option.id}
-                value={option.id}
-                defaultValue={lifeStyleState.numberOfExercise === option.value}
-              >
+              <option key={option.id} value={option.id}>
                 {option.title}
               </option>
             ))}
           </select>
         </div>
       </NumberOfExerciseWrapper>
-      <GradationButton
-        text={"변경하기"}
-        fontSize={"16px"}
-        padding={"8px 16px"}
-        height={"40px"}
-      />
+      {editButton.current ? (
+        <GradationButton
+          type="button"
+          text={"변경하기"}
+          fontSize={"16px"}
+          padding={"8px 16px"}
+          height={"40px"}
+          onClick={onHandleEditLifeStyle}
+        />
+      ) : (
+        <GradationButton
+          type="button"
+          text={"변경하기"}
+          from={"#bababa"}
+          to={"#bababa"}
+          fontSize={"16px"}
+          padding={"8px 16px"}
+          height={"40px"}
+          cursor={"default"}
+        >
+          변경하기
+        </GradationButton>
+      )}
     </LifeStyleWrapper>
   );
 };

@@ -1,6 +1,8 @@
 import React from "react";
 import { useRef } from "react";
 import styled from "styled-components";
+import { deleteUserPill } from "../../api/pill";
+import DeleteItemButton from "../buttons/DeleteItemButton";
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -43,7 +45,12 @@ const ItemTitleWrapper = styled.div`
 `;
 
 const ItemTitle = styled.p`
-  font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 220px;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  width: 100%;
   & + span {
     font-size: 14px;
   }
@@ -66,22 +73,24 @@ const ButtonWrapper = styled.div`
     background-color: transparent;
   }
 `;
-const UserInfoListItem = ({ id, title, img, rating, deleteUserInfo, type }) => {
+
+const UserInfoListItem = ({ relatedItemId, name, img, rating, infoType }) => {
+  console.log(infoType);
   const itemRef = useRef();
   return (
     <ItemWrapper ref={itemRef}>
       <ItemImgTitleWrapper>
         <ItemImgWrapper>
-          {img !== undefined ? (
-            <img src={process.env.PUBLIC_URL + "/logo512.png"} />
-          ) : type === "pill" ? (
+          {img !== "" && img !== undefined ? (
+            <img src={img} alt="이미지 준비중" />
+          ) : infoType === "pill" ? (
             <i className="fa-regular fa-pills"></i>
           ) : (
             <i className="fa-sharp fa-solid fa-person-walking"></i>
           )}
         </ItemImgWrapper>
         <ItemTitleWrapper>
-          <ItemTitle>{title}</ItemTitle>
+          <ItemTitle>{name}</ItemTitle>
           {rating !== undefined ? (
             <span>
               <i className="fa-solid fa-star"></i>
@@ -93,15 +102,14 @@ const UserInfoListItem = ({ id, title, img, rating, deleteUserInfo, type }) => {
         </ItemTitleWrapper>
       </ItemImgTitleWrapper>
       <ButtonWrapper>
-        <button
+        <DeleteItemButton color={"red"} text={"삭제"} />
+        {/* <button
           onClick={() => {
-            console.log(itemRef);
-            console.log(itemRef.current.style);
-            deleteUserInfo(type, id);
+            onClick(relatedItemId);
           }}
         >
           <i className="fa-regular fa-trash"></i>
-        </button>
+        </button> */}
       </ButtonWrapper>
     </ItemWrapper>
   );

@@ -17,21 +17,53 @@ export const getUserInfo = async (type) => {
   return result;
 };
 
-export const fetchUserExercise = async () => {
+export const fetchUserExercise = async (page) => {
   const result = await client
-    .get("/users/exercise")
+    .get(`/users/exercise`, { params: { page } })
     .then((response) => response);
   return result;
 };
 
-export const fetchUserPill = async () => {
-  const result = await client.get("/users/pill").then((response) => response);
+export const updateUserExercise = async (data) => {
+  const result = await client
+    .put(`/users/exercise`, data)
+    .then((response) => response);
   return result;
 };
 
-export const fetchUserBookmark = async (type) => {
+export const updateUserinbody = async (data) => {
   const result = await client
-    .get(`/users/${type}/bookmark`)
+    .put(`/users/inbody`, data)
+    .then((response) => response);
+  return result;
+};
+
+export const fetchUserPill = async (page) => {
+  const result = await client
+    .get(`/users/pill`, { params: { page } })
+    .then((response) => response);
+  return result;
+};
+
+export const fetchUserPillBookmark = async (page) => {
+  const result = await client
+    .get(`/users/pill/bookmark`, { params: { page } })
+    .then((response) => response);
+  console.log(result);
+  return result;
+};
+
+export const fetchUserExerciseBookmark = async (page) => {
+  const result = await client
+    .get(`/users/exercise/bookmark`, { params: { page } })
+    .then((response) => response);
+  console.log(result);
+  return result;
+};
+
+export const fetchUserReview = async (page) => {
+  const result = await client
+    .get(`/users/review`, { params: { page } })
     .then((response) => response);
   return result;
 };
