@@ -6,10 +6,11 @@ import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../sto
 import { useDispatch } from 'react-redux'
 import CancelModal from './CancelModal.js'
 import ReviewBox from './ReviewBox'
+import { width } from '@mui/system'
 
 const Container = styled.div`
 box-sizing: border-box;
-margin: 8px 8px;
+margin: 8px 16px;
 
 background: #FFFFFF;
 border: 1px solid #A6A4A4;
@@ -17,9 +18,17 @@ border-radius: 10px;
 `
 const ProFlexBox = styled.div`
 display: flex;
-margin: 8px;
+margin: 8px
+;
 `
 const TextDiv = styled.div`
+width: 80%;
+font-size: 12px;
+text-align: center;
+margin: 0px 4px;
+font-weight: bold;
+`
+const NumDiv = styled.div`
 font-size: 12px;
 text-align: center;
 margin: 0px 4px;
@@ -73,7 +82,7 @@ cursor: pointer;
 `
 const ReviewContainer = styled.div`
 box-sizing: border-box;
-margin: 8px 8px;
+margin: 8px 16px;
 
 background: #FFFFFF;
 border: 1px solid #A6A4A4;
@@ -167,8 +176,8 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
             </div>
           </div>
           : <div style={{ display: 'flex', borderBottom: '1px solid #A6A4A4' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px' }}>
-              <div style={{ fontSize: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px', width: '30%' }}>
+              <div style={{ fontSize: '14px', textAlign: 'center' }}>
                 사용자 총 평점
               </div>
               <ProFlexBox >
@@ -176,51 +185,51 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
                 <div style={{ fontSize: '32px' }}>{reviewaverage}</div>
               </ProFlexBox>
             </div>
-            <div style={{ margin: '8px 8px' }}>
+            <div style={{ margin: '8px 8px', width: '90%' }}>
               <ProFlexBox>
                 <TextDiv>
                   아주 좋아요
                 </TextDiv>
                 <ReviewProgress width={fiveRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.fiveRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   맘에 들어요
                 </TextDiv>
                 <ReviewProgress width={fourRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.fourRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   보통 이에요
                 </TextDiv>
                 <ReviewProgress width={threeRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.threeRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   그저 그래요
                 </TextDiv>
                 <ReviewProgress width={twoRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.twoRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   추천 안해요
                 </TextDiv>
                 <ReviewProgress width={oneRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.oneRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
             </div>
           </div>}

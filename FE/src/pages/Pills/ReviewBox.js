@@ -4,8 +4,7 @@ import { Rating } from '@mui/material'
 
 const ReviewContainer = styled.div`
 box-sizing: border-box;
-margin: 8px 8px;
-
+margin: 8px 16px;
 background: #FFFFFF;
 border: 1px solid #A6A4A4;
 border-radius: 10px;

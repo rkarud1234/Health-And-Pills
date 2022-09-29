@@ -51,7 +51,6 @@ export const createReviewFetch = createAsyncThunk(
   async (review) => {
     return client.post(`pills/${review.pillID}/review`, review)
       .then(res => {
-        console.log(res)
         if (res.status === 200) {
           alert('후기가 정상적으로 작성되었습니다.')
           return true
@@ -81,7 +80,6 @@ export const updateReviewFetch = createAsyncThunk(
         }
       })
       .catch(error => {
-        console.log(error)
         alert('후기가 수정되지 않았습니다.')
         return false
       })
@@ -89,7 +87,6 @@ export const updateReviewFetch = createAsyncThunk(
 )
 
 // 영양제 리뷰 삭제
-
 export const DeleteReview = createAsyncThunk(
   'pill/deleteReview',
   async (reviewId) => {
@@ -104,8 +101,48 @@ export const DeleteReview = createAsyncThunk(
         }
       })
       .catch(error => {
-        console.log(error)
         alert('후기가 삭제되지 않았습니다.')
+        return false
+      })
+  }
+)
+
+//영양제 북마크
+export const bookMarkPill = createAsyncThunk(
+  'pill/bookmarkPill',
+  async (data) => {
+    return client.post(`pills/bookmark`, data)
+      .then(res => {
+        if (res.status === 200) {
+          alert('북마크에 정상적으로 추가 되었습니다.')
+          return true
+        } else {
+          alert('북마크 추가가 실패했습니다.')
+          return false
+        }
+      })
+      .catch(error => {
+        alert('북마크 추가가 실패했습니다.')
+        return false
+      })
+  }
+)
+//영양제 복용중 체크
+export const takingPill = createAsyncThunk(
+  'pill/takingPill',
+  async (data) => {
+    return client.post(`pills/taking`, data)
+      .then(res => {
+        if (res.status === 200) {
+          alert('현재 복용중인 영양제로 정상 등록되었습니다.')
+          return true
+        } else {
+          alert('복용중인 영양제로 등록이 실패했습니다.')
+          return false
+        }
+      })
+      .catch(error => {
+        alert('복용중인 영양제로 등록이 실패했습니다.')
         return false
       })
   }

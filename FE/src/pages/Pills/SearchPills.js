@@ -51,7 +51,6 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
   const nutrientList = useSelector(state => state.search.nutrientList)
   const domestic = useSelector(state => state.search.domestic)
   let autoComplete = useSelector(state => state.search.autoComplete)
-  console.log(autoComplete)
 
   const valueHandler = (e) => {
     setSearchWord(e.target.value)
@@ -71,7 +70,6 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
       functionalityList: functionalityList,
       nutrientList: nutrientList
     }
-    console.log(data)
     dispatch(SearchPill(data))
     setIsSearched(true)
     setIsOpened(false)
@@ -86,7 +84,6 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
       functionalityList: functionalityList,
       nutrientList: nutrientList
     }
-    console.log(data)
     dispatch(SearchPill(data))
     setIsSearched(true)
     setIsOpened(false)
