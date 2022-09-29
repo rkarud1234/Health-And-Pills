@@ -1,6 +1,5 @@
-from turtle import ondrag
 from django.db import models
-
+import pandas as pd
 class Exercise(models.Model):
 
     class Meta:
@@ -37,4 +36,5 @@ class ExercisePartCategory(models.Model):
     def __str__(self):
         return self.exercise_part_category_name
 
-
+    def toDataFrame(cols):
+        return pd.DataFrame(Exer)
