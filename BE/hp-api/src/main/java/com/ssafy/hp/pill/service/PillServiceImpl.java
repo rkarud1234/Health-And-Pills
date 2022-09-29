@@ -69,7 +69,7 @@ public class PillServiceImpl implements PillService {
     public PillDetailResponse findByPillId(int pillId) {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException("메세지"));
-        return PillDetailResponse.from(pill, pillQueryRepository.findNutrientByPill(pill), pillQueryRepository.findWarningByPill(pill));
+        return PillDetailResponse.from(pill, pillQueryRepository.findNutrientByPill(pill), pillQueryRepository.findFunctionalityByPill(pill), pillQueryRepository.findWarningByPill(pill));
     }
 
 
