@@ -47,7 +47,6 @@ const PillDetail = () => {
   const pillDetail = useSelector(state => state.pill.pillDetail)
   const status = useSelector(state => state.pill.status)
   const reviewInfo = useSelector(state => state.pill.reviewInfo)
-
   useEffect(() => {
     dispatch(PillDetailFetch(id))
   }, [reviewInfo])
