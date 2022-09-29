@@ -1,10 +1,9 @@
 import { useInfiniteQuery } from "react-query";
-import { fetchUserPill } from "../api/users";
 
-const useFetchData = () => {
+const useFetchData = (fetchUrl, queryKey) => {
   const res = useInfiniteQuery(
-    ["infiniteData"],
-    ({ pageParam = 0 }) => fetchUserPill(pageParam),
+    [queryKey],
+    ({ pageParam = 0 }) => fetchUrl(pageParam),
     {
       getNextPageParam: ({ data: { last, number } }) =>
         last ? undefined : number + 1,
