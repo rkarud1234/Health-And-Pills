@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getYoilInfo } from "../../api/schedule";
+import { client } from "../../api";
 
-const DailyCard = () => {
   const DailyCardWrapper = styled.div`
     display: block;
     background-color: transparent;
+    padding-left: 12px;
+    padding-right: 12px;
   `
   
   const DayWrapper = styled.div`
@@ -22,6 +26,7 @@ const DailyCard = () => {
   const HpSection = styled.div`
     display: flex;
     font-size: small;
+    justify-content: space-between;
   `
 
   const HpIconWrapper = styled.div`
@@ -35,20 +40,19 @@ const DailyCard = () => {
     color: black;
     font-size: small;
   `
+  
+const DailyCard = ({calendarDate, pillCount, exerciseCount, onHandleYoil}) => {
 
   return (
     <>
       <DailyCardWrapper>
-        <DayWrapper>
-          요일
-        </DayWrapper>
-        <DailyButton>
+        <DailyButton onClick={() => onHandleYoil(calendarDate)}>
           <HpSection>
             <HpIconWrapper>
               <i className="fa-regular fa-capsules"/>
             </HpIconWrapper>
             <HpNumWrapper>
-              2
+              {pillCount}
             </HpNumWrapper>
           </HpSection>
           <HpSection>
@@ -56,7 +60,7 @@ const DailyCard = () => {
               <i className="fa-solid fa-dumbbell"/>
             </HpIconWrapper>
             <HpNumWrapper>
-              5
+              {exerciseCount}
             </HpNumWrapper>
           </HpSection>
         </DailyButton>
