@@ -135,8 +135,8 @@ public class UserController {
 
     //회원의 성별, 나잇대에 따른 인바디 평균 값(키, 몸무게, 체지방량, 골격근량, 체수분량)
     @GetMapping("/inbody")
-    public ResponseEntity<List<UserInbodyAverageResponse>> findUserInbodyAverage(@LoginUser User user){
-        List<UserInbodyAverageResponse> body = userService.findUserInbodyAverage(user);
+    public ResponseEntity<UserInbodyAverageResponse> findUserInbodyAverage(@LoginUser User user){
+        UserInbodyAverageResponse body = userService.findUserInbodyAverage(user);
         return ResponseEntity.ok().body(body);
     }
 

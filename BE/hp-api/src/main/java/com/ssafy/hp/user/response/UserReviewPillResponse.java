@@ -25,6 +25,7 @@ public class UserReviewPillResponse {
         userReviewPillResponse.name = pillReview.getPill().getPillName();
         userReviewPillResponse.img = pillReview.getPill().getPillThumbnail();
         userReviewPillResponse.reviewContent = pillReview.getPillReviewContent();
+        userReviewPillResponse.rating = pillReview.getPillReviewScore();
         return userReviewPillResponse;
     }
 }
