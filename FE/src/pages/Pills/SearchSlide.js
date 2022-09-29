@@ -243,7 +243,10 @@ const SearchSlide = ({ openHandler }) => {
         <Category>
           {Tabs}
           {tabNum === 1 &&
-            <CategoryBox>
+            <CategoryBox style={{ flexDirection: 'column' }}>
+              <RadioDiv>
+                <label><input onChange={domesticHandler} checked={domestic === "" && true} type="radio" name="제품 구분" value="" />통합</label>
+              </RadioDiv>
               <RadioDiv>
                 <label><input onChange={domesticHandler} checked={domestic === "Y" && true} type="radio" name="제품 구분" value="Y" />국내</label>
               </RadioDiv>
