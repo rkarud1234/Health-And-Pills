@@ -249,7 +249,7 @@ const PillInfo = ({
         {pillExpirationDate}
       </div>
       <DetailDiv>
-        <ItemDiv style={{ borderBottom: '1px solid #595959', display: 'flex', justifyContent: 'space-between', padding: '8px 0px' }}>
+        <ItemDiv style={{ borderBottom: '1px solid #CAD1D5', display: 'flex', justifyContent: 'space-between', padding: '8px 0px' }}>
           상세 정보
           {(pillContent && pillContent.length > textLimit.current) &&
             (isShowMore ?
