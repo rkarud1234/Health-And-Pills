@@ -96,6 +96,12 @@ const getInfo = async () => {
       array.push({calendarDate: index, pillCount: 0, exerciseCount: 0});
     }
   }
+  // 일정 아예 없을 때 처리
+  if(response.data.length <= 0){
+    for(let i = 0; i < 7; i++){
+      array.push({calendarDate: i, pillCount: 0, exerciseCount: 0});
+   }
+ }
   setList([...array])
 };
 
