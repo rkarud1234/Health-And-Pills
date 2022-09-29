@@ -6,8 +6,8 @@ const ReviewContainer = styled.div`
 box-sizing: border-box;
 margin: 8px 16px;
 background: #FFFFFF;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 `
 const GradientIcon = styled.i`
 background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
@@ -19,7 +19,7 @@ text-fill-color: transparent;
 const TextBox = styled.textarea`
  width: 92%;
  height: 80px;
- border: 1px solid #A6A4A4;
+ border: 1px solid #CAD1D5;
  :focus {outline: none;};
  overflow-y: hidden;
  resize: none;

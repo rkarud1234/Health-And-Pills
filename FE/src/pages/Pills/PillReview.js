@@ -6,15 +6,14 @@ import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../sto
 import { useDispatch } from 'react-redux'
 import CancelModal from './CancelModal.js'
 import ReviewBox from './ReviewBox'
-import { width } from '@mui/system'
 
 const Container = styled.div`
 box-sizing: border-box;
 margin: 8px 16px;
 
 background: #FFFFFF;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 `
 const ProFlexBox = styled.div`
 display: flex;
@@ -51,8 +50,8 @@ const ReviewBtn = styled.button`
 display: block;
 font-family: 'GmarketSans';
 background: #EAEFF1;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 color: #A6A4A4;
 font-size: 16px;
 padding: 12px 32px;
@@ -64,14 +63,6 @@ background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
 -webkit-text-fill-color: transparent;
 background-clip: text;
 text-fill-color: transparent;
-`
-const TextBox = styled.textarea`
- width: 92%;
- height: 80px;
- border: 1px solid #A6A4A4;
- :focus {outline: none;};
- overflow-y: hidden;
- resize: none;
 `
 const BtnDiv = styled.div`
 font-size: 16px;
@@ -85,8 +76,8 @@ box-sizing: border-box;
 margin: 8px 16px;
 
 background: #FFFFFF;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 `
 
 const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
@@ -169,13 +160,13 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
     <>
       <Container>
         {reviewCount === 0
-          ? <div style={{ borderBottom: '1px solid #A6A4A4', textAlign: 'center' }}>
+          ? <div style={{ borderBottom: '1px solid #CAD1D5', textAlign: 'center' }}>
             <GradientIcon style={{ marginTop: '32px' }} className="fa-regular fa-message-dots fa-2x"></GradientIcon>
             <div style={{ marginBottom: '32px', marginTop: '16px' }}>
               아직 작성된 리뷰가 없네요!
             </div>
           </div>
-          : <div style={{ display: 'flex', borderBottom: '1px solid #A6A4A4' }}>
+          : <div style={{ display: 'flex', borderBottom: '1px solid #CAD1D5' }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px', width: '30%' }}>
               <div style={{ fontSize: '14px', textAlign: 'center' }}>
                 사용자 총 평점
@@ -285,7 +276,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
                     </div>
                     : <></>}
                 </div>
-                <div style={{ borderBottom: '1px solid #A6A4A4' }}>
+                <div style={{ borderBottom: '1px solid #CAD1D5' }}>
                   <Rating
                     style={{ padding: '0px 10px 6px' }}
                     name="simple-controlled"
