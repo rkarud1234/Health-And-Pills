@@ -1,9 +1,9 @@
 from django.urls import path, include
-from exercise.views import ExerciseListApi
+from exercise.views import *
 
 urlpatterns = [
-    path('custom/', ExerciseListApi.as_view()),
-    path('best/', ExerciseListApi.as_view()),
-    path('user/', ExerciseListApi.as_view()),
-    path('item/<int:exerciseId>/', ExerciseListApi.as_view()),
+    path('custom/<int:userId>', RecommendCustomApi.as_view()),
+    path('best/', RecommendBestApi.as_view()),
+    path('user/<str:gender>/<int:birthday>/', RecommendUserApi.as_view()),
+    path('item/<int:userId>/<int:exerciseId>/', RecommendItemApi.as_view()),
 ]
