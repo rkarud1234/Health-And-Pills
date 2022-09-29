@@ -38,11 +38,9 @@ public class PillDetailResponse {
     int reviewCount;
     // 영양소
     List<String> nutrients;
+    // 생리활성기능 리스트
+    List<String> functionalities;
     List<Warning> warnings;
-//    // 기능성 원료(영양소) 리스트
-//    List<String> nutrients;
-//    // 생리활성기능 리스트
-//    List<String> functionalities;
 
 
     //  pillId: 1,
@@ -60,7 +58,7 @@ public class PillDetailResponse {
     //    functionalites : [”장 건강”,],
 
 
-    public static PillDetailResponse from(Pill pill, List<String> nutrients, List<Warning> warnings) {
+    public static PillDetailResponse from(Pill pill, List<String> nutrients, List<String> functionalities, List<Warning> warnings) {
         return new PillDetailResponse(pill.getPillId(),
                 pill.getPillName(),
                 pill.getPillCompanyName(),
@@ -73,6 +71,7 @@ public class PillDetailResponse {
                 pill.getReviewAverage(),
                 pill.getReviewCount(),
                 nutrients,
+                functionalities,
                 warnings);
     }
 
