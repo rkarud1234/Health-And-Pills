@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/layouts/Footer";
 import SlidingMenu from "../../components/layouts/SlidingMenu";
-import TestFooter from "../../components/layouts/TestFooter";
-import UserInfoList from "../../components/user/UserInfoList";
+import UserExercise from "../../components/user/profile/UserExercise";
+import UserPill from "../../components/user/profile/UserPill";
+import { profile } from "../../store/actions/user";
+import { logOut } from "../../store/reducers/userSlice";
+import Bookmark from "./Bookmark";
 import Inbody from "./Inbody";
 import LifeStyle from "./LifeStyle";
+import Like from "./Like";
+import Review from "./Review/Review";
 
 const ProfileWrapper = styled.div`
   position: relative;
@@ -27,11 +34,51 @@ const ProfileTitleWrapper = styled.div`
     margin-left: 3px;
     color: #ffed08;
   }
+  @media screen and (min-width: 500px) {
+    padding: 100px 20px 0px 20px;
+  }
+
+  @media screen and (max-width: 500px) {
+    padding: 80px 20px 0px 20px;
+  }
+
+  @media screen and (max-width: 280px) {
+    padding: 40px 20px 0px 20px;
+  }
 `;
 const ProfileBackGround = styled.div`
   height: 40%;
   background: linear-gradient(to bottom, #537cfe, #6a53fe);
   position: relative;
+`;
+
+const ReviewLikeWrapper = styled.div`
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  & button {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    height: 60px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #aba9ff57;
+    position: relative;
+    & span {
+      position: relative;
+      margin-top: 4px;
+      font-size: 12px;
+    }
+  }
+  & button:first-child span {
+    left: -1px;
+  }
 `;
 
 const LeftTriangle = styled.div`
@@ -94,7 +141,7 @@ const ProfileEditButton = styled.button`
   padding: 20px 10px 20px 30px;
   border: ${(props) => props.border};
   background-color: ${(props) => props.bgColor};
-  font-size: 20px;
+  font-size: 18px;
   margin-top: 20px;
   box-shadow: 0px 5px 10px 2px rgb(0 0 0 / 10%);
   cursor: pointer;
@@ -137,19 +184,19 @@ const listItem = [
   {
     title: "나의 영양제",
     img: "/profile/pill.png",
-    type: "pill",
+    infoType: "pill",
     slidingMenuTitle: "내 영양제 정보",
   },
   {
     title: "나의 운동",
     img: "/profile/dumbell.png",
-    type: "health",
+    infoType: "exercise",
     slidingMenuTitle: "내 운동 정보",
   },
   {
     title: "북마크",
     img: "/profile/mark.png",
-    type: "mark",
+    infoType: "bookmark",
     slidingMenuTitle: "북마크",
   },
 ];
@@ -157,149 +204,170 @@ const listItem = [
 const editList = [
   {
     title: "라이프 스타일 수정",
-    type: "lifeStyle",
+    infoType: "lifeStyle",
     slidingMenuTitle: "내 라이프 스타일",
   },
   {
     title: "인바디 정보 수정",
-    type: "inBody",
+    infoType: "inBody",
     slidingMenuTitle: "내 인바디 정보",
   },
 ];
-const TestProfile = () => {
+
+const getUserAge = (birth) => {
+  const birthYear = birth.slice(0, 4);
+  const today = new Date().getFullYear();
+  return today - birthYear;
+};
+const Profile = () => {
   const [slidingMenuState, setSlidingMenuState] = useState({
-    type: "",
+    infoType: "",
     active: false,
     title: "",
   });
+  useEffect(() => {
+    dispatch(profile());
+  }, []);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [userInfoState, setUserInfoState] = useState({
-    pill: [
-      { id: 1, img: "", title: "비타민C", rating: 4.5 },
-      { id: 2, img: "", title: "비타민D", rating: 4.2 },
-      { id: 3, img: "", title: "포도당", rating: 4.4 },
-      { id: 4, img: "", title: "숭구리당당", rating: 4.8 },
-      { id: 5, img: "", title: "집가고싶당", rating: 5 },
-      { id: 6, img: "", title: "허당", rating: 4.8 },
-      { id: 7, img: "", title: "위풍당당", rating: 4.8 },
-      { id: 8, img: "", title: "올리고당", rating: 4.8 },
-    ],
-    health: [
-      { id: 1, title: "벤치프레스" },
-      { id: 2, title: "푸쉬업" },
-      { id: 3, title: "사이드 레그 레이즈" },
-      { id: 4, title: "숨쉬기 운동" },
-    ],
-    mark: [],
-  });
-  const onHandleSlidingMenu = (type, slidingMenuTitle) => {
-    setSlidingMenuState({
-      type,
-      active: true,
-      title: slidingMenuTitle,
+  const onHandleSlidingMenu = useCallback(
+    (infoType, slidingMenuTitle) => {
+      setSlidingMenuState({
+        infoType: infoType,
+        active: true,
+        title: slidingMenuTitle,
+      });
+    },
+    [slidingMenuState.infoType]
+  );
+
+  const closeSlidingMenu = useCallback(() => {
+    setSlidingMenuState((prevState) => {
+      return {
+        ...prevState,
+        active: false,
+      };
     });
-  };
+  }, []);
+  const onHandleLogOut = useCallback(() => {
+    dispatch(logOut());
+    navigate("/");
+  }, []);
 
-  const closeSlidingMenu = () => {
-    setSlidingMenuState({
-      type: "",
-      active: false,
-      title: "",
-    });
-  };
-
-  const onHandleDeleteUserInfo = (type, id) => {
-    const newUserInfoList = userInfoState[type].filter(
-      (item) => item.id !== id
-    );
-    setUserInfoState({ ...userInfoState, [type]: newUserInfoList });
-  };
-
-  const onHandleLogOut = () => {
-    console.log("logOut");
-  };
-
-  const renderContent = (type) => {
-    if (type === "lifeStyle") {
-      return <LifeStyle />;
-    } else if (type === "inBody") {
-      return <Inbody />;
+  // const renderContent = useCallback((type) => {
+  //   if (type === "lifeStyle") return <LifeStyle />;
+  //   else if (type === "inBody") return <Inbody />;
+  //   else if (type === "review" && <Review />) return <Review />;
+  //   else if (type === "like") return <Like />;
+  //   else if (type === "bookmark") return <Bookmark />;
+  //   else if (type === "pill") return <UserPill />;
+  //   else if (type === "exercise") return <UserExercise />;
+  //   else return <></>;
+  // }, []);
+  const renderContent = useCallback(() => {
+    if (slidingMenuState.active) {
+      if (slidingMenuState.infoType === "lifeStyle") {
+        return <LifeStyle />;
+      } else if (slidingMenuState.infoType === "inBody") {
+        return <Inbody />;
+      } else if (slidingMenuState.infoType === "review") {
+        return <Review />;
+      } else if (slidingMenuState.infoType === "like") {
+        return <Like />;
+      } else if (slidingMenuState.infoType === "bookmark") {
+        return <Bookmark />;
+      } else if (slidingMenuState.infoType === "pill") {
+        return <UserPill />;
+      } else return <UserExercise />;
+    } else {
+      return <></>;
     }
-    return (
-      <UserInfoList
-        infoList={userInfoState[slidingMenuState.type]}
-        deleteUserInfo={onHandleDeleteUserInfo}
-        type={slidingMenuState.type}
-      />
-    );
-  };
+  }, [slidingMenuState.infoType, slidingMenuState.active]);
   return (
     <>
-      <ProfileWrapper>
-        <ProfileBackGround>
-          <ProfileTitleWrapper>
-            <div>
-              단무지님<p>안녕하세요</p>
-            </div>
-            <div>5세, 남성</div>
-          </ProfileTitleWrapper>
-          <LeftTriangle />
-          <RightTriangle />
-        </ProfileBackGround>
-        <ContentWrapper>
-          <ProfileList>
-            {listItem.map((item, idx) => (
-              <ProfileListItem
-                key={idx}
-                onClick={() =>
-                  onHandleSlidingMenu(item.type, item.slidingMenuTitle)
-                }
-              >
-                <img src={process.env.PUBLIC_URL + item.img} width={"40px"} />
-                {item.title}
-              </ProfileListItem>
-            ))}
-          </ProfileList>
-          <div>
-            {editList.map((item, idx) => (
-              <ProfileEditButton
-                key={idx}
-                border={"none"}
-                bgColor={"#fff"}
-                onClick={() =>
-                  onHandleSlidingMenu(item.type, item.slidingMenuTitle)
-                }
-              >
-                <div style={{ display: "flex" }}>{item.title}</div>
+      {user.data !== null ? (
+        <>
+          <ProfileWrapper>
+            <ProfileBackGround>
+              <ProfileTitleWrapper>
                 <div>
-                  <i className="fa-solid fa-chevron-right"></i>
+                  {user.data.userProfileNickname}님<p>안녕하세요</p>
                 </div>
-              </ProfileEditButton>
-            ))}
-          </div>
-          <LogOutBtnWrapper as="div">
-            <button onClick={onHandleLogOut}>로그아웃</button>
-          </LogOutBtnWrapper>
-        </ContentWrapper>
-        <SlidingMenu
-          {...slidingMenuState}
-          close={closeSlidingMenu}
-          slidingMenuTitle={slidingMenuState.title}
-          contents={renderContent(slidingMenuState.type)}
-        />
-      </ProfileWrapper>
-      <Footer />
-      {/* <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignContent: "center",
-        }}
-      >
-        <TestFooter />
-      </div> */}
+                <div>
+                  {getUserAge(user.data.userProfileBirthday)}세,{" "}
+                  {user.data.userProfileGender === "male" ? "남성" : "여성"}
+                </div>
+              </ProfileTitleWrapper>
+              <ReviewLikeWrapper>
+                <button
+                  onClick={() => onHandleSlidingMenu("review", "내 리뷰")}
+                >
+                  <i className="fa-regular fa-pen"></i>
+                  <span>리뷰</span>
+                </button>
+                <button onClick={() => onHandleSlidingMenu("like", "좋아요")}>
+                  <i className="fa-sharp fa-solid fa-circle-heart"></i>
+                  <span>좋아요</span>
+                </button>
+              </ReviewLikeWrapper>
+              <LeftTriangle />
+              <RightTriangle />
+            </ProfileBackGround>
+            <ContentWrapper>
+              <ProfileList>
+                {listItem.map((item, idx) => (
+                  <ProfileListItem
+                    key={idx}
+                    onClick={() =>
+                      onHandleSlidingMenu(item.infoType, item.slidingMenuTitle)
+                    }
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + item.img}
+                      width={40}
+                      height={40}
+                    />
+                    {item.title}
+                  </ProfileListItem>
+                ))}
+              </ProfileList>
+              <div>
+                {editList.map((item, idx) => (
+                  <ProfileEditButton
+                    key={idx}
+                    border={"none"}
+                    bgColor={"#fff"}
+                    onClick={() =>
+                      onHandleSlidingMenu(item.infoType, item.slidingMenuTitle)
+                    }
+                  >
+                    <div style={{ display: "flex" }}>{item.title}</div>
+                    <div>
+                      <i className="fa-solid fa-chevron-right"></i>
+                    </div>
+                  </ProfileEditButton>
+                ))}
+              </div>
+              <LogOutBtnWrapper as="div">
+                <button onClick={onHandleLogOut}>로그아웃</button>
+              </LogOutBtnWrapper>
+            </ContentWrapper>
+            <SlidingMenu
+              {...slidingMenuState}
+              close={closeSlidingMenu}
+              slidingMenuTitle={slidingMenuState.title}
+              contents={renderContent(slidingMenuState.infoType)}
+            />
+          </ProfileWrapper>
+          <Footer />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
 
-export default React.memo(TestProfile);
+export default React.memo(Profile);
