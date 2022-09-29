@@ -36,7 +36,7 @@ const Footer = () => {
           </Link>
         </li>
         <li>
-          <Link to="/">
+          <Link to="/schedule">
             <i className="far fa-calendar-check"></i>
           </Link>
         </li>
