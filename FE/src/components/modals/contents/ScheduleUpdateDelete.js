@@ -32,7 +32,9 @@ const DailyWrapper = styled.button`
   background-color: #eaeff1;
 `
 
-const ScheduleUpdateDelete = () => {
+const ScheduleUpdateDelete = ({calendarContent, calendarTime,
+  name, exerciseId, pillId, calendarDate,
+}) => {
   const [hp, setHP] = useState("");
 
   const onClickRadioButton = (e) => {
@@ -64,7 +66,7 @@ const ScheduleUpdateDelete = () => {
         placeholder="원래 있던 이름 받아서 띄워줄 곳"
       />
       <CommentInput
-        placeholder="코멘트"
+        placeholder={calendarContent}
       >
       </CommentInput>
       <div>
@@ -75,6 +77,9 @@ const ScheduleUpdateDelete = () => {
         <DailyWrapper>금</DailyWrapper>
         <DailyWrapper>토</DailyWrapper>
         <DailyWrapper>일</DailyWrapper>
+      </div>
+      <div>
+        {calendarTime}
       </div>
       <UpdateButton>
         수정
