@@ -58,8 +58,9 @@ background-color: white;
 position: fixed;
 bottom: 0;
 z-index: 999;
-border-top: 1px solid;
+border-top: 1px solid #CAD1D5;
 border-radius: 10px;
+box-shadow: rgb(100 100 111 / 35%) 0px 7px 29px 0px;
 max-width: 500px;
 `
 

@@ -14,6 +14,7 @@ margin: 8px 0px;
 border: 1px solid #CAD1D5;
 border-radius: 8px;
 padding: 4px 0px;
+
 `
 const ItemDiv = styled.div`
 margin-top: 20px;
@@ -83,6 +84,7 @@ text-fill-color: transparent;
 margin-bottom: 8px;
 `
 const WarningDiv = styled.div`
+display:flex;
 background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
@@ -216,14 +218,14 @@ const PillInfo = ({
       <div>
         {functionalities && functionalities.map((functionality, idx) => {
           return (
-            <div style={{ fontSize: '13px', color: '#383E41' }} key={idx}>{functionality}</div>
+            <div style={{ fontSize: '13px', color: '#383E41', padding: '4px 0px' }} key={idx}>{functionality}</div>
           )
         })}
       </div>
       <ItemDiv>
         기능성 원료
       </ItemDiv>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
         {nutrients && nutrients.map((nutrient, idx) => {
           return (
             <NutrientDiv style={{ fontSize: '13px', color: '#383E41' }} key={idx}>{nutrient}</NutrientDiv>
@@ -250,7 +252,9 @@ const PillInfo = ({
       </div>
       <DetailDiv>
         <ItemDiv style={{ borderBottom: '1px solid #CAD1D5', display: 'flex', justifyContent: 'space-between', padding: '8px 0px' }}>
-          상세 정보
+          <div>
+            상세 정보
+          </div>
           {(pillContent && pillContent.length > textLimit.current) &&
             (isShowMore ?
               <i className="fa-duotone fa-chevron-up" onClick={() => setIsShowMore(!isShowMore)}></i> :
@@ -261,15 +265,18 @@ const PillInfo = ({
         </TextDiv>
       </DetailDiv>
       <WarningDiv>
-        제품 섭취시 주의사항
-      </WarningDiv>
+        <div>
+          제품 섭취시 주의사항
+        </div>
+        <div style={{ marginLeft: '4px' }}><i className="fa-regular fa-triangle-exclamation fa-lg"></i></div>
+      </WarningDiv >
       <InfoDiv>
         <TextDiv>
           {pillTakeWarning}
         </TextDiv>
       </InfoDiv>
       <RecomPills pills={pills} type='pill' />
-    </div>
+    </div >
   )
 }
 
