@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const PullBar = styled.div`
 position: relative;
-width: 240px;
+width: 150%;
 height: 12px;
 
 background: #A6A4A4;

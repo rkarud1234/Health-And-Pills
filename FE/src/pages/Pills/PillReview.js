@@ -9,17 +9,25 @@ import ReviewBox from './ReviewBox'
 
 const Container = styled.div`
 box-sizing: border-box;
-margin: 8px 8px;
+margin: 8px 16px;
 
 background: #FFFFFF;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 `
 const ProFlexBox = styled.div`
 display: flex;
-margin: 8px;
+margin: 8px
+;
 `
 const TextDiv = styled.div`
+width: 80%;
+font-size: 12px;
+text-align: center;
+margin: 0px 4px;
+font-weight: bold;
+`
+const NumDiv = styled.div`
 font-size: 12px;
 text-align: center;
 margin: 0px 4px;
@@ -42,8 +50,8 @@ const ReviewBtn = styled.button`
 display: block;
 font-family: 'GmarketSans';
 background: #EAEFF1;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 color: #A6A4A4;
 font-size: 16px;
 padding: 12px 32px;
@@ -56,14 +64,6 @@ background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
 background-clip: text;
 text-fill-color: transparent;
 `
-const TextBox = styled.textarea`
- width: 92%;
- height: 80px;
- border: 1px solid #A6A4A4;
- :focus {outline: none;};
- overflow-y: hidden;
- resize: none;
-`
 const BtnDiv = styled.div`
 font-size: 16px;
 text-align: center;
@@ -73,17 +73,16 @@ cursor: pointer;
 `
 const ReviewContainer = styled.div`
 box-sizing: border-box;
-margin: 8px 8px;
+margin: 8px 16px;
 
 background: #FFFFFF;
-border: 1px solid #A6A4A4;
-border-radius: 10px;
+border: 1px solid #CAD1D5;
+border-radius: 8px;
 `
 
 const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
   const dispatch = useDispatch()
   const starRating = {
-    reviewAverage: 4.4,
     fiveRating: 4,
     fourRating: 1,
     threeRating: 1,
@@ -102,6 +101,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
   const [isOpened, setIsOpened] = useState(false)
   const [updating, setUpdating] = useState(false)
   const [text, setText] = useState('')
+  const [reviewId, setReviewId] = useState(0)
 
   const createReviewHandler = () => {
     const review = {
@@ -135,84 +135,92 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
     setText('')
   }
 
-  const updatingHandler = () => {
+  const updatingHandler = (reviewId, reviewScore, reviewContent) => {
+    setScore(reviewScore)
+    setText(reviewContent)
+    setReviewId(reviewId)
     setUpdating(!updating)
   }
+
 
   const textHandler = (e) => {
     setText(e.target.value)
   }
 
   const [modalOpen, setModalOpen] = useState(false);
-  const showModal = () => {
+
+  const showModal = (reviewId) => {
     setModalOpen(true);
+    setReviewId(reviewId)
   };
+
+  let reviewaverage = reviewAverage.toFixed(1)
 
   return (
     <>
       <Container>
         {reviewCount === 0
-          ? <div style={{ borderBottom: '1px solid #A6A4A4', textAlign: 'center' }}>
+          ? <div style={{ borderBottom: '1px solid #CAD1D5', textAlign: 'center' }}>
             <GradientIcon style={{ marginTop: '32px' }} className="fa-regular fa-message-dots fa-2x"></GradientIcon>
             <div style={{ marginBottom: '32px', marginTop: '16px' }}>
               아직 작성된 리뷰가 없네요!
             </div>
           </div>
-          : <div style={{ display: 'flex', borderBottom: '1px solid #A6A4A4' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px' }}>
-              <div style={{ fontSize: '16px' }}>
+          : <div style={{ display: 'flex', borderBottom: '1px solid #CAD1D5' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px', width: '30%' }}>
+              <div style={{ fontSize: '14px', textAlign: 'center' }}>
                 사용자 총 평점
               </div>
               <ProFlexBox >
                 <LinearStar className="fas fa-star"></LinearStar>
-                <div style={{ fontSize: '32px' }}>{starRating.reviewAverage}</div>
+                <div style={{ fontSize: '32px' }}>{reviewaverage}</div>
               </ProFlexBox>
             </div>
-            <div style={{ margin: '8px 8px' }}>
+            <div style={{ margin: '8px 8px', width: '90%' }}>
               <ProFlexBox>
                 <TextDiv>
                   아주 좋아요
                 </TextDiv>
                 <ReviewProgress width={fiveRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.fiveRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   맘에 들어요
                 </TextDiv>
                 <ReviewProgress width={fourRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.fourRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   보통 이에요
                 </TextDiv>
                 <ReviewProgress width={threeRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.threeRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   그저 그래요
                 </TextDiv>
                 <ReviewProgress width={twoRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.twoRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
                   추천 안해요
                 </TextDiv>
                 <ReviewProgress width={oneRating} />
-                <TextDiv>
+                <NumDiv>
                   {starRating.oneRating}
-                </TextDiv>
+                </NumDiv>
               </ProFlexBox>
             </div>
           </div>}
@@ -238,48 +246,51 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
       }
       {
         reviews ? reviews.map(review => {
-          return (!updating ?
-            <ReviewContainer key={review.reviewId}>
-              <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ marginTop: '2px' }}>
-                  {review.nickName}
+          return (
+            updating && reviewId === review.reviewId ?
+              <ReviewBox
+                key={review.reviewId}
+                reviewId={review.reviewId}
+                updatingHandler={updatingHandler}
+                updateReviewHandler={updateReviewHandler}
+                defaultScore={review.reviewScore}
+                defaultText={review.reviewContent}
+                setScore={setScore}
+                textHandler={textHandler} />
+              : <ReviewContainer key={review.reviewId}>
+                {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={reviewId} pillID={id} />}
+                <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
+                  <div style={{ marginTop: '2px' }}>
+                    {review.nickName}
+                  </div>
+                  {review.isMyReview ?
+                    <div style={{ display: 'flex' }}>
+                      <BtnDiv onClick={() => { updatingHandler(review.reviewId, review.reviewScore, review.reviewContent) }} style={{ paddingRight: '24px', margin: '0 0' }}>
+                        수정
+                      </BtnDiv>
+                      <BtnDiv
+                        onClick={() => { showModal(review.reviewId) }}
+                        style={{ margin: '0 0' }}>
+                        삭제
+                      </BtnDiv>
+                    </div>
+                    : <></>}
                 </div>
-                <div style={{ display: 'flex' }}>
-                  <BtnDiv onClick={updatingHandler} style={{ paddingRight: '24px', margin: '0 0' }}>
-                    수정
-                  </BtnDiv>
-                  <BtnDiv
-                    onClick={showModal}
-                    style={{ margin: '0 0' }}>
-                    삭제
-                  </BtnDiv>
+                <div style={{ borderBottom: '1px solid #CAD1D5' }}>
+                  <Rating
+                    style={{ padding: '0px 10px 6px' }}
+                    name="simple-controlled"
+                    readOnly
+                    value={review.reviewScore}
+                    size="small"
+                    icon={<GradientIcon className="fas fa-star"></GradientIcon>}
+                    emptyIcon={<i className="fa-thin fa-star"></i>}
+                  />
                 </div>
-              </div>
-              {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={review.reviewId} pillID={id} />}
-              <div style={{ borderBottom: '1px solid #A6A4A4' }}>
-                <Rating
-                  style={{ padding: '0px 10px 6px' }}
-                  name="simple-controlled"
-                  readOnly
-                  value={review.reviewScore}
-                  size="small"
-                  icon={<GradientIcon className="fas fa-star"></GradientIcon>}
-                  emptyIcon={<i className="fa-thin fa-star"></i>}
-                />
-              </div>
-              <div style={{ margin: '12px 12px' }}>
-                {review.reviewContent}
-              </div>
-            </ReviewContainer>
-            : <ReviewBox
-              key={review.reviewId}
-              reviewId={review.reviewId}
-              updatingHandler={updatingHandler}
-              updateReviewHandler={updateReviewHandler}
-              defaultScore={review.reviewScore}
-              defaultText={review.reviewContent}
-              setScore={setScore}
-              textHandler={textHandler} />)
+                <div style={{ margin: '12px 12px' }}>
+                  {review.reviewContent}
+                </div>
+              </ReviewContainer>)
         }) : <></>
       }
     </>

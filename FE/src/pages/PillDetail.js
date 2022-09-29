@@ -44,19 +44,17 @@ const PillDetail = () => {
   const [tabNum, setTabNum] = useState(1)
 
   const id = useParams().id
-
+  const pillDetail = useSelector(state => state.pill.pillDetail)
+  const status = useSelector(state => state.pill.status)
+  const reviewInfo = useSelector(state => state.pill.reviewInfo)
   useEffect(() => {
     dispatch(PillDetailFetch(id))
-  }, [])
+  }, [reviewInfo])
 
   useEffect(() => {
     dispatch(PillReviewFetch(id))
   }, [])
 
-
-  const pillDetail = useSelector(state => state.pill.pillDetail)
-  const status = useSelector(state => state.pill.status)
-  const reviewInfo = useSelector(state => state.pill.reviewInfo)
   let Tabs = ''
   if (tabNum === 1) {
     Tabs = <TabList>
@@ -74,7 +72,7 @@ const PillDetail = () => {
     <>
       {status ?
         <>
-          <Header leftNone={true} leftChildren={<BackButton />} />
+          <Header leftNone={true} leftChildren={<BackButton onClick={() => { window.history.go(-1) }} />} />
           <ScrollDiv id='scrollDiv'>
             {Tabs}
             {tabNum === 1
