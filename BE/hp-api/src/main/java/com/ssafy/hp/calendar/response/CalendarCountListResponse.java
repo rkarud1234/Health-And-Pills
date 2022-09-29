@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +19,7 @@ public class CalendarCountListResponse {
         CalendarCountListResponse calendarCountResponse = new CalendarCountListResponse();
         calendars.stream().forEach(calendar -> {
             calendarCountResponse.calendarDate = calendar.getCalendarDate();
+
         });
         calendarCountResponse.pillCount = (int) calendars.stream().filter(calendar -> calendar.getPill() != null).count();
         calendarCountResponse.exerciseCount = (int) calendars.stream().filter(calendar -> calendar.getExercise() != null).count();
