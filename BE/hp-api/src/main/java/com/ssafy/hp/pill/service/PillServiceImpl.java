@@ -2,7 +2,6 @@ package com.ssafy.hp.pill.service;
 
 import com.ssafy.hp.*;
 import com.ssafy.hp.common.type.YN;
-import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
 import com.ssafy.hp.pill.FunctionalityRepository;
 import com.ssafy.hp.pill.NutrientRepository;
 import com.ssafy.hp.pill.PillRepository;
@@ -31,7 +30,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ssafy.hp.NotFoundException.PILL_NOT_FOUND;
-import static com.ssafy.hp.NotFoundException.USER_NOT_FOUND;
 
 
 @Slf4j
@@ -52,23 +50,19 @@ public class PillServiceImpl implements PillService {
     private final FunctionalityRepository functionalityRepository;
     private final NutrientRepository nutrientRepository;
 
-//    private String[] findPillNutrientByPill(Pill pill) {
-//        return pillQueryRepository.
-//    }
-
     // 검색조건에 맞는 영양제 반환
     @Override
     @Transactional
     public Page<PillListResponse> findBySearchFilter(SearchRequest request, Pageable pageable) {
         return pillQueryRepository.findBySearchFilter(request, pageable)
-                .map(pill -> PillListResponse.from(pill));
+                .map(PillListResponse::from);
     }
 
     // 영양제 디테일 정보 조회
     @Override
     public PillDetailResponse findByPillId(int pillId) {
         Pill pill = pillRepository.findById(pillId)
-                .orElseThrow(() -> new NotFoundException("메세지"));
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
         return PillDetailResponse.from(pill, pillQueryRepository.findNutrientByPill(pill), pillQueryRepository.findWarningByPill(pill));
     }
 
@@ -95,7 +89,6 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void updateReview(User user, int reviewId, PillReviewRequest request) {
-
         PillReview pillReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
 
