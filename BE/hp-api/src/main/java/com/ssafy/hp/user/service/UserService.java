@@ -53,7 +53,7 @@ public interface UserService {
     // 인바디 수정
     void updateUserInbody(User user, UpdateUserInbodyRequest request);
 
-    List<UserInbodyAverageResponse> findUserInbodyAverage(User user);
+    UserInbodyAverageResponse findUserInbodyAverage(User user);
 
     // 로그아웃
     void logout(User user);

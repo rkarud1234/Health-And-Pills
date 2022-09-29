@@ -1,5 +1,6 @@
 package com.ssafy.hp.user.response;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.hp.user.domain.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserInbodyAverageResponse {
     private double userProfileHeight;
 
@@ -19,13 +19,12 @@ public class UserInbodyAverageResponse {
 
     private double userProfileWater;
 
-    public static UserInbodyAverageResponse from(double userProfileHeight, double userProfileWeight, double userProfileFat, double userProfileSkeleton, double userProfileWater){
-        UserInbodyAverageResponse userInbodyAverageResponse = new UserInbodyAverageResponse();
-        userInbodyAverageResponse.userProfileHeight = userProfileHeight;
-        userInbodyAverageResponse.userProfileWeight = userProfileWeight;
-        userInbodyAverageResponse.userProfileFat = userProfileFat;
-        userInbodyAverageResponse.userProfileSkeleton = userProfileSkeleton;
-        userInbodyAverageResponse.userProfileWater = userProfileWater;
-        return userInbodyAverageResponse;
+    @QueryProjection
+    public UserInbodyAverageResponse(double userProfileHeight, double userProfileWeight, double userProfileFat, double userProfileSkeleton, double userProfileWater) {
+        this.userProfileHeight = userProfileHeight;
+        this.userProfileWeight = userProfileWeight;
+        this.userProfileFat = userProfileFat;
+        this.userProfileSkeleton = userProfileSkeleton;
+        this.userProfileWater = userProfileWater;
     }
 }

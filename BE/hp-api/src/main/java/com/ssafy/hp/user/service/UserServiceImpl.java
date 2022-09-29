@@ -1,5 +1,6 @@
 package com.ssafy.hp.user.service;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.hp.DuplicateException;
 import com.ssafy.hp.NotFoundException;
 import com.ssafy.hp.auth.AuthRepository;
@@ -175,10 +176,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInbodyAverageResponse> findUserInbodyAverage(User user) {
+    public UserInbodyAverageResponse findUserInbodyAverage(User user) {
         UserProfile findUserProfile = userProfileRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        return null;
+
+        return userQueryRepository.findAverageInbody(findUserProfile.getUserProfileGender(), findUserProfile.getUserProfileBirthday());
     }
 
     @Override

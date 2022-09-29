@@ -1,11 +1,14 @@
 package com.ssafy.hp.user.query;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.pill.domain.PillReview;
-import com.ssafy.hp.user.domain.User;
-import com.ssafy.hp.user.domain.UserExercise;
-import com.ssafy.hp.user.domain.UserPill;
+import com.ssafy.hp.user.UserProfileRepository;
+import com.ssafy.hp.user.domain.*;
+import com.ssafy.hp.user.response.QUserInbodyAverageResponse;
+import com.ssafy.hp.user.response.UserInbodyAverageResponse;
+import com.ssafy.hp.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +23,7 @@ import static com.ssafy.hp.pill.domain.QPill.pill;
 import static com.ssafy.hp.pill.domain.QPillReview.pillReview;
 import static com.ssafy.hp.user.domain.QUserExercise.*;
 import static com.ssafy.hp.user.domain.QUserPill.userPill;
+import static com.ssafy.hp.user.domain.QUserProfile.userProfile;
 
 @Repository
 @RequiredArgsConstructor
@@ -121,5 +125,24 @@ public class UserQueryRepository {
         List<PillReview> content = result.getResults();
         long total = result.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    public UserInbodyAverageResponse findAverageInbody(String userGender, String userBirthday){
+        String [] birthYears = DateUtil.calculateAge(userBirthday);
+
+        UserInbodyAverageResponse userInbodyAverageResponse = queryFactory
+                .select(new QUserInbodyAverageResponse(
+                        userProfile.userProfileHeight.avg(),
+                        userProfile.userProfileWeight.avg(),
+                        userProfile.userProfileFat.avg(),
+                        userProfile.userProfileSkeleton.avg(),
+                        userProfile.userProfileWater.avg()))
+                .from(userProfile)
+                .where(
+                        userProfile.userProfileGender.eq(userGender),
+                        userProfile.userProfileBirthday.between(birthYears[1], birthYears[0])
+                ).fetchOne();
+
+        return userInbodyAverageResponse;
     }
 }
