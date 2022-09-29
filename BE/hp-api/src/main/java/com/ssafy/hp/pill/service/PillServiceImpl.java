@@ -182,6 +182,7 @@ public class PillServiceImpl implements PillService {
     }
 
     @Override
+    @Transactional
     public void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd) {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
