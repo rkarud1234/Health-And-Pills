@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ReviewProgress from './ReviewProgress'
 import styled from 'styled-components'
 import { Rating } from '@mui/material'
-import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../store/actions/pill'
+import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../store/actions/pills'
 import { useDispatch } from 'react-redux'
 import CancelModal from './CancelModal.js'
 import ReviewBox from './ReviewBox'
@@ -80,16 +80,15 @@ border: 1px solid #CAD1D5;
 border-radius: 8px;
 `
 
-const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
+const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores }) => {
   const dispatch = useDispatch()
   const starRating = {
-    fiveRating: 4,
-    fourRating: 1,
-    threeRating: 1,
-    twoRating: 1,
-    oneRating: 0
+    fiveRating: scores[5],
+    fourRating: scores[4],
+    threeRating: scores[3],
+    twoRating: scores[2],
+    oneRating: scores[1]
   }
-
 
   const fiveRating = (starRating.fiveRating / reviews.length) * 100 + '%'
   const fourRating = (starRating.fourRating / reviews.length) * 100 + '%'
@@ -154,12 +153,15 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
     setReviewId(reviewId)
   };
 
-  let reviewaverage = reviewAverage.toFixed(1)
+  let reviewaverage = ''
+  if (pillReviewAverage) {
+    reviewaverage = pillReviewAverage.toFixed(1)
+  }
 
   return (
     <>
       <Container>
-        {reviewCount === 0
+        {pillReviewCount === 0
           ? <div style={{ borderBottom: '1px solid #CAD1D5', textAlign: 'center' }}>
             <GradientIcon style={{ marginTop: '32px' }} className="fa-regular fa-message-dots fa-2x"></GradientIcon>
             <div style={{ marginBottom: '32px', marginTop: '16px' }}>
@@ -261,7 +263,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
                 {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={reviewId} pillID={id} />}
                 <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
                   <div style={{ marginTop: '2px' }}>
-                    {review.nickName}
+                    {review.nickName.substr(0, 1) + '*'.repeat(review.nickName.length - 2) + review.nickName.substr(-1)}
                   </div>
                   {review.isMyReview ?
                     <div style={{ display: 'flex' }}>

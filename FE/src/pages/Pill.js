@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components";
 import Footer from "../components/layouts/Footer";
 import Carousel from "../components/carousel/Carousel";
 import RecomPills from "./Pills/RecomPills";
 import SearchSlide from "./Pills/SearchSlide";
+import { BestPillsFetch, CustomPillsFetch, UserPillsFetch } from "../store/actions/recommend";
+import { profile } from "../store/actions/user";
+
 import imgUrl from '../assets/togetherX.jpg'
-import Lutein from '../assets/lutein.jpg'
-import Omega3 from '../assets/omega3.jpg'
-import Cmbzmulti from '../assets/cmbzmulti.jpg'
-import styled from "styled-components";
 
 const ScrollDiv = styled.div`
 ::-webkit-scrollbar {
@@ -42,7 +42,26 @@ const SearchButton = styled.button`
 `
 
 const Pill = () => {
-  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.data);
+  // 차례대로 베스트 추천/ 사용자 맞춤 추천/ 유사한 사용자 추천
+  const bestPills = useSelector((state) => state.recommend.bestPills)
+  const customPills = useSelector((state) => state.recommend.customPills)
+  const userPills = useSelector((state) => state.recommend.userPills)
+
+  useEffect(() => {
+    dispatch(profile())
+  }, [])
+  useEffect(() => {
+    dispatch(BestPillsFetch())
+  }, [])
+  useEffect(() => {
+    dispatch(CustomPillsFetch())
+  }, [])
+  useEffect(() => {
+    dispatch(UserPillsFetch())
+  }, [])
+
   const images = [
     { id: 1, url: imgUrl },
     { id: 2, url: imgUrl },
@@ -52,40 +71,36 @@ const Pill = () => {
     { id: 6, url: imgUrl },
   ]
 
-  const pills = [
-    { id: 1, text: '루테인', rating: 4.5, url: Lutein },
-    { id: 2, text: '오메가3', rating: 4.7, url: Omega3 },
-    { id: 3, text: '종합비타민', rating: 4.9, url: Cmbzmulti },
-    { id: 4, text: '루테인', rating: 4.5, url: Lutein },
-    { id: 5, text: '오메가3', rating: 4.7, url: Omega3 },
-    { id: 6, text: '종합비타민', rating: 4.9, url: Cmbzmulti },
-  ]
-
   const [isOpened, setIsOpened] = useState(false)
   const openHandler = () => {
     setIsOpened(!isOpened)
   }
 
-  return (<>
+  return (<div style={{ fontFamily: 'GmarketSans' }}>
     {!isOpened ? <ScrollDiv>
       < SearchBox >
         <SearchBar onClick={openHandler}>
           <SearchButton>
             <i className="fa-solid fa-magnifying-glass fa-lg"></i>
           </SearchButton>
-          <div style={{ fontSize: '12px' }}>영양제를 검색하세요!</div>
+          <div style={{ fontSize: '12px', lineHeight: '30px' }}>영양제를 검색하세요!</div>
         </SearchBar>
       </SearchBox>
       <Carousel images={images} />
-      <RecomPills pills={pills} type='user' />
-      <RecomPills pills={pills} type='age' />
+      <RecomPills pills={bestPills} text='BEST 10 영양제 추천' />
+      {user &&
+        <div>
+          <RecomPills pills={customPills} text={user.userProfileNickname + '님을 위한 맞춤 영양제 추천'} />
+          <RecomPills pills={userPills} text={user.userProfileNickname + '님과 유사한 유저들이 먹는 영양제 추천'} />
+        </div>
+      }
       <Footer />
     </ScrollDiv > :
       <SearchSlide
         openHandler={openHandler}
         isOpened={isOpened}
       ></SearchSlide>}
-  </>
+  </div>
   )
 };
 
