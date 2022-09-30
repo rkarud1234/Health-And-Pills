@@ -22,14 +22,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ssafy.hp.NotFoundException.PILL_NOT_FOUND;
+import static com.ssafy.hp.NotFoundException.*;
+import static com.ssafy.hp.NotMatchException.USER_NOT_MATCH;
 
 
 @Slf4j
@@ -71,15 +71,12 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void createReview(User user, int pillId, PillReviewRequest request) {
-        User findUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
-        Pill findPill = pillRepository.findById(pillId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.PILL_NOT_FOUND));
-
-        PillReview pillReview = PillReview.createPillReview(findUser, findPill, request.getScore(), request.getContent());
-
-        Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
+        PillReview pillReview = PillReview.createPillReview(user, pill, request.getScore(), request.getContent());
         updatePillReviewAvgCount(pill); // 리뷰 평균, 갯수 갱신
 
         reviewRepository.save(pillReview);
@@ -89,12 +86,14 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void updateReview(User user, int reviewId, PillReviewRequest request) {
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         PillReview pillReview = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(REVIEW_NOT_FOUND));
 
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if (!user.getUserId().equals(pillReview.getUsers().getUserId())) {
-            throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
+        if (!user.equals(pillReview.getUsers())) {
+            throw new NotMatchException(USER_NOT_MATCH);
         }
         Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
@@ -108,10 +107,10 @@ public class PillServiceImpl implements PillService {
     @Transactional
     public void deleteReview(User user, int reviewId) {
         PillReview pillReview = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(REVIEW_NOT_FOUND));
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if (!user.getUserId().equals(pillReview.getUsers().getUserId())) {
-            throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
+        if (!user.equals(pillReview.getUsers())) {
+            throw new NotMatchException(USER_NOT_MATCH);
         }
 
         Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
@@ -125,14 +124,13 @@ public class PillServiceImpl implements PillService {
     @Override
     public PillReviewResponse getReview(int reviewId) {
         PillReview result = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(REVIEW_NOT_FOUND));
         return PillReviewResponse.from(result);
     }
 
     // 모든 리뷰 조회
     @Override
     public Page<PillReviewListResponse> getReviews(User user, int pillId, Pageable pageable) {
-
         return pillQueryRepository.findReviewByPillId(pillId, pageable)
                 .map(pillReview -> PillReviewListResponse.from(
                                 pillReview,
@@ -149,15 +147,15 @@ public class PillServiceImpl implements PillService {
     }
 
     @Override
-    public List<FunctionalityListResponse> getFunctionalities() {
-        return functionalityRepository.findAll()
+    public List<FunctionalityListResponse> findAllByOrderByFunctionalityContentAsc() {
+        return functionalityRepository.findAllByOrderByFunctionalityContentAsc()
                 .stream().map(FunctionalityListResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<NutrientListResponse> getNutrients() {
-        return nutrientRepository.findAll()
+    public List<NutrientListResponse> findAllByOrderByNutrientNameAsc() {
+        return nutrientRepository.findAllByOrderByNutrientNameAsc()
                 .stream().map(NutrientListResponse::from)
                 .collect(Collectors.toList());
     }
@@ -203,7 +201,6 @@ public class PillServiceImpl implements PillService {
     }
 
     public VisionResponse getDetectText(String data) {
-        System.out.println("PillServiceImpl.getDetectText");
         try {
             String result = detectText.detectText(data.getBytes());
             return new VisionResponse(result, result);
@@ -214,11 +211,8 @@ public class PillServiceImpl implements PillService {
 
     @Override
     public List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword) {
-        List<Pill> lists = pillRepository.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
-        for (Pill pill : lists) {
-            System.out.println(pill.getPillName());
-        }
-        return lists.stream().map(Pill::getPillName).collect(Collectors.toList());
+        return pillRepository.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword)
+                .stream().map(Pill::getPillName).collect(Collectors.toList());
     }
 
     @Override
