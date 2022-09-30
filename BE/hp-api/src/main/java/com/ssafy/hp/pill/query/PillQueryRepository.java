@@ -87,6 +87,7 @@ public class PillQueryRepository {
                 .selectFrom(pill)
                 .where(builder)
                 .orderBy(pill.pillId.asc())
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
