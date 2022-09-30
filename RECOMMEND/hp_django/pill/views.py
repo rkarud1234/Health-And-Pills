@@ -20,9 +20,9 @@ class RecommendCustomApi(APIView):
 
 class RecommendBestApi(APIView):
 
-    def get(self, request):
+    def get(self, request, userId):
 
-        pill_list = recommend.recommendBest()
+        pill_list = recommend.recommendBest(userId)
         serializer = PillSerializer(pill_list, many=True)
 
         return Response(serializer.data)
