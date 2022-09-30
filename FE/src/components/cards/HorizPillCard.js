@@ -39,6 +39,7 @@ background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
 -webkit-text-fill-color: transparent;
 background-clip: text;
 text-fill-color: transparent;
+padding-top: 4px;
 `
 
 const NameDiv = styled.div`
