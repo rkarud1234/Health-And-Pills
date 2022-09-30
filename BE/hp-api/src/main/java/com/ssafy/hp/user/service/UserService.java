@@ -8,6 +8,8 @@ import com.ssafy.hp.user.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface UserService {
 
     //fcm 토큰 받기
@@ -50,6 +52,8 @@ public interface UserService {
 
     // 인바디 수정
     void updateUserInbody(User user, UpdateUserInbodyRequest request);
+
+    UserInbodyAverageResponse findUserInbodyAverage(User user);
 
     // 로그아웃
     void logout(User user);

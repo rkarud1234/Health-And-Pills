@@ -49,7 +49,7 @@ public class CalendarServiceImpl implements CalendarService{
     @Override
     // 회원의 요일별 영양제 & 운동 갯수 조회
     public List<CalendarCountListResponse> findListByCalendarDate(User user) {
-        List<Calendar> findCalendars = calendarQueryRepository.findByUsersAndCalendarDate(user);
+        List<Calendar> findCalendars = calendarQueryRepository.findByUsers(user);
 
         Map<Integer, List<Calendar>> findCalendarsMap = findCalendars.stream()
                 .collect(Collectors.groupingBy(Calendar::getCalendarDate));
@@ -71,11 +71,6 @@ public class CalendarServiceImpl implements CalendarService{
     @Transactional
     @Override
     // 일정 등록
-    // 체크 사항
-    // 회원 존재하는지, 해당요일에 일정 99개 미만인지, 운동&영양제ID 둘다 null값 들어왔는지
-
-    // 운동 등록일때 -> 회원의 ID로 UserExercise에 존재하는지 확인 -> 있으면 일정에만 등록 / 없으면 일정+회원정보에 등록
-    // 영양제 등록일떼 -> 회원의 IDfh UserPill에 존재하는지 확인 -> 있으면 일정에만 등록 / 없으면 일정+회원정보에 등록
     public void createCalendar(User user, CreateCalendarRequest request) {
         if(calendarRepository.countByCalendarDate(request.getCalendarDate()) >= 99){
             new CountOutOfBoundsException(CALENDAR_OUT_OF_BOUNDS);

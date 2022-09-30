@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping("/api/users")
 @RestController
@@ -130,6 +131,13 @@ public class UserController {
                                             @RequestBody @Valid UpdateUserInbodyRequest request){
         userService.updateUserInbody(user, request);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    //회원의 성별, 나잇대에 따른 인바디 평균 값(키, 몸무게, 체지방량, 골격근량, 체수분량)
+    @GetMapping("/inbody")
+    public ResponseEntity<UserInbodyAverageResponse> findUserInbodyAverage(@LoginUser User user){
+        UserInbodyAverageResponse body = userService.findUserInbodyAverage(user);
+        return ResponseEntity.ok().body(body);
     }
 
     // 회원 로그아웃
