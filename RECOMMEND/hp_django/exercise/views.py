@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from exercise.models import Exercise, ExercisePartCategory
+from user.models import UserExercise
 from user.models import UserProfile
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -26,11 +27,17 @@ class RecommendCustomApi(APIView):
                 partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
                 parts.append(partName)
 
+            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
+
             context.append(
                 {
                     'id':id['exercise_id'],
                     'name':id['exercise_name'],
-                    'parts':parts
+                    'aerobic':id['exercise_aerobic'],
+                    'bookmark':temp[0],
+                    'doing':temp[1],
+                    'like':temp[2],
+                    'parts':parts,                    
                 }
             )
         return Response(context)
@@ -40,7 +47,7 @@ class RecommendBestApi(APIView):
     def getExercisePartName(self, id):
         return ExercisePartCategory.objects.get(exercise_part_category_id=id)
 
-    def get(self, request):
+    def get(self, request, userId):
 
         pill_list = recommend.recommendBest()
         
@@ -53,11 +60,17 @@ class RecommendBestApi(APIView):
                 partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
                 parts.append(partName)
 
+            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
+
             context.append(
                 {
                     'id':id['exercise_id'],
                     'name':id['exercise_name'],
-                    'parts':parts
+                    'aerobic':id['exercise_aerobic'],
+                    'bookmark':temp[0],
+                    'doing':temp[1],
+                    'like':temp[2],
+                    'parts':parts,                    
                 }
             )
         return Response(context)
@@ -85,11 +98,17 @@ class RecommendUserApi(APIView):
                 partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
                 parts.append(partName)
 
+            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
+
             context.append(
                 {
                     'id':id['exercise_id'],
                     'name':id['exercise_name'],
-                    'parts':parts
+                    'aerobic':id['exercise_aerobic'],
+                    'bookmark':temp[0],
+                    'doing':temp[1],
+                    'like':temp[2],
+                    'parts':parts,                    
                 }
             )
         return Response(context)
@@ -110,11 +129,17 @@ class RecommendItemApi(APIView):
                 partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
                 parts.append(partName)
 
+            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
+
             context.append(
                 {
                     'id':id['exercise_id'],
                     'name':id['exercise_name'],
-                    'parts':parts
+                    'aerobic':id['exercise_aerobic'],
+                    'bookmark':temp[0],
+                    'doing':temp[1],
+                    'like':temp[2],
+                    'parts':parts,                    
                 }
             )
         return Response(context)
