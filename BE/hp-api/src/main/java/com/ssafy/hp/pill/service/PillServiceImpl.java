@@ -5,7 +5,7 @@ import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.FunctionalityRepository;
 import com.ssafy.hp.pill.NutrientRepository;
 import com.ssafy.hp.pill.PillRepository;
-import com.ssafy.hp.pill.ReviewRepository;
+import com.ssafy.hp.pill.PillReviewRepository;
 import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.pill.query.PillQueryRepository;
@@ -22,14 +22,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ssafy.hp.NotFoundException.PILL_NOT_FOUND;
+import static com.ssafy.hp.NotFoundException.*;
+import static com.ssafy.hp.NotMatchException.USER_NOT_MATCH;
 
 
 @Slf4j
@@ -44,7 +45,7 @@ public class PillServiceImpl implements PillService {
     private final PillRepository pillRepository;
     private final PillQueryRepository pillQueryRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
+    private final PillReviewRepository pillReviewRepository;
     private final UserPillRepository userPillRepository;
     private final DetectText detectText;
     private final FunctionalityRepository functionalityRepository;
@@ -63,7 +64,18 @@ public class PillServiceImpl implements PillService {
     public PillDetailResponse findByPillId(int pillId) {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        return PillDetailResponse.from(pill, pillQueryRepository.findNutrientByPill(pill), pillQueryRepository.findFunctionalityByPill(pill), pillQueryRepository.findWarningByPill(pill));
+
+        List<PillReview> pillReviews = pillReviewRepository.findByPill(pill);
+
+        Map<Integer, List<PillReview>> findPillReviewsMap = pillReviews.stream()
+                .collect(Collectors.groupingBy(PillReview::getPillReviewScore));
+
+        int[] scores = new int[6];
+        for (int key : findPillReviewsMap.keySet()) {
+            scores[key] = findPillReviewsMap.get(key).size();
+        }
+
+        return PillDetailResponse.from(pill, scores);
     }
 
 
@@ -71,30 +83,29 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void createReview(User user, int pillId, PillReviewRequest request) {
-        User findUser = userRepository.findById(user.getUserId())
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
-        Pill findPill = pillRepository.findById(pillId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.PILL_NOT_FOUND));
-
-        PillReview pillReview = PillReview.createPillReview(findUser, findPill, request.getScore(), request.getContent());
-
-        Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
+        PillReview pillReview = PillReview.createPillReview(user, pill, request.getScore(), request.getContent());
         updatePillReviewAvgCount(pill); // 리뷰 평균, 갯수 갱신
 
-        reviewRepository.save(pillReview);
+        pillReviewRepository.save(pillReview);
     }
 
     // 리뷰 업데이트
     @Override
     @Transactional
     public void updateReview(User user, int reviewId, PillReviewRequest request) {
-        PillReview pillReview = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        PillReview pillReview = pillReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NotFoundException(REVIEW_NOT_FOUND));
 
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if (!user.getUserId().equals(pillReview.getUsers().getUserId())) {
-            throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
+        if (!user.equals(pillReview.getUsers())) {
+            throw new NotMatchException(USER_NOT_MATCH);
         }
         Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
@@ -107,32 +118,31 @@ public class PillServiceImpl implements PillService {
     @Override
     @Transactional
     public void deleteReview(User user, int reviewId) {
-        PillReview pillReview = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
+        PillReview pillReview = pillReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NotFoundException(REVIEW_NOT_FOUND));
         // 글 작성자와 업데이트 요청한 유저가 다르면
-        if (!user.getUserId().equals(pillReview.getUsers().getUserId())) {
-            throw new NotMatchException(NotMatchException.USER_NOT_MATCH);
+        if (!user.equals(pillReview.getUsers())) {
+            throw new NotMatchException(USER_NOT_MATCH);
         }
 
         Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
         updatePillReviewAvgCount(pill); // 리뷰 평균, 갯수 갱신
 
-        reviewRepository.delete(pillReview);
+        pillReviewRepository.delete(pillReview);
     }
 
     // 단일 리뷰 조회
     @Override
     public PillReviewResponse getReview(int reviewId) {
-        PillReview result = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.REVIEW_NOT_FOUND));
+        PillReview result = pillReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new NotFoundException(REVIEW_NOT_FOUND));
         return PillReviewResponse.from(result);
     }
 
     // 모든 리뷰 조회
     @Override
     public Page<PillReviewListResponse> getReviews(User user, int pillId, Pageable pageable) {
-
         return pillQueryRepository.findReviewByPillId(pillId, pageable)
                 .map(pillReview -> PillReviewListResponse.from(
                                 pillReview,
@@ -144,34 +154,33 @@ public class PillServiceImpl implements PillService {
     // 내가 작성한 리뷰 조회
     @Override
     public Page<PillReviewListResponse> getMyReviews(User user, Pageable pageable) {
-        return reviewRepository.findByUsers(user, pageable)
+        return pillReviewRepository.findByUsers(user, pageable)
                 .map(pillReview -> PillReviewListResponse.from(pillReview, true));
     }
 
     @Override
-    public List<FunctionalityListResponse> getFunctionalities() {
-        return functionalityRepository.findAll()
+    public List<FunctionalityListResponse> findAllByOrderByFunctionalityContentAsc() {
+        return functionalityRepository.findAllByOrderByFunctionalityContentAsc()
                 .stream().map(FunctionalityListResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<NutrientListResponse> getNutrients() {
-        return nutrientRepository.findAll()
+    public List<NutrientListResponse> findAllByOrderByNutrientNameAsc() {
+        return nutrientRepository.findAllByOrderByNutrientNameAsc()
                 .stream().map(NutrientListResponse::from)
                 .collect(Collectors.toList());
     }
 
     // pill 테이블의 리뷰평균, 갯수 업데이트
     public void updatePillReviewAvgCount(Pill pill) {
-        int count = reviewRepository.countByPillPillId(pill.getPillId());
+        int count = pillReviewRepository.countByPillPillId(pill.getPillId());
         int sum = 0;
-        List<PillReview> reviewList = reviewRepository.findByPillPillId(pill.getPillId());
+        List<PillReview> reviewList = pillReviewRepository.findByPillPillId(pill.getPillId());
         for (PillReview review : reviewList) {
             sum += review.getPillReviewScore();
         }
         double average = Math.round(sum / (double) count * 100) / 100.0;
-        pill.updatePill(count, average);
     }
 
     @Override
@@ -203,7 +212,6 @@ public class PillServiceImpl implements PillService {
     }
 
     public VisionResponse getDetectText(String data) {
-        System.out.println("PillServiceImpl.getDetectText");
         try {
             String result = detectText.detectText(data.getBytes());
             return new VisionResponse(result, result);
@@ -214,11 +222,8 @@ public class PillServiceImpl implements PillService {
 
     @Override
     public List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword) {
-        List<Pill> lists = pillRepository.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
-        for (Pill pill : lists) {
-            System.out.println(pill.getPillName());
-        }
-        return lists.stream().map(Pill::getPillName).collect(Collectors.toList());
+        return pillRepository.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword)
+                .stream().map(Pill::getPillName).collect(Collectors.toList());
     }
 
     @Override

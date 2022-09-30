@@ -45,10 +45,6 @@ public class Pill extends BaseEntity {
 
     private String pillThumbnail;
 
-    private int reviewCount;
-
-    private double reviewAverage;
-
     @Enumerated(EnumType.STRING)
     private YN pillDomestic;
 
@@ -69,11 +65,5 @@ public class Pill extends BaseEntity {
 
     @OneToMany(mappedBy = "pill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Calendar> calendars = new ArrayList<>();
-
-    public void updatePill(int count, double average) {
-        this.reviewCount = count;
-        this.reviewAverage = average;
-    }
-
 }
 

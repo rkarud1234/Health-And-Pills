@@ -40,9 +40,9 @@ public interface PillService {
     Page<PillReviewListResponse> getMyReviews(User user, Pageable pageable);
 
     // 생리활성 기능 조회
-    List<FunctionalityListResponse> getFunctionalities();
+    List<FunctionalityListResponse> findAllByOrderByFunctionalityContentAsc();
     // 기능성 원료(영양소) 조회
-    List<NutrientListResponse> getNutrients();
+    List<NutrientListResponse> findAllByOrderByNutrientNameAsc();
     // 북마크, 복용중 상태 변경
     void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd);
 
