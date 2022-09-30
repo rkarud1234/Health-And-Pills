@@ -38,14 +38,6 @@ public class ExerciseController {
         return ResponseEntity.ok().body(body);
     }
 
-    // 베스트 10 운동 추천
-
-    // 000님을 위한 맞춤 추천
-
-    // 00대 여성이 많이 하는 운동 추천
-
-    // {스쿼트}와 유사한 운동 추천
-
     // 운동 상세정보 조회
     @GetMapping("/{exercise_id}")
     ResponseEntity<ExerciseDetailResponse> findByExerciseId(@LoginUser User user, @PathVariable("exercise_id") Integer exerciseId) {
