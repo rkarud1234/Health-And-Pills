@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { SearchPill } from '../../store/actions/search'
-import { AutoComplete } from '../../store/actions/search'
+import { SearchPill, AutoComplete, resetSelector } from '../../store/actions/search'
 
 const CustomInput = styled.input`
 width: 98%;
@@ -71,6 +70,7 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
       nutrientList: nutrientList
     }
     dispatch(SearchPill(data))
+    dispatch(resetSelector())
     setIsSearched(true)
     setIsOpened(false)
   }
@@ -100,7 +100,7 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
               id="searchpill"
               name="searchpill"
               placeholder="검색어를 입력하세요"
-              autocomplete="off"
+              autoComplete='off'
               onChange={valueHandler}
               onKeyPress={(e) => { if (e.key === 'Enter') { searchHandler() } }}
               value={searchWord}

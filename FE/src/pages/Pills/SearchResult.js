@@ -9,21 +9,17 @@ margin: 0px 16px;
 width: 100%;
 `
 
-const FlexBox = styled.div`
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
+const Box = styled.div`
 ::-webkit-scrollbar {
   display: none;
 } /* Chrome, Safari, Opera 환경*/
 scrollbar-height: none; /* firefox 환경 */
 overflow-y: scroll;
-height: 86vh;
+height: 78vh;
 `
 
 const SearchResult = ({ isSearched }) => {
   const searchResult = useSelector(state => state.search.searchResult).content
-  console.log(searchResult)
   const navigate = useNavigate()
   let text = ''
 
@@ -37,7 +33,7 @@ const SearchResult = ({ isSearched }) => {
           <div>{text}</div>
         </div>
       }
-      <FlexBox>
+      <Box>
         {
           searchResult &&
           searchResult.map((pill) => {
@@ -57,7 +53,7 @@ const SearchResult = ({ isSearched }) => {
             )
           })
         }
-      </FlexBox>
+      </Box>
     </div>
   )
 }
