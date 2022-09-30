@@ -21,7 +21,7 @@ public class RecommendController {
     // 베스트 영양제 추천
     @GetMapping("/pills/best")
     public ResponseEntity<JSONArray> recommendPillBest(@LoginUser User user) {
-        JSONArray body = recommendService.recommendPill("/pills/best");
+        JSONArray body = recommendService.recommendPill("/pills/best", user);
         return ResponseEntity.ok().body(body);
     }
     // 사용자 맞춤 영양제 추천
@@ -45,7 +45,7 @@ public class RecommendController {
     // 베스트 영양제 추천
     @GetMapping("/exercises/best")
     public ResponseEntity<JSONArray> recommendExerciseBest(@LoginUser User user) {
-        JSONArray body = recommendService.recommendExercise("/exercises/best");
+        JSONArray body = recommendService.recommendExercise("/exercises/best", user);
         return ResponseEntity.ok().body(body);
     }
     // 사용자 맞춤 영양제 추천
