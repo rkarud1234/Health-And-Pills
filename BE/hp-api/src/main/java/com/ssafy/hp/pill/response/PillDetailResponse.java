@@ -74,7 +74,7 @@ public class PillDetailResponse {
         pillDetailResponse.pillReviewCount = Arrays.stream(scores).sum();
         int sum = 0;
         for (int i = 1; i < scores.length; i++) {
-            sum += scores[i];
+            sum += scores[i] * i;
         }
         pillDetailResponse.pillReviewAverage = pillDetailResponse.pillReviewCount == 0 ? 0 : (double) sum / pillDetailResponse.pillReviewCount;
 
