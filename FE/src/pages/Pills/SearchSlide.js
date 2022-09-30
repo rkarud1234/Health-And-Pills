@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import SearchPills from './SearchPills'
 import SearchResult from './SearchResult'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { FunctionalitiesFetch, NutrientsFetch } from '../../store/actions/search'
 import { domesticSelector, nutrientSelector, functionalitySelector, resetSelector } from '../../store/actions/search.js'
+import { SearchPill } from '../../store/actions/search'
 
 const Tab = styled.div`
 cursor: pointer;
@@ -26,17 +27,14 @@ line-height: 44px;
 margin: 16px 16px 8px;
 border-bottom: ${props => props.state};
 `
-
 const TabList = styled.div`
  display: flex;
  width: 100vw;
  max-width: 500px;
 `
-
 const RadioDiv = styled.div`
 margin: 16px 16px
 `
-
 const CategoryBox = styled.div`
 display: flex;
 flex-direction: row;
@@ -46,12 +44,19 @@ flex-wrap: wrap;
 } /* Chrome, Safari, Opera 환경*/
 scrollbar-height: none; /* firefox 환경 */
 overflow-y: scroll;
-height: 50vh;
+height: 40vh;
 `
 const SelectedBox = styled.div`
 display: flex;
-flex-direction: row;
-flex-wrap: wrap;
+width: 96%;
+padding: 4px;
+overflow: hidden;
+::-webkit-scrollbar {
+display: none;
+}
+white-space: nowrap;
+scrollbar-width: none;
+cursor: pointer;
 `
 const Category = styled.div`
 background-color: white;
@@ -63,7 +68,6 @@ border-radius: 10px;
 box-shadow: rgb(100 100 111 / 35%) 0px 7px 29px 0px;
 max-width: 500px;
 `
-
 const CategoryBtn = styled.div`
 display: flex;
 margin: 4px;
@@ -81,7 +85,10 @@ border-radius: 20px;
   background-origin: border-box;
   background-clip: content-box, border-box;
   color:#fff;
-  cursor: pointer; 
+  cursor: pointer;
+  :hover{
+    background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
+  }
 }
 :hover{
   background-image: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%); 
@@ -92,13 +99,40 @@ border-radius: 20px;
 `
 const CategoryOpenBtn = styled.div`
 margin: 4px;
-height: 40px;
+height: 36px;
 border: 2px solid #DDDDDD;
 font-size: 16px;
 line-height: 18px;
 color: #7B7B7B;
 border-radius: 20px;
 cursor: pointer;
+`
+const CustomBtn = styled.button`
+  width: 40%;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px;
+  border: solid 2px;
+  border-radius: 12px;
+  margin: 8px;
+  &.search {
+    background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
+    border-radius: 30px;
+    color: #FFFFFF;
+    :hover{
+      background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
+    }
+  }
+  &.cancel {
+    background-image: linear-gradient(#fff, #fff);
+    border-radius: 30px;
+    border-color: #718096;
+    color: #718096;
+    :hover{
+      border-color: black;
+      color:black;
+    }
+  }
 `
 const SearchSlide = ({ openHandler }) => {
 
@@ -112,7 +146,29 @@ const SearchSlide = ({ openHandler }) => {
   const domestic = useSelector(state => state.search.domestic)
   const functionalityList = useSelector(state => state.search.functionalityList)
   const nutrientList = useSelector(state => state.search.nutrientList)
-  // console.log(domestic, functionalityList, nutrientList)
+  // console.log(domestic, functionalities, nutrients)
+
+  // 선택한 카테고리 횡스크롤
+  const scrollRef = useRef(null);
+  const [isDrag, setIsDrag] = useState(false);
+  const [startX, setStartX] = useState();
+
+  const onDragStart = (e) => {
+    e.preventDefault();
+    setIsDrag(true);
+
+    setStartX(e.pageX + scrollRef.current.scrollLeft);
+  };
+
+  const onDragEnd = () => {
+    setIsDrag(false);
+  };
+
+  const onDragMove = (e) => {
+    if (isDrag) {
+      scrollRef.current.scrollLeft = startX - e.pageX;
+    }
+  };
 
   const domesticHandler = (e) => {
     dispatch(domesticSelector(e.target.value))
@@ -135,6 +191,17 @@ const SearchSlide = ({ openHandler }) => {
     setIsOpened(!isOpened)
   }
 
+  const searchHandler = () => {
+    const data = {
+      searchWord: '',
+      domestic: domestic,
+      functionalityList: functionalityList,
+      nutrientList: nutrientList
+    }
+    dispatch(SearchPill(data))
+    setIsOpened(false)
+  }
+
   useEffect(() => {
     dispatch(FunctionalitiesFetch())
   }, [])
@@ -146,8 +213,8 @@ const SearchSlide = ({ openHandler }) => {
   if (tabNum === 1) {
     Tabs =
       <div>
-        <div style={{ height: '24px', display: 'flex', justifyContent: 'center' }}>
-          <div onClick={categoryHandler} style={{ margin: '16px 16px', backgroundColor: '#718096', height: '8px', width: '100px', borderRadius: '10px', cursor: 'pointer' }}></div>
+        <div style={{ height: '24px', display: 'flex', justifyContent: 'center', paddingTop: '16px' }}>
+          <div>필터</div>
         </div>
         <TabList>
           <Tab className='selected' state='3px solid #6A53FE' onClick={() => { setTabNum(1) }}>제품 구분</Tab>
@@ -158,8 +225,8 @@ const SearchSlide = ({ openHandler }) => {
   } else if (tabNum === 2) {
     Tabs =
       <div>
-        <div style={{ height: '24px', display: 'flex', justifyContent: 'center' }}>
-          <div onClick={categoryHandler} style={{ margin: '16px 16px', backgroundColor: '#718096', height: '8px', width: '100px', borderRadius: '10px', cursor: 'pointer' }}></div>
+        <div style={{ height: '24px', display: 'flex', justifyContent: 'center', paddingTop: '16px' }}>
+          <div>필터</div>
         </div>
         <div style={{ display: 'flex', maxWidth: '500px' }} >
           <Tab onClick={() => { setTabNum(1) }}>제품 구분</Tab>
@@ -170,8 +237,8 @@ const SearchSlide = ({ openHandler }) => {
   } else {
     Tabs =
       <div>
-        <div style={{ height: '24px', display: 'flex', justifyContent: 'center' }}>
-          <div onClick={categoryHandler} style={{ margin: '16px 16px', backgroundColor: '#718096', height: '8px', width: '100px', borderRadius: '10px', cursor: 'pointer' }}></div>
+        <div style={{ height: '24px', display: 'flex', justifyContent: 'center', paddingTop: '16px' }}>
+          <div>필터</div>
         </div>
         <div style={{ display: 'flex', maxWidth: '500px' }}>
           <Tab onClick={() => { setTabNum(1) }}>제품 구분</Tab>
@@ -182,14 +249,20 @@ const SearchSlide = ({ openHandler }) => {
   }
 
   return (
-    <>
+    <div>
       <SearchPills openHandler={backBtnHandler} setIsSearched={setIsSearched} setIsOpened={setIsOpened}></SearchPills>
-      <SelectedBox>
-        <CategoryOpenBtn onClick={() => { setIsOpened(!isOpened) }}>
-          <div style={{ margin: '8px' }}>
-            카테고리
-          </div>
-        </CategoryOpenBtn>
+      <CategoryOpenBtn onClick={() => { setIsOpened(!isOpened) }}>
+        <div style={{ margin: '8px', textAlign: 'center' }}>
+          카테고리로 검색하기
+        </div>
+      </CategoryOpenBtn>
+      <SelectedBox
+        onMouseDown={onDragStart}
+        onMouseMove={onDragMove}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+        ref={scrollRef}
+      >
         {nutrients &&
           nutrients.map((nutrient) => {
             if (nutrientList.includes(nutrient.nutrientId)) {
@@ -199,15 +272,17 @@ const SearchSlide = ({ openHandler }) => {
                   style={{ cursor: 'auto' }}
                   className='selected'>
                   <div style={{ margin: '8px', display: 'flex' }}>
-                    <div style={{ marginRight: '8px' }}>
+                    <div style={{ marginRight: isOpened ? '8px' : '0px' }}>
                       {nutrient.nutrientName}
                     </div>
-                    <div
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => { nutrientHandler(nutrient.nutrientId) }}
-                    >
-                      <i className="fa-solid fa-xmark fa-lg"></i>
-                    </div>
+                    {isOpened &&
+                      <div
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => { nutrientHandler(nutrient.nutrientId) }}
+                      >
+                        <i className="fa-solid fa-xmark fa-lg"></i>
+                      </div>
+                    }
                   </div>
                 </CategoryBtn>
               )
@@ -223,15 +298,17 @@ const SearchSlide = ({ openHandler }) => {
                   style={{ cursor: 'auto' }}
                   className='selected'>
                   <div style={{ margin: '8px', display: 'flex' }}>
-                    <div style={{ marginRight: '8px' }}>
+                    <div style={{ marginRight: isOpened ? '8px' : '0px' }}>
                       {functionalitiy.functionalityContent}
                     </div>
-                    <div
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => { functionalityHandler(functionalitiy.functionalityId) }}
-                    >
-                      <i className="fa-solid fa-xmark fa-lg"></i>
-                    </div>
+                    {isOpened &&
+                      <div
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => { functionalityHandler(functionalitiy.functionalityId) }}
+                      >
+                        <i className="fa-solid fa-xmark fa-lg"></i>
+                      </div>
+                    }
                   </div>
                 </CategoryBtn>
               )
@@ -293,10 +370,17 @@ const SearchSlide = ({ openHandler }) => {
               }
             </CategoryBox>
           }
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <CustomBtn onClick={() => {
+              dispatch(resetSelector())
+              categoryHandler()
+            }} className='cancel'>닫기</CustomBtn>
+            <CustomBtn onClick={searchHandler} className='search'>바로 검색</CustomBtn>
+          </div>
         </Category>
       }
       <SearchResult isSearched={isSearched}></SearchResult>
-    </>
+    </div>
   );
 };
 

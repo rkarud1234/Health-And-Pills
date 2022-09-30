@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { DeleteReview, PillReviewFetch } from '../../store/actions/pill'
+import { DeleteReview, PillReviewFetch } from '../../store/actions/pills'
 import { useDispatch } from 'react-redux'
 
 const Container = styled.div`

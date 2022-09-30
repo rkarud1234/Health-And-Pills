@@ -149,7 +149,7 @@ export const takingPill = createAsyncThunk(
 )
 
 const pillSlice = createSlice({
-  name: 'consultantList',
+  name: 'pillSlice',
   initialState,
   extraReducers: (builder) => {
     builder.addCase(PillDetailFetch.pending, (state, action) => {
