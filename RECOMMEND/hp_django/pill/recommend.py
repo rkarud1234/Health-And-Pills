@@ -38,7 +38,7 @@ def recommendUser(birthday,gender):
     return pk_list_to_queryset(g_mean['pill_id'][:10])
 
 # 인기 제품 추천
-def recommendBest():
+def recommendBest(userId):
     ratings = PillReview.toDataFrame(cols=['user_id','pill_id','pill_review_score'])
     pill_mean = ratings.groupby(['pill_id'])['pill_review_score'].mean()
     pill_sort = pill_mean.sort_values(ascending=False)
