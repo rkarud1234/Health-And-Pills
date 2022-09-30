@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.domain.PillReview;
-import com.ssafy.hp.pill.domain.Warning;
 import com.ssafy.hp.pill.request.SearchRequest;
 import com.ssafy.hp.pill.response.PillCalendarResponse;
 import com.ssafy.hp.user.domain.User;
@@ -20,15 +19,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.ssafy.hp.pill.domain.QNutrient.nutrient;
 import static com.ssafy.hp.pill.domain.QPill.pill;
 import static com.ssafy.hp.pill.domain.QPillNutrient.pillNutrient;
-import static com.ssafy.hp.pill.domain.QPillWarning.pillWarning;
 import static com.ssafy.hp.pill.domain.QPillFunctionality.pillFunctionality;
-import static com.ssafy.hp.pill.domain.QWarning.warning;
 import static com.ssafy.hp.pill.domain.QPillReview.pillReview;
 import static com.ssafy.hp.user.domain.QUserPill.userPill;
-import static com.ssafy.hp.pill.domain.QFunctionality.functionality;
 
 @Repository
 @RequiredArgsConstructor
@@ -92,37 +87,6 @@ public class PillQueryRepository {
                 .fetch();
 
         return new PageImpl<>(results);
-    }
-
-    // 영양제에 포함된 기능성 원료(영양소) 반환
-    public List<String> findNutrientByPill(Pill pill) {
-        return queryFactory
-                .select(nutrient.nutrientName)
-                .from(nutrient)
-                .join(pillNutrient)
-                .on(nutrient.eq(pillNutrient.nutrient))
-                .where(pillNutrient.pill.eq(pill))
-                .fetch();
-    }
-
-    // 영양제에 포함된 생리활성기능 반환
-    public List<String> findFunctionalityByPill(Pill pill) {
-        return queryFactory
-                .select(functionality.functionalityContent)
-                .from(functionality)
-                .join(pillFunctionality)
-                .on(functionality.eq(pillFunctionality.functionality))
-                .where(pillFunctionality.pill.eq(pill))
-                .fetch();
-    }
-
-    public List<Warning> findWarningByPill(Pill pill) {
-        return queryFactory
-                .selectFrom(warning)
-                .join(pillWarning)
-                .on(warning.eq(pillWarning.warning))
-                .where(pillWarning.pill.eq(pill))
-                .fetch();
     }
 
     public Page<PillReview> findReviewByPillId(int pillId, Pageable pageable) {
