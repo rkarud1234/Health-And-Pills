@@ -1,4 +1,3 @@
-
 package com.ssafy.hp.exercise.query;
 
 import com.querydsl.jpa.impl.*;
@@ -35,13 +34,13 @@ public class ExerciseQueryRepository {
     }
 
     // 해당 부위의 운동들을 반환
-
     public Page<Exercise> findExerciseByExercisePartCategory(ExercisePartCategory exercisePartCategory, Pageable pageable) {
         List<Exercise> results = queryFactory
                 .selectFrom(exercise)
                 .join(exercisePart)
                 .on(exercise.eq(exercisePart.exercise))
                 .where(exercisePart.exercisePartCategory.eq(exercisePartCategory))
+                .orderBy(exercise.exerciseName.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -57,6 +56,7 @@ public class ExerciseQueryRepository {
                 .where(userExercise.userExerciseDoing.eq(YN.Y)
                         .and(exercise.exerciseName.contains(search))
                         .and(userExercise.users.eq(user)))
+                .orderBy(exercise.exerciseName.asc())
                 .limit(5)
                 .fetch();
 
@@ -64,6 +64,7 @@ public class ExerciseQueryRepository {
                 .selectFrom(exercise)
                 .where(exercise.exerciseName.contains(search)
                         .and(exercise.notIn(doing)))
+                .orderBy(exercise.exerciseName.asc())
                 .limit(5)
                 .fetch();
 
