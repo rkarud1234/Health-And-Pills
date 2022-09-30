@@ -8,18 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import cosine_similarity
 from datetime import datetime
 
-# 생년월일 -> 연령대
-def get_age_group(birthday):
-    birth = datetime.strptime(birthday, '%Y%m%d').date()
-    today = datetime.now().date()
-    year = today.year - birth.year
-    if today.month < birth.month:
-        year -= 1
-    elif today.month == birth.month and today.day < birth.day:
-        year -= 1
 
-    return (year//10) * 10
-    
+# 20대 남자를 위한추천
 def recommendUser(birthday,gender):
     queryset = UserProfile.objects.filter(user_profile_gender=gender)
     temp = []
@@ -43,11 +33,11 @@ def recommendUser(birthday,gender):
     users = users.set_index('user_id')
 
     g_mean = merged_ratings[['pill_id','gender','age_group','pill_review_score']].groupby(['pill_id','gender','age_group'])['pill_review_score'].mean().reset_index().sort_values(ascending=False, by='pill_review_score')
-
+    print(g_mean)
     
     return pk_list_to_queryset(g_mean['pill_id'][:10])
 
-
+# 인기 제품 추천
 def recommendBest():
     ratings = PillReview.toDataFrame(cols=['user_id','pill_id','pill_review_score'])
     pill_mean = ratings.groupby(['pill_id'])['pill_review_score'].mean()
@@ -56,6 +46,7 @@ def recommendBest():
 
     return pk_list_to_queryset(recommend_pills['pill_id'][:10])
 
+# 나와 유사한 사용자 추천
 def recommendCustom(user_id):
     ratings = PillReview.toDataFrame(cols=['user_id','pill_id','pill_review_score'])
     ratings = ratings.groupby(['user_id','pill_id'])['pill_review_score'].mean().reset_index()
@@ -81,7 +72,7 @@ def recommendCustom(user_id):
     pill_sort = user_pill.sort_values(ascending=False)
     return pk_list_to_queryset(pill_sort.reset_index()['pill_id'][:10])
     
-
+# 현재 보고있는 영양제와 비슷한 영양제
 def recommendItem(user_id, pill_id):
     ratings = PillReview.toDataFrame(cols=['user_id','pill_id','pill_review_score'])
     ratings = ratings.groupby(['user_id','pill_id'])['pill_review_score'].mean().reset_index()
@@ -113,6 +104,19 @@ def recommendItem(user_id, pill_id):
     pill_sort = user_pill.sort_values(ascending=False)
 
     return pk_list_to_queryset(pill_sort.reset_index()['pill_id'][:10])
+
+# 생년월일 -> 연령대
+def get_age_group(birthday):
+    19971002
+    birth = datetime.strptime(birthday, '%Y%m%d').date()
+    today = datetime.now().date()
+    year = today.year - birth.year
+    if today.month < birth.month:
+        year -= 1
+    elif today.month == birth.month and today.day < birth.day:
+        year -= 1
+        
+    return (year//10) * 10 # 20
 
 # 영양제 pk리스트 뽑은거 장고 쿼리셋으로 변경
 def pk_list_to_queryset(pk_list):
