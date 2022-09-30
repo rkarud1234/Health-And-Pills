@@ -115,7 +115,8 @@ def recommendItem(user_id, exercise_id):
     exercise_part = list(ExercisePart.objects.filter(exercise=exercise_id).values())
     exercise_part_list = []
     for exp in exercise_part:
-        exercise_part_list.append(exp['exercise_part_category'])
+        print(exp)
+        exercise_part_list.append(exp['exercise_part_category_id'])
     
 
     ratings = UserExercise.toDataFrame(cols=['user_id','exercise_id','user_exercise_bookmark','user_exercise_doing','user_exercise_like'])

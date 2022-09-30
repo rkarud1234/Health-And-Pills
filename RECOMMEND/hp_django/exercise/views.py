@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from exercise.models import Exercise, ExercisePartCategory
+from user.models import UserProfile
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import ExerciseSerializer
@@ -67,7 +68,11 @@ class RecommendUserApi(APIView):
     def getExercisePartName(self, id):
         return ExercisePartCategory.objects.get(exercise_part_category_id=id)
 
-    def get(self, request, gender, birthday):
+    def get(self, request, userId):
+
+        query_object = UserProfile.objects.filter(user_profile_id=userId)[0]
+        birthday = query_object.user_profile_birthday
+        gender = query_object.user_profile_gender
 
         pill_list = recommend.recommendUser(birthday, gender)
         
@@ -90,13 +95,29 @@ class RecommendUserApi(APIView):
         return Response(context)
 
 class RecommendItemApi(APIView):
-
+    def getExercisePartName(self, id):
+        return ExercisePartCategory.objects.get(exercise_part_category_id=id)
+        
     def get(self, request, userId, exerciseId):
         
-        pill_list = recommend.recommendItem(userId, exerciseId)
-        serializer = ExerciseSerializer(pill_list, many=True)
+        exercise_list = recommend.recommendItem(userId, exerciseId)
+        serializer = ExerciseSerializer(exercise_list, many=True)
+        data = serializer.data
+        context = []
+        for id in data:
+            parts = []
+            for part in id['exercisePart']:
+                partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
+                parts.append(partName)
 
-        return Response(serializer.data)
+            context.append(
+                {
+                    'id':id['exercise_id'],
+                    'name':id['exercise_name'],
+                    'parts':parts
+                }
+            )
+        return Response(context)
 
 class ExerciseListApi(APIView):
     

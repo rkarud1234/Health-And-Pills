@@ -30,7 +30,11 @@ class RecommendBestApi(APIView):
 
 class RecommendUserApi(APIView):
 
-    def get(self, request, gender, birthday):
+    def get(self, request, userId):
+        query_object = UserProfile.objects.filter(user_profile_id=userId)[0]
+        birthday = query_object.user_profile_birthday
+        gender = query_object.user_profile_gender
+        
         
         pill_list = recommend.recommendUser(birthday, gender)
         serializer = PillSerializer(pill_list, many=True)
