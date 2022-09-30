@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 public class DjangoConnectConfig {
 
     public static JSONArray connect(String uri) {
-        final String BASE_URL = "http://localhost:8000/recommend";
+        final String BASE_URL = "http://j7b203.p.ssafy.io:8000/recommend";
         int responseCode;
         try {
             URL url = new URL(BASE_URL+uri+"?format=json");
