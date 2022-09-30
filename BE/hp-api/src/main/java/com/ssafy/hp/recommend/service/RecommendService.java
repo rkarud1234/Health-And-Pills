@@ -1,10 +1,14 @@
 package com.ssafy.hp.recommend.service;
 
-import net.minidev.json.JSONObject;
+import com.ssafy.hp.user.domain.User;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public interface RecommendService {
-    JSONObject recommendExercise(String uri);
-    JSONObject recommendExercise(String uri, String exerciseId);
-    JSONObject recommendPill(String uri);
-    JSONObject recommendPill(String uri, String pillId);
+    JSONArray recommendExercise(String uri);
+    JSONArray recommendExercise(String uri, User user);
+    JSONArray recommendExercise(String uri, User user, String exerciseId);
+    JSONArray recommendPill(String uri);
+    JSONArray recommendPill(String uri, User user);
+    JSONArray recommendPill(String uri, User user, String pillId);
 }

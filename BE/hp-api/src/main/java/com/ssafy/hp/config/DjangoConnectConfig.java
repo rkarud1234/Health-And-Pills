@@ -1,38 +1,51 @@
 package com.ssafy.hp.config;
 
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 
 @Configuration
 public class DjangoConnectConfig {
 
-    public static JSONObject connect(String uri) {
-        final String BASE_URL = "http://localhost:8000/api";
+    public static JSONArray connect(String uri) {
+        final String BASE_URL = "http://localhost:8000/recommend";
+        int responseCode;
         try {
-            URL url = new URL(BASE_URL+uri);
-            URLConnection conn = url.openConnection();
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+            URL url = new URL(BASE_URL+uri+"?format=json");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            String line = br.readLine();
-            // 실행하면 json타입을 데이터가 한줄의 String 타입으로 가져와지기 때문에 json 형태로 가공해줘야함
+            if(conn.getResponseCode() != 200) {
+                throw new RuntimeException("django connection error:"+conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+            StringBuilder sb = new StringBuilder();
+
+            String line = "";
+            while((line = br.readLine()) != null) {
+                sb.append(line);
+            }
             JSONParser parser = new JSONParser();
-            JSONObject object = (JSONObject) parser.parse(line);
-            JSONObject response = (JSONObject) object.get("response");
+            JSONArray response = (JSONArray) parser.parse(sb.toString());
+            System.out.println(response.toString());
+
             return response;
 
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException();
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException();
         }
-        return null;
     }
 }
