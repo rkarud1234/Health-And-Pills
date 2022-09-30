@@ -33,7 +33,6 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final ExerciseCategoryRepository exerciseCategoryRepository;
     private final ExercisePartCategoryRepository exercisePartCategoryRepository;
-    private final UserRepository userRepository;
     private final UserExerciseRepository userExerciseRepository;
     private final ExerciseQueryRepository exerciseQueryRepository;
     private final UserService userService;
@@ -53,7 +52,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer exerciseCategoryId, Pageable pageable) {
         ExerciseCategory exerciseCategory = findExerciseCategoryById(exerciseCategoryId);
-        Page<Exercise> exercises = exerciseRepository.findByExerciseCategory(exerciseCategory, pageable);
+        Page<Exercise> exercises = exerciseRepository.findByExerciseCategoryOrderByExerciseNameAsc(exerciseCategory, pageable);
 
         return exercises.map(exercise -> {
             UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
