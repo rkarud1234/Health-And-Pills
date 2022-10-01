@@ -4,7 +4,7 @@ import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import BookMark from "../../components/buttons/BookMark";
 import UnBookMark from "../../components/buttons/UnBookMark";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import ThumbsUp from "../../components/buttons/ThumbsUp";
 import ThumbsDown from "../../components/buttons/ThumbsDown";
 import ThumbsUped from "../../components/buttons/ThumbsUped";
@@ -13,8 +13,6 @@ import HealthCard from "../../components/cards/HealthCard";
 import Exercising from "../../components/buttons/Exercising";
 import UnExercising from "../../components/buttons/UnExercising";
 import { exerciseLike, getExerciseDetail, getExerciseItemReco, exerciseBookMark, exerciseDoing } from "../../api/HealthAPI";
-import { client } from "../../api";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const BlockWrapper = styled.div`
@@ -76,6 +74,17 @@ const RecomThumbWrapper = styled.div`
   font-size: large;
 `
 
+const RecoItemBox = styled.div`
+::-webkit-scrollbar {
+  display: none;
+} /* Chrome, Safari, Opera 환경*/
+scrollbar-width: none; /* firefox 환경 */
+cursor: pointer;
+display: flex;
+overflow-x: scroll;
+padding: 16px 0px 24px;
+`
+
 const HealthDetail = ({
    width, 
    height, 
@@ -84,6 +93,31 @@ const HealthDetail = ({
    backgroundColor, 
    borderRadius, 
   }) => {
+
+  // 아이템 횡스크롤
+  const scrollRef = useRef(null);
+  const [isDrag, setIsDrag] = useState(false);
+  const [startX, setStartX] = useState();
+  const [startPageX, setStartPageX] = useState();
+  const [endPageX, setendPageX] = useState();
+  const onDragStart = (e) => {
+    e.preventDefault();
+    setIsDrag(true);
+    setStartPageX(e.pageX)
+    setStartX(e.pageX + scrollRef.current.scrollLeft);
+  };
+
+  const onDragEnd = (e) => {
+    setendPageX(e.pageX)
+    setIsDrag(false);
+  };
+
+  const onDragMove = (e) => {
+    if (isDrag) {
+      scrollRef.current.scrollLeft = startX - e.pageX;
+    }
+  };
+
   const [exer, setExer] = useState({
     exerciseName: "",
     exerciseContent: "",
@@ -95,59 +129,36 @@ const HealthDetail = ({
     like: "",
   });
 
-  // const [recoExer, setRecoExer] = useState({
-  //   exerciseName: "",
-  //   aerobic: "",
-  //   exerciseParts: [],
-  //   exerciseCategory: "",
-  //   bookmark: "",
-  //   doing: "",
-  //   like: "",
-  // })
+  const [recoExer, setRecoExer] = useState([]);
+
   
   const { exerciseId } = useParams();
 
   // 운동 상세 정보 조회
   const getDetail = async () => {
     const response = await getExerciseDetail(exerciseId);
-  setExer({...response.data})
-  console.log(response)
+    setExer({...response.data})
   };
   useEffect(() => {
     getDetail();
   }, [exer.bookmark, exer.like, exer.doing]);
 
-  // // 운동 상세 정보 조회
-  // const getDetail = async(exerciseId) => {
-  //   await client
-  //     .get(`/exercise/${exerciseId}`)
-  //     .then((response) => {
-  //       if (response.status === 200)
-  //       setExer({...response.data})
-  //     })
-  //     .catch((error) => console.log(error));
-  // }
-  // useEffect(() => {
-  //   getDetail();
-  // }, [exer.bookmark, exer.like, exer.doing]);
+  // 현재 운동과 유사한 운동 추천 받기
+  const getReco = async () => {
+    const response = await getExerciseItemReco(exerciseId);
+    setRecoExer([...response.data])
+  };
+  useEffect(() => {
+    getReco();
+  }, [recoExer.id]);
 
-  // // 현재 운동과 유사한 운동 추천 받기
-  // const getReco = async () => {
-  //   await getExerciseItemReco(data);
-  // if (response.status === 200) {
-  //   setRecoExer([...response.data])
-  // }};
-  // useEffect(() => {
-  //   getReco();
-  // }, []);
-
-  const [params, setParams] = useState({
-    key: 'AIzaSyC5XUXYoD-TVqapYPw-T4_0vo6nsdjbQYg',
-    part: 'snippet',
-    q: `필라테스`,
-    maxResults: 6,
-    type: 'video',
-  });
+  // const [params, setParams] = useState({
+  //   key: 'AIzaSyC5XUXYoD-TVqapYPw-T4_0vo6nsdjbQYg',
+  //   part: 'snippet',
+  //   q: `필라테스`,
+  //   maxResults: 6,
+  //   type: 'video',
+  // });
   
   // const [videos, setVideos] = useState({});
 
@@ -271,7 +282,22 @@ const HealthDetail = ({
           {exer.exerciseName}와 유사한 운동 추천
         </HealthWrapper>
         <HealthWrapper backgroundColor="transparent" justifyContent="space-between">
-          <HealthCard/><HealthCard/><HealthCard/>
+            <RecoItemBox
+              ref={scrollRef}
+              onMouseDown={onDragStart}
+              onMouseMove={onDragMove}
+              onMouseUp={onDragEnd}
+              onMouseLeave={onDragEnd}
+            >
+              {recoExer.map((recoExers) => (
+                <HealthCard
+                  {...recoExers} key={recoExers.id}
+                  exerciseName={recoExers.name}
+                  exerciseId={recoExers.id}
+                  exerciseParts={recoExers.parts}
+                />
+              ))}
+            </RecoItemBox>
         </HealthWrapper>
       </BlockWrapper>
       <Footer />

@@ -9,22 +9,12 @@ export const getExerciseDetail = async (exerciseId) => {
     return result;
 };
 
- export const getExDetail = async () => {
-  await client
-    .get(`/exercise/1`)
-    .then((response) => {
-      if (response.status === 200)
-      console.log(response.data)
-    })
-    .catch((error) => console.log(error));
-}
-
-
 // 현재 운동과 유사한 운동(스쿼트와 유사한 운동 추천)
 export const getExerciseItemReco = async(exerciseId) => {
   const result = await client
-    .get(`/exercise/recommend/item/${exerciseId}`)
-    .then((response) => response);
+    .get(`/recommend/exercises/item/${exerciseId}`)
+    .then((response) => response)
+    .catch((error) => error.response);
     return result;
 };
 
@@ -50,6 +40,33 @@ export const exerciseLike = async (data) => {
 export const exerciseBookMark = async (data) => {
   const result = await client
     .post(`/exercise/bookmark`, data)
+    .then((response) => response)
+    .catch((error) => error);
+  return result;
+};
+
+// 베스트 운동 추천
+export const getExerciseBest = async () => {
+  const result = await client
+    .get(`/recommend/exercises/best`)
+    .then((response) => response)
+    .catch((error) => error);
+  return result;
+};
+
+// 사용자 맞춤 운동 추천
+export const getExerciseCustom = async () => {
+  const result = await client
+    .get(`/recommend/exercises/user`)
+    .then((response) => response)
+    .catch((error) => error);
+  return result;
+};
+
+// 유사한 사용자 운동 추천
+export const getExerciseUser = async () => {
+  const result = await client
+    .get(`/recommend/exercises/user`)
     .then((response) => response)
     .catch((error) => error);
   return result;
