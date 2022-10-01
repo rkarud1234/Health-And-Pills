@@ -3,10 +3,17 @@ import styled from "styled-components";
 import BookMark from "../buttons/BookMark";
 import UnBookMark from "../buttons/UnBookMark";
 import { Link } from "react-router-dom";
+import { exerciseBookMark } from "../../api/HealthAPI";
+import { useEffect, useCallback } from "react";
+import { getExerciseDetail, exerciseDoing } from "../../api/HealthAPI";
+import Excercising from "../buttons/Exercising";
+import UnExercising from "../buttons/UnExercising";
 
 const HealthCardWrapper = styled.div`
   background-color: transparent;
-  padding: 4px;
+  /* padding: 4px; */
+  margin: 12px;
+  justify-content: center;
 `
 
 const StyledHealthCard = styled.div`
@@ -44,37 +51,87 @@ const BookMarkWrapper = styled.div`
   background-color: ${({ color }) => color};
   position: absolute;
   top: -8px;
-  right: 16px;
+  right: 8px;
   width: 15px;
   height: 20px;
 
 `
 
+const DoingWrapper = styled.div`
+  background-color: ${({ color }) => color};
+  position: absolute;
+  top: -4px;
+  right: 130px;
+  width: 15px;
+  height: 20px;
+
+`
+
+
 const HealthCard = ({
   width, height, padding, fontWeight,
-  exerciseName, aerobic, exerciseParts, exerciseCategory, bookmark, exerciseId
+  exerciseName, aerobic, exerciseParts, exerciseCategory, bookmark, exerciseId,
 }) => {
-  const [bookMark, setBookMark] = useState(false)
+
+  const [detail, setDetail] = useState({
+    bookmark: "",
+    doing: "",
+  })
+
+  // 운동 상세 정보 조회
+  const getDetail = async () => {
+    const response = await getExerciseDetail(exerciseId);
+  setDetail({...response.data})
+  };
+  useEffect(() => {
+    getDetail();
+  }, [detail.bookmark, detail.doing]);
+
+  const onToggleBookMark = async (value) => {
+    const data = {
+      exerciseId: exerciseId,
+      check: value
+    };
+    const response = await exerciseBookMark(data);
+    setDetail((prevState) => {
+      return {
+        ...prevState, bookmark: value
+      }
+    });
+  };
+
+  const onToggleDoing = async (value) => {
+    const data = {
+      exerciseId: exerciseId,
+      check: value
+    };
+    const response = await exerciseDoing(data);
+    setDetail ((prevState) => {
+      return {
+        ...prevState, doing: value
+      }
+    })
+  };
 
   return (
     <>
       <HealthCardWrapper> 
         <StyledHealthCard width={width} height={height}>
-            {/* <BookMarkWrapper onClick = {() => setBookMark(!bookMark)}>
-                {bookMark === false ? (
-                  <BookMark/>
-                ) : (
-                  <UnBookMark/>
-                )}
-            </BookMarkWrapper> */}
+            <DoingWrapper>
+              {detail.doing === "Y" ? <Excercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
+            </DoingWrapper>
+            <BookMarkWrapper>
+              {detail.bookmark === "Y" ? <UnBookMark onClick={onToggleBookMark}/> : <BookMark onClick={onToggleBookMark}/>}
+            </BookMarkWrapper>
           <StyledHealthNameWrapper padding="4px" fontWeight={fontWeight}>
             <Link to={`detail/${exerciseId}`}>
-            {exerciseId}
+            <div style={{display: "block"}}>
             {exerciseName}
+            </div>
             </Link>
           </StyledHealthNameWrapper>
           <HealthInfoWrapper>
-            {aerobic} | {exerciseParts} | {bookmark}
+            {aerobic} | {exerciseParts}
           </HealthInfoWrapper>
         </StyledHealthCard>
       </HealthCardWrapper>
