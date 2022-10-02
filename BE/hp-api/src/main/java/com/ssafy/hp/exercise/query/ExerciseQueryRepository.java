@@ -15,23 +15,11 @@ import java.util.stream.Collectors;
 import static com.ssafy.hp.exercise.domain.QExercise.exercise;
 import static com.ssafy.hp.user.domain.QUserExercise.userExercise;
 import static com.ssafy.hp.exercise.domain.QExercisePart.exercisePart;
-import static com.ssafy.hp.exercise.domain.QExercisePartCategory.exercisePartCategory;
 
 @Repository
 @RequiredArgsConstructor
 public class ExerciseQueryRepository {
     private final JPAQueryFactory queryFactory;
-
-    // 해당 운동의 운동부위를 반환
-    public List<String> findExercisePartByExercise(Exercise exercise) {
-        return queryFactory
-                .select(exercisePartCategory.exercisePartCategoryName)
-                .from(exercisePartCategory)
-                .join(exercisePart)
-                .on(exercisePartCategory.eq(exercisePart.exercisePartCategory))
-                .where(exercisePart.exercise.eq(exercise))
-                .fetch();
-    }
 
     // 해당 부위의 운동들을 반환
     public Page<Exercise> findExerciseByExercisePartCategory(ExercisePartCategory exercisePartCategory, Pageable pageable) {

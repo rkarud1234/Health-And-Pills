@@ -4,10 +4,14 @@ package com.ssafy.hp.exercise.response;
 import com.ssafy.hp.common.type.*;
 import com.ssafy.hp.exercise.domain.*;
 import com.ssafy.hp.exercise.type.*;
+import com.ssafy.hp.user.response.UserExerciseInfoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -19,9 +23,9 @@ public class ExerciseListResponse {
 
     private String exerciseName; // 운동이름
 
-    private Aerobic aerobic; // 유무산소
+    private String aerobic; // 유무산소
 
-    private String[] exerciseParts; // 운동부위
+    private List<String> exerciseParts; // 운동부위
 
     private String exerciseCategory; // 운동 분류
 
@@ -29,15 +33,18 @@ public class ExerciseListResponse {
 
     private String doing; // 운동중여부
 
-    public static ExerciseListResponse from(Exercise exercise, String[] exerciseParts, String exerciseCategory, String bookmark, String doing) {
+    public static ExerciseListResponse from(Exercise exercise, UserExerciseInfoResponse userExerciseInfoResponse) {
         ExerciseListResponse exerciseListResponse = new ExerciseListResponse();
         exerciseListResponse.exerciseId = exercise.getExerciseId();
         exerciseListResponse.exerciseName = exercise.getExerciseName();
-        exerciseListResponse.aerobic = exercise.getExerciseAerobic();
-        exerciseListResponse.exerciseParts = exerciseParts;
-        exerciseListResponse.exerciseCategory = exerciseCategory;
-        exerciseListResponse.bookmark = bookmark;
-        exerciseListResponse.doing = doing;
+        exerciseListResponse.aerobic = exercise.getExerciseAerobic().toString();
+        exerciseListResponse.exerciseParts = exercise.getExerciseParts().stream()
+                .map(exercisePart -> exercisePart.getExercisePartCategory().getExercisePartCategoryName())
+                .collect(Collectors.toList()).stream()
+                .sorted(String::compareTo).collect(Collectors.toList());
+        exerciseListResponse.exerciseCategory = exercise.getExerciseCategory().getExerciseCategoryName();
+        exerciseListResponse.bookmark = userExerciseInfoResponse.getExerciseBookmark();
+        exerciseListResponse.doing = userExerciseInfoResponse.getExerciseDoing();
 
         return exerciseListResponse;
     }

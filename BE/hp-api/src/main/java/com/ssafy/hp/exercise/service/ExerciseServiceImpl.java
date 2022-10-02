@@ -8,7 +8,6 @@ import com.ssafy.hp.exercise.query.*;
 import com.ssafy.hp.exercise.response.*;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
-import com.ssafy.hp.user.response.*;
 import com.ssafy.hp.user.service.*;
 import lombok.*;
 import org.springframework.data.domain.*;
@@ -37,32 +36,16 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseQueryRepository exerciseQueryRepository;
     private final UserService userService;
 
-    // 해당 운동의 운동부위 배열을 반환
-    private String[] findExercisePartByExercise(Exercise exercise) {
-        return exerciseQueryRepository.findExercisePartByExercise(exercise).toArray(String[]::new);
-    }
-
-    // 해당 운동의 카테고리를 반환
-    private ExerciseCategory findExerciseCategoryById(Integer exerciseCategoryId) {
-        return exerciseCategoryRepository.findById(exerciseCategoryId)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
-    }
-
     // 운동 종류별 조회
     @Override
     public Page<ExerciseListResponse> findByExerciseCategory(User user, Integer exerciseCategoryId, Pageable pageable) {
-        ExerciseCategory exerciseCategory = findExerciseCategoryById(exerciseCategoryId);
+        ExerciseCategory exerciseCategory = exerciseCategoryRepository.findById(exerciseCategoryId)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
         Page<Exercise> exercises = exerciseRepository.findByExerciseCategoryOrderByExerciseNameAsc(exerciseCategory, pageable);
 
-        return exercises.map(exercise -> {
-            UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
-            return ExerciseListResponse.from(
-                    exercise,
-                    findExercisePartByExercise(exercise),
-                    exerciseCategory.getExerciseCategoryName(),
-                    userExerciseInfo.getExerciseBookmark(),
-                    userExerciseInfo.getExerciseDoing());
-        });
+        return exercises.map(exercise -> ExerciseListResponse.from(
+                exercise,
+                userService.findByExerciseId(user, exercise.getExerciseId())));
     }
 
     // 운동 부위별 조회
@@ -72,15 +55,9 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .orElseThrow(() -> new NotFoundException(NotFoundException.CATEGORY_NOT_FOUND));
 
         return exerciseQueryRepository.findExerciseByExercisePartCategory(exercisePartCategory, pageable)
-                .map(exercise -> {
-                    UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
-                    return ExerciseListResponse.from(
-                            exercise,
-                            findExercisePartByExercise(exercise),
-                            findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
-                            userExerciseInfo.getExerciseBookmark(),
-                            userExerciseInfo.getExerciseDoing());
-                });
+                .map(exercise -> ExerciseListResponse.from(
+                        exercise,
+                        userService.findByExerciseId(user, exercise.getExerciseId())));
     }
 
     // 운동 상세정보 조회
@@ -89,15 +66,9 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.EXERCISE_NOT_FOUND));
 
-        UserExerciseInfoResponse userExerciseInfo = userService.findByExerciseId(user, exercise.getExerciseId());
-
         return ExerciseDetailResponse.from(
                 exercise,
-                findExercisePartByExercise(exercise),
-                findExerciseCategoryById(exercise.getExerciseCategory().getExerciseCategoryId()).getExerciseCategoryName(),
-                userExerciseInfo.getExerciseBookmark(),
-                userExerciseInfo.getExerciseDoing(),
-                userExerciseInfo.getExerciseLike());
+                userService.findByExerciseId(user, exercise.getExerciseId()));
     }
 
     @Override
