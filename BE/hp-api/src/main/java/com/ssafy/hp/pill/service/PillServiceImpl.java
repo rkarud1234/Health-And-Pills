@@ -16,8 +16,6 @@ import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserPill;
-import com.ssafy.hp.user.response.UserPillInfoResponse;
-import com.ssafy.hp.user.response.UserPillResponse;
 import com.ssafy.hp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ssafy.hp.DuplicateException.REVIEW_DUPLICATE;
 import static com.ssafy.hp.NotFoundException.*;
 import static com.ssafy.hp.NotMatchException.USER_NOT_MATCH;
 
@@ -95,10 +94,14 @@ public class PillServiceImpl implements PillService {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
 
-        PillReview pillReview = PillReview.createPillReview(user, pill, request.getScore(), request.getContent());
-        updatePillReviewAvgCount(pill); // 리뷰 평균, 갯수 갱신
+        Optional<PillReview> pillReview = pillReviewRepository.findByUsersAndPill(user, pill);
+        // 리뷰 한 명당 한 개만 등록
+        if (pillReview.isPresent()) {
+            throw new DuplicateException(REVIEW_DUPLICATE);
+        }
 
-        pillReviewRepository.save(pillReview);
+        PillReview newPillReview = PillReview.createPillReview(user, pill, request.getScore(), request.getContent());
+        pillReviewRepository.save(newPillReview);
     }
 
     // 리뷰 업데이트
@@ -116,7 +119,6 @@ public class PillServiceImpl implements PillService {
         }
         Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        updatePillReviewAvgCount(pill); // 리뷰 평균, 갯수 갱신
 
         pillReview.updatePillReview(request.getScore(), request.getContent());
     }
@@ -134,7 +136,6 @@ public class PillServiceImpl implements PillService {
 
         Pill pill = pillRepository.findById(pillReview.getPill().getPillId())
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-        updatePillReviewAvgCount(pill); // 리뷰 평균, 갯수 갱신
 
         pillReviewRepository.delete(pillReview);
     }
@@ -177,17 +178,6 @@ public class PillServiceImpl implements PillService {
         return nutrientRepository.findAllByOrderByNutrientNameAsc()
                 .stream().map(NutrientListResponse::from)
                 .collect(Collectors.toList());
-    }
-
-    // pill 테이블의 리뷰평균, 갯수 업데이트
-    public void updatePillReviewAvgCount(Pill pill) {
-        int count = pillReviewRepository.countByPillPillId(pill.getPillId());
-        int sum = 0;
-        List<PillReview> reviewList = pillReviewRepository.findByPillPillId(pill.getPillId());
-        for (PillReview review : reviewList) {
-            sum += review.getPillReviewScore();
-        }
-        double average = Math.round(sum / (double) count * 100) / 100.0;
     }
 
     @Override
