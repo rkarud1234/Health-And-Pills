@@ -2,12 +2,19 @@ package com.ssafy.hp.pill.response;
 
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
+import com.ssafy.hp.pill.domain.PillWarning;
 import com.ssafy.hp.pill.domain.Warning;
+import com.ssafy.hp.user.domain.UserPill;
+import com.ssafy.hp.user.response.UserPillInfoResponse;
+import com.ssafy.hp.util.ScoreUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Data
 @NoArgsConstructor
@@ -15,64 +22,68 @@ import java.util.List;
 public class PillDetailResponse {
 
     //영양제 번호
-    int pillId;
+    private int pillId;
     // 영양제 이름
-    String pillName;
+    private String pillName;
     // 영양제 회사 이름
-    String pillCompanyName;
+    private String pillCompanyName;
     // 유통기한
-    String pillExpirationDate;
+    private String pillExpirationDate;
     // 복용량/복용방법
-    String pillTakeProcess;
+    private String pillTakeProcess;
     // 복용시 주의사항
-    String pillTakeWarning;
+    private String pillTakeWarning;
     // 기능성 내용
-    String pillContent;
+    private String pillContent;
     // 썸네일 주소
-    String pillThumbnail;
+    private String pillThumbnail;
     //국내 여부
-    YN pillDomestic;
-    // 평점 평균
-    double reviewAverage;
-    // 평점 갯수
-    int reviewCount;
+    private String pillDomestic;
     // 영양소
-    List<String> nutrients;
+    private List<String> nutrients;
     // 생리활성기능 리스트
-    List<String> functionalities;
-    List<Warning> warnings;
+    private List<String> functionalities;
+    private List<WarningDto> warnings;
+
+    private int[] scores = new int[6];
+    private int pillReviewCount;
+    private double pillReviewAverage;
 
 
-    //  pillId: 1,
-    //    pillName: “노비락토 바이오”,
-    //    pillCompanyName: “광동제약”,
-    //    pillThumb: “naver…..”,
-    //    pillTotalScore: 4.6,
-    //    pillReviewCount: 100,
-    //    pillTakeProcess: “섭취방법”,
-    //    pillTakeWarning: “섭취시주의사항”,
-    //    pillExperationDate: “유통기한”,
-    //    pillDomestic: “Y”,
-    //    pillContent: “영양제 컨텐츠”,
-    //    nutirentList : [”비타민E”,”비타민C”],
-    //    functionalites : [”장 건강”,],
+    private String taking;
+    private String isBookmark;
 
+    public static PillDetailResponse from(Pill pill, int[] scores, UserPillInfoResponse userPillInfoResponse) {
+        PillDetailResponse pillDetailResponse = new PillDetailResponse();
+        pillDetailResponse.pillId = pill.getPillId();
+        pillDetailResponse.pillName = pill.getPillName();
+        pillDetailResponse.pillCompanyName = pill.getPillCompanyName();
+        pillDetailResponse.pillExpirationDate = pill.getPillExpirationDate();
+        pillDetailResponse.pillTakeProcess = pill.getPillTakeProcess();
+        pillDetailResponse.pillTakeWarning = pill.getPillTakeWarning();
+        pillDetailResponse.pillContent = pill.getPillContent();
+        pillDetailResponse.pillThumbnail = pill.getPillThumbnail();
+        pillDetailResponse.pillDomestic = pill.getPillDomestic().toString();
 
-    public static PillDetailResponse from(Pill pill, List<String> nutrients, List<String> functionalities, List<Warning> warnings) {
-        return new PillDetailResponse(pill.getPillId(),
-                pill.getPillName(),
-                pill.getPillCompanyName(),
-                pill.getPillExpirationDate(),
-                pill.getPillTakeProcess(),
-                pill.getPillTakeWarning(),
-                pill.getPillContent(),
-                pill.getPillThumbnail(),
-                pill.getPillDomestic(),
-                pill.getReviewAverage(),
-                pill.getReviewCount(),
-                nutrients,
-                functionalities,
-                warnings);
+        pillDetailResponse.nutrients = pill.getPillNutrients().stream()
+                .map(pillNutrient -> pillNutrient.getNutrient().getNutrientName())
+                .collect(Collectors.toList());
+
+        pillDetailResponse.functionalities = pill.getPillFunctionalities().stream()
+                .map(pillFunctionality -> pillFunctionality.getFunctionality().getFunctionalityContent())
+                .collect(Collectors.toList());
+
+        pillDetailResponse.warnings = pill.getPillWarnings().stream()
+                .map(pillWarning -> WarningDto.from(pillWarning.getWarning()))
+                .collect(Collectors.toList());
+
+        pillDetailResponse.scores = scores;
+        pillDetailResponse.pillReviewCount = Arrays.stream(scores).sum();
+        pillDetailResponse.pillReviewAverage = ScoreUtil.calculateAverage(scores);
+
+        pillDetailResponse.taking = userPillInfoResponse.getPillTaking();
+        pillDetailResponse.isBookmark = userPillInfoResponse.getPillBookmark();
+
+        return pillDetailResponse;
     }
-
 }

@@ -12,6 +12,9 @@ class DateUtilTest {
     void calculateAge() {
         String[] result = DateUtil.calculateAge("19931119");
 
+        result[0] = result[0].substring(0, 4);
+        result[1] = result[1].substring(0, 4);
+
         assertThat(result).isEqualTo(years);
     }
 }

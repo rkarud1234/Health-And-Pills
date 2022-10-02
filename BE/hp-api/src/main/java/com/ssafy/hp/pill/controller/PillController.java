@@ -1,7 +1,6 @@
 package com.ssafy.hp.pill.controller;
 
 import com.ssafy.hp.config.LoginUser;
-import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
 import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,16 +31,14 @@ public class PillController {
     // 영양제 검색
     @GetMapping("/search")
     public ResponseEntity<Page<PillListResponse>> search(@PageableDefault Pageable page, @Valid SearchRequest request) {
-
         Page<PillListResponse> body = pillService.findBySearchFilter(request, page);
-
         return ResponseEntity.ok().body(body);
     }
 
     // 영양제 디테일 조회
     @GetMapping("/{pill_id}")
-    public ResponseEntity<PillDetailResponse> findOne(@PathVariable("pill_id") int pillId) {
-        PillDetailResponse body = pillService.findByPillId(pillId);
+    public ResponseEntity<PillDetailResponse> findByPillId(@LoginUser User user, @PathVariable("pill_id") int pillId) {
+        PillDetailResponse body = pillService.findByPillId(user, pillId);
         return ResponseEntity.ok().body(body);
     }
 
@@ -76,22 +72,21 @@ public class PillController {
 
     // 생리활성 기능 목록 조회
     @GetMapping("/functionalities")
-    public ResponseEntity<List<FunctionalityListResponse>> getFunctionalities() {
-        List<FunctionalityListResponse> body = pillService.getFunctionalities();
+    public ResponseEntity<List<FunctionalityListResponse>> findAllByOrderByFunctionalityContentAsc() {
+        List<FunctionalityListResponse> body = pillService.findAllByOrderByFunctionalityContentAsc();
         return ResponseEntity.ok().body(body);
     }
 
     // 기능성원료(영양소) 목록 조회
     @GetMapping("/nutrients")
-    public ResponseEntity<List<NutrientListResponse>> getNutrients() {
-        List<NutrientListResponse> body = pillService.getNutrients();
+    public ResponseEntity<List<NutrientListResponse>> findAllByOrderByNutrientNameAsc() {
+        List<NutrientListResponse> body = pillService.findAllByOrderByNutrientNameAsc();
         return ResponseEntity.ok().body(body);
     }
 
     // 이미지 검색
     @PostMapping("/vision")
     public ResponseEntity<VisionResponse> getDetectText(@RequestBody @Valid String data) {
-        System.out.println("PillController.getDetectText");
         VisionResponse body = pillService.getDetectText(data);
         return ResponseEntity.ok().body(body);
     }
@@ -113,7 +108,6 @@ public class PillController {
     // 검색어 미리보기 10개
     @GetMapping("/search/preview/{keyword}")
     public ResponseEntity<List<String>> findTop10PillNameByPillNameContainingOrderByPillNameAsc(@PathVariable("keyword") String keyword) {
-        System.out.println("keyword = " + keyword);
         List<String> body = pillService.findTop10PillNameByPillNameContainingOrderByPillNameAsc(keyword);
         return ResponseEntity.ok().body(body);
     }
@@ -124,5 +118,4 @@ public class PillController {
         List<List<PillCalendarResponse>> body = pillService.findPillByUserPill(user, search);
         return ResponseEntity.ok().body(body);
     }
-
 }

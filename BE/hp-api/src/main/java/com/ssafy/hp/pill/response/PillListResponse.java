@@ -2,9 +2,12 @@ package com.ssafy.hp.pill.response;
 
 
 import com.ssafy.hp.pill.domain.Pill;
+import com.ssafy.hp.util.ScoreUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Arrays;
 
 @Data
 @NoArgsConstructor
@@ -19,17 +22,22 @@ public class PillListResponse {
     String pillCompanyName;
     // 영양제 썸네일
     String pillThumbnail;
-    // 영양제 평점 평균
-    double reviewAverage;
-    // 영양제 평점 카운트
-    int reviewCount;
 
-    public static PillListResponse from(PillListResponse pillListResponse) {
-        return new PillListResponse(pillListResponse.getPillId(), pillListResponse.getPillName(), pillListResponse.getPillCompanyName(), pillListResponse.getPillThumbnail(), pillListResponse.getReviewAverage(), pillListResponse.getReviewCount());
+    private int[] scores = new int[6];
+    private int pillReviewCount;
+    private double pillReviewAverage;
+
+    public static PillListResponse from(Pill pill, int[] scores) {
+        PillListResponse pillListResponse = new PillListResponse();
+        pillListResponse.pillId = pill.getPillId();
+        pillListResponse.pillName = pill.getPillName();
+        pillListResponse.pillCompanyName = pill.getPillCompanyName();
+        pillListResponse.pillThumbnail = pill.getPillThumbnail();
+
+        pillListResponse.scores = scores;
+        pillListResponse.pillReviewCount = Arrays.stream(scores).sum();
+        pillListResponse.pillReviewAverage = ScoreUtil.calculateAverage(scores);
+
+        return pillListResponse;
     }
-    public static PillListResponse from(Pill pill) {
-        return new PillListResponse(pill.getPillId(), pill.getPillName(), pill.getPillCompanyName(), pill.getPillThumbnail(), pill.getReviewAverage(), pill.getReviewCount());
-    }
-
-
 }
