@@ -42,12 +42,12 @@ class CalendarControllerTest extends ControllerTest {
                 .willReturn(Arrays.asList(TEST_CALENDAR_COUNT_LIST_RESPONSE));
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/calendar")
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/calendars")
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_CALENDAR_COUNT_LIST_RESPONSE))))
-                .andDo(document("api/calendar/count",
+                .andDo(document("api/calendars/count",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -70,12 +70,12 @@ class CalendarControllerTest extends ControllerTest {
                 .willReturn(Arrays.asList(TEST_CALENDAR_DETAIL_LIST_RESPONSE));
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/calendar/{calendar_date}", DATE)
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/calendars/{calendar_date}", DATE)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(TEST_CALENDAR_DETAIL_LIST_RESPONSE))))
-                .andDo(document("api/calendar/list",
+                .andDo(document("api/calendars/list",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -108,12 +108,12 @@ class CalendarControllerTest extends ControllerTest {
                 .createCalendar(any(), any());
 
         // when
-        mockMvc.perform(post("/api/calendar")
+        mockMvc.perform(post("/api/calendars")
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CALENDAR_CREATE_REQUEST)))
                 .andExpect(status().isOk())
-                .andDo(document("api/calendar/create",
+                .andDo(document("api/calendars/create",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -139,12 +139,12 @@ class CalendarControllerTest extends ControllerTest {
                 .updateCalendar(any(), anyInt(), any());
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/calendar/{calendar_id}", ID)
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/calendars/{calendar_id}", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(TEST_CALENDAR_UPDATE_REQUEST)))
                 .andExpect(status().isOk())
-                .andDo(document("api/calendar/{calendar_id}/update",
+                .andDo(document("api/calendars/{calendar_id}/update",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -169,11 +169,11 @@ class CalendarControllerTest extends ControllerTest {
                 .deleteCalendar(any(), anyInt());
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/calendar/{calendar_id}", ID)
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/calendars/{calendar_id}", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andDo(document("api/calendar/{calendar_id}/delete",
+                .andDo(document("api/calendars/{calendar_id}/delete",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
@@ -194,11 +194,11 @@ class CalendarControllerTest extends ControllerTest {
                 .updateCalendarComplete(any(), anyInt());
 
         // when
-        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/calendar/{calendar_id}", ID)
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/calendars/{calendar_id}", ID)
                         .header(HttpHeaders.AUTHORIZATION, TEST_AUTHORIZATION)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andDo(document("api/calendar/{calendar_id}/patch",
+                .andDo(document("api/calendars/{calendar_id}/patch",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("AccessToken")
                         ),
