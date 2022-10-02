@@ -107,7 +107,7 @@ class UserControllerTest extends ControllerTest {
     void findTakingExerciseByUserId() throws Exception {
         // given
         Page<UserExerciseResponse> result = new PageImpl<>(Arrays.asList(TEST_USER_EXERCISE_RESPONSE), PageRequest.of(0, 15), 1);
-        given(userService.findTakingExerciseByUserId(any(), any()))
+        given(userService.findTakingExerciseByUser(any(), any()))
                 .willReturn(result);
 
         // when
@@ -155,7 +155,7 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findTakingExerciseByUserId(any(), any());
+        then(userService).should(times(1)).findTakingExerciseByUser(any(), any());
     }
 
     @Test
@@ -163,7 +163,7 @@ class UserControllerTest extends ControllerTest {
     void findBookmarkExerciseByUserId() throws Exception {
         // given
         Page<UserExerciseResponse> result = new PageImpl<>(Arrays.asList(TEST_USER_EXERCISE_RESPONSE), PageRequest.of(0, 15), 1);
-        given(userService.findBookmarkExerciseByUserId(any(), any()))
+        given(userService.findBookmarkExerciseByUser(any(), any()))
                 .willReturn(result);
 
         // when
@@ -211,7 +211,7 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findBookmarkExerciseByUserId(any(), any());
+        then(userService).should(times(1)).findBookmarkExerciseByUser(any(), any());
     }
 
     @Test
@@ -219,7 +219,7 @@ class UserControllerTest extends ControllerTest {
     void findLikeExerciseByUserId() throws Exception {
         // given
         Page<UserExerciseResponse> result = new PageImpl<>(Arrays.asList(TEST_USER_EXERCISE_RESPONSE), PageRequest.of(0, 15), 1);
-        given(userService.findLikeExerciseByUserId(any(), any()))
+        given(userService.findLikeExerciseByUser(any(), any()))
                 .willReturn(result);
 
         // when
@@ -267,14 +267,14 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findLikeExerciseByUserId(any(), any());
+        then(userService).should(times(1)).findLikeExerciseByUser(any(), any());
     }
 
     @Test
     @DisplayName("해당 운동에 대한 나의 정보조회")
     void findByExerciseId() throws Exception {
         // given
-        given(userService.findByExerciseId(any(), anyInt()))
+        given(userService.findByExercise(any(), anyInt()))
                 .willReturn(TEST_USER_EXERCISE_INFO_RESPONSE);
 
         // when
@@ -297,7 +297,7 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findByExerciseId(any(), anyInt());
+        then(userService).should(times(1)).findByExercise(any(), anyInt());
     }
 
     @Test
@@ -305,7 +305,7 @@ class UserControllerTest extends ControllerTest {
     void findTakingPillByUserId() throws Exception {
         // given
         Page<UserPillResponse> result = new PageImpl<>(Arrays.asList(TEST_USER_PILL_RESPONSE), PageRequest.of(0, 15), 1);
-        given(userService.findTakingPillByUserId(any(), any()))
+        given(userService.findTakingPillByUser(any(), any()))
                 .willReturn(result);
 
         // when
@@ -354,7 +354,7 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findTakingPillByUserId(any(), any());
+        then(userService).should(times(1)).findTakingPillByUser(any(), any());
     }
 
     @Test
@@ -362,7 +362,7 @@ class UserControllerTest extends ControllerTest {
     void findBookmarkPillByUserId() throws Exception {
         // given
         Page<UserPillResponse> result = new PageImpl<>(Arrays.asList(TEST_USER_PILL_RESPONSE), PageRequest.of(0, 15), 1);
-        given(userService.findBookmarkPillByUserId(any(), any()))
+        given(userService.findBookmarkPillByUser(any(), any()))
                 .willReturn(result);
 
         // when
@@ -411,7 +411,7 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findBookmarkPillByUserId(any(), any());
+        then(userService).should(times(1)).findBookmarkPillByUser(any(), any());
     }
 
     @Test
@@ -419,7 +419,7 @@ class UserControllerTest extends ControllerTest {
     void findReviewPillByUserId() throws Exception {
         // given
         Page<UserReviewPillResponse> result = new PageImpl<>(Arrays.asList(TEST_USER_REVIEW_PILL_RESPONSE), PageRequest.of(0, 15), 1);
-        given(userService.findReviewPillByUserId(any(), any()))
+        given(userService.findReviewPillByUser(any(), any()))
                 .willReturn(result);
 
         // when
@@ -469,14 +469,14 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findReviewPillByUserId(any(), any());
+        then(userService).should(times(1)).findReviewPillByUser(any(), any());
     }
 
     @Test
     @DisplayName("해당 영양제에 대한 나의 정보 조회")
     void findByPillId() throws Exception {
         // given
-        given(userService.findByPillId(any(), anyInt()))
+        given(userService.findByPill(any(), anyInt()))
                 .willReturn(TEST_USER_PILL_INFO_RESPONSE);
 
         // when
@@ -498,7 +498,7 @@ class UserControllerTest extends ControllerTest {
                         )));
 
         // then
-        then(userService).should(times(1)).findByPillId(any(), anyInt());
+        then(userService).should(times(1)).findByPill(any(), anyInt());
     }
 
     @Test

@@ -15,8 +15,8 @@ public class DateUtil {
         int currentDay   = current.get(Calendar.DAY_OF_MONTH);
 
         int userYear = Integer.parseInt(userBirthday.substring(0,4));
-        int userMonth = Integer.parseInt(Integer.parseInt(userBirthday.substring(4,6)) < 10 ? userBirthday.substring(5,6) : userBirthday.substring(4,6));
-        int userDay = Integer.parseInt(Integer.parseInt(userBirthday.substring(6)) < 10 ? userBirthday.substring(7) : userBirthday.substring(6));
+        int userMonth = Integer.parseInt(userBirthday.substring(4,6));
+        int userDay = Integer.parseInt(userBirthday.substring(6));
 
         int age = currentYear - userYear;
         if (userMonth * 100 + userDay > currentMonth * 100 + currentDay) age--;

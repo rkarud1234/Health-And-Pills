@@ -22,6 +22,7 @@ import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserExercise;
 import com.ssafy.hp.user.domain.UserPill;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +50,7 @@ public class CalendarServiceImpl implements CalendarService{
     @Override
     // 회원의 요일별 영양제 & 운동 갯수 조회
     public List<CalendarCountListResponse> findListByCalendarDate(User user) {
-        List<Calendar> findCalendars = calendarQueryRepository.findByUsers(user);
+        List<Calendar> findCalendars = calendarRepository.findByUsers(user);
 
         Map<Integer, List<Calendar>> findCalendarsMap = findCalendars.stream()
                 .collect(Collectors.groupingBy(Calendar::getCalendarDate));
@@ -134,5 +135,11 @@ public class CalendarServiceImpl implements CalendarService{
         else {
             findCalendar.updateCalendarComplete(YN.Y);
         }
+    }
+
+    @Scheduled(cron = "0 0 * * 1")
+    @Transactional
+    public void deleteAll() {
+        calendarRepository.deleteAll();
     }
 }
