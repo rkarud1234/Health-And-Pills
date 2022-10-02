@@ -4,6 +4,7 @@ import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.domain.PillWarning;
 import com.ssafy.hp.pill.domain.Warning;
+import com.ssafy.hp.util.ScoreUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,32 +20,32 @@ import java.util.stream.IntStream;
 public class PillDetailResponse {
 
     //영양제 번호
-    int pillId;
+    private int pillId;
     // 영양제 이름
-    String pillName;
+    private String pillName;
     // 영양제 회사 이름
-    String pillCompanyName;
+    private String pillCompanyName;
     // 유통기한
-    String pillExpirationDate;
+    private String pillExpirationDate;
     // 복용량/복용방법
-    String pillTakeProcess;
+    private String pillTakeProcess;
     // 복용시 주의사항
-    String pillTakeWarning;
+    private String pillTakeWarning;
     // 기능성 내용
-    String pillContent;
+    private String pillContent;
     // 썸네일 주소
-    String pillThumbnail;
+    private String pillThumbnail;
     //국내 여부
-    YN pillDomestic;
+    private String pillDomestic;
     // 영양소
-    List<String> nutrients;
+    private List<String> nutrients;
     // 생리활성기능 리스트
-    List<String> functionalities;
-    List<WarningDto> warnings;
+    private List<String> functionalities;
+    private List<WarningDto> warnings;
 
-    int[] scores = new int[6];
-    int pillReviewCount;
-    double pillReviewAverage;
+    private int[] scores = new int[6];
+    private int pillReviewCount;
+    private double pillReviewAverage;
 
     public static PillDetailResponse from(Pill pill, int[] scores) {
         PillDetailResponse pillDetailResponse = new PillDetailResponse();
@@ -56,7 +57,7 @@ public class PillDetailResponse {
         pillDetailResponse.pillTakeWarning = pill.getPillTakeWarning();
         pillDetailResponse.pillContent = pill.getPillContent();
         pillDetailResponse.pillThumbnail = pill.getPillThumbnail();
-        pillDetailResponse.pillDomestic = pill.getPillDomestic();
+        pillDetailResponse.pillDomestic = pill.getPillDomestic().toString();
 
         pillDetailResponse.nutrients = pill.getPillNutrients().stream()
                 .map(pillNutrient -> pillNutrient.getNutrient().getNutrientName())
@@ -72,11 +73,7 @@ public class PillDetailResponse {
 
         pillDetailResponse.scores = scores;
         pillDetailResponse.pillReviewCount = Arrays.stream(scores).sum();
-        int sum = 0;
-        for (int i = 1; i < scores.length; i++) {
-            sum += scores[i] * i;
-        }
-        pillDetailResponse.pillReviewAverage = pillDetailResponse.pillReviewCount == 0 ? 0 : (double) sum / pillDetailResponse.pillReviewCount;
+        pillDetailResponse.pillReviewAverage = ScoreUtil.calculateAverage(scores);
 
         return pillDetailResponse;
     }

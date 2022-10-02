@@ -56,7 +56,7 @@ public class PillServiceImpl implements PillService {
     @Transactional
     public Page<PillListResponse> findBySearchFilter(SearchRequest request, Pageable pageable) {
         return pillQueryRepository.findBySearchFilter(request, pageable)
-                .map(PillListResponse::from);
+                .map(pill -> PillListResponse.from(pill, findPillReviewScoresByPill(pill)));
     }
 
     // 영양제 디테일 정보 조회
@@ -65,6 +65,10 @@ public class PillServiceImpl implements PillService {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
 
+        return PillDetailResponse.from(pill, findPillReviewScoresByPill(pill));
+    }
+
+    private int[] findPillReviewScoresByPill(Pill pill) {
         List<PillReview> pillReviews = pillReviewRepository.findByPill(pill);
 
         Map<Integer, List<PillReview>> findPillReviewsMap = pillReviews.stream()
@@ -75,9 +79,8 @@ public class PillServiceImpl implements PillService {
             scores[key] = findPillReviewsMap.get(key).size();
         }
 
-        return PillDetailResponse.from(pill, scores);
+        return scores;
     }
-
 
     // 리뷰 작성
     @Override
