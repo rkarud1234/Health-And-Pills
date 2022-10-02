@@ -1,6 +1,5 @@
 package com.ssafy.hp.user.service;
 
-import com.querydsl.core.Tuple;
 import com.ssafy.hp.DuplicateException;
 import com.ssafy.hp.NotFoundException;
 import com.ssafy.hp.auth.AuthRepository;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.ssafy.hp.DuplicateException.USER_DUPLICATE;
