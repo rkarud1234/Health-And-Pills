@@ -8,5 +8,6 @@ import java.util.List;
 
 
 public interface CalendarRepository extends JpaRepository<Calendar, Integer> {
+    List<Calendar> findByUsers(User user);
     Long countByCalendarDate(Integer calendarDate);
 }

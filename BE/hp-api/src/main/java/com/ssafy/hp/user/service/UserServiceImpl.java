@@ -78,30 +78,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserExerciseResponse> findTakingExerciseByUserId(User user, Pageable pageable) {
+    public Page<UserExerciseResponse> findTakingExerciseByUser(User user, Pageable pageable) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findTakingExerciseByUserId(user, pageable).map(UserExerciseResponse::from);
+        return userQueryRepository.findTakingExerciseByUser(user, pageable).map(UserExerciseResponse::from);
     }
 
     @Override
-    public Page<UserExerciseResponse> findBookmarkExerciseByUserId(User user, Pageable pageable) {
+    public Page<UserExerciseResponse> findBookmarkExerciseByUser(User user, Pageable pageable) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findBookmarkExerciseByUserId(user, pageable).map(UserExerciseResponse::from);
+        return userQueryRepository.findBookmarkExerciseByUser(user, pageable).map(UserExerciseResponse::from);
     }
 
     @Override
-    public Page<UserExerciseResponse> findLikeExerciseByUserId(User user, Pageable pageable) {
+    public Page<UserExerciseResponse> findLikeExerciseByUser(User user, Pageable pageable) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        return userQueryRepository.findLikeExerciseByUserId(user, pageable).map(UserExerciseResponse::from);
+        return userQueryRepository.findLikeExerciseByUser(user, pageable).map(UserExerciseResponse::from);
     }
 
     @Override
-    public UserExerciseInfoResponse findByExerciseId(User user, int exerciseId) {
+    public UserExerciseInfoResponse findByExercise(User user, int exerciseId) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Exercise findExercise = exerciseRepository.findById(exerciseId)
@@ -116,30 +116,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserPillResponse> findTakingPillByUserId(User user, Pageable pageable) {
+    public Page<UserPillResponse> findTakingPillByUser(User user, Pageable pageable) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findTakingPillByUserId(user, pageable).map(UserPillResponse::from);
+        return userQueryRepository.findTakingPillByUser(user, pageable).map(UserPillResponse::from);
     }
 
     @Override
-    public Page<UserPillResponse> findBookmarkPillByUserId(User user, Pageable pageable) {
+    public Page<UserPillResponse> findBookmarkPillByUser(User user, Pageable pageable) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findBookmarkPillByUserId(user, pageable).map(UserPillResponse::from);
+        return userQueryRepository.findBookmarkPillByUser(user, pageable).map(UserPillResponse::from);
     }
 
     @Override
-    public Page<UserReviewPillResponse> findReviewPillByUserId(User user, Pageable pageable) {
+    public Page<UserReviewPillResponse> findReviewPillByUser(User user, Pageable pageable) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        return userQueryRepository.findReviewPillByUserId(user, pageable).map(UserReviewPillResponse::from);
+        return userQueryRepository.findReviewPillByUser(user, pageable).map(UserReviewPillResponse::from);
     }
 
     @Override
-    public UserPillInfoResponse findByPillId(User user, int pillId) {
+    public UserPillInfoResponse findByPill(User user, int pillId) {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         Pill findPill = pillRepository.findById(pillId)

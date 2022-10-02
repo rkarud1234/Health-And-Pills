@@ -28,7 +28,7 @@ import static com.ssafy.hp.user.domain.QUserProfile.userProfile;
 public class UserQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public Page<UserExercise> findTakingExerciseByUserId(User user, Pageable pageable){
+    public Page<UserExercise> findTakingExerciseByUser(User user, Pageable pageable){
         QueryResults<UserExercise> result = queryFactory
                 .select(userExercise)
                 .from(userExercise)
@@ -45,7 +45,7 @@ public class UserQueryRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public Page<UserExercise> findBookmarkExerciseByUserId(User user, Pageable pageable){
+    public Page<UserExercise> findBookmarkExerciseByUser(User user, Pageable pageable){
         QueryResults<UserExercise> result = queryFactory
                 .select(userExercise)
                 .from(userExercise)
@@ -62,7 +62,7 @@ public class UserQueryRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public Page<UserExercise> findLikeExerciseByUserId(User user, Pageable pageable){
+    public Page<UserExercise> findLikeExerciseByUser(User user, Pageable pageable){
         QueryResults<UserExercise> result = queryFactory
                 .select(userExercise)
                 .from(userExercise)
@@ -79,7 +79,7 @@ public class UserQueryRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public Page<UserPill> findTakingPillByUserId(User user, Pageable pageable){
+    public Page<UserPill> findTakingPillByUser(User user, Pageable pageable){
         QueryResults<UserPill> result = queryFactory
                 .selectFrom(userPill)
                 .join(userPill.pill, pill).fetchJoin()
@@ -95,7 +95,7 @@ public class UserQueryRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public Page<UserPill> findBookmarkPillByUserId(User user, Pageable pageable){
+    public Page<UserPill> findBookmarkPillByUser(User user, Pageable pageable){
         QueryResults<UserPill> result = queryFactory
                 .selectFrom(userPill)
                 .join(userPill.pill, pill).fetchJoin()
@@ -111,7 +111,7 @@ public class UserQueryRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    public Page<PillReview> findReviewPillByUserId(User user, Pageable pageable){
+    public Page<PillReview> findReviewPillByUser(User user, Pageable pageable){
         QueryResults<PillReview> result = queryFactory
                 .selectFrom(pillReview)
                 .join(pillReview.pill, pill).fetchJoin()
