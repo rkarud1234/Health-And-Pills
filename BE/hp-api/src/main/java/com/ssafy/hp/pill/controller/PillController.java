@@ -37,8 +37,8 @@ public class PillController {
 
     // 영양제 디테일 조회
     @GetMapping("/{pill_id}")
-    public ResponseEntity<PillDetailResponse> findByPillId(@PathVariable("pill_id") int pillId) {
-        PillDetailResponse body = pillService.findByPillId(pillId);
+    public ResponseEntity<PillDetailResponse> findByPillId(@LoginUser User user, @PathVariable("pill_id") int pillId) {
+        PillDetailResponse body = pillService.findByPillId(user, pillId);
         return ResponseEntity.ok().body(body);
     }
 

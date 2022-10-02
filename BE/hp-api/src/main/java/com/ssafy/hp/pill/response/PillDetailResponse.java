@@ -4,6 +4,8 @@ import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.domain.PillWarning;
 import com.ssafy.hp.pill.domain.Warning;
+import com.ssafy.hp.user.domain.UserPill;
+import com.ssafy.hp.user.response.UserPillInfoResponse;
 import com.ssafy.hp.util.ScoreUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,7 +49,11 @@ public class PillDetailResponse {
     private int pillReviewCount;
     private double pillReviewAverage;
 
-    public static PillDetailResponse from(Pill pill, int[] scores) {
+
+    private String taking;
+    private String isBookmark;
+
+    public static PillDetailResponse from(Pill pill, int[] scores, UserPillInfoResponse userPillInfoResponse) {
         PillDetailResponse pillDetailResponse = new PillDetailResponse();
         pillDetailResponse.pillId = pill.getPillId();
         pillDetailResponse.pillName = pill.getPillName();
@@ -74,6 +80,9 @@ public class PillDetailResponse {
         pillDetailResponse.scores = scores;
         pillDetailResponse.pillReviewCount = Arrays.stream(scores).sum();
         pillDetailResponse.pillReviewAverage = ScoreUtil.calculateAverage(scores);
+
+        pillDetailResponse.taking = userPillInfoResponse.getPillTaking();
+        pillDetailResponse.isBookmark = userPillInfoResponse.getPillBookmark();
 
         return pillDetailResponse;
     }

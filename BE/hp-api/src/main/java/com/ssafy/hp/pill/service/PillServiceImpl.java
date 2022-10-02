@@ -16,6 +16,9 @@ import com.ssafy.hp.user.UserPillRepository;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserPill;
+import com.ssafy.hp.user.response.UserPillInfoResponse;
+import com.ssafy.hp.user.response.UserPillResponse;
+import com.ssafy.hp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -50,6 +53,7 @@ public class PillServiceImpl implements PillService {
     private final DetectText detectText;
     private final FunctionalityRepository functionalityRepository;
     private final NutrientRepository nutrientRepository;
+    private final UserService userService;
 
     // 검색조건에 맞는 영양제 반환
     @Override
@@ -61,11 +65,11 @@ public class PillServiceImpl implements PillService {
 
     // 영양제 디테일 정보 조회
     @Override
-    public PillDetailResponse findByPillId(int pillId) {
+    public PillDetailResponse findByPillId(User user, int pillId) {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
 
-        return PillDetailResponse.from(pill, findPillReviewScoresByPill(pill));
+        return PillDetailResponse.from(pill, findPillReviewScoresByPill(pill), userService.findByPillId(user, pillId));
     }
 
     private int[] findPillReviewScoresByPill(Pill pill) {
