@@ -45,7 +45,7 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         return exercises.map(exercise -> ExerciseListResponse.from(
                 exercise,
-                userService.findByExerciseId(user, exercise.getExerciseId())));
+                userService.findByExercise(user, exercise.getExerciseId())));
     }
 
     // 운동 부위별 조회
@@ -57,7 +57,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         return exerciseQueryRepository.findExerciseByExercisePartCategory(exercisePartCategory, pageable)
                 .map(exercise -> ExerciseListResponse.from(
                         exercise,
-                        userService.findByExerciseId(user, exercise.getExerciseId())));
+                        userService.findByExercise(user, exercise.getExerciseId())));
     }
 
     // 운동 상세정보 조회
@@ -68,7 +68,7 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         return ExerciseDetailResponse.from(
                 exercise,
-                userService.findByExerciseId(user, exercise.getExerciseId()));
+                userService.findByExercise(user, exercise.getExerciseId()));
     }
 
     @Override

@@ -68,7 +68,7 @@ public class PillServiceImpl implements PillService {
         Pill pill = pillRepository.findById(pillId)
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
 
-        return PillDetailResponse.from(pill, findPillReviewScoresByPill(pill), userService.findByPillId(user, pillId));
+        return PillDetailResponse.from(pill, findPillReviewScoresByPill(pill), userService.findByPill(user, pillId));
     }
 
     private int[] findPillReviewScoresByPill(Pill pill) {
