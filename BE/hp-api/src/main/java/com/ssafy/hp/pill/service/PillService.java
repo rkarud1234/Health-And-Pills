@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface PillService {
     // 영양제 디테일 조회
-    PillDetailResponse findByPillId(int pillId);
+    PillDetailResponse findByPillId(User user, int pillId);
 
     // 영양제 검색 조회
     Page<PillListResponse> findBySearchFilter(SearchRequest request, Pageable pageable);

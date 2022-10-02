@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PillReviewRepository extends JpaRepository<PillReview, Integer> {
 
@@ -18,4 +19,6 @@ public interface PillReviewRepository extends JpaRepository<PillReview, Integer>
     int countByPillPillId(Integer pillId);
 
     List<PillReview> findByPillPillId(Integer pillId);
+
+    Optional<PillReview> findByUsersAndPill(User user, Pill pill);
 }
