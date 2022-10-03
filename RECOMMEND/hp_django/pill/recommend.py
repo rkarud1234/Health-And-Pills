@@ -33,7 +33,7 @@ def recommendUser(birthday,gender):
     users = users.set_index('user_id')
 
     g_mean = merged_ratings[['pill_id','gender','age_group','pill_review_score']].groupby(['pill_id','gender','age_group'])['pill_review_score'].mean().reset_index().sort_values(ascending=False, by='pill_review_score')
-    print(g_mean)
+    
     
     return pk_list_to_queryset(g_mean['pill_id'][:10])
 
