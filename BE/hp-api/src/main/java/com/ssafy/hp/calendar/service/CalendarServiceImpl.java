@@ -1,6 +1,7 @@
 package com.ssafy.hp.calendar.service;
 
 import com.ssafy.hp.CountOutOfBoundsException;
+import com.ssafy.hp.DuplicateException;
 import com.ssafy.hp.NotFoundException;
 import com.ssafy.hp.calendar.CalendarRepository;
 import com.ssafy.hp.calendar.domain.Calendar;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ssafy.hp.CountOutOfBoundsException.CALENDAR_OUT_OF_BOUNDS;
+import static com.ssafy.hp.DuplicateException.CALENDAR_DUPLICATE;
 import static com.ssafy.hp.NotFoundException.*;
 
 @Service
@@ -85,14 +87,18 @@ public class CalendarServiceImpl implements CalendarService{
         if (request.getExerciseId() == null){
             Pill findPill = pillRepository.findById(request.getPillId())
                     .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-
+            if (!calendarRepository.existsByCalendarDateAndUsersAndPillAndCalendarTime(request.getCalendarDate(), user, findPill, request.getCalendarTime())){
+                throw new DuplicateException(CALENDAR_DUPLICATE);
+            }
             pillService.updateUserPillByUserAndPill(user, request.getPillId(), YN.Y, 1);
             findCalendar = Calendar.createCalendar(request.getCalendarDate(), request.getCalendarTime(), request.getCalendarContent(), user, null, findPill);
         }
         else {
             Exercise findExercise = exerciseRepository.findById(request.getExerciseId())
                     .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-
+            if (!calendarRepository.existsByCalendarDateAndUsersAndExerciseAndCalendarTime(request.getCalendarDate(), user, findExercise, request.getCalendarTime())){
+                throw new DuplicateException(CALENDAR_DUPLICATE);
+            }
             exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), YN.Y, 1);
             findCalendar = Calendar.createCalendar(request.getCalendarDate(), request.getCalendarTime(), request.getCalendarContent(), user, findExercise, null);
         }
