@@ -99,14 +99,7 @@ const ReviewItem = ({
         <ReviewInfoWrapper>
           <h1>{review.name}</h1>
           <div>
-            <Rating
-              name="rating"
-              value={review.rating}
-              readOnly={review.readOnly}
-              onChange={(e, newValue) => {
-                setReview({ ...review, [e.target.name]: newValue });
-              }}
-            />
+            <Rating name="rating" value={review.rating} readOnly={true} />
           </div>
         </ReviewInfoWrapper>
       </ReviewImageInfoWrapper>

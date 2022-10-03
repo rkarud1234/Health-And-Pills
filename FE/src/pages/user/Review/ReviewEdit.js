@@ -98,7 +98,7 @@ const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
     setReview({ score: rating, content: reviewContent });
     close();
   };
-  return id ? (
+  return id && review.score !== undefined && review.content !== undefined ? (
     <ReviewEditWrapper>
       <div>
         <ReviewItemImageWrapper>
