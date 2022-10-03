@@ -2,9 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import BookMark from "../buttons/BookMark";
 import UnBookMark from "../buttons/UnBookMark";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { exerciseBookMark } from "../../api/HealthAPI";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { getExerciseDetail, exerciseDoing } from "../../api/HealthAPI";
 import Excercising from "../buttons/Exercising";
 import UnExercising from "../buttons/UnExercising";
@@ -33,7 +33,7 @@ const StyledHealthCard = styled.div`
 
 const StyledHealthNameWrapper = styled.div`
   display: flex;
-  font-size: 1rem;
+  font-size: 13px;
   padding: ${(props) => props.padding};
   font-weight: ${(props) => props.fontWeight};
   text-align: center;
@@ -50,42 +50,40 @@ const HealthInfoWrapper = styled.div`
 const BookMarkWrapper = styled.div`
   background-color: ${({ color }) => color};
   position: absolute;
-  top: -8px;
-  right: 8px;
-  width: 15px;
-  height: 20px;
+  top: -10px;
+  right: 0px;
 
 `
 
 const DoingWrapper = styled.div`
   background-color: ${({ color }) => color};
   position: absolute;
-  top: -4px;
-  right: 130px;
-  width: 15px;
-  height: 20px;
+  top: -6px;
+  right: 24px;
 
 `
 
 
 const HealthCard = ({
-  width, height, padding, fontWeight,
-  exerciseName, aerobic, exerciseParts, exerciseCategory, bookmark, exerciseId,
+  width, height, fontWeight,
+  exerciseName, aerobic, exerciseParts, exerciseId,
 }) => {
+  const navigate = useNavigate()
 
   const [detail, setDetail] = useState({
     bookmark: "",
     doing: "",
+    exerciseId: ""
   })
 
   // 운동 상세 정보 조회
   const getDetail = async () => {
     const response = await getExerciseDetail(exerciseId);
-  setDetail({...response.data})
+    setDetail({ ...response.data })
   };
   useEffect(() => {
     getDetail();
-  }, [detail.bookmark, detail.doing]);
+  }, [detail.bookmark, detail.doing, exerciseId]);
 
   const onToggleBookMark = async (value) => {
     const data = {
@@ -106,7 +104,7 @@ const HealthCard = ({
       check: value
     };
     const response = await exerciseDoing(data);
-    setDetail ((prevState) => {
+    setDetail((prevState) => {
       return {
         ...prevState, doing: value
       }
@@ -115,22 +113,20 @@ const HealthCard = ({
 
   return (
     <>
-      <HealthCardWrapper> 
+      <HealthCardWrapper>
         <StyledHealthCard width={width} height={height}>
-            <DoingWrapper>
-              {detail.doing === "Y" ? <Excercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
-            </DoingWrapper>
-            <BookMarkWrapper>
-              {detail.bookmark === "Y" ? <UnBookMark onClick={onToggleBookMark}/> : <BookMark onClick={onToggleBookMark}/>}
-            </BookMarkWrapper>
-          <StyledHealthNameWrapper padding="4px" fontWeight={fontWeight}>
-            <Link to={`detail/${exerciseId}`}>
-            <div style={{display: "block"}}>
-            {exerciseName}
+          <DoingWrapper>
+            {detail.doing === "Y" ? <Excercising onClick={onToggleDoing} /> : <UnExercising onClick={onToggleDoing} />}
+          </DoingWrapper>
+          <BookMarkWrapper>
+            {detail.bookmark === "Y" ? <UnBookMark onClick={onToggleBookMark} /> : <BookMark onClick={onToggleBookMark} />}
+          </BookMarkWrapper>
+          <StyledHealthNameWrapper padding="16px 4px 4px" fontWeight={fontWeight}>
+            <div onClick={() => { navigate(`/health/detail/${exerciseId}`) }} style={{ display: "block", cursor: 'pointer' }}>
+              {exerciseName}
             </div>
-            </Link>
           </StyledHealthNameWrapper>
-          <HealthInfoWrapper>
+          <HealthInfoWrapper padding="0px 4px">
             {aerobic} | {exerciseParts}
           </HealthInfoWrapper>
         </StyledHealthCard>
@@ -143,7 +139,7 @@ export default HealthCard;
 
 StyledHealthCard.defaultProps = {
   width: "120px",
-  height: "60px",
+  height: "72px",
   // padding: "6px 8px 6px 8px",
   fontWeight: "600",
 }
