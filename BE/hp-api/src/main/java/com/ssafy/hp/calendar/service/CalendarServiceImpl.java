@@ -87,7 +87,7 @@ public class CalendarServiceImpl implements CalendarService{
         if (request.getExerciseId() == null){
             Pill findPill = pillRepository.findById(request.getPillId())
                     .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-            if (!calendarRepository.existsByCalendarDateAndUsersAndPillAndCalendarTime(request.getCalendarDate(), user, findPill, request.getCalendarTime())){
+            if (calendarRepository.existsByCalendarDateAndUsersAndPillAndCalendarTime(request.getCalendarDate(), user, findPill, request.getCalendarTime())){
                 throw new DuplicateException(CALENDAR_DUPLICATE);
             }
             pillService.updateUserPillByUserAndPill(user, request.getPillId(), YN.Y, 1);
@@ -96,7 +96,7 @@ public class CalendarServiceImpl implements CalendarService{
         else {
             Exercise findExercise = exerciseRepository.findById(request.getExerciseId())
                     .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-            if (!calendarRepository.existsByCalendarDateAndUsersAndExerciseAndCalendarTime(request.getCalendarDate(), user, findExercise, request.getCalendarTime())){
+            if (calendarRepository.existsByCalendarDateAndUsersAndExerciseAndCalendarTime(request.getCalendarDate(), user, findExercise, request.getCalendarTime())){
                 throw new DuplicateException(CALENDAR_DUPLICATE);
             }
             exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), YN.Y, 1);
