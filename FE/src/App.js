@@ -12,6 +12,7 @@ import BodyAgeTest from "./pages/test/BodyAgeTest";
 import Result from "./pages/test/Result";
 import RequiredInformation from "./pages/user/requirementInformation/RequiredInformation";
 import { Suspense, lazy } from "react";
+import Loading from "./components/layouts/Loading";
 
 const Profile = lazy(() => import("./pages/user/Profile"));
 function App() {
