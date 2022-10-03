@@ -130,7 +130,7 @@ export const bookMarkPill = createAsyncThunk(
       return client.post(`pills/bookmark`, data)
         .then(res => {
           if (res.status === 200) {
-            alert('북마크에 정상적으로 해제 되었습니다.')
+            alert('북마크에서 정상적으로 해제 되었습니다.')
             return true
           } else {
             alert('북마크 해제가 실패했습니다.')

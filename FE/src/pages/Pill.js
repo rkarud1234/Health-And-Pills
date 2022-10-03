@@ -95,12 +95,8 @@ const Pill = () => {
             </SearchBox>
             <Carousel images={images} />
             <RecomPills pills={bestPills} text='BEST 10 영양제 추천' />
-            {user &&
-              <div>
-                <RecomPills pills={customPills} text={user.userProfileNickname + '님을 위한 맞춤 영양제 추천'} />
-                <RecomPills pills={userPills} text={user.userProfileNickname + '님과 유사한 유저들이 먹는 영양제 추천'} />
-              </div>
-            }
+            <RecomPills pills={customPills} text={user.userProfileNickname + '님을 위한 맞춤 영양제 추천'} />
+            <RecomPills pills={userPills} text={user.userProfileNickname + '님과 유사한 유저들이 먹는 영양제 추천'} />
             <Footer />
           </ScrollDiv > :
             <SearchSlide

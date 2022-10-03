@@ -29,7 +29,6 @@ padding: 16px 0px 24px;
 `
 
 const RecomPills = ({ pills, text }) => {
-  // const user = useSelector((state) => state.user);
   const navigate = useNavigate()
 
   // 클릭 앤 드래그로 스크롤 이동시키기
@@ -74,13 +73,13 @@ const RecomPills = ({ pills, text }) => {
         {pills ? pills.map(pill => {
           return (
             <CardDiv
-              key={pill.pill_id}
+              key={pill.pillId}
               onClick={() => {
                 if (startPageX === endPageX) {
-                  navigate(`/pill/detail/${pill.pill_id}`)
+                  navigate(`/pill/detail/${pill.pillId}`)
                 }
               }}>
-              <PillCard url={pill.pill_thumbnail} text={pill.pill_name} rating={pill.review_average} />
+              <PillCard url={pill.pillThumbnail} text={pill.pillName} rating={pill.pillReviewCount} />
             </CardDiv>
           )
         }) : <></>}

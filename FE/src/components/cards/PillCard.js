@@ -42,7 +42,7 @@ const PillCard = ({ text, rating, width, height, padding, url }) => {
         {url ? <img src={url} /> : <img src={imgUrl} />}
       </StyledPillCardImgWrapper>
       <StyledPillCardContentWrapper padding={padding}>
-        <span>{text.length > 5 ? text.slice(0, 5) + '...' : text}</span>
+        <span>{text && text.length > 5 ? text.slice(0, 5) + '...' : text}</span>
         <span>
           <i className="fas fa-star"></i>
           {rating && starRating}
