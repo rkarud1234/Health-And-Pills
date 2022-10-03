@@ -4,6 +4,7 @@ import { deleteUserPill } from "../../../api/pill";
 import { fetchUserPill } from "../../../api/users";
 import useFetchData from "../../../hooks/useFetchData";
 import useIntersect from "../../../hooks/useIntersect";
+import DeleteItemButton from "../../buttons/DeleteItemButton";
 import UserInfoListItem from "../UserInfoListItem";
 
 const UserInfoListWrapper = styled.div`
@@ -23,7 +24,6 @@ const Target = styled.div`
 
 const UserPill = () => {
   const { res } = useFetchData(fetchUserPill);
-  // const fetchUserPills = useCallback(() => {}, [res.data]);
   const userPills = useMemo(
     () =>
       res.data
@@ -56,7 +56,13 @@ const UserPill = () => {
               key={item.relatedItemId}
               {...item}
               infoType={"pill"}
-              onClick={deleteItem}
+              children={
+                <DeleteItemButton
+                  text={"삭제"}
+                  onClick={deleteItem}
+                  id={item.id}
+                />
+              }
             />
           ))}
         </>
