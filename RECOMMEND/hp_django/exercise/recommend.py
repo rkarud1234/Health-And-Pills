@@ -89,6 +89,7 @@ def recommendCustom(user_id):
             'score': create_exercise_score(t.user_exercise_bookmark,t.user_exercise_doing,t.user_exercise_like)
         })
     ratings = pd.DataFrame(temp, columns=['user_id','exercise_id','score'])
+    ratings = ratings.groupby(['user_id','exercise_id'])['score'].mean().reset_index()
 
     x = ratings.copy()
     y = ratings['user_id']
@@ -129,6 +130,7 @@ def recommendItem(user_id, exercise_id):
             'score': create_exercise_score(t.user_exercise_bookmark,t.user_exercise_doing,t.user_exercise_like)
         })
     ratings = pd.DataFrame(temp, columns=['user_id','exercise_id','score'])
+    ratings = ratings.groupby(['user_id','exercise_id'])['score'].mean().reset_index()
 
     x = ratings.copy()
     y = ratings['user_id']
@@ -146,7 +148,7 @@ def recommendItem(user_id, exercise_id):
         if pd.notnull(user_exercise.loc[pill]):
             user_exercise.loc[pill] = 0
         else:
-            user_exercise.loc[pill] = CF_knn(32, pill, rating_matrix, user_similarity, 1)
+            user_exercise.loc[pill] = CF_knn(32, pill, rating_matrix, user_similarity, 10)
 
     pill_sort = user_exercise.sort_values(ascending=False)
     return pk_list_to_queryset(pill_sort.reset_index()['exercise_id'][:10])
