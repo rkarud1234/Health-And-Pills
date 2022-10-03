@@ -184,19 +184,19 @@ const LogOutBtnWrapper = styled(ProfileEditButton)`
 const listItem = [
   {
     title: "나의 영양제",
-    img: "/profile/pill.png",
+    img: "/profileImages/pill.png",
     infoType: "pill",
     slidingMenuTitle: "내 영양제 정보",
   },
   {
     title: "나의 운동",
-    img: "/profile/dumbell.png",
+    img: "/profileImages/dumbell.png",
     infoType: "exercise",
     slidingMenuTitle: "내 운동 정보",
   },
   {
     title: "북마크",
-    img: "/profile/mark.png",
+    img: "/profileImages/mark.png",
     infoType: "bookmark",
     slidingMenuTitle: "북마크",
   },
