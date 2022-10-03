@@ -208,7 +208,7 @@ const Main = ({ user }) => {
             borerRadius={"6px"}
             color={"#fff"}
             onClick={() =>
-              navigate("/profile", {
+              navigate("/profiles", {
                 state: {
                   infoType: "inBody",
                   title: "내 인바디 정보",
