@@ -17,11 +17,12 @@ border-radius: 8px;
 `
 const ProFlexBox = styled.div`
 display: flex;
-margin: 8px
+margin: 8px;
+justify-content: center;
 ;
 `
 const TextDiv = styled.div`
-width: 80%;
+min-width: 24px;
 font-size: 12px;
 text-align: center;
 margin: 0px 4px;
@@ -169,22 +170,22 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
             </div>
           </div>
           : <div style={{ display: 'flex', borderBottom: '1px solid #CAD1D5' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px', width: '30%' }}>
-              <div style={{ fontSize: '14px', textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '16px', width: '30%' }}>
+              <div style={{ fontSize: '14px', textAlign: 'center', paddingTop: '20px', minWidth: '92px' }}>
                 사용자 총 평점
               </div>
-              <ProFlexBox >
+              <ProFlexBox>
                 <LinearStar className="fas fa-star"></LinearStar>
-                <div style={{ fontSize: '24px', display: 'flex', lineHeight: '40px' }}>
+                <div style={{ fontSize: '24px', lineHeight: '40px' }}>
                   {reviewaverage}
-                  <div style={{ fontSize: '12px' }}>({pillReviewCount})</div>
+                  <p style={{ fontSize: '12px', display: 'inline' }}>({pillReviewCount})</p>
                 </div>
               </ProFlexBox>
             </div>
             <div style={{ margin: '8px 8px', width: '90%' }}>
               <ProFlexBox>
                 <TextDiv>
-                  아주 좋아요
+                  최고
                 </TextDiv>
                 <ReviewProgress width={fiveRating} />
                 <NumDiv>
@@ -193,7 +194,7 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  맘에 들어요
+                  좋음
                 </TextDiv>
                 <ReviewProgress width={fourRating} />
                 <NumDiv>
@@ -202,7 +203,7 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  보통 이에요
+                  보통
                 </TextDiv>
                 <ReviewProgress width={threeRating} />
                 <NumDiv>
@@ -211,7 +212,7 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  그저 그래요
+                  별로
                 </TextDiv>
                 <ReviewProgress width={twoRating} />
                 <NumDiv>
@@ -220,7 +221,7 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  추천 안해요
+                  최악
                 </TextDiv>
                 <ReviewProgress width={oneRating} />
                 <NumDiv>
