@@ -45,9 +45,9 @@ const SearchResult = ({ isSearched }) => {
                 <HorizPillCard
                   name={pill.pillName}
                   url={pill.pillThumbnail}
-                  reviewAverage={pill.reviewAverage}
+                  reviewAverage={pill.pillReviewAverage}
                   companyName={pill.pillCompanyName}
-                  reviewCount={pill.reviewCount}
+                  reviewCount={pill.pillReviewCount}
                 ></HorizPillCard>
               </CardDiv>
             )
