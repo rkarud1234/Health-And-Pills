@@ -1,16 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import useFetchData from "../../../hooks/useFetchData";
 import useIntersect from "../../../hooks/useIntersect";
 import { fetchUserReview } from "../../../api/users";
-import { client } from "../../../api";
 import ReviewItem from "./ReviewItem";
 import SlidingMenu from "../../../components/layouts/SlidingMenu";
 import ReviewEdit from "./ReviewEdit";
-import { editPillReivew } from "../../../api/pill";
+import { deletePillReview, editPillReivew } from "../../../api/pill";
 
 const UserInfoListWrapper = styled.div`
-  /* padding: 20px 20px 20px 20px; */
   overflow: scroll;
   height: calc(100vh - 120px);
 `;
@@ -25,10 +23,11 @@ const Target = styled.div`
 `;
 
 const Review = () => {
-  const { res, updateMutation } = useFetchData(
+  const { res, updateMutation, deleteMutation } = useFetchData(
     fetchUserReview,
     "review",
-    editPillReivew
+    editPillReivew,
+    deletePillReview
   );
   const [editOpen, setEditOpen] = useState(false);
   const userData = { reviews: [] };
@@ -50,13 +49,6 @@ const Review = () => {
     }
   });
 
-  const deleteItem = async (review_id) => {
-    const res = await client.delete(`/pills/review/${review_id}`);
-    if (res.status === 200) {
-      alert("삭제 되었습니다.");
-    }
-  };
-
   const openReviewEdit = (id) => {
     idRef.current = id;
     setEditOpen(true);
@@ -72,8 +64,12 @@ const Review = () => {
   };
 
   const editReview = async (reviewId, data) => {
-    console.log(data);
     updateMutation.mutate({ reviewId, data });
+    closeReviewEdit();
+  };
+
+  const deleteReview = async (reviewId) => {
+    deleteMutation.mutate(reviewId);
     closeReviewEdit();
   };
   return (
@@ -87,6 +83,7 @@ const Review = () => {
               item.reviewContent
             }
             onClick={openReviewEdit}
+            remove={deleteReview}
           />
         ))
       ) : (
