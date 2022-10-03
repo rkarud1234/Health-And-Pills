@@ -56,7 +56,7 @@ const Introduce = ({ changeType }) => {
         <div>필수정보를 입력해주세요!</div>
       </IntroMessageWrapper>
       <IntroImageWrapper>
-        <img src={process.env.PUBLIC_URL + "/profile/require.png"} />
+        <img src={process.env.PUBLIC_URL + "/profileImages/require.png"} />
       </IntroImageWrapper>
 
       <ButtonWrapper>
