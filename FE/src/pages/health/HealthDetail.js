@@ -4,7 +4,7 @@ import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import BookMark from "../../components/buttons/BookMark";
 import UnBookMark from "../../components/buttons/UnBookMark";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import ThumbsUp from "../../components/buttons/ThumbsUp";
 import ThumbsDown from "../../components/buttons/ThumbsDown";
 import ThumbsUped from "../../components/buttons/ThumbsUped";
@@ -26,17 +26,15 @@ const HealthWrapper = styled.div`
   height: ${(props) => props.height};
   justify-content: ${(props) => props.justifyContent};
   align-items: center;
-  padding: 20px;
   border: ${(props) => props.border};
   /* border-radius: 12px; */
   border-radius: ${(props) => props.borderRadius};
   background-color: ${(props) => props.backgroundColor};
-  margin: auto;
-  padding: 4px;
 `
 
 const NameWrapper = styled.div`
-  width: 280px;
+font-size: 22px;
+font-weight: bold;
 `
 
 const ButtonWrapper = styled.div`
@@ -44,6 +42,8 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   display: flex;
   text-align: center;
+  align-items: baseline;
+  padding-left: 8px
 `
 
 const ThumbsWrapper = styled.div`
@@ -87,13 +87,13 @@ padding: 16px 0px 24px;
 `
 
 const HealthDetail = ({
-   width, 
-   height, 
-   border, 
-   justifyContent, 
-   backgroundColor, 
-   borderRadius, 
-  }) => {
+  width,
+  height,
+  border,
+  justifyContent,
+  backgroundColor,
+  borderRadius,
+}) => {
 
   // 아이템 횡스크롤
   const scrollRef = useRef(null);
@@ -132,13 +132,13 @@ const HealthDetail = ({
 
   const [recoExer, setRecoExer] = useState([]);
 
-  
+
   const { exerciseId } = useParams();
 
   // 운동 상세 정보 조회
   const getDetail = async () => {
     const response = await getExerciseDetail(exerciseId);
-    setExer({...response.data})
+    setExer({ ...response.data })
   };
   useEffect(() => {
     getDetail();
@@ -160,7 +160,7 @@ const HealthDetail = ({
   //   maxResults: 6,
   //   type: 'video',
   // });
-  
+
   // const [videos, setVideos] = useState({});
 
   // const getYoutube = useEffect(() => {
@@ -182,13 +182,13 @@ const HealthDetail = ({
     };
     const response = await exerciseLike(data);
     // state 값에 변화 줘서 리렌더링 하기
-    setExer((prevState)=> {
+    setExer((prevState) => {
       return {
-        ...prevState, like : value
+        ...prevState, like: value
       }
     })
     if (response.status === 200) {
-    } else {console.log(response)}
+    } else { console.log(response) }
   };
 
   const onToggleBookMark = async (value) => {
@@ -220,55 +220,66 @@ const HealthDetail = ({
   };
 
   return (
-    <>
-      <Header leftNone={true} leftChildren={<BackButton />}/>
-      <BlockWrapper>
-        <HealthWrapper>
-          <NameWrapper>
-            {exer.exerciseName}
-          </NameWrapper>
-          <ButtonWrapper width="240px">
-              {exer.doing === "Y" ? <Exercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
-          </ButtonWrapper>
-          <ButtonWrapper width="40px">
-            {exer.bookmark === "N" ? <BookMark onClick={onToggleBookMark}/> : <UnBookMark onClick={onToggleBookMark}/>}
-          </ButtonWrapper>
-           {/* <ButtonWrapper>
+    <div>
+      <Header leftNone={true} leftChildren={<BackButton />} />
+      <div style={{ width: '100%', padding: '0px 16px' }}>
+        <BlockWrapper>
+          <HealthWrapper display={'flex'} justifyContent={'space-between'} width={'100%'}>
+            <NameWrapper>
+              {exer.exerciseName}
+            </NameWrapper>
+            <ButtonWrapper>
+              <ButtonWrapper>
+                {exer.doing === "Y" ?
+                  <ButtonWrapper>
+                    <Exercising onClick={onToggleDoing} />
+                    <p style={{ paddingLeft: '4px' }}>운동중</p>
+                  </ButtonWrapper>
+                  : <ButtonWrapper>
+                    <UnExercising onClick={onToggleDoing} />
+                    <p style={{ paddingLeft: '4px' }}>운동중</p>
+                  </ButtonWrapper>}
+              </ButtonWrapper>
+              <ButtonWrapper>
+                {exer.bookmark === "N" ? <BookMark onClick={onToggleBookMark} /> : <UnBookMark onClick={onToggleBookMark} />}
+              </ButtonWrapper>
+            </ButtonWrapper>
+            {/* <ButtonWrapper>
               {exer.doing === "Y" ? <Exercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
             {exer.bookmark === "N" ? <BookMark onClick={onToggleBookMark}/> : <UnBookMark onClick={onToggleBookMark}/>}
           </ButtonWrapper> */}
-        </HealthWrapper>
-      </BlockWrapper>
-      <BlockWrapper>
-        <HealthWrapper>
-          <NameWrapper>
-            {exer.aerobic} | {exer.exerciseParts} | {exer.exerciseCategory}
-          </NameWrapper>
-          <ButtonWrapper width="80px">
-            <ThumbsWrapper>
-              {exer.like === "Y" ? <ThumbsUped onClick={onToggleThumbsUp}/> : <ThumbsUp onClick={onToggleThumbsUp}/>}
-              <ThumbsContentWrapper>좋아요</ThumbsContentWrapper>
-            </ThumbsWrapper>
-            <ThumbsWrapper>
-              {exer.like === "N" ? <ThumbsDowned onClick={onToggleThumbsUp}/> : <ThumbsDown onClick={onToggleThumbsUp}/>}
-              <ThumbsContentWrapper>싫어요</ThumbsContentWrapper>
-            </ThumbsWrapper>
-          </ButtonWrapper>
-        </HealthWrapper>
-      </BlockWrapper>
-      <BlockWrapper>
-        <HealthWrapper height="100px">
-          {exer.exerciseContent}
-        </HealthWrapper>
+          </HealthWrapper>
+        </BlockWrapper>
         <BlockWrapper>
-          <HealthWrapper height="120px" backgroundColor="#FFB6B6" borderRadius="none" display="block">
-            <YoutubeRecomWrapper>
-              <YoutubeIconWrapper>
-                <i className="fa-brands fa-youtube"/>
-              </YoutubeIconWrapper>
-              {exer.exerciseName} 유튜브 추천 영상 <br/>
-            </YoutubeRecomWrapper>
-            {/* <iframe
+          <HealthWrapper>
+            <NameWrapper>
+              {exer.aerobic} | {exer.exerciseParts} | {exer.exerciseCategory}
+            </NameWrapper>
+            <ButtonWrapper width="80px">
+              <ThumbsWrapper>
+                {exer.like === "Y" ? <ThumbsUped onClick={onToggleThumbsUp} /> : <ThumbsUp onClick={onToggleThumbsUp} />}
+                <ThumbsContentWrapper>좋아요</ThumbsContentWrapper>
+              </ThumbsWrapper>
+              <ThumbsWrapper>
+                {exer.like === "N" ? <ThumbsDowned onClick={onToggleThumbsUp} /> : <ThumbsDown onClick={onToggleThumbsUp} />}
+                <ThumbsContentWrapper>싫어요</ThumbsContentWrapper>
+              </ThumbsWrapper>
+            </ButtonWrapper>
+          </HealthWrapper>
+        </BlockWrapper>
+        <BlockWrapper>
+          <HealthWrapper height="100px">
+            {exer.exerciseContent}
+          </HealthWrapper>
+          <BlockWrapper>
+            <HealthWrapper height="120px" backgroundColor="#FFB6B6" borderRadius="none" display="block">
+              <YoutubeRecomWrapper>
+                <YoutubeIconWrapper>
+                  <i className="fa-brands fa-youtube" />
+                </YoutubeIconWrapper>
+                {exer.exerciseName} 유튜브 추천 영상 <br />
+              </YoutubeRecomWrapper>
+              {/* <iframe
             id="ytplayer"
             type="text/html"
             width="400"
@@ -276,17 +287,17 @@ const HealthDetail = ({
             src="https://www.youtube.com/embed/M7lc1UVf-VE"
             frameborder="0"
             allowfullscreen="allowfullscreen"></iframe> */}
-          </HealthWrapper>
+            </HealthWrapper>
+          </BlockWrapper>
         </BlockWrapper>
-      </BlockWrapper>
-      <BlockWrapper>
-        <HealthWrapper backgroundColor="transparent" justifyContent={"start"}>
-          <RecomThumbWrapper>
-            <i className="fa-regular fa-thumbs-up"/>
-          </RecomThumbWrapper>
-          {exer.exerciseName}와(과) 유사한 운동 추천
-        </HealthWrapper>
-        <HealthWrapper backgroundColor="transparent" justifyContent="space-between">
+        <BlockWrapper>
+          <HealthWrapper backgroundColor="transparent" justifyContent={"start"}>
+            <RecomThumbWrapper>
+              <i className="fa-regular fa-thumbs-up" />
+            </RecomThumbWrapper>
+            {exer.exerciseName}와(과) 유사한 운동 추천
+          </HealthWrapper>
+          <HealthWrapper backgroundColor="transparent" justifyContent="space-between">
             <RecoItemBox
               ref={scrollRef}
               onMouseDown={onDragStart}
@@ -303,10 +314,11 @@ const HealthDetail = ({
                 />
               ))}
             </RecoItemBox>
-        </HealthWrapper>
-      </BlockWrapper>
+          </HealthWrapper>
+        </BlockWrapper>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

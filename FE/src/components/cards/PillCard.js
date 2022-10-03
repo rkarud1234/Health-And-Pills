@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import imgUrl from "../../assets/waitingimg.jpg"
+import imgUrl from "../../assets/pillImg.png"
 
 const StyledPillCard = styled.div`
   border-radius: 16px;
