@@ -1,10 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { deleteUserExercise } from "../../../api/exercise";
 import { fetchUserExercise } from "../../../api/users";
 import useFetchData from "../../../hooks/useFetchData";
 import useIntersect from "../../../hooks/useIntersect";
-import DeleteItemButton from "../../buttons/DeleteItemButton";
 import UserInfoListItem from "../UserInfoListItem";
 
 const UserInfoListWrapper = styled.div`
@@ -22,9 +21,9 @@ const Target = styled.div`
   height: 1px;
 `;
 
-const UserExercise = () => {
+const UserLike = () => {
   const { res } = useFetchData(fetchUserExercise);
-  const userExercises = useMemo(
+  const userLikes = useMemo(
     () =>
       res.data
         ? res.data.pages.flatMap((item) => {
@@ -41,27 +40,14 @@ const UserExercise = () => {
     }
   });
 
-  const deleteItem = async (id) => {
-    const res = await deleteUserExercise(id);
-    if (res.status === 200) {
-      alert("삭제 되었습니다.");
-    }
-  };
   return (
     <UserInfoListWrapper className="list-area">
-      {userExercises.length !== 0 ? (
-        userExercises.map((item) => (
+      {userLikes.length !== 0 ? (
+        userLikes.map((item) => (
           <UserInfoListItem
             key={item.relatedItemId}
             {...item}
-            infoType={"exercise"}
-            children={
-              <DeleteItemButton
-                text={"삭제"}
-                onClick={deleteItem}
-                id={item.relatedItemId}
-              />
-            }
+            infoType={"like"}
           />
         ))
       ) : (
@@ -74,4 +60,4 @@ const UserExercise = () => {
   );
 };
 
-export default React.memo(UserExercise);
+export default React.memo(UserLike);

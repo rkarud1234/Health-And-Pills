@@ -1,8 +1,6 @@
 import React from "react";
 import { useRef } from "react";
 import styled from "styled-components";
-import { deleteUserPill } from "../../api/pill";
-import DeleteItemButton from "../buttons/DeleteItemButton";
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -74,8 +72,14 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const UserInfoListItem = ({ relatedItemId, name, img, rating, infoType }) => {
-  console.log(infoType);
+const UserInfoListItem = ({
+  relatedItemId,
+  name,
+  img,
+  rating,
+  infoType,
+  children,
+}) => {
   const itemRef = useRef();
   return (
     <ItemWrapper ref={itemRef}>
@@ -101,16 +105,7 @@ const UserInfoListItem = ({ relatedItemId, name, img, rating, infoType }) => {
           )}
         </ItemTitleWrapper>
       </ItemImgTitleWrapper>
-      <ButtonWrapper>
-        <DeleteItemButton color={"red"} text={"삭제"} />
-        {/* <button
-          onClick={() => {
-            onClick(relatedItemId);
-          }}
-        >
-          <i className="fa-regular fa-trash"></i>
-        </button> */}
-      </ButtonWrapper>
+      <ButtonWrapper>{children}</ButtonWrapper>
     </ItemWrapper>
   );
 };
