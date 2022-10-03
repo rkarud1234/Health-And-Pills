@@ -44,6 +44,37 @@ const SearchButton = styled.button`
 const Pill = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.data);
+  const today = new Date()
+  let age = ''
+  let ageGroup = ''
+  let gender = ''
+
+  if (user) {
+    age = today.getFullYear() - user.userProfileBirthday.slice(0, 4) + 1
+  }
+  if (age < 20) {
+    ageGroup = '10대'
+  } else if (age < 30) {
+    ageGroup = '20대'
+  } else if (age < 40) {
+    ageGroup = '30대'
+  } else if (age < 50) {
+    ageGroup = '40대'
+  } else if (age < 60) {
+    ageGroup = '50대'
+  } else if (age < 70) {
+    ageGroup = '60대'
+  } else if (age < 80) {
+    ageGroup = '70대'
+  }
+
+  if (user) {
+    if (user.userProfileGender === 'male') {
+      gender = '남성'
+    } else {
+      gender = '여성'
+    }
+  }
   // 차례대로 베스트 추천/ 사용자 맞춤 추천/ 유사한 사용자 추천
   const bestPills = useSelector((state) => state.recommend.bestPills)
   const customPills = useSelector((state) => state.recommend.customPills)
@@ -96,7 +127,7 @@ const Pill = () => {
             <Carousel images={images} />
             <RecomPills pills={bestPills} text='BEST 10 영양제 추천' />
             <RecomPills pills={customPills} text={user.userProfileNickname + '님을 위한 맞춤 영양제 추천'} />
-            <RecomPills pills={userPills} text={user.userProfileNickname + '님과 유사한 유저들이 먹는 영양제 추천'} />
+            <RecomPills pills={userPills} text={ageGroup + ' ' + gender + '이 많이 먹는 영양제'} />
             <Footer />
           </ScrollDiv > :
             <SearchSlide

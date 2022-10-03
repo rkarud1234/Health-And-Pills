@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { bookMarkPill, takingPill, PillDetailFetch } from '../../store/actions/pills'
 import { SimilarPillsFetch } from '../../store/actions/recommend'
-import imgUrl from "../../assets/waitingimg.jpg"
+import imgUrl from "../../assets/pillImg.png"
 
 import styled from 'styled-components'
 import RecomPills from './RecomPills'
