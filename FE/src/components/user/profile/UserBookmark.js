@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteUserExerciseBookmark } from "../../../api/exercise";
 import { deleteUserPillBookmark } from "../../../api/pill";
@@ -38,6 +39,7 @@ const deleteUrl = {
 };
 const UserBookmark = ({ type }) => {
   const { res } = useFetchData(fetchUrl[type]);
+  const navigate = useNavigate();
   const userBookmark = useMemo(
     () =>
       res.data
@@ -61,6 +63,12 @@ const UserBookmark = ({ type }) => {
     }
   };
 
+  const goToDetail = (type, id) => {
+    type === "pill"
+      ? navigate(`/pill/detail/${id}`)
+      : navigate(`/health/detail/${id}`);
+  };
+
   return (
     <UserInfoListWrapper className="list-area">
       {userBookmark.length !== 0 ? (
@@ -69,6 +77,7 @@ const UserBookmark = ({ type }) => {
             key={item.relatedItemId}
             {...item}
             infoType={type}
+            onClick={() => goToDetail(type, item.relatedItemId)}
             children={
               <DeleteItemButton
                 text={"해제"}
