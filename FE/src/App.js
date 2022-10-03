@@ -36,7 +36,7 @@ function App() {
               path="/health/detail/:exerciseId"
               element={<HealthDetail />}
             />
-            <Route path="/profile/" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/social/redirect" element={<SocialLogin />} />
             <Route path="/require" element={<RequiredInformation />} />
