@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ButtonWrapper = styled.div`
+const ExerWrapper = styled.div`
   width: 120px;
   justify-content: flex-end;
   display: flex;
@@ -9,14 +9,15 @@ const ButtonWrapper = styled.div`
   -webkit-text-fill-color: transparent;
   font-size: large;
   cursor: pointer;
+  margin: auto;
 `
 
 const Excercising = ({onClick}) => {
 
   return (
-    <ButtonWrapper onClick={() => onClick("N")}>
+    <ExerWrapper onClick={() => onClick("N")}>
       <i className="fa-solid fa-square-check"></i>
-    </ButtonWrapper>
+    </ExerWrapper>
   )
 };
 

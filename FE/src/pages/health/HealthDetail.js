@@ -43,6 +43,7 @@ const ButtonWrapper = styled.div`
   width: ${(props) => props.width};
   justify-content: center;
   display: flex;
+  text-align: center;
 `
 
 const ThumbsWrapper = styled.div`
@@ -226,12 +227,16 @@ const HealthDetail = ({
           <NameWrapper>
             {exer.exerciseName}
           </NameWrapper>
-          <ButtonWrapper>
-            {exer.doing === "Y" ? <Exercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
+          <ButtonWrapper width="240px">
+              {exer.doing === "Y" ? <Exercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
           </ButtonWrapper>
-          <ButtonWrapper  width="60px">
+          <ButtonWrapper width="40px">
             {exer.bookmark === "N" ? <BookMark onClick={onToggleBookMark}/> : <UnBookMark onClick={onToggleBookMark}/>}
           </ButtonWrapper>
+           {/* <ButtonWrapper>
+              {exer.doing === "Y" ? <Exercising onClick={onToggleDoing}/> : <UnExercising onClick={onToggleDoing}/>}
+            {exer.bookmark === "N" ? <BookMark onClick={onToggleBookMark}/> : <UnBookMark onClick={onToggleBookMark}/>}
+          </ButtonWrapper> */}
         </HealthWrapper>
       </BlockWrapper>
       <BlockWrapper>
@@ -279,7 +284,7 @@ const HealthDetail = ({
           <RecomThumbWrapper>
             <i className="fa-regular fa-thumbs-up"/>
           </RecomThumbWrapper>
-          {exer.exerciseName}와 유사한 운동 추천
+          {exer.exerciseName}와(과) 유사한 운동 추천
         </HealthWrapper>
         <HealthWrapper backgroundColor="transparent" justifyContent="space-between">
             <RecoItemBox
