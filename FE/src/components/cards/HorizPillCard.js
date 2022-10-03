@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import imgUrl from "../../assets/waitingimg.jpg"
 const StyledPillCard = styled.div`
   display:flex;
   background-color: #fff;
@@ -17,8 +17,8 @@ text-fill-color: transparent;
 const StyledPillCardImgWrapper = styled.div`
   padding: 16px;
   & img {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     padding: 16px;
   }
 `;
@@ -51,14 +51,14 @@ const HorizPillCard = ({ url, width, height, padding, name, companyName, reviewA
   return (
     <StyledPillCard width={width} height={height}>
       <StyledPillCardImgWrapper padding={padding}>
-        {url ? <img src={url} /> : <img src={process.env.PUBLIC_URL + "logo512.png"} />}
+        {url ? <img src={url} /> : <img src={imgUrl} />}
       </StyledPillCardImgWrapper>
       <StyledPillCardContentWrapper padding={padding}>
         <CompanyDiv>{companyName}</CompanyDiv>
         <NameDiv>{name}</NameDiv>
         <div>
           <GradientIcon className="fas fa-star"></GradientIcon>
-          {reviewAverage}({reviewCount})
+          {reviewAverage && reviewCount ? reviewAverage + ({ reviewCount }) : '0(0)'}
         </div>
       </StyledPillCardContentWrapper>
     </StyledPillCard>

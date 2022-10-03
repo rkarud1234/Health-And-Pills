@@ -90,11 +90,11 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
     oneRating: scores[1]
   }
 
-  const fiveRating = (starRating.fiveRating / reviews.length) * 100 + '%'
-  const fourRating = (starRating.fourRating / reviews.length) * 100 + '%'
-  const threeRating = (starRating.threeRating / reviews.length) * 100 + '%'
-  const twoRating = (starRating.twoRating / reviews.length) * 100 + '%'
-  const oneRating = (starRating.oneRating / reviews.length) * 100 + '%'
+  const fiveRating = (starRating.fiveRating / pillReviewCount) * 100 + '%'
+  const fourRating = (starRating.fourRating / pillReviewCount) * 100 + '%'
+  const threeRating = (starRating.threeRating / pillReviewCount) * 100 + '%'
+  const twoRating = (starRating.twoRating / pillReviewCount) * 100 + '%'
+  const oneRating = (starRating.oneRating / pillReviewCount) * 100 + '%'
 
   const [score, setScore] = useState(3)
   const [isOpened, setIsOpened] = useState(false)
@@ -175,7 +175,10 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
               </div>
               <ProFlexBox >
                 <LinearStar className="fas fa-star"></LinearStar>
-                <div style={{ fontSize: '32px' }}>{reviewaverage}</div>
+                <div style={{ fontSize: '24px', display: 'flex', lineHeight: '40px' }}>
+                  {reviewaverage}
+                  <div style={{ fontSize: '12px' }}>({pillReviewCount})</div>
+                </div>
               </ProFlexBox>
             </div>
             <div style={{ margin: '8px 8px', width: '90%' }}>

@@ -111,40 +111,74 @@ export const DeleteReview = createAsyncThunk(
 export const bookMarkPill = createAsyncThunk(
   'pill/bookmarkPill',
   async (data) => {
-    return client.post(`pills/bookmark`, data)
-      .then(res => {
-        if (res.status === 200) {
-          alert('북마크에 정상적으로 추가 되었습니다.')
-          return true
-        } else {
+    if (data.check === 'Y') {
+      return client.post(`pills/bookmark`, data)
+        .then(res => {
+          if (res.status === 200) {
+            alert('북마크에 정상적으로 추가 되었습니다.')
+            return true
+          } else {
+            alert('북마크 추가가 실패했습니다.')
+            return false
+          }
+        })
+        .catch(error => {
           alert('북마크 추가가 실패했습니다.')
           return false
-        }
-      })
-      .catch(error => {
-        alert('북마크 추가가 실패했습니다.')
-        return false
-      })
+        })
+    } else {
+      return client.post(`pills/bookmark`, data)
+        .then(res => {
+          if (res.status === 200) {
+            alert('북마크에 정상적으로 해제 되었습니다.')
+            return true
+          } else {
+            alert('북마크 해제가 실패했습니다.')
+            return false
+          }
+        })
+        .catch(error => {
+          alert('북마크 해제가 실패했습니다.')
+          return false
+        })
+    }
   }
 )
 //영양제 복용중 체크
 export const takingPill = createAsyncThunk(
   'pill/takingPill',
   async (data) => {
-    return client.post(`pills/taking`, data)
-      .then(res => {
-        if (res.status === 200) {
-          alert('현재 복용중인 영양제로 정상 등록되었습니다.')
-          return true
-        } else {
+    if (data.check === 'Y') {
+      return client.post(`pills/taking`, data)
+        .then(res => {
+          if (res.status === 200) {
+            alert('현재 복용중인 영양제로 정상 등록되었습니다.')
+            return true
+          } else {
+            alert('복용중인 영양제로 등록이 실패했습니다.')
+            return false
+          }
+        })
+        .catch(error => {
           alert('복용중인 영양제로 등록이 실패했습니다.')
           return false
-        }
-      })
-      .catch(error => {
-        alert('복용중인 영양제로 등록이 실패했습니다.')
-        return false
-      })
+        })
+    } else {
+      return client.post(`pills/taking`, data)
+        .then(res => {
+          if (res.status === 200) {
+            alert('복용중이던 영양제에서 해제했습니다.')
+            return true
+          } else {
+            alert('복용중이던 영양제에서 해제가 실패했습니다.')
+            return false
+          }
+        })
+        .catch(error => {
+          alert('복용중이던 영양제에서 해제가 실패했습니다.')
+          return false
+        })
+    }
   }
 )
 
