@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 const ExerWrapper = styled.div`
-  width: 120px;
-  justify-content: flex-end;
+width: auto;
   display: flex;
   background: linear-gradient(#537CFE, #6A53FE);
   -webkit-background-clip: text;
@@ -12,7 +11,7 @@ const ExerWrapper = styled.div`
   margin: auto;
 `
 
-const Excercising = ({onClick}) => {
+const Excercising = ({ onClick }) => {
 
   return (
     <ExerWrapper onClick={() => onClick("N")}>

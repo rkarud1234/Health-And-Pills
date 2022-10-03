@@ -7,13 +7,13 @@ const ThumbWrapper = styled.button`
   font-size: large;
 `
 
-const ThumbsUped = ({onClick}) => {
-  
-  
+const ThumbsUped = ({ onClick }) => {
+
+
 
   return (
     <ThumbWrapper onClick={() => onClick(null)}>
-      <i className="fa-solid fa-thumbs-up"></i>
+      <i className="fa-solid fa-thumbs-up fa-lg"></i>
     </ThumbWrapper>
   );
 };
