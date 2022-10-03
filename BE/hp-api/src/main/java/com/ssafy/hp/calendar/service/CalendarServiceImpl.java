@@ -85,19 +85,15 @@ public class CalendarServiceImpl implements CalendarService{
         if (request.getExerciseId() == null){
             Pill findPill = pillRepository.findById(request.getPillId())
                     .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-            Optional<UserPill> findUserPill = userPillRepository.findUserPillByUsersAndPill(user,findPill);
-            if(!findUserPill.isPresent()){
-                pillService.updateUserPillByUserAndPill(user, request.getPillId(), YN.Y, 1);
-            }
+
+            pillService.updateUserPillByUserAndPill(user, request.getPillId(), YN.Y, 1);
             findCalendar = Calendar.createCalendar(request.getCalendarDate(), request.getCalendarTime(), request.getCalendarContent(), user, null, findPill);
         }
         else {
             Exercise findExercise = exerciseRepository.findById(request.getExerciseId())
                     .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-            Optional<UserExercise> findUserExercise = userExerciseRepository.findUserExerciseByUsersAndExercise(user, findExercise);
-            if(!findUserExercise.isPresent()){
-                exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), YN.Y, 1);
-            }
+
+            exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), YN.Y, 1);
             findCalendar = Calendar.createCalendar(request.getCalendarDate(), request.getCalendarTime(), request.getCalendarContent(), user, findExercise, null);
         }
         calendarRepository.save(findCalendar);
