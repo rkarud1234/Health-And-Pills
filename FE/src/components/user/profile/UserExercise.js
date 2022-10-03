@@ -61,7 +61,7 @@ const UserExercise = () => {
             key={item.relatedItemId}
             {...item}
             infoType={"exercise"}
-            onClick={() => goToDetail(item.id)}
+            onClick={() => goToDetail(item.relatedItemId)}
             children={
               <DeleteItemButton
                 text={"삭제"}
