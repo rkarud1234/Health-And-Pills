@@ -71,12 +71,12 @@ def createContext(data):
     for id in data:
             count, average = getReviewInfo(id['pill_id'])                
             context.append({
-                    "pill_id":id['pill_id'],
-                    "pill_name":id['pill_name'],
-                    "pill_company_name":id['pill_company_name'],
-                    "pill_thumbnail":id['pill_thumbnail'],
-                    "review_average": average,
-                    "count": count                    
+                    "pillId":id['pill_id'],
+                    "pillName":id['pill_name'],
+                    "pillCompanyName":id['pill_company_name'],
+                    "pillThumbnail":id['pill_thumbnail'],
+                    "pillReviewCount": average,
+                    "pillReviewAverage": count                    
                 }           
             )
 
