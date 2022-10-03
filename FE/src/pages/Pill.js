@@ -5,9 +5,9 @@ import Footer from "../components/layouts/Footer";
 import Carousel from "../components/carousel/Carousel";
 import RecomPills from "./Pills/RecomPills";
 import SearchSlide from "./Pills/SearchSlide";
+import Loading from "../components/layouts/Loading";
 import { BestPillsFetch, CustomPillsFetch, UserPillsFetch } from "../store/actions/recommend";
 import { profile } from "../store/actions/user";
-
 import imgUrl from '../assets/togetherX.jpg'
 
 const ScrollDiv = styled.div`
@@ -48,6 +48,10 @@ const Pill = () => {
   const bestPills = useSelector((state) => state.recommend.bestPills)
   const customPills = useSelector((state) => state.recommend.customPills)
   const userPills = useSelector((state) => state.recommend.userPills)
+  // api 요청 진행상황
+  const cStatus = useSelector((state) => state.recommend.cstatus)
+  const uStatus = useSelector((state) => state.recommend.ustatus)
+  const bStatus = useSelector((state) => state.recommend.bstatus)
 
   useEffect(() => {
     dispatch(profile())
@@ -76,32 +80,39 @@ const Pill = () => {
     setIsOpened(!isOpened)
   }
 
-  return (<div style={{ fontFamily: 'GmarketSans' }}>
-    {!isOpened ? <ScrollDiv>
-      < SearchBox >
-        <SearchBar onClick={openHandler}>
-          <SearchButton>
-            <i className="fa-solid fa-magnifying-glass fa-lg"></i>
-          </SearchButton>
-          <div style={{ fontSize: '12px', lineHeight: '30px' }}>영양제를 검색하세요!</div>
-        </SearchBar>
-      </SearchBox>
-      <Carousel images={images} />
-      <RecomPills pills={bestPills} text='BEST 10 영양제 추천' />
-      {user &&
-        <div>
-          <RecomPills pills={customPills} text={user.userProfileNickname + '님을 위한 맞춤 영양제 추천'} />
-          <RecomPills pills={userPills} text={user.userProfileNickname + '님과 유사한 유저들이 먹는 영양제 추천'} />
+  return (<div>
+    {
+      cStatus === 'succeeded' && bStatus === 'succeeded' && uStatus === 'succeeded' ?
+        <div style={{ fontFamily: 'GmarketSans' }}>
+          {!isOpened ? <ScrollDiv>
+            < SearchBox >
+              <SearchBar onClick={openHandler}>
+                <SearchButton>
+                  <i className="fa-solid fa-magnifying-glass fa-lg"></i>
+                </SearchButton>
+                <div style={{ fontSize: '12px', lineHeight: '30px' }}>영양제를 검색하세요!</div>
+              </SearchBar>
+            </SearchBox>
+            <Carousel images={images} />
+            <RecomPills pills={bestPills} text='BEST 10 영양제 추천' />
+            {user &&
+              <div>
+                <RecomPills pills={customPills} text={user.userProfileNickname + '님을 위한 맞춤 영양제 추천'} />
+                <RecomPills pills={userPills} text={user.userProfileNickname + '님과 유사한 유저들이 먹는 영양제 추천'} />
+              </div>
+            }
+            <Footer />
+          </ScrollDiv > :
+            <SearchSlide
+              openHandler={openHandler}
+              isOpened={isOpened}
+            ></SearchSlide>}
         </div>
-      }
-      <Footer />
-    </ScrollDiv > :
-      <SearchSlide
-        openHandler={openHandler}
-        isOpened={isOpened}
-      ></SearchSlide>}
-  </div>
-  )
+        :
+        <div>
+          <Loading />
+        </div>
+    }</div>)
 };
 
 export default Pill;

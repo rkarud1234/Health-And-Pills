@@ -3,10 +3,13 @@ import { client } from '../../api/index.js'
 
 const initialState = {
   status: '',
-  bestPills: [],
-  customPills: [],
-  userPills: [],
-  similarPills: [],
+  bestPills: null,
+  bstatus: null,
+  customPills: null,
+  cstatus: null,
+  userPills: null,
+  ustatus: null,
+  similarPills: null,
 }
 //베스트 영양제 추천
 export const BestPillsFetch = createAsyncThunk(
@@ -77,21 +80,24 @@ const recommendSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(BestPillsFetch.pending, (state, action) => {
-      state.status = '';
+      state.bstatus = '';
     })
     builder.addCase(BestPillsFetch.fulfilled, (state, { payload }) => {
-      state.status = 'succeeded';
+      state.bstatus = 'succeeded';
       state.bestPills = payload;
     })
-    builder.addCase(BestPillsFetch.rejected, (state, action) => {
-      state.status = 'failed';
+    builder.addCase(CustomPillsFetch.pending, (state, action) => {
+      state.cstatus = '';
     })
     builder.addCase(CustomPillsFetch.fulfilled, (state, { payload }) => {
-      state.status = 'succeeded';
+      state.cstatus = 'succeeded';
       state.customPills = payload;
     })
+    builder.addCase(UserPillsFetch.pending, (state, action) => {
+      state.ustatus = '';
+    })
     builder.addCase(UserPillsFetch.fulfilled, (state, { payload }) => {
-      state.status = 'succeeded';
+      state.ustatus = 'succeeded';
       state.userPills = payload;
     })
     builder.addCase(SimilarPillsFetch.fulfilled, (state, { payload }) => {

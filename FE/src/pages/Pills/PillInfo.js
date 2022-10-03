@@ -170,7 +170,7 @@ const PillInfo = ({
         <img id={id} src={pillThumbnail ? pillThumbnail : imgUrl} alt='영양제 이미지' style={{ width: "100%", height: "30vh" }} />
         {isBookmark === 'Y' ?
           <BookMarkDiv onClick={() => bookMarkHandler("N")}>
-            <i class="fa-solid fa-bookmark fa-lg"></i>
+            <i className="fa-solid fa-bookmark fa-lg"></i>
           </BookMarkDiv>
           :
           <UnBookMarkDiv onClick={() => bookMarkHandler("Y")}>

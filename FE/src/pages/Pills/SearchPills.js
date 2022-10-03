@@ -63,14 +63,14 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
 
   const searchHandler = () => {
     setAutoCompleteOpened(false)
+    dispatch(resetSelector())
     const data = {
       searchWord: searchWord,
-      domestic: domestic,
-      functionalityList: functionalityList,
-      nutrientList: nutrientList
+      domestic: '',
+      functionalityList: '',
+      nutrientList: ''
     }
     dispatch(SearchPill(data))
-    dispatch(resetSelector())
     setIsSearched(true)
     setIsOpened(false)
   }
