@@ -32,7 +32,10 @@ const StyledPillCardContentWrapper = styled.div`
 `;
 
 const PillCard = ({ text, rating, width, height, padding, url }) => {
-
+  let starRating = ''
+  if (rating) {
+    starRating = rating.toFixed(1)
+  }
   return (
     <StyledPillCard width={width} height={height}>
       <StyledPillCardImgWrapper padding={padding}>
@@ -42,7 +45,7 @@ const PillCard = ({ text, rating, width, height, padding, url }) => {
         <span>{text.length > 5 ? text.slice(0, 5) + '...' : text}</span>
         <span>
           <i className="fas fa-star"></i>
-          {rating && rating}
+          {rating && starRating}
         </span>
       </StyledPillCardContentWrapper>
     </StyledPillCard>
