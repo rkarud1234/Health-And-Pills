@@ -8,6 +8,9 @@ import com.ssafy.hp.exercise.ExerciseRepository;
 import com.ssafy.hp.exercise.domain.Exercise;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.domain.Pill;
+import com.ssafy.hp.pill.response.PillDetailResponse;
+import com.ssafy.hp.pill.service.PillService;
+import com.ssafy.hp.pill.service.PillServiceImpl;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
 import com.ssafy.hp.user.query.UserQueryRepository;
@@ -40,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final PillRepository pillRepository;
     private final UserExerciseRepository userExerciseRepository;
     private final UserPillRepository userPillRepository;
+    private final PillService pillService;
 
 
     @Transactional
@@ -120,7 +124,8 @@ public class UserServiceImpl implements UserService {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findTakingPillByUser(user, pageable).map(UserPillResponse::from);
+        return userQueryRepository.findTakingPillByUser(user, pageable)
+                .map(userPill -> UserPillResponse.from(userPill, pillService.findByPillId(user, userPill.getPill().getPillId())));
     }
 
     @Override
@@ -128,7 +133,8 @@ public class UserServiceImpl implements UserService {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findBookmarkPillByUser(user, pageable).map(UserPillResponse::from);
+        return userQueryRepository.findTakingPillByUser(user, pageable)
+                .map(userPill -> UserPillResponse.from(userPill, pillService.findByPillId(user, userPill.getPill().getPillId())));
     }
 
     @Override
