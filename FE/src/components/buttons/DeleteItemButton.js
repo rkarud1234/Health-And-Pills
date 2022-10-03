@@ -28,10 +28,11 @@ const DeleteItemButton = ({
   padding,
   fontSize,
   text,
+  id,
 }) => {
   return (
     <DeleteItemButtonStyled
-      onClick={onClick}
+      onClick={() => onClick(id)}
       width={width}
       height={height}
       border={border}

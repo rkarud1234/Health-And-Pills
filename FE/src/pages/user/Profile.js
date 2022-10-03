@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/layouts/Footer";
 import SlidingMenu from "../../components/layouts/SlidingMenu";
 import UserExercise from "../../components/user/profile/UserExercise";
+import UserLike from "../../components/user/profile/UserLike";
 import UserPill from "../../components/user/profile/UserPill";
 import { profile } from "../../store/actions/user";
 import { logOut } from "../../store/reducers/userSlice";
@@ -220,6 +221,8 @@ const getUserAge = (birth) => {
   return today - birthYear;
 };
 const Profile = () => {
+  const { state } = useLocation();
+
   const [slidingMenuState, setSlidingMenuState] = useState({
     infoType: "",
     active: false,
@@ -227,6 +230,12 @@ const Profile = () => {
   });
   useEffect(() => {
     dispatch(profile());
+  }, []);
+
+  useEffect(() => {
+    if (state !== null) {
+      onHandleSlidingMenu(state.infoType, state.title);
+    }
   }, []);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -275,7 +284,7 @@ const Profile = () => {
       } else if (slidingMenuState.infoType === "review") {
         return <Review />;
       } else if (slidingMenuState.infoType === "like") {
-        return <Like />;
+        return <UserLike />;
       } else if (slidingMenuState.infoType === "bookmark") {
         return <Bookmark />;
       } else if (slidingMenuState.infoType === "pill") {

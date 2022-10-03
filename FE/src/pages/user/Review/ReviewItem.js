@@ -1,7 +1,7 @@
 import { Rating } from "@mui/material";
 import { useState } from "react";
 import styled from "styled-components";
-import { deletePillReview } from "../../../api/pill";
+import ReviewButton from "../../../components/buttons/review/ReviewButton";
 
 const ReviewItemWrapper = styled.div`
   display: flex;
@@ -20,17 +20,21 @@ const ReviewImageInfoWrapper = styled.div`
 `;
 
 const ReviewImageWrapper = styled.div`
-  margin-right: 10px;
+  margin-right: 14px;
   width: 80px;
-  /* height: 80px; */
+  height: 80px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   & img {
-    width: 100%;
-    height: 100%;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
   }
   & img.default {
-    width: 60%;
+    width: 60px;
+    height: 60px;
   }
 `;
 
@@ -40,14 +44,24 @@ const ReviewInfoWrapper = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+  & h1 {
+    max-width: 240px;
+    word-break: keep-all;
+  }
+  & div {
+    margin-top: 4px;
+  }
 `;
 
 const ReviewContentWrapper = styled.div`
-  padding: 8px 20px;
+  padding: 8px 18px;
+  & p {
+    line-height: 0.5cm;
+  }
 `;
 
 const ButtonWrapper = styled.div`
-  float: right;
+  text-align: end;
 `;
 
 const ReviewItem = ({
@@ -58,6 +72,7 @@ const ReviewItem = ({
   relatedItemId,
   reviewContent,
   onClick,
+  remove,
 }) => {
   const [review, setReview] = useState({
     id,
@@ -66,29 +81,7 @@ const ReviewItem = ({
     rating,
     relatedItemId,
     reviewContent,
-    readOnly: true,
   });
-  const onChangeReadOnly = () => {
-    setReview({ ...review, readOnly: !review.readOnly });
-  };
-
-  const cancleEdit = () => {
-    setReview((prevState) => {
-      return {
-        ...prevState,
-        rating,
-        reviewContent,
-      };
-    });
-  };
-
-  const removeReview = async (reviewId) => {
-    const res = await deletePillReview(reviewId);
-    if (res.status === 200) {
-      alert("삭제되었습니다.");
-    }
-  };
-
   return (
     <ReviewItemWrapper>
       <ReviewImageInfoWrapper>
@@ -104,7 +97,7 @@ const ReviewItem = ({
           )}
         </ReviewImageWrapper>
         <ReviewInfoWrapper>
-          <p>{review.name}</p>
+          <h1>{review.name}</h1>
           <div>
             <Rating
               name="rating"
@@ -118,29 +111,16 @@ const ReviewItem = ({
         </ReviewInfoWrapper>
       </ReviewImageInfoWrapper>
       <ReviewContentWrapper>
-        <div>{review.reviewContent}</div>
-        <ButtonWrapper>
-          {review.readOnly ? (
-            <>
-              <button type="button" onClick={() => onClick(id)}>
-                수정
-              </button>
-              <button type="button" onClick={() => removeReview(id)}>
-                삭제
-              </button>
-            </>
-          ) : (
-            <>
-              <button type="button" onClick={() => console.log("삐약")}>
-                완료
-              </button>
-              <button type="button" onClick={onChangeReadOnly}>
-                취소
-              </button>
-            </>
-          )}
-        </ButtonWrapper>
+        <p>{review.reviewContent}</p>
       </ReviewContentWrapper>
+      <ButtonWrapper>
+        <ReviewButton onClick={() => onClick(id)} text={"수정"} status="edit" />
+        <ReviewButton
+          onClick={() => remove(id)}
+          text={"삭제"}
+          status={"delete"}
+        />
+      </ButtonWrapper>
     </ReviewItemWrapper>
   );
 };

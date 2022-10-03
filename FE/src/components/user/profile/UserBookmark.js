@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
+import { deleteUserExerciseBookmark } from "../../../api/exercise";
+import { deleteUserPillBookmark } from "../../../api/pill";
 import {
   fetchUserExerciseBookmark,
   fetchUserPill,
@@ -7,6 +9,7 @@ import {
 } from "../../../api/users";
 import useFetchData from "../../../hooks/useFetchData";
 import useIntersect from "../../../hooks/useIntersect";
+import DeleteItemButton from "../../buttons/DeleteItemButton";
 import UserInfoListItem from "../UserInfoListItem";
 
 const UserInfoListWrapper = styled.div`
@@ -28,6 +31,11 @@ const fetchUrl = {
   pill: fetchUserPillBookmark,
   exercise: fetchUserExerciseBookmark,
 };
+
+const deleteUrl = {
+  pill: deleteUserPillBookmark,
+  exercise: deleteUserExerciseBookmark,
+};
 const UserBookmark = ({ type }) => {
   const { res } = useFetchData(fetchUrl[type]);
   const userBookmark = useMemo(
@@ -46,13 +54,13 @@ const UserBookmark = ({ type }) => {
       res.fetchNextPage();
     }
   });
-  const deleteItem = async (id) => {
-    // const res = await deleteUserExercise(id);
-    // if (res.status === 200) {
-    //   alert("삭제 되었습니다.");
-    // }
-    console.log("북마크 해제하기");
+  const deleteBookmarkItem = async (id) => {
+    const res = await deleteUrl[type](id);
+    if (res.status === 200) {
+      alert("해제 되었습니다.");
+    }
   };
+
   return (
     <UserInfoListWrapper className="list-area">
       {userBookmark.length !== 0 ? (
@@ -61,7 +69,13 @@ const UserBookmark = ({ type }) => {
             key={item.relatedItemId}
             {...item}
             infoType={type}
-            onClick={deleteItem}
+            children={
+              <DeleteItemButton
+                text={"해제"}
+                id={type === "pill" ? item.id : item.relatedItemId}
+                onClick={deleteBookmarkItem}
+              />
+            }
           />
         ))
       ) : (

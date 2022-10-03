@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { updateUserExercise } from "../../api/users";
 import GradationButton from "../../components/buttons/GradationButton";
 import { editLifestyle } from "../../store/actions/user";
 
