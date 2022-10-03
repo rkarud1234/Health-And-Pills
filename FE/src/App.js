@@ -13,6 +13,8 @@ import Result from "./pages/test/Result";
 import RequiredInformation from "./pages/user/requirementInformation/RequiredInformation";
 import { Suspense, lazy } from "react";
 import Loading from "./components/layouts/Loading";
+import PrivateRoute from "./routes/PrivateRoute";
+import NotFound from "./pages/error/NotFound";
 
 const Profile = lazy(() => import("./pages/user/Profile"));
 function App() {
@@ -29,19 +31,47 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/pills" element={<Pill />} />
-            <Route path="/pill/detail/:id" element={<PillDetail />} />
-            <Route path="/health" element={<Health />} />
+            <Route
+              path="/pills"
+              element={<PrivateRoute component={<Pill />} />}
+            />
+            <Route
+              path="/pill/detail/:id"
+              element={<PrivateRoute component={<PillDetail />} />}
+            />
+            <Route
+              path="/health"
+              element={<PrivateRoute component={<Health />} />}
+            />
             <Route
               path="/health/detail/:exerciseId"
-              element={<HealthDetail />}
+              element={<PrivateRoute component={<HealthDetail />} />}
             />
-            <Route path="/profiles" element={<Profile />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/social/redirect" element={<SocialLogin />} />
-            <Route path="/require" element={<RequiredInformation />} />
-            <Route path="/form" element={<BodyAgeTest />} />
-            <Route path="/result/:id" element={<Result />} />
+            <Route
+              path="/profiles"
+              element={<PrivateRoute component={<Profile />} />}
+            />
+            <Route
+              path="/schedule"
+              element={<PrivateRoute component={<Schedule />} />}
+            />
+            <Route
+              path="/social/redirect"
+              element={<PrivateRoute component={<SocialLogin />} />}
+            />
+            <Route
+              path="/require"
+              element={<PrivateRoute component={<RequiredInformation />} />}
+            />
+            <Route
+              path="/form"
+              element={<PrivateRoute component={<BodyAgeTest />} />}
+            />
+            <Route
+              path="/result/:id"
+              element={<PrivateRoute component={<Result />} />}
+            />
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </div>
