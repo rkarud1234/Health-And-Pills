@@ -11,6 +11,7 @@ const ItemWrapper = styled.div`
 `;
 
 const ItemImgTitleWrapper = styled.div`
+  cursor: pointer;
   display: flex;
 `;
 
@@ -79,11 +80,12 @@ const UserInfoListItem = ({
   rating,
   infoType,
   children,
+  onClick,
 }) => {
   const itemRef = useRef();
   return (
     <ItemWrapper ref={itemRef}>
-      <ItemImgTitleWrapper>
+      <ItemImgTitleWrapper onClick={onClick}>
         <ItemImgWrapper>
           {img !== "" && img !== undefined ? (
             <img src={img} alt="이미지 준비중" />
