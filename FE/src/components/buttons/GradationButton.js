@@ -51,7 +51,7 @@ const GradationButton = ({
 };
 
 GradationButton.defaultProps = {
-  text: "테스트 버튼",
+  text: "확인",
   from: "#537CFE",
   to: "#6A53FE",
   color: "#fff",
