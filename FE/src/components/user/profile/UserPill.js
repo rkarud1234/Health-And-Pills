@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteUserPill } from "../../../api/pill";
 import { fetchUserPill } from "../../../api/users";
@@ -24,6 +25,7 @@ const Target = styled.div`
 
 const UserPill = () => {
   const { res } = useFetchData(fetchUserPill);
+  const navigate = useNavigate();
   const userPills = useMemo(
     () =>
       res.data
@@ -47,6 +49,10 @@ const UserPill = () => {
       alert("삭제 되었습니다.");
     }
   };
+
+  const goToDetail = (id) => {
+    navigate(`/pill/detail/${id}`);
+  };
   return (
     <UserInfoListWrapper className="list-area">
       {userPills.length !== 0 ? (
@@ -55,6 +61,7 @@ const UserPill = () => {
             <UserInfoListItem
               key={item.relatedItemId}
               {...item}
+              onClick={() => goToDetail(item.relatedItemId)}
               infoType={"pill"}
               children={
                 <DeleteItemButton

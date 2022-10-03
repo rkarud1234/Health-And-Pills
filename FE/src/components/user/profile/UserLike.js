@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteUserExercise } from "../../../api/exercise";
 import { fetchUserExercise } from "../../../api/users";
@@ -23,6 +24,7 @@ const Target = styled.div`
 
 const UserLike = () => {
   const { res } = useFetchData(fetchUserExercise);
+  const navigate = useNavigate();
   const userLikes = useMemo(
     () =>
       res.data
@@ -39,7 +41,9 @@ const UserLike = () => {
       res.fetchNextPage();
     }
   });
-
+  const goToDetail = (id) => {
+    navigate(`/health/detail/${id}`);
+  };
   return (
     <UserInfoListWrapper className="list-area">
       {userLikes.length !== 0 ? (
@@ -47,6 +51,7 @@ const UserLike = () => {
           <UserInfoListItem
             key={item.relatedItemId}
             {...item}
+            onClick={() => goToDetail(item.relatedItemId)}
             infoType={"like"}
           />
         ))

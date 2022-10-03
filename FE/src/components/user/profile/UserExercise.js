@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteUserExercise } from "../../../api/exercise";
 import { fetchUserExercise } from "../../../api/users";
@@ -24,6 +25,7 @@ const Target = styled.div`
 
 const UserExercise = () => {
   const { res } = useFetchData(fetchUserExercise);
+  const navigate = useNavigate();
   const userExercises = useMemo(
     () =>
       res.data
@@ -47,6 +49,10 @@ const UserExercise = () => {
       alert("삭제 되었습니다.");
     }
   };
+
+  const goToDetail = (id) => {
+    navigate(`/health/detail/${id}`);
+  };
   return (
     <UserInfoListWrapper className="list-area">
       {userExercises.length !== 0 ? (
@@ -55,6 +61,7 @@ const UserExercise = () => {
             key={item.relatedItemId}
             {...item}
             infoType={"exercise"}
+            onClick={() => goToDetail(item.id)}
             children={
               <DeleteItemButton
                 text={"삭제"}
