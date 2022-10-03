@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { deleteUserExercise } from "../../../api/exercise";
 import { fetchUserExercise } from "../../../api/users";
 import useFetchData from "../../../hooks/useFetchData";
 import useIntersect from "../../../hooks/useIntersect";
+import DeleteItemButton from "../../buttons/DeleteItemButton";
 import UserInfoListItem from "../UserInfoListItem";
 
 const UserInfoListWrapper = styled.div`
@@ -54,7 +55,13 @@ const UserExercise = () => {
             key={item.relatedItemId}
             {...item}
             infoType={"exercise"}
-            onClick={deleteItem}
+            children={
+              <DeleteItemButton
+                text={"삭제"}
+                onClick={deleteItem}
+                id={item.relatedItemId}
+              />
+            }
           />
         ))
       ) : (
