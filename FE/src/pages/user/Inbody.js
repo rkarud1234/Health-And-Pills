@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { updateUserinbody } from "../../api/users";
@@ -59,7 +59,12 @@ const getEditButtonStatus = (
   parseInt(inBodyState.userProfileWater) !== parseInt(userProfileWater)
     ? true
     : false;
-
+const emptyZeroValueCheck = (value) => {
+  if (value.length === 0 || parseInt(value) === 0) {
+    return true;
+  }
+  return false;
+};
 const Inbody = () => {
   const {
     userProfileHeight,
@@ -77,8 +82,14 @@ const Inbody = () => {
     userProfileWater,
   });
   const dispatch = useDispatch();
+  const inbodyInput = useRef([
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+  ]);
   const editButton = useRef(false);
-
   const onHandleInput = (e) => {
     setInbodyState((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
@@ -105,12 +116,14 @@ const Inbody = () => {
     ]
   );
 
-  const onEditInbody = async () => {
-    if (inBodyState.userProfileHeight.length === 0) {
-      alert("Qn");
-      return;
+  const onEditInbody = () => {
+    for (let element of inbodyInput.current) {
+      if (emptyZeroValueCheck(element.current.value)) {
+        alert("해당 인바디 정보를 입력해주세요.");
+        element.current.focus();
+        return;
+      }
     }
-
     dispatch(editInbody(inBodyState));
     alert("수정되었습니다.");
   };
@@ -122,6 +135,7 @@ const Inbody = () => {
             <div>{item.title}</div>
             <div>
               <StyledInput
+                ref={inbodyInput.current[idx]}
                 type="number"
                 onChange={onHandleInput}
                 name={item.inbodyType}
