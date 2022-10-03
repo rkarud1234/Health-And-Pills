@@ -68,7 +68,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         return ExerciseDetailResponse.from(
                 exercise,
-                userService.findByExercise(user, exercise.getExerciseId()));
+                userService.findByExercise(user, exercise.getExerciseId()),
+                userExerciseRepository.countByExerciseAndUserExerciseDoing(exercise, YN.Y));
     }
 
     @Override

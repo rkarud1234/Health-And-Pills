@@ -33,8 +33,10 @@ public class ExerciseDetailResponse {
 
     private String like; // 좋아요여부
 
+    private int doingCount;
 
-    public static ExerciseDetailResponse from(Exercise exercise, UserExerciseInfoResponse userExerciseInfoResponse) {
+
+    public static ExerciseDetailResponse from(Exercise exercise, UserExerciseInfoResponse userExerciseInfoResponse, int doingCount) {
         ExerciseDetailResponse exerciseDetailResponse = new ExerciseDetailResponse();
         exerciseDetailResponse.exerciseId = exercise.getExerciseId();
         exerciseDetailResponse.exerciseName = exercise.getExerciseName();
@@ -48,6 +50,7 @@ public class ExerciseDetailResponse {
         exerciseDetailResponse.bookmark = userExerciseInfoResponse.getExerciseBookmark();
         exerciseDetailResponse.doing = userExerciseInfoResponse.getExerciseDoing();
         exerciseDetailResponse.like = userExerciseInfoResponse.getExerciseLike();
+        exerciseDetailResponse.doingCount = doingCount;
 
         return exerciseDetailResponse;
     }
