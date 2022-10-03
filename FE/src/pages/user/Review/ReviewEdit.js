@@ -1,13 +1,31 @@
 import { Rating } from "@mui/material";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import ReviewButton from "../../../components/buttons/review/ReviewButton";
+import Loading from "../../../components/layouts/Loading";
 
+const ReviewEditWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  & div {
+    width: 100%;
+  }
+`;
 const RatingWrapper = styled.div`
   text-align: center;
 `;
 
 const ReviewItemImageWrapper = styled.div`
   text-align: center;
+  & img {
+    width: 100px;
+    height: 100px;
+  }
 `;
 const ReviewContentWrapper = styled.div`
   width: 100%;
@@ -52,7 +70,7 @@ const ReviewContentWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   margin-top: 20px;
-  float: right;
+  text-align: end;
   padding: 0 20px;
 `;
 const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
@@ -69,6 +87,10 @@ const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
   };
 
   const onHandleInput = (e) => {
+    if (e.target.name === "content" && e.target.value.length > 255) {
+      alert("리뷰는  최대 255자까지 등록가능합니다.");
+      return;
+    }
     setReview({ ...review, [e.target.name]: e.target.value });
   };
 
@@ -76,12 +98,18 @@ const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
     setReview({ score: rating, content: reviewContent });
     close();
   };
-
-  return review.content ? (
-    <>
+  return id ? (
+    <ReviewEditWrapper>
       <div>
         <ReviewItemImageWrapper>
-          <img src={img} width={200} height={200} alt={"상품이미지"} />
+          {img !== "" ? (
+            <img src={img} width={200} height={200} alt={"상품이미지"} />
+          ) : (
+            <img
+              src={process.env.PUBLIC_URL + "/review/pills.png"}
+              alt="상품 이미지 준비중"
+            />
+          )}
         </ReviewItemImageWrapper>
         <div>
           <RatingWrapper>
@@ -106,17 +134,26 @@ const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
           </ReviewContentWrapper>
         </div>
         <ButtonWrapper>
-          <button type="button" onClick={() => editPillReview(id)}>
-            수정완료
-          </button>
-          <button type="button" onClick={reset}>
-            취소
-          </button>
+          <ReviewButton
+            type="button"
+            onClick={editPillReview}
+            text={"수정완료"}
+            status={"edit"}
+            width={"60px"}
+          />
+          <ReviewButton
+            onClick={reset}
+            text={"취소"}
+            status={"cancle"}
+            width={"60px"}
+          />
         </ButtonWrapper>
       </div>
-    </>
+    </ReviewEditWrapper>
   ) : (
-    <>Loading...</>
+    <>
+      <Loading />
+    </>
   );
 };
 
