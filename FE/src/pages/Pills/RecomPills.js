@@ -28,10 +28,8 @@ overflow-x: scroll;
 padding: 16px 0px 24px;
 `
 
-const RecomPills = ({ pills, type }) => {
-  // const user = useSelector((state) => state.user);
+const RecomPills = ({ pills, text }) => {
   const navigate = useNavigate()
-  const username = '춘식이'
 
   // 클릭 앤 드래그로 스크롤 이동시키기
   const scrollRef = useRef(null);
@@ -57,20 +55,12 @@ const RecomPills = ({ pills, type }) => {
     }
   };
 
-  let text = null
-
-  if (type === 'user') {
-    text = <Text>'{username}' 님을 위한 맞춤 영양제 추천</Text>
-  } else if (type === 'age') {
-    text = <Text>20대 여성이 많이 찾는 영양제 추천</Text>
-  } else if (type === 'pill') {
-    text = <Text>이런 제품은 어떠신가요?</Text>
-  }
-
   return (
     <>
       <TextDiv>
-        {text}
+        <Text>
+          {text}
+        </Text>
       </TextDiv>
 
       <FlexBox
@@ -83,16 +73,13 @@ const RecomPills = ({ pills, type }) => {
         {pills ? pills.map(pill => {
           return (
             <CardDiv
-              key={pill.id}
+              key={pill.pillId}
               onClick={() => {
                 if (startPageX === endPageX) {
-                  navigate(`/pill/detail/${pill.id}`)
-                }
-                if (document.getElementById('scrollDiv')) {
-                  document.getElementById('scrollDiv').scrollTo(0, 0);
+                  navigate(`/pill/detail/${pill.pillId}`)
                 }
               }}>
-              <PillCard url={pill.url} text={pill.text} rating={pill.rating} />
+              <PillCard url={pill.pillThumbnail} text={pill.pillName} rating={pill.pillReviewCount} />
             </CardDiv>
           )
         }) : <></>}

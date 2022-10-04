@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { updateUserinbody } from "../../api/users";
 import GradationButton from "../../components/buttons/GradationButton";
+import { editInbody } from "../../store/actions/user";
 
 const InbodyWrapper = styled.div`
   padding: 80px 20px;
@@ -42,21 +44,36 @@ const inbodyList = [
   { title: "체지방량", inbodyType: "userProfileSkeleton" },
   { title: "체수분량", inbodyType: "userProfileWater" },
 ];
-
+const getEditButtonStatus = (
+  userProfileHeight,
+  userProfileWeight,
+  userProfileFat,
+  userProfileSkeleton,
+  userProfileWater,
+  inBodyState
+) =>
+  parseInt(inBodyState.userProfileHeight) !== parseInt(userProfileHeight) ||
+  parseInt(inBodyState.userProfileWeight) !== parseInt(userProfileWeight) ||
+  parseInt(inBodyState.userProfileFat) !== parseInt(userProfileFat) ||
+  parseInt(inBodyState.userProfileSkeleton) !== parseInt(userProfileSkeleton) ||
+  parseInt(inBodyState.userProfileWater) !== parseInt(userProfileWater)
+    ? true
+    : false;
+const emptyZeroValueCheck = (value) => {
+  if (value.length === 0 || parseInt(value) === 0) {
+    return true;
+  }
+  return false;
+};
 const Inbody = () => {
-  const userProfileHeight = useSelector(
-    (state) => state.user.data.userProfileHeight
-  );
-  const userProfileWeight = useSelector(
-    (state) => state.user.data.userProfileWeight
-  );
-  const userProfileFat = useSelector((state) => state.user.data.userProfileFat);
-  const userProfileSkeleton = useSelector(
-    (state) => state.user.data.userProfileSkeleton
-  );
-  const userProfileWater = useSelector(
-    (state) => state.user.data.userProfileWater
-  );
+  const {
+    userProfileHeight,
+    userProfileWeight,
+    userProfileWater,
+    userProfileFat,
+    userProfileSkeleton,
+  } = useSelector((state) => state.user.data);
+
   const [inBodyState, setInbodyState] = useState({
     userProfileHeight,
     userProfileWeight,
@@ -64,41 +81,92 @@ const Inbody = () => {
     userProfileSkeleton,
     userProfileWater,
   });
-
+  const dispatch = useDispatch();
+  const inbodyInput = useRef([
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+  ]);
+  const editButton = useRef(false);
   const onHandleInput = (e) => {
     setInbodyState((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
   };
 
+  editButton.current = useMemo(
+    () =>
+      getEditButtonStatus(
+        userProfileHeight,
+        userProfileWeight,
+        userProfileFat,
+        userProfileSkeleton,
+        userProfileWater,
+        inBodyState
+      ),
+    [
+      userProfileHeight,
+      userProfileWeight,
+      userProfileFat,
+      userProfileSkeleton,
+      userProfileWater,
+      inBodyState,
+    ]
+  );
+
   const onEditInbody = () => {
-    if (inBodyState.userProfileHeight.length === 0) {
-      alert("Qn");
-      return;
+    for (let element of inbodyInput.current) {
+      if (emptyZeroValueCheck(element.current.value)) {
+        alert("해당 인바디 정보를 입력해주세요.");
+        element.current.focus();
+        return;
+      }
     }
+    dispatch(editInbody(inBodyState));
+    alert("수정되었습니다.");
   };
   return (
-    <InbodyWrapper>
-      {inbodyList.map((item, idx) => (
-        <div key={idx}>
-          <div>{item.title}</div>
-          <div>
-            <StyledInput
-              type="number"
-              onChange={onHandleInput}
-              name={item.inbodyType}
-              value={inBodyState[item.inbodyType]}
-            />
+    <div>
+      <InbodyWrapper>
+        {inbodyList.map((item, idx) => (
+          <div key={idx}>
+            <div>{item.title}</div>
+            <div>
+              <StyledInput
+                ref={inbodyInput.current[idx]}
+                type="number"
+                onChange={onHandleInput}
+                name={item.inbodyType}
+                value={inBodyState[item.inbodyType]}
+              />
+            </div>
           </div>
-        </div>
-      ))}
-      <GradationButton
-        onClick={onEditInbody}
-        padding={"8px 12px"}
-        fontSize={"16px"}
-        width={"80%"}
-      />
-    </InbodyWrapper>
+        ))}
+        {editButton.current ? (
+          <GradationButton
+            type="button"
+            text={"변경하기"}
+            fontSize={"16px"}
+            padding={"8px 16px"}
+            height={"40px"}
+            onClick={onEditInbody}
+          />
+        ) : (
+          <GradationButton
+            type="button"
+            text={"변경하기"}
+            from={"#bababa"}
+            to={"#bababa"}
+            fontSize={"16px"}
+            padding={"8px 16px"}
+            height={"40px"}
+            cursor={"default"}
+          />
+        )}
+      </InbodyWrapper>
+    </div>
   );
 };
 

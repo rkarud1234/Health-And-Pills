@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Question from './Question'
 import styled from 'styled-components'
 import water from '../../assets/water.jpg'

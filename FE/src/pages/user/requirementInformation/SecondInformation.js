@@ -80,7 +80,7 @@ const SecondInformation = ({
   return (
     <SecondInformationWrapper>
       <InformationImageWrapper>
-        <img src={process.env.PUBLIC_URL + "/profile/weights.png"} />
+        <img src={process.env.PUBLIC_URL + "/profileImages/weights.png"} />
         <span>운동정보를 입력해주세요.</span>
       </InformationImageWrapper>
       <ExercisePurposeWrapper>

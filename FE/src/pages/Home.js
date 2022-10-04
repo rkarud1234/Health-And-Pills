@@ -1,15 +1,13 @@
 import GradationButton from "../components/buttons/GradationButton";
-import MenuButton from "../components/buttons/MenuButton";
 import Footer from "../components/layouts/Footer";
-import Header from "../components/layouts/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Modal from "../components/modals/Modal";
-import SocialLoginContent from "../components/modals/contents/SocialLoginContent";
 import styled from "styled-components";
-import ModalCloseButton from "../components/buttons/ModalCloseButton";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { profile } from "../store/actions/user";
+import UserChart from "../components/user/chart/UserChart";
+import Loading from "../components/layouts/Loading";
+import Landing from "./landing/Landing";
 
 const colorTheme = {
   borderColor: "#537CFE",
@@ -138,52 +136,8 @@ const InbodyButton = styled.button`
   }
 `;
 
-const Landing = () => {
-  const [modalState, setModalState] = useState(false);
-
-  const openModal = () => {
-    setModalState(true);
-  };
-
-  const closeModal = () => {
-    setModalState(false);
-  };
-  return (
-    <>
-      <Header
-        leftNone={false}
-        rightChildren={<MenuButton />}
-        rightNone={true}
-      />
-      <div style={{ height: "100vh", position: "relative" }}>
-        <Modal
-          isOpen={modalState}
-          modalContent={<SocialLoginContent />}
-          closeButton={<ModalCloseButton onClick={closeModal} />}
-          close={closeModal}
-        />
-        랜딩페이지 이미지
-        <GradationButton
-          text={"간단가입하고 시작하기"}
-          width={"70%"}
-          fontSize={"18px"}
-          padding={"10px 20px 10px 20px"}
-          onClick={openModal}
-          // style={{
-          //   position: "absolute",
-          //   bottom: "70px",
-          //   left: "50%",
-          //   transform: "translate(-50%, -50%)",
-          // }}
-        />
-      </div>
-    </>
-  );
-};
-
 const Main = ({ user }) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   console.log(user);
 
   return (
@@ -210,7 +164,9 @@ const Main = ({ user }) => {
             border={"none"}
             color={"#fff"}
             bgColor={colorTheme.bgColor}
-            onClick={() => { navigate('/form') }}
+            onClick={() => {
+              navigate("/form");
+            }}
           >
             <div style={{ display: "flex" }}>
               <IconWrapper>
@@ -242,15 +198,27 @@ const Main = ({ user }) => {
         </div>
       </div>
       <ChartWapper>
-        <InbodyButton
-          padding={"20px"}
-          width={"280px"}
-          fontSize={"18px"}
-          borerRadius={"6px"}
-          color={"#fff"}
-        >
-          인바디 정보를 입력해주세요
-        </InbodyButton>
+        {user.userProfileHeight !== 0 ? (
+          <UserChart />
+        ) : (
+          <InbodyButton
+            padding={"20px"}
+            width={"280px"}
+            fontSize={"18px"}
+            borerRadius={"6px"}
+            color={"#fff"}
+            onClick={() =>
+              navigate("/profiles", {
+                state: {
+                  infoType: "inBody",
+                  title: "내 인바디 정보",
+                },
+              })
+            }
+          >
+            인바디 정보를 입력해주세요
+          </InbodyButton>
+        )}
       </ChartWapper>
     </HomeWrapper>
   );

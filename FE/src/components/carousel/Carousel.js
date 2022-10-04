@@ -42,7 +42,7 @@ const Carousel = (props) => {
     slideToShow: 1,
     slideToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 3000,
     dots: false,
 
     nextArrow: (
@@ -63,7 +63,7 @@ const Carousel = (props) => {
         {images.map(image => {
           return (
             <div key={image.id}>
-              <img src={image.url} alt='' style={{ width: "100%", height: "30vh" }} />
+              <img src={image.url} alt='' style={{ width: "100%" }} />
             </div>
           )
         })}

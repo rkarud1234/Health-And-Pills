@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import imgUrl from "../../assets/pillImg.png"
 const StyledPillCard = styled.div`
   display:flex;
   background-color: #fff;
@@ -17,8 +17,8 @@ text-fill-color: transparent;
 const StyledPillCardImgWrapper = styled.div`
   padding: 16px;
   & img {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     padding: 16px;
   }
 `;
@@ -39,6 +39,7 @@ background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
 -webkit-text-fill-color: transparent;
 background-clip: text;
 text-fill-color: transparent;
+padding-top: 4px;
 `
 
 const NameDiv = styled.div`
@@ -47,17 +48,21 @@ font-weight: bold;
 margin: 16px 0px 8px;
 `
 const HorizPillCard = ({ url, width, height, padding, name, companyName, reviewAverage, reviewCount }) => {
+  let average = ''
+  if (reviewAverage) {
+    average = reviewAverage.toFixed(1)
+  }
   return (
     <StyledPillCard width={width} height={height}>
       <StyledPillCardImgWrapper padding={padding}>
-        {url ? <img src={url} /> : <img src={process.env.PUBLIC_URL + "logo512.png"} />}
+        {url ? <img src={url} /> : <img src={imgUrl} />}
       </StyledPillCardImgWrapper>
       <StyledPillCardContentWrapper padding={padding}>
         <CompanyDiv>{companyName}</CompanyDiv>
         <NameDiv>{name}</NameDiv>
         <div>
           <GradientIcon className="fas fa-star"></GradientIcon>
-          {reviewAverage}({reviewCount})
+          {reviewAverage && reviewCount ? average + '(' + reviewCount + ')' : '0(0)'}
         </div>
       </StyledPillCardContentWrapper>
     </StyledPillCard>

@@ -14,6 +14,7 @@ const StyledGradationButton = styled.button`
   padding: ${(props) => props.padding};
   font-size: ${(props) => props.fontSize};
   font-family: ${(props) => props.fontFamily};
+  cursor: ${(props) => props.cursor};
 `;
 const GradationButton = ({
   text,
@@ -28,6 +29,7 @@ const GradationButton = ({
   fontSize,
   position,
   fontFamily,
+  cursor,
 }) => {
   return (
     <StyledGradationButton
@@ -41,6 +43,7 @@ const GradationButton = ({
       position={position}
       onClick={onClick}
       fontFamily={fontFamily}
+      cursor={cursor}
     >
       {text}
     </StyledGradationButton>
@@ -48,7 +51,7 @@ const GradationButton = ({
 };
 
 GradationButton.defaultProps = {
-  text: "테스트 버튼",
+  text: "확인",
   from: "#537CFE",
   to: "#6A53FE",
   color: "#fff",
@@ -57,6 +60,7 @@ GradationButton.defaultProps = {
   height: "fit-content",
   position: "static",
   fontFamily: "Nanum Gothic",
+  cursor: "pointer",
 };
 
 export default GradationButton;

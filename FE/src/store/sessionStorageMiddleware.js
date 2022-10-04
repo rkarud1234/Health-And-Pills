@@ -7,7 +7,8 @@ export const sessionStorageMiddleware = (store) => (next) => (action) => {
     //   agent.setToken(action.payload.token);
     // break;
     case logOut.type:
-      window.localStorage.removeItem("jwt");
+      window.sessionStorage.removeItem("ACCESS_TOKEN");
+      window.sessionStorage.removeItem("REFRESH_TOKEN");
       break;
     default:
       break;

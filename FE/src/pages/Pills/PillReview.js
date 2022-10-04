@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ReviewProgress from './ReviewProgress'
 import styled from 'styled-components'
 import { Rating } from '@mui/material'
-import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../store/actions/pill'
+import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../store/actions/pills'
 import { useDispatch } from 'react-redux'
 import CancelModal from './CancelModal.js'
 import ReviewBox from './ReviewBox'
@@ -17,11 +17,12 @@ border-radius: 8px;
 `
 const ProFlexBox = styled.div`
 display: flex;
-margin: 8px
+margin: 8px;
+justify-content: center;
 ;
 `
 const TextDiv = styled.div`
-width: 80%;
+min-width: 24px;
 font-size: 12px;
 text-align: center;
 margin: 0px 4px;
@@ -80,22 +81,21 @@ border: 1px solid #CAD1D5;
 border-radius: 8px;
 `
 
-const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
+const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores }) => {
   const dispatch = useDispatch()
   const starRating = {
-    fiveRating: 4,
-    fourRating: 1,
-    threeRating: 1,
-    twoRating: 1,
-    oneRating: 0
+    fiveRating: scores[5],
+    fourRating: scores[4],
+    threeRating: scores[3],
+    twoRating: scores[2],
+    oneRating: scores[1]
   }
 
-
-  const fiveRating = (starRating.fiveRating / reviews.length) * 100 + '%'
-  const fourRating = (starRating.fourRating / reviews.length) * 100 + '%'
-  const threeRating = (starRating.threeRating / reviews.length) * 100 + '%'
-  const twoRating = (starRating.twoRating / reviews.length) * 100 + '%'
-  const oneRating = (starRating.oneRating / reviews.length) * 100 + '%'
+  const fiveRating = (starRating.fiveRating / pillReviewCount) * 100 + '%'
+  const fourRating = (starRating.fourRating / pillReviewCount) * 100 + '%'
+  const threeRating = (starRating.threeRating / pillReviewCount) * 100 + '%'
+  const twoRating = (starRating.twoRating / pillReviewCount) * 100 + '%'
+  const oneRating = (starRating.oneRating / pillReviewCount) * 100 + '%'
 
   const [score, setScore] = useState(3)
   const [isOpened, setIsOpened] = useState(false)
@@ -154,12 +154,15 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
     setReviewId(reviewId)
   };
 
-  let reviewaverage = reviewAverage.toFixed(1)
+  let reviewaverage = ''
+  if (pillReviewAverage) {
+    reviewaverage = pillReviewAverage.toFixed(1)
+  }
 
   return (
     <>
       <Container>
-        {reviewCount === 0
+        {pillReviewCount === 0
           ? <div style={{ borderBottom: '1px solid #CAD1D5', textAlign: 'center' }}>
             <GradientIcon style={{ marginTop: '32px' }} className="fa-regular fa-message-dots fa-2x"></GradientIcon>
             <div style={{ marginBottom: '32px', marginTop: '16px' }}>
@@ -167,19 +170,22 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
             </div>
           </div>
           : <div style={{ display: 'flex', borderBottom: '1px solid #CAD1D5' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '12px', marginTop: '16px', width: '30%' }}>
-              <div style={{ fontSize: '14px', textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '16px', width: '30%' }}>
+              <div style={{ fontSize: '14px', textAlign: 'center', paddingTop: '20px', minWidth: '92px' }}>
                 사용자 총 평점
               </div>
-              <ProFlexBox >
+              <ProFlexBox>
                 <LinearStar className="fas fa-star"></LinearStar>
-                <div style={{ fontSize: '32px' }}>{reviewaverage}</div>
+                <div style={{ fontSize: '24px', lineHeight: '40px' }}>
+                  {reviewaverage}
+                  <p style={{ fontSize: '12px', display: 'inline' }}>({pillReviewCount})</p>
+                </div>
               </ProFlexBox>
             </div>
             <div style={{ margin: '8px 8px', width: '90%' }}>
               <ProFlexBox>
                 <TextDiv>
-                  아주 좋아요
+                  최고
                 </TextDiv>
                 <ReviewProgress width={fiveRating} />
                 <NumDiv>
@@ -188,7 +194,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  맘에 들어요
+                  좋음
                 </TextDiv>
                 <ReviewProgress width={fourRating} />
                 <NumDiv>
@@ -197,7 +203,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  보통 이에요
+                  보통
                 </TextDiv>
                 <ReviewProgress width={threeRating} />
                 <NumDiv>
@@ -206,7 +212,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  그저 그래요
+                  별로
                 </TextDiv>
                 <ReviewProgress width={twoRating} />
                 <NumDiv>
@@ -215,7 +221,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
               </ProFlexBox>
               <ProFlexBox>
                 <TextDiv>
-                  추천 안해요
+                  최악
                 </TextDiv>
                 <ReviewProgress width={oneRating} />
                 <NumDiv>
@@ -261,7 +267,7 @@ const PillReview = ({ id, reviewAverage, reviewCount, reviews }) => {
                 {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={reviewId} pillID={id} />}
                 <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
                   <div style={{ marginTop: '2px' }}>
-                    {review.nickName}
+                    {review.nickName.substr(0, 1) + '*'.repeat(review.nickName.length - 2) + review.nickName.substr(-1)}
                   </div>
                   {review.isMyReview ?
                     <div style={{ display: 'flex' }}>

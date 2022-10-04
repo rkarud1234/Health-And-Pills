@@ -254,7 +254,7 @@ const FirstInformation = ({ gender, birth, changeType, changeInformation }) => {
   return (
     <FirstInformationWrapper>
       <InformationImageWrapper>
-        <img src={process.env.PUBLIC_URL + "/profile/information.png"} />
+        <img src={process.env.PUBLIC_URL + "/profileImages/information.png"} />
         <span>사용자정보를 입력해주세요.</span>
       </InformationImageWrapper>
       <BirthWrapper>

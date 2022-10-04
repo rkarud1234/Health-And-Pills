@@ -1,24 +1,39 @@
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { fetchUserExercise, fetchUserPill, getUserInfo } from "../../api/users";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import UserInfoListItem from "./UserInfoListItem";
 
 const UserInfoListWrapper = styled.div`
-  padding: 20px 20px 0px 20px;
+  padding: 20px 20px 20px 20px;
+  overflow: scroll;
+  height: 90vh;
 `;
 
 const EmptyContentWrapper = styled.div`
   text-align: center;
   padding-top: 20px;
 `;
-const UserInfoList = ({ infoList, deleteUserInfo, type }) => {
+
+const fetchUrl = {
+  pill: fetchUserPill,
+  exercise: fetchUserExercise,
+};
+const UserInfoList = ({ infoType }) => {
+  console.log("userINfoList :::", infoType);
+  const { data, isFetching } = useInfiniteScroll(fetchUrl[infoType]);
+  const onHandleDeleteData = () => {
+    console.log("데이터 지우기");
+  };
   return (
-    <UserInfoListWrapper>
-      {infoList !== undefined && infoList.length !== 0 ? (
-        infoList.map((item) => (
+    <UserInfoListWrapper className="list-area">
+      {data.length !== 0 ? (
+        data.map((item, idx) => (
           <UserInfoListItem
-            key={item.id}
+            key={idx}
             {...item}
-            deleteUserInfo={deleteUserInfo}
-            type={type}
+            deleteUserInfo={onHandleDeleteData}
+            infoType={infoType}
           />
         ))
       ) : (
@@ -30,4 +45,4 @@ const UserInfoList = ({ infoList, deleteUserInfo, type }) => {
   );
 };
 
-export default UserInfoList;
+export default React.memo(UserInfoList);

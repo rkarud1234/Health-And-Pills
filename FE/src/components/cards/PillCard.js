@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import imgUrl from "../../assets/pillImg.png"
 
 const StyledPillCard = styled.div`
   border-radius: 16px;
@@ -12,7 +13,8 @@ const StyledPillCardImgWrapper = styled.div`
   border-bottom: 1px solid #ddd;
   padding: ${(props) => props.padding};
   & img {
-    width: 100%;
+    width: 98px;
+    height: 98px;
   }
 `;
 
@@ -30,17 +32,20 @@ const StyledPillCardContentWrapper = styled.div`
 `;
 
 const PillCard = ({ text, rating, width, height, padding, url }) => {
-
+  let starRating = ''
+  if (rating) {
+    starRating = rating.toFixed(1)
+  }
   return (
     <StyledPillCard width={width} height={height}>
       <StyledPillCardImgWrapper padding={padding}>
-        {url ? <img src={url} /> : <img src={process.env.PUBLIC_URL + "logo512.png"} />}
+        {url ? <img src={url} /> : <img src={imgUrl} />}
       </StyledPillCardImgWrapper>
       <StyledPillCardContentWrapper padding={padding}>
-        <span>{text}</span>
+        <span>{text && text.length > 5 ? text.slice(0, 5) + '...' : text}</span>
         <span>
           <i className="fas fa-star"></i>
-          {rating}
+          {rating && starRating}
         </span>
       </StyledPillCardContentWrapper>
     </StyledPillCard>
