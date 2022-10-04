@@ -10,6 +10,7 @@ const GifImage = styled.img`
   width: 100px;
   height: 100px;
   position: absolute;
+
   ${(props) =>
     props.status === "logo" &&
     css`
@@ -23,12 +24,20 @@ const GifImage = styled.img`
     css`
       top: 0px;
       right: 30px;
+      @media screen and (max-width: 280px) {
+        width: 80px;
+        height: 80px;
+      }
     `}
     ${(props) =>
     props.status === "dumbbell" &&
     css`
       bottom: 0px;
       left: 30px;
+      @media screen and (max-width: 280px) {
+        width: 80px;
+        height: 80px;
+      }
     `}
 `;
 
@@ -54,6 +63,10 @@ const TitleWrapper = styled.div`
     line-height: 50px;
     white-space: pre-wrap;
     font-family: "NanumSquareRound";
+    @media screen and (max-width: 280px) {
+      font-size: 24px;
+      line-height: 28px;
+    }
   }
 `;
 
@@ -63,6 +76,7 @@ const SectionOne = () => {
     <Section>
       <Wrapper>
         <GifImage
+          className="logo"
           src={process.env.PUBLIC_URL + "/landing/section1/hpLogo.png"}
           status={"logo"}
         />
