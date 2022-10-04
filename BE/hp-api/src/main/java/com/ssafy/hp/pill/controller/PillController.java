@@ -51,8 +51,8 @@ public class PillController {
 
     // 리뷰 목록 조회
     @GetMapping("/{pill_id}/review")
-    public ResponseEntity<Page<PillReviewListResponse>> getReviewList(@LoginUser User user, @PageableDefault Pageable page, @PathVariable("pill_id") int pillId) {
-        Page<PillReviewListResponse> body = pillService.getReviews(user, pillId, page);
+    public ResponseEntity<Page<PillReviewListResponse>> findReviewByPillId(@LoginUser User user, @PageableDefault(size =15) Pageable pageable, @PathVariable("pill_id") int pillId) {
+        Page<PillReviewListResponse> body = pillService.findReviewByPillId(user, pillId, pageable);
         return ResponseEntity.ok().body(body);
     }
 

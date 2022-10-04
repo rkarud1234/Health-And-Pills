@@ -1,6 +1,7 @@
 package com.ssafy.hp.pill.query;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
@@ -90,14 +91,18 @@ public class PillQueryRepository {
     }
 
     public Page<PillReview> findReviewByPillId(int pillId, Pageable pageable) {
-        return new PageImpl<>(
-                queryFactory
-                        .selectFrom(pillReview)
-                        .where(pillReview.pill.pillId.eq(pillId))
-                        .orderBy(pillReview.createdDate.desc())
-                        .limit(pageable.getPageSize())
-                        .fetch()
-        );
+
+        QueryResults<PillReview> result = queryFactory
+                .selectFrom(pillReview)
+                .where(pillReview.pill.pillId.eq(pillId))
+                .orderBy(pillReview.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<PillReview> content = result.getResults();
+        long total = result.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public List<List<PillCalendarResponse>> findPillByUserPill(User user, String search) {
