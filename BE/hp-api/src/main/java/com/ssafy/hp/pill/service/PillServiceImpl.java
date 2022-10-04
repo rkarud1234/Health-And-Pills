@@ -238,4 +238,12 @@ public class PillServiceImpl implements PillService {
     public List<List<PillCalendarResponse>> findPillByUserPill(User user, String search) {
         return pillQueryRepository.findPillByUserPill(user, search);
     }
+
+    @Override
+    public Optional<PillReviewResponse> findPillReviewByUser(User user, int pillId) {
+        Pill pill = pillRepository.findById(pillId)
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+        return pillReviewRepository.findByUsersAndPill(user, pill)
+                .map(PillReviewResponse::from);
+    }
 }

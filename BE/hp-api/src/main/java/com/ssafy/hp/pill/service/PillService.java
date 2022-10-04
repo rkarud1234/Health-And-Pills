@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.*;
 
 
 public interface PillService {
@@ -52,4 +52,6 @@ public interface PillService {
     List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword);
 
     List<List<PillCalendarResponse>> findPillByUserPill(User user, String search);
+
+    Optional<PillReviewResponse> findPillReviewByUser(User user, int pillId);
 }
