@@ -100,7 +100,7 @@ const UserInfoListItem = ({
           {rating !== undefined ? (
             <span>
               <i className="fa-solid fa-star"></i>
-              {rating}
+              {parseInt(rating).toFixed(1)}
             </span>
           ) : (
             <></>

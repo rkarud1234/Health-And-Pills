@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/layouts/Footer";
+import Loading from "../../components/layouts/Loading";
 import SlidingMenu from "../../components/layouts/SlidingMenu";
 import UserExercise from "../../components/user/profile/UserExercise";
 import UserLike from "../../components/user/profile/UserLike";
@@ -217,8 +218,15 @@ const editList = [
 
 const getUserAge = (birth) => {
   const birthYear = birth.slice(0, 4);
-  const today = new Date().getFullYear();
-  return today - birthYear;
+  const today = new Date();
+  let age = today.getFullYear() - birthYear;
+  const month = today.getMonth() - birth.slice(4, 6);
+  const day = birth.slice(6, 8);
+  if (month < 0 || (month === 0 && today.getDate() < day)) {
+    age--;
+  }
+
+  return age;
 };
 const Profile = () => {
   const { state } = useLocation();
@@ -265,16 +273,6 @@ const Profile = () => {
     navigate("/");
   }, []);
 
-  // const renderContent = useCallback((type) => {
-  //   if (type === "lifeStyle") return <LifeStyle />;
-  //   else if (type === "inBody") return <Inbody />;
-  //   else if (type === "review" && <Review />) return <Review />;
-  //   else if (type === "like") return <Like />;
-  //   else if (type === "bookmark") return <Bookmark />;
-  //   else if (type === "pill") return <UserPill />;
-  //   else if (type === "exercise") return <UserExercise />;
-  //   else return <></>;
-  // }, []);
   const renderContent = useCallback(() => {
     if (slidingMenuState.active) {
       if (slidingMenuState.infoType === "lifeStyle") {
@@ -373,7 +371,7 @@ const Profile = () => {
           <Footer />
         </>
       ) : (
-        <></>
+        <Loading />
       )}
     </>
   );
