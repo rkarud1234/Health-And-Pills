@@ -3,23 +3,21 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { client } from "../../../api";
 import styled from "styled-components";
 // import { useInView } from "react-intersection-observer";
-import React from "react";
-import { Card } from "@mui/material";
+import React, { Suspense } from "react";
+import { Canvas } from "react-three-fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 
 const HealthButton = styled.button`
-  /* background-color: ${({ color }) => color}; */
-  background-color: transparent;
+  display: inline-box;
+  justify-content: center;
+  margin: 5px;
+  padding: 4px 10px;
+  border: 0.4px solid ${({ borderColor }) => borderColor};
   color: ${({ textColor }) => textColor};
-  font-size: 16px;
-  cursor: pointer;
-  padding: 8px;
-  border: solid 2px;
-  border-radius: 12px;
-  margin: 8px;
-  /* background: linear-gradient(#537CFE, #6A53FE);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
   font-weight: ${({ fontWeight }) => fontWeight};
+  background-color: #fcfcfc;
+  border-radius: 20px;
+  font-size: 15px;
 `;
 
 const TypeBox = styled.div`
@@ -137,8 +135,11 @@ const HealthFindPart = () => {
                 onHandlePart(parts.exercisePartCategoryId);
                 getPartItems(parts.exercisePartCategoryId);
               }}
+              borderColor={
+                parts.exercisePartCategoryId === partNum ? "#537cfe" : "#c9c9c9"
+              }
               textColor={
-                parts.exercisePartCategoryId === partNum ? "black" : "#7B7B7B"
+                parts.exercisePartCategoryId === partNum ? "#537cfe" : "#7B7B7B"
               }
               fontWeight={
                 parts.exercisePartCategoryId === partNum ? "bolder" : "normal"
@@ -149,6 +150,7 @@ const HealthFindPart = () => {
             </HealthButton>
           ))}
         </TypeBox>
+
         <div>
           {partItems.map((item, idx) => (
             <React.Fragment key={idx}>

@@ -11,18 +11,16 @@ const CardWrapper = styled.div`
 `;
 
 const HealthButton = styled.button`
-  background-color: transparent;
+  display: inline-box;
+  justify-content: center;
+  margin: 5px;
+  padding: 4px 10px;
+  border: 0.4px solid ${({ borderColor }) => borderColor};
   color: ${({ textColor }) => textColor};
-  font-size: 16px;
-  cursor: pointer;
-  padding: 8px;
-  border: solid 2px;
-  border-radius: 12px;
-  margin: 8px;
-  /* background: linear-gradient(#537CFE, #6A53FE);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
   font-weight: ${({ fontWeight }) => fontWeight};
+  background-color: #fcfcfc;
+  border-radius: 20px;
+  font-size: 15px;
 `;
 
 const TypeBox = styled.div`
@@ -133,8 +131,11 @@ const HealthFindType = ({ exerciseId }) => {
               onHandleType(cates.exerciseCategoryId);
               getCateItems(cates.exerciseCategoryId);
             }}
+            borderColor={
+              cates.exerciseCategoryId === cateNum ? "#537cfe" : "#c9c9c9"
+            }
             textColor={
-              cates.exerciseCategoryId === cateNum ? "black" : "#7B7B7B"
+              cates.exerciseCategoryId === cateNum ? "#537cfe" : "#7B7B7B"
             }
             fontWeight={
               cates.exerciseCategoryId === cateNum ? "bolder" : "normal"
