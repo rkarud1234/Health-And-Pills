@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const StyledGradationButton = styled.button`
   background: linear-gradient(
@@ -15,6 +15,18 @@ const StyledGradationButton = styled.button`
   font-size: ${(props) => props.fontSize};
   font-family: ${(props) => props.fontFamily};
   cursor: ${(props) => props.cursor};
+
+  ${(props) =>
+    props.status === "landing" &&
+    css`
+      position: fixed;
+      bottom: 40px;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      max-width: 380px;
+      min-width: 240px;
+    `}
 `;
 const GradationButton = ({
   text,
@@ -30,6 +42,7 @@ const GradationButton = ({
   position,
   fontFamily,
   cursor,
+  status,
 }) => {
   return (
     <StyledGradationButton
@@ -44,6 +57,7 @@ const GradationButton = ({
       onClick={onClick}
       fontFamily={fontFamily}
       cursor={cursor}
+      status={status}
     >
       {text}
     </StyledGradationButton>
