@@ -28,11 +28,14 @@ height: 48px;
 const SearchBar = styled.div`
 display: flex;
 line-height: 24px;
-border: 2px solid #AEB0B4;
+// border: 2px solid #AEB0B4;
+box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
 cursor: pointer;
-width: 94%;
+width: 96%;
 border-radius: 4px;
 margin: 8px;
+padding: 0px 10px;
 `
 
 const SearchButton = styled.button`
@@ -121,7 +124,7 @@ const Pill = () => {
                 <SearchButton>
                   <i className="fa-solid fa-magnifying-glass fa-lg"></i>
                 </SearchButton>
-                <div style={{ fontSize: '12px', lineHeight: '30px' }}>영양제를 검색하세요!</div>
+                <div style={{ fontSize: '14px', lineHeight: '34px' }}>더 많은 영양제 찾아보기</div>
               </SearchBar>
             </SearchBox>
             <Carousel images={images} />
