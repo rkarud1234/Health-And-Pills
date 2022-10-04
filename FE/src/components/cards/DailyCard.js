@@ -43,10 +43,13 @@ import { client } from "../../api";
   
 const DailyCard = ({calendarDate, pillCount, exerciseCount, onHandleYoil}) => {
 
+  const weekly = ['일', '월', '화', '수', '목', '금', '토'];
+
   return (
     <>
       <DailyCardWrapper>
         <DailyButton onClick={() => onHandleYoil(calendarDate)}>
+            {weekly[calendarDate]}
           <HpSection>
             <HpIconWrapper>
               <i className="fa-regular fa-capsules"/>
