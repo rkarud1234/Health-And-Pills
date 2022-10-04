@@ -1,9 +1,8 @@
-import GradationButton from "../components/buttons/GradationButton";
 import Footer from "../components/layouts/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { profile } from "../store/actions/user";
 import UserChart from "../components/user/chart/UserChart";
 import Loading from "../components/layouts/Loading";
@@ -138,8 +137,6 @@ const InbodyButton = styled.button`
 
 const Main = ({ user }) => {
   const navigate = useNavigate();
-  console.log(user);
-
   return (
     <HomeWrapper>
       <HomeTitleWrapper style={{ position: "relative" }}>
@@ -237,18 +234,24 @@ const Home = () => {
       dispatch(profile());
     }
   }, []);
-  console.log(user);
+  const renderToNext = () => {
+    console.log("ss");
+  };
   if (mainLoader) {
-    return (
-      <>
-        {user.isLogin && user.data !== null && user.data !== "" ? (
+    if (user.isLogin && user.data !== null && user.data !== "") {
+      return (
+        <>
           <Main user={user.data} />
-        ) : (
-          <>Loading...</>
-        )}
-        {user.isLogin && user.data !== null ? <Footer /> : <></>}
-      </>
-    );
+          <Footer />
+        </>
+      );
+    }
+    if (user.isLogin && user.data === null && !user.loading) {
+      return <Navigate to="/require" />;
+    }
+    if (user.isLogin && user.data === "") {
+      return <Navigate to="/require" />;
+    }
   } else {
     return <Landing />;
   }
