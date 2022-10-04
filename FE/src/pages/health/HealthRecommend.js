@@ -2,7 +2,7 @@ import HealthCard from "../../components/cards/HealthCard";
 import styled from "styled-components";
 import Carousel from "../../components/carousel/Carousel";
 import imgUrl from "../../assets/togetherX.jpg";
-import health from "../../assets/health.gif"
+
 const RecommendWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -12,7 +12,7 @@ const RecommendWrapper = styled.div`
 const HealthRecommend = () => {
 
   const images = [
-    { id: 1, url: health },
+    { id: 1, url: imgUrl },
     { id: 2, url: imgUrl },
     { id: 3, url: imgUrl },
     { id: 4, url: imgUrl },

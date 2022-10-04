@@ -28,18 +28,6 @@ scrollbar-height: none; /* firefox 환경 */
 overflow-y: scroll;
 height: 88vh;
 `
-const ItemDiv = styled.div`
-margin-top: 20px;
-margin-bottom: 8px;
-font-weight: 500;
-color: black;
-`
-const TextDiv = styled.div`
-font-size: 13px;
-padding: 0px 8px;
-padding-top: 12px;
-line-height: 32px
-`
 const HealthWrapper = styled.div`
   display: ${(props) => props.display};
   width: ${(props) => props.width};
