@@ -14,7 +14,7 @@ font-weight: bold;
 `
 
 const CardDiv = styled.div`
-margin: 0px 16px
+margin: 0px 12px
 `
 
 const FlexBox = styled.div`
