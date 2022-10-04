@@ -34,7 +34,7 @@ public interface PillService {
     PillReviewResponse getReview(int reviewId);
 
     // 영양제의 전체 리뷰 조회
-    Page<PillReviewListResponse> getReviews(User user, int pillId, Pageable pageable);
+    Page<PillReviewListResponse> findReviewByPillId(User user, int pillId, Pageable pageable);
 
     // 내가 작성한 리뷰 조회
     Page<PillReviewListResponse> getMyReviews(User user, Pageable pageable);
