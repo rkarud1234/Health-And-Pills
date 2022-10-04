@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { FunctionalitiesFetch, NutrientsFetch } from '../../store/actions/search'
 import { domesticSelector, nutrientSelector, functionalitySelector, resetSelector } from '../../store/actions/search.js'
-import { SearchPill } from '../../store/actions/search'
 
 const Tab = styled.div`
 cursor: pointer;
@@ -148,7 +147,7 @@ const SearchSlide = ({ openHandler }) => {
   const dispatch = useDispatch()
   const [tabNum, setTabNum] = useState(1)
   const [isOpened, setIsOpened] = useState(false)
-  const [isSearched, setIsSearched] = useState(false)
+  const [searchWord, setSearchWord] = useState('')
   const functionalities = useSelector(state => state.search.functionalities)
   const nutrients = useSelector(state => state.search.nutrients)
 
@@ -199,15 +198,21 @@ const SearchSlide = ({ openHandler }) => {
   const categoryHandler = () => {
     setIsOpened(!isOpened)
   }
+  const searchData = {
+    searchWord: searchWord,
+    domestic: '',
+    functionalityList: '',
+    nutrientList: ''
+  }
+
+  const data = {
+    searchWord: '',
+    domestic: domestic,
+    functionalityList: functionalityList,
+    nutrientList: nutrientList
+  }
 
   const searchHandler = () => {
-    const data = {
-      searchWord: '',
-      domestic: domestic,
-      functionalityList: functionalityList,
-      nutrientList: nutrientList
-    }
-    dispatch(SearchPill(data))
     setIsOpened(false)
   }
 
@@ -259,8 +264,8 @@ const SearchSlide = ({ openHandler }) => {
 
   return (
     <div>
-      <SearchPills openHandler={backBtnHandler} setIsSearched={setIsSearched} setIsOpened={setIsOpened}></SearchPills>
-      <CategoryOpenBtn onClick={() => { setIsOpened(!isOpened) }}>
+      <SearchPills openHandler={backBtnHandler} setIsOpened={setIsOpened} setSearchWord={setSearchWord} searchWord={searchWord}></SearchPills>
+      <CategoryOpenBtn onClick={() => { setIsOpened(!isOpened); setSearchWord('') }}>
         <div style={{ margin: '8px', textAlign: 'center' }}>
           카테고리로 검색하기
         </div>
@@ -388,7 +393,7 @@ const SearchSlide = ({ openHandler }) => {
           </div>
         </Category>
       }
-      <SearchResult isSearched={isSearched}></SearchResult>
+      <SearchResult searchData={searchData} data={data} searchWord={searchWord} key={[data.domestic, data.functionalityList, data.nutrientList, searchWord]} ></SearchResult>
     </div>
   );
 };
