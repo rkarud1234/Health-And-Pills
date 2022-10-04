@@ -25,6 +25,7 @@ const DivNext = styled.div`
   position: absolute;
   right: 4px;
   z-index: 99;
+  fill: rgba(0, 0, 0, 0.5);
 `;
 const DivPre = styled.div`
   width: 16px;
@@ -32,6 +33,7 @@ const DivPre = styled.div`
   position: absolute;
   left: 4px;
   z-index: 99;
+  fill: rgba(0, 0, 0, 0.5);
 `;
 
 const Carousel = (props) => {
