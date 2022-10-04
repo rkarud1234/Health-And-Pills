@@ -159,7 +159,10 @@ public class PillServiceImpl implements PillService {
     // 모든 리뷰 조회
     @Override
     public Page<PillReviewListResponse> findReviewByPillId(User user, int pillId, Pageable pageable) {
-        return pillQueryRepository.findReviewByPillId(pillId, pageable)
+        Pill pill = pillRepository.findById(pillId)
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
+        return pillReviewRepository.findByPillOrderByPillReviewIdDesc(pill, pageable)
                 .map(pillReview -> PillReviewListResponse.from(
                                 pillReview,
                                 user.getUserId().equals(pillReview.getUsers().getUserId())
