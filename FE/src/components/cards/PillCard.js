@@ -4,7 +4,7 @@ import imgUrl from "../../assets/pillImg.png"
 const StyledPillCard = styled.div`
   border-radius: 10px;
   // border: 1px solid #e0e0e0;
-  box-shadow: 0px 5px 6px 0px rgba(0,0,0,0.17);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06);
   background-color: #fff;
   width: ${(props) => props.width};
   cursor: pointer;
