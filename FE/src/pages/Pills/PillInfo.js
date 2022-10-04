@@ -18,8 +18,13 @@ padding: 4px 0px;
 const ItemDiv = styled.div`
 margin-top: 20px;
 margin-bottom: 8px;
+padding-left: 5px;
+padding-top: 3px;
 font-weight: 500;
 color: black;
+border-left: 3px solid transparent;
+border-image: linear-gradient(to right, #537CFE, #6A53FE);
+border-image-slice: 1;
 `
 const UnBookMarkDiv = styled.div`
 position: absolute;
@@ -56,7 +61,8 @@ font-weight: bold;
 `
 const InfoDiv = styled.div`
 margin: 8px 0px 4px;
-background-color: #D9D9D9;
+background-color: #efefef;
+border-radius: 10px;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
@@ -64,7 +70,7 @@ justify-content: space-between;
 const DetailDiv = styled.div`
 margin: 8px 0px 24px;
 background-color: white;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06);
 border-radius: 10px
 `
 const TextDiv = styled.div`
@@ -203,11 +209,11 @@ const PillInfo = ({
             href={`https://search.shopping.naver.com/search/all?query=${searchQuery}&cat_id=&frm=NVSHATC`}
             target="_blank"
             rel="noreferrer"
-          >이 제품 구매하러 가기(링크)</a>
+          >이 제품 구매하러 가기</a>
         </TextDiv>
       </div>
       <ItemDiv>
-        <h4>기능성 내용</h4>
+        기능성 내용
       </ItemDiv>
       <div>
         {functionalities && functionalities.map((functionality, idx) => {
@@ -236,7 +242,7 @@ const PillInfo = ({
         국내산 여부
       </ItemDiv>
       <div style={{ fontSize: '13px', color: '#383E41' }}>
-        {pillDomestic}
+        {pillDomestic === 'Y' ? '국내' : '해외'}
       </div>
       <ItemDiv>
         유통기한
@@ -245,18 +251,24 @@ const PillInfo = ({
         {pillExpirationDate}
       </div>
       <DetailDiv>
-        <ItemDiv style={{ borderBottom: '1px solid #CAD1D5', display: 'flex', justifyContent: 'space-between', padding: '8px 0px' }}>
-          <div>
+        <ItemDiv style={{ borderBottom: '1px solid #6d6d6d', display: 'flex', justifyContent: 'space-between', padding: '8px 0px' }}>
+          <div style={{marginLeft:5}}>
             상세 정보
           </div>
-          {(pillContent && pillContent.length > textLimit.current) &&
-            (isShowMore ?
-              <i className="fa-duotone fa-chevron-up" onClick={() => setIsShowMore(!isShowMore)}></i> :
-              <i className="fa-duotone fa-chevron-down" onClick={() => setIsShowMore(!isShowMore)}></i>)}
+          
         </ItemDiv>
         <TextDiv style={{ fontSize: '13px', color: '#383E41', paddingTop: '0px', whiteSpace: 'pre-wrap' }}>
           {commenter}
         </TextDiv>
+        <div style={{textAlign:'center', padding:'8px 0 4px 0'}} onClick={() => setIsShowMore(!isShowMore)}>
+          {
+            (pillContent && pillContent.length > textLimit.current) &&
+              (isShowMore ?
+                <i className="fa-duotone fa-chevron-up"></i>:
+                <i className="fa-duotone fa-chevron-down"></i>
+              )
+          }
+        </div>
       </DetailDiv>
       <WarningDiv>
         <div>
@@ -269,7 +281,10 @@ const PillInfo = ({
           {pillTakeWarning ? pillTakeWarning : '등록된 주의사항이 없습니다.'}
         </TextDiv>
       </InfoDiv>
-      <RecomPills pills={similarPills} text='이런 영양제는 어떤가요?' />
+      <div style={{marginLeft:'-10px', marginTop:'40px'}}>
+        <RecomPills pills={similarPills} text='이런 영양제는 어떤가요?' />
+      </div>
+      
     </div >
   )
 }
