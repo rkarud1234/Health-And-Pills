@@ -2,7 +2,7 @@ import HealthCard from "../../components/cards/HealthCard";
 import styled from "styled-components";
 import Carousel from "../../components/carousel/Carousel";
 import imgUrl from "../../assets/togetherX.jpg";
-import stretching from "../../assets/stretching.jpg"
+// import stretching from "../../assets/stretching.jpg"
 import { useRef, useState, useEffect } from 'react'
 import { getExerciseBest, getExerciseCustom, getExerciseUser } from "../../api/HealthAPI";
 
@@ -37,7 +37,7 @@ const HealthRecommend = () => {
 
   const images = [
     { id: 1, url: imgUrl },
-    { id: 2, url: stretching },
+    { id: 2, url: imgUrl },
     { id: 3, url: imgUrl },
     { id: 4, url: imgUrl },
     { id: 5, url: imgUrl },
