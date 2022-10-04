@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import HorizPillCard from '../../components/cards/HorizPillCard'
 
 const CardDiv = styled.div`
-margin: 0px 16px;
+margin: 0px;
 width: 100%;
 `
 
