@@ -34,9 +34,7 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
   // 모달 설정
   const [isOpen, setIsOpen] = useState(false);
   const [schedulePage, setSchedulePage] = useState("");
-  const modalPage = {
-    scheduleUpdateDelete: <ScheduleUpdateDelete/>
-  };
+  const modalPage = {scheduleUpdateDelete: <ScheduleUpdateDelete/>};
 
   const openModal = () => {
     setIsOpen(true);
@@ -51,7 +49,16 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
     <>
       <Modal
         isOpen={isOpen}
-        modalContent={modalPage[schedulePage]}
+        modalContent={
+          <ScheduleUpdateDelete
+            calendarContent={calendarContent}
+            name={name}
+            exerciseId={exerciseId}
+            pillId={pillId}
+            calendarId={calendarId}
+            calendarTime={calendarTime}
+            calendarDate={calendarDate}
+          />}
         closeButton={<ModalCloseButton onClick={closeModal} />}
       />
       <DailyListWrapper>
@@ -60,7 +67,9 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
           <HpIconWrapper>
             {exerciseId === null ? <i className="fa-regular fa-capsules"/> : <i className="fa-solid fa-dumbbell"/>}
           </HpIconWrapper>
-          <ScheduleListWrapper onClick={() => {
+          <ScheduleListWrapper
+            name={name}
+            onClick={() => {
               openModal();
               setSchedulePage("scheduleUpdateDelete");
             }}>

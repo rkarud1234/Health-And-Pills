@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 import Modal from "../components/modals/Modal";
 import ModalCloseButton from "../components/buttons/ModalCloseButton";
 import ScheduleCreate from "../components/modals/contents/ScheduleCreate";
-import ScheduleUpdateDelete from "../components/modals/contents/ScheduleUpdateDelete";
 import { getYoilInfo, getYoilDetail, doneSchedule } from "../api/schedule";
 import DailyDetailCard from "../components/cards/DailyDetailCard";
 import ScheduleDone from "../components/buttons/ScheduleDone";
@@ -40,10 +39,7 @@ const Schedule = () => {
   // 모달 설정
   const [isOpen, setIsOpen] = useState(false);
   const [schedulePage, setSchedulePage] = useState("");
-  const modalPage = {
-    scheduleCreate: <ScheduleCreate/>,
-    scheduleUpdateDelete: <ScheduleUpdateDelete/>
-  };
+  const modalPage = {scheduleCreate: <ScheduleCreate/>};
 
   const openModal = () => {
     setIsOpen(true);
@@ -63,10 +59,8 @@ const Schedule = () => {
   const yearTwo = date.year
   const yearLastTwo = yearTwo.toString().slice(-2);
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
-  const weekDay = weekly[date.day]
-
-  const monthFirstDay = new Date(date.year, (date.month) + 1, 1).getDay()
-  const nthWeek = ((date.day + monthFirstDay - 1) % 7)
+  const monthFirstDay = new Date(date.year, (date.month) -1 , 1).getDay()
+  const nthWeek = ((date.date + monthFirstDay -1) % 7) 
 
  // 오늘의 요일 설정
 const [yoil, setYoil] = useState(date.day);
@@ -90,11 +84,12 @@ const getInfo = async () => {
       array.push({calendarDate: response.data[index].calendarDate,
                   pillCount: response.data[index].pillCount,
                   exerciseCount: response.data[index].exerciseCount,
-                });
-      index++;
+                  weekDay: weekly[index]
+                });;
     } else{
-      array.push({calendarDate: index, pillCount: 0, exerciseCount: 0});
+      array.push({calendarDate: i, pillCount: 0, exerciseCount: 0});
     }
+    index++;
   }
   // 일정 아예 없을 때 처리
   if(response.data.length <= 0){
@@ -115,14 +110,14 @@ const getDetail = async () => {
 const [detail, setDetail] = useState([]);
 console.log(detail)
 
-
+// 일정 완료 체크할때 리렌더링용
 const [flag, setFlag] = useState(false);
 useEffect(() => {
   getInfo();
 }, []);
 useEffect(() => {
- getDetail();
-}, [yoil, flag]);
+  getDetail();
+ }, [yoil, flag]);
 
 
 // 일정 완료 체크 or 해제
@@ -140,7 +135,11 @@ const onToggleScheduleDone = async (calendarId) => {
     <>
       <Modal
         isOpen={isOpen}
-        modalContent={modalPage[schedulePage]}
+        modalContent={
+          <ScheduleCreate
+            yoil={yoil}
+          />
+        }
         closeButton={<ModalCloseButton onClick={closeModal} />}
       />
       <Header leftNone={true} leftChildren={<BackButton />}/>
@@ -148,15 +147,13 @@ const onToggleScheduleDone = async (calendarId) => {
           <div style={{textAlign: "center", padding: "12px 0 24px 0"}}>
             {yearLastTwo}년 {date.month}월 {nthWeek}주차
           </div>
-          <WeekDayWrapper>
-            {/* 요일 자리 */}
-          </WeekDayWrapper>
           <WeeklyWrapper>
             <div style={{display: "flex"}}>
               {list.map((item, idx) => (
                 <DailyCard
                   {...item}
                   key={idx}
+                  {...weekly}
                   onHandleYoil={onHandleYoil}
                 />
               ))}
@@ -171,9 +168,17 @@ const onToggleScheduleDone = async (calendarId) => {
             <SchedulePlusButton/>
           </ButtonWrapper>
           <div>
-            {detail.map((item, idx) => (
-              <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone}/>
-            ))}
+            {detail.length !== 0 ? (
+              <>
+                {detail.map((item, idx) => (
+                  <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone}/>
+                ))}
+              </>
+            ) : (
+              <>
+                등록된 일정이 없습니다
+              </>
+            )}
           </div>
         </BackWrapper>
       <Footer/>

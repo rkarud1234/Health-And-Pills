@@ -17,7 +17,6 @@ const SchedulePlusButton = () => {
       <PlusButtonWrapper>
         <i className="fa-solid fa-circle-plus"/>
       </PlusButtonWrapper>
-      {/* <i className="fa-solid fa-circle-plus"/> */}
     </>
   );
 };
