@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { client } from "../../../api";
-import { postSchedule, searchExerSchedule } from "../../../api/schedule";
+import { postSchedule } from "../../../api/schedule";
 
 const CreateWrapper = styled.div`
   display: block;
@@ -37,8 +37,8 @@ const ScheduleTimeForm = styled.input`
   outline: none;
 `
 
-const ScheduleCreate = ({yoil}) => {
-  const [hp, setHP] = useState("2");
+const PillScheduleCreate = ({yoil}) => {
+  const [hp, setHP] = useState("1");
 
   const onClickRadioButton = (e) => {
     setHP(e.target.value)
@@ -49,7 +49,7 @@ const ScheduleCreate = ({yoil}) => {
     content: "",
     hour: "12",
     minute: "00",
-    exerciseId: "",
+    pillId: "",
   });
 
   // 시간 입력 조건
@@ -75,8 +75,8 @@ const ScheduleCreate = ({yoil}) => {
   // 일정 등록
   const onSchedulePost = async (e) => {
     const data = {
-      exerciseId: content.exerciseId,
-      pillId: null,
+      pillId: content.pillId,
+      exerciseId: null,
       calendarContent: content.content,
       calendarDate: yoil,
       calendarTime: (content.hour + ":" + content.minute),
@@ -94,22 +94,10 @@ const ScheduleCreate = ({yoil}) => {
     setContent({ ...content, [e.target.name]: e.target.value })
   };
 
-  // 운동 검색
-  const [word, setWord] = useState({
-    search: "",
-  })
-
-  // 운동 단어 입력 === updateChange(e)
-  const onExerWordInput = (e) => {
-    setWord({...word, [e.target.name]: e.target.value})
-  }  
-
-
-  const onSearchExercise = async () => {
+  const onSearchPill = async () => {
     const response = await client
-      .get(`/exercise/calendar-list`, {
+      .get(`/pills/calendar-list`, {
         params: {
-          // search: word.search,
           search: inputValue,
         },
       })
@@ -127,16 +115,11 @@ const ScheduleCreate = ({yoil}) => {
   // console.log("하는거", result)
   // console.log("안함", unResult)
   // console.log("전체목록", search)
-  let unResultArray = []
-  unResult.map(({exerciseName, exerciseId}) => {
-    unResultArray.push(exerciseId +":" + exerciseName)
-  })
-
   let resultArray = []
-  result.map(({exerciseName, exerciseId}) => {
-    resultArray.push(exerciseId +":" + exerciseName)
+  unResult.map(({pillName, pillId}) => {
+    resultArray.push(pillId +":" + pillName)
   })
-
+  // console.log(resultArray)
 
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -144,7 +127,6 @@ const ScheduleCreate = ({yoil}) => {
 
   const [inputValue, setInputValue] = useState('')
   const [isHaveInputValue, setIsHaveInputValue] = useState(false)
-  const [droppDownList, setDroppDownList] = useState()
   const [dropDownList, setDropDownList] = useState()
   const [dropDownItemIndex, setDropDownItemIndex] = useState(-1)
 
@@ -152,16 +134,11 @@ const ScheduleCreate = ({yoil}) => {
     if (inputValue === '') {
       setIsHaveInputValue(false)
       setDropDownList([])
-      setDroppDownList([])
     } else {
-      const choosenTextList = unResultArray.filter(textItem =>
-        textItem.includes(inputValue)
-      )
-      const chosenTextList = resultArray.filter(textItem => 
+      const choosenTextList = resultArray.filter(textItem =>
         textItem.includes(inputValue)
       )
       setDropDownList(choosenTextList) 
-      setDroppDownList(chosenTextList)
     }
   }
 
@@ -173,19 +150,13 @@ const ScheduleCreate = ({yoil}) => {
   const clickDropDownItem = clickedItem => {
     setInputValue(clickedItem)
     setIsHaveInputValue(false)
-    setContent({...content, exerciseId: clickedItem.split(':')[0]})
-  }
-
-  const clickDroppDownItem = clickedItem => {
-    setInputValue(clickedItem)
-    setIsHaveInputValue(false)
-    setContent({...content, exerciseId: clickedItem.split(':')[0]})
+    setContent({...content, pillId: clickedItem.split(':')[0]})
   }
 
   const handleDropDownKey = event => {
     //input에 값이 있을때만 작동
     if (isHaveInputValue) {
-      onSearchExercise()
+      onSearchPill()
       if (
         event.key === 'ArrowDown' &&
         dropDownList.length - 1 > dropDownItemIndex
@@ -233,28 +204,10 @@ const ScheduleCreate = ({yoil}) => {
         onChange={changeInputValue}
         onKeyUp={handleDropDownKey}
       />
-       {isHaveInputValue && (
-        <div>
-          {droppDownList.length === 0 && (
-            <div>하고 있는 운동중에 없다</div>
-          )}
-          {droppDownList.map((item) => {
-            return (
-              <div
-                key={item.idx}
-                onClick={() => clickDroppDownItem(item)}
-                onMouseOver={() => setDropDownItemIndex(item.idx)}
-              >
-                {item}
-              </div>
-            )
-          })}
-        </div>
-      )}
       {isHaveInputValue && (
         <div>
           {dropDownList.length === 0 && (
-            <div>해당하는 운동이 없습니다</div>
+            <div>해당하는 영양제가 없습니다</div>
           )}
           {dropDownList.map((item) => {
             return (
@@ -300,4 +253,4 @@ const ScheduleCreate = ({yoil}) => {
   );
 };
 
-export default ScheduleCreate;
+export default PillScheduleCreate;
