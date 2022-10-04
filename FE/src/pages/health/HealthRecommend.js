@@ -2,7 +2,6 @@ import HealthCard from "../../components/cards/HealthCard";
 import styled from "styled-components";
 import Carousel from "../../components/carousel/Carousel";
 import imgUrl from "../../assets/togetherX.jpg";
-// import stretching from "../../assets/stretching.jpg"
 import { useRef, useState, useEffect } from 'react'
 import { getExerciseBest, getExerciseCustom, getExerciseUser } from "../../api/HealthAPI";
 
