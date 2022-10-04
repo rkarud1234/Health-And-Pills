@@ -5,7 +5,7 @@ import { createProfile } from "../../../api/users";
 import FirstInformation from "./FirstInformation";
 import Introduce from "./Introduce";
 import SecondInformation from "./SecondInformation";
-import Step from "./Step";
+import RequireStep from "./RequireStep";
 
 const RequiredInformationWrapper = styled.div`
   padding: 100px 20px;
@@ -76,7 +76,7 @@ const RequiredInformation = () => {
   };
   return (
     <RequiredInformationWrapper>
-      <Step />
+      <RequireStep type={typeState} />
       {renderPage()}
     </RequiredInformationWrapper>
   );

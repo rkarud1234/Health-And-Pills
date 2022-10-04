@@ -8,7 +8,14 @@ import SearchSlide from "./Pills/SearchSlide";
 import Loading from "../components/layouts/Loading";
 import { BestPillsFetch, CustomPillsFetch, UserPillsFetch } from "../store/actions/recommend";
 import { profile } from "../store/actions/user";
-import imgUrl from '../assets/togetherX.jpg'
+
+import imgUrl1 from '../assets/carousel/001.jpg'
+import imgUrl2 from '../assets/carousel/002.jpg'
+import imgUrl3 from '../assets/carousel/003.jpg'
+import imgUrl4 from '../assets/carousel/004.jpg'
+import imgUrl5 from '../assets/carousel/005.jpg'
+import imgUrl6 from '../assets/carousel/006.jpg'
+
 
 const ScrollDiv = styled.div`
 ::-webkit-scrollbar {
@@ -28,11 +35,14 @@ height: 48px;
 const SearchBar = styled.div`
 display: flex;
 line-height: 24px;
-border: 2px solid #AEB0B4;
+// border: 2px solid #AEB0B4;
+box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
 cursor: pointer;
-width: 94%;
+width: 96%;
 border-radius: 4px;
 margin: 8px;
+padding: 0px 10px;
 `
 
 const SearchButton = styled.button`
@@ -98,12 +108,12 @@ const Pill = () => {
   }, [])
 
   const images = [
-    { id: 1, url: imgUrl },
-    { id: 2, url: imgUrl },
-    { id: 3, url: imgUrl },
-    { id: 4, url: imgUrl },
-    { id: 5, url: imgUrl },
-    { id: 6, url: imgUrl },
+    { id: 1, url: imgUrl1 },
+    { id: 2, url: imgUrl2 },
+    { id: 3, url: imgUrl3 },
+    { id: 4, url: imgUrl4 },
+    { id: 5, url: imgUrl5 },
+    { id: 6, url: imgUrl6 },
   ]
 
   const [isOpened, setIsOpened] = useState(false)
@@ -121,7 +131,7 @@ const Pill = () => {
                 <SearchButton>
                   <i className="fa-solid fa-magnifying-glass fa-lg"></i>
                 </SearchButton>
-                <div style={{ fontSize: '12px', lineHeight: '30px' }}>영양제를 검색하세요!</div>
+                <div style={{ fontSize: '14px', lineHeight: '34px' }}>더 많은 영양제 찾아보기</div>
               </SearchBar>
             </SearchBox>
             <Carousel images={images} />
