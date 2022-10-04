@@ -76,27 +76,15 @@ const [list, setList] = useState([]);
 // 일정이 존재하지 않을 때 카드 개수 모자라는거 처리
 const getInfo = async () => {
   const response = await getYoilInfo();
-  console.log(response.data)
-  let index = 0;
-  let array = [];
-  for(let i = 0; i < 7 && index < response.data.length; i++){
-    if(response.data[index].calendarDate == i){
-      array.push({calendarDate: response.data[index].calendarDate,
-                  pillCount: response.data[index].pillCount,
-                  exerciseCount: response.data[index].exerciseCount,
-                  weekDay: weekly[index]
-                });;
-    } else{
-      array.push({calendarDate: i, pillCount: 0, exerciseCount: 0});
-    }
-    index++;
+  const array = new Array(7);
+  for(let data of response.data){
+    array[data.calendarDate]= data
   }
-  // 일정 아예 없을 때 처리
-  if(response.data.length <= 0){
-    for(let i = 0; i < 7; i++){
-      array.push({calendarDate: i, pillCount: 0, exerciseCount: 0});
-   }
- }
+  for(let i=0;i<7;i++){
+    if(!array[i]){
+      array[i] ={calendarDate:i, pillCount:0, exerciseCount:0}
+    }
+  }
   setList([...array])
 };
 
@@ -108,7 +96,7 @@ const getDetail = async () => {
 
 // 요일별 상세 일정 변수 초기화
 const [detail, setDetail] = useState([]);
-console.log(detail)
+// console.log(detail)
 
 // 일정 완료 체크할때 리렌더링용
 const [flag, setFlag] = useState(false);

@@ -123,12 +123,13 @@ const ScheduleCreate = ({yoil}) => {
   // 하는 운동 검색 결과
   const [result, setResult] = useState([]);
   const [search, setSearch] = useState([]);
-  console.log("안함", unResult)
-  console.log("전체목록", search)
-  unResult.map(({exerciseName, exerciseId}) => {
-    console.log(exerciseId)
-    console.log(exerciseName)
-  })
+  // console.log("하는거", result)
+  // console.log("안함", unResult)
+  // console.log("전체목록", search)
+  // unResult.map(({exerciseName, exerciseId}) => {
+  //   console.log(exerciseId)
+  //   console.log(exerciseName)
+  // })
 
 
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
@@ -215,9 +216,9 @@ const ScheduleCreate = ({yoil}) => {
         onChange={changeInputValue}
         onKeyUp={handleDropDownKey}
       />
-      <CreateButton onClick={() => onSearchExercise()}>
+      {/* <CreateButton onClick={() => onSearchExercise()}>
         검색
-      </CreateButton>
+      </CreateButton> */}
       {isHaveInputValue && (
         <div>
           {dropDownList.length === 0 && (
