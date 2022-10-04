@@ -1,4 +1,4 @@
-import HealthCard from "../../../components/cards/HealthCard";
+import HealthListCard from "../../../components/cards/HealthListCard";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { client } from "../../../api";
 import styled from "styled-components";
@@ -146,21 +146,20 @@ const HealthFindPart = () => {
                   {partItems.length - 1 == idx ? (
                     <>
                       {/* <div ref={ref}> */}
-                        <HealthCard
+                        <HealthListCard
                           {...item}
                           key={idx}
                         >
-                        </HealthCard>
+                        </HealthListCard>
                       {/* </div> */}
                     </>
                   ) : (
                     <>
-                      <HealthCard
+                      <HealthListCard
                         {...item}
                         key={idx}
-                        width="320px"
                       >
-                      </HealthCard>
+                      </HealthListCard>
                     </>
                   )}
                 </React.Fragment>
