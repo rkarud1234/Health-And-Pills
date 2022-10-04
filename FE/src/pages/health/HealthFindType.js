@@ -1,10 +1,14 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { client } from "../../api";
-import HealthCard from "../../components/cards/HealthCard";
 // import { useInView } from "react-intersection-observer";
 import React from "react";
+import HealthListCard from "../../components/cards/HealthListCard";
 
+const CardWrapper = styled.div`
+  background-color: #f5f5f5;
+  margin-left: auto;
+`;
 
 const HealthButton = styled.button`
   background-color: transparent;
@@ -19,22 +23,21 @@ const HealthButton = styled.button`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; */
   font-weight: ${({ fontWeight }) => fontWeight};
-`
+`;
 
 const TypeBox = styled.div`
   width: 500px;
   padding: 4px;
   overflow: scroll;
   ::-webkit-scrollbar {
-  display: none;
+    display: none;
   }
   overflow: auto;
   white-space: nowrap;
   scrollbar-width: none;
-`
+`;
 
-const HealthFindType = ({exerciseId}) => {
-
+const HealthFindType = ({ exerciseId }) => {
   const [cate, setCate] = useState([]);
   const [items, setItems] = useState([]);
 
@@ -68,10 +71,9 @@ const HealthFindType = ({exerciseId}) => {
   // 운동 종류별 반환
   const getExerType = async () => {
     await client
-      .get('/exercise/categories')
+      .get("/exercise/categories")
       .then((res) => {
-        if (res.status === 200)
-        setCate([...res.data])
+        if (res.status === 200) setCate([...res.data]);
       })
       .catch((e) => e.res);
   };
@@ -81,27 +83,31 @@ const HealthFindType = ({exerciseId}) => {
 
   // 운동 종류별 클릭시 렌더링
   const onHandleType = async (exerciseCategoryId) => {
-    setCateNum(exerciseCategoryId)
-  }
+    setCateNum(exerciseCategoryId);
+  };
 
   // 운동 종류별 조회 --> cateNum, page 따로
-  const getCateItems = useCallback(async (cateNum) => {
-    setLoading(true);
-    await client
-      .get(`/exercise/category?category=${cateNum}&page=${page}`)
-      .then((res) => {
-        setItems([...res.data.content])
-        // setItems((prevState) => [...prevState, ...res.data.content])
-      })
-      .catch((e) => {console.log(e)})
+  const getCateItems = useCallback(
+    async (cateNum) => {
+      setLoading(true);
+      await client
+        .get(`/exercise/category?category=${cateNum}&page=${page}`)
+        .then((res) => {
+          setItems([...res.data.content]);
+          // setItems((prevState) => [...prevState, ...res.data.content])
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoading(false);
-  }, [cateNum, page]);
+    },
+    [cateNum, page],
+  );
   useEffect(() => {
     getCateItems(1);
   }, []);
   // console.log(items)
-
 
   // useEffect(() => {
   //   // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
@@ -111,7 +117,7 @@ const HealthFindType = ({exerciseId}) => {
   // }, [inView, loading]);
 
   return (
-    <>
+    <CardWrapper>
       <TypeBox
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
@@ -119,45 +125,43 @@ const HealthFindType = ({exerciseId}) => {
         onMouseLeave={onDragEnd}
         ref={scrollRef}
       >
-
         {cate.map((cates) => (
           <HealthButton
-            {...cates} key={cates.exerciseCategoryId}
-            onClick = {() => {onHandleType(cates.exerciseCategoryId); getCateItems(cates.exerciseCategoryId)}}
-            textColor = {cates.exerciseCategoryId === cateNum ? "black" : "#7B7B7B"}
-            fontWeight = {cates.exerciseCategoryId === cateNum ? "bolder" : "normal"}
+            {...cates}
+            key={cates.exerciseCategoryId}
+            onClick={() => {
+              onHandleType(cates.exerciseCategoryId);
+              getCateItems(cates.exerciseCategoryId);
+            }}
+            textColor={
+              cates.exerciseCategoryId === cateNum ? "black" : "#7B7B7B"
+            }
+            fontWeight={
+              cates.exerciseCategoryId === cateNum ? "bolder" : "normal"
+            }
           >
             {/* {cates.exerciseCategoryId} */}
             {cates.exerciseCategoryName}
           </HealthButton>
         ))}
       </TypeBox>
-        {items.map((item, idx) => (
-            <React.Fragment key={idx}>
-              {items.length - 1 == idx ? (
-                <>
-                  {/* <div ref={ref}> */}
-                    <HealthCard
-                      {...item}
-                      key={idx}
-                    >
-                    </HealthCard>
-                  {/* </div> */}
-                </>
-              ) : (
-                <>
-                  <HealthCard
-                    {...item}
-                    key={idx}
-                    width="320px"
-                  >
-                  </HealthCard>
-                </>
-              )}
-            </React.Fragment>
-          ))}
-    </>
-  )
-}
+      {items.map((item, idx) => (
+        <React.Fragment key={idx}>
+          {items.length - 1 == idx ? (
+            <>
+              {/* <div ref={ref}> */}
+              <HealthListCard {...item} key={idx}></HealthListCard>
+              {/* </div> */}
+            </>
+          ) : (
+            <>
+              <HealthListCard {...item}></HealthListCard>
+            </>
+          )}
+        </React.Fragment>
+      ))}
+    </CardWrapper>
+  );
+};
 
 export default HealthFindType;

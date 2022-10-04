@@ -8,7 +8,14 @@ import SearchSlide from "./Pills/SearchSlide";
 import Loading from "../components/layouts/Loading";
 import { BestPillsFetch, CustomPillsFetch, UserPillsFetch } from "../store/actions/recommend";
 import { profile } from "../store/actions/user";
-import imgUrl from '../assets/togetherX.jpg'
+
+import imgUrl1 from '../assets/carousel/001.jpg'
+import imgUrl2 from '../assets/carousel/002.jpg'
+import imgUrl3 from '../assets/carousel/003.jpg'
+import imgUrl4 from '../assets/carousel/004.jpg'
+import imgUrl5 from '../assets/carousel/005.jpg'
+import imgUrl6 from '../assets/carousel/006.jpg'
+
 
 const ScrollDiv = styled.div`
 ::-webkit-scrollbar {
@@ -101,12 +108,12 @@ const Pill = () => {
   }, [])
 
   const images = [
-    { id: 1, url: imgUrl },
-    { id: 2, url: imgUrl },
-    { id: 3, url: imgUrl },
-    { id: 4, url: imgUrl },
-    { id: 5, url: imgUrl },
-    { id: 6, url: imgUrl },
+    { id: 1, url: imgUrl1 },
+    { id: 2, url: imgUrl2 },
+    { id: 3, url: imgUrl3 },
+    { id: 4, url: imgUrl4 },
+    { id: 5, url: imgUrl5 },
+    { id: 6, url: imgUrl6 },
   ]
 
   const [isOpened, setIsOpened] = useState(false)

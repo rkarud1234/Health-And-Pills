@@ -41,14 +41,10 @@ const SearchButton = styled.button`
   margin: 8px 0px 0px;
 `
 
-const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
+const SearchPills = ({ openHandler, setIsSearched, setIsOpened, setSearchWord, searchWord }) => {
 
   const dispatch = useDispatch()
-  const [searchWord, setSearchWord] = useState('')
   const [autoCompleteOpened, setAutoCompleteOpened] = useState(false)
-  const functionalityList = useSelector(state => state.search.functionalityList)
-  const nutrientList = useSelector(state => state.search.nutrientList)
-  const domestic = useSelector(state => state.search.domestic)
   let autoComplete = useSelector(state => state.search.autoComplete)
 
   const valueHandler = (e) => {
@@ -64,13 +60,6 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
   const searchHandler = () => {
     setAutoCompleteOpened(false)
     dispatch(resetSelector())
-    const data = {
-      searchWord: searchWord,
-      domestic: '',
-      functionalityList: '',
-      nutrientList: ''
-    }
-    dispatch(SearchPill(data))
     setIsSearched(true)
     setIsOpened(false)
   }
@@ -78,17 +67,9 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened }) => {
   const autoCompleteSearch = (e) => {
     setSearchWord(e)
     setAutoCompleteOpened(false)
-    const data = {
-      searchWord: e,
-      domestic: domestic,
-      functionalityList: functionalityList,
-      nutrientList: nutrientList
-    }
-    dispatch(SearchPill(data))
     setIsSearched(true)
     setIsOpened(false)
   }
-
   return (
     <div>
       <SearchDiv>

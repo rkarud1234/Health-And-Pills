@@ -12,9 +12,6 @@ const initialState = {
   functionalityList: [],
   nutrientList: [],
 
-  //검색 결과 나온 영양제 리스트
-  searchResult: [],
-
   //자동완성 리스트
   autoComplete: [],
 }
@@ -58,22 +55,14 @@ export const NutrientsFetch = createAsyncThunk(
   }
 )
 
-// 영양제 검색
-export const SearchPill = createAsyncThunk(
-  'Search/SearchPills',
-  async (data) => {
-    return client.get(`/pills/search?search=${data.searchWord}&domestic=${data.domestic}&functionalities=${data.functionalityList}&materials=${data.nutrientList}`)
-      .then(res => {
-        if (res.status === 200) {
-          return res.data
-        } else {
-        }
-      })
-      .catch(error => {
-        return false
-      })
-  }
-)
+
+//영양제 검색
+export const SearchPill = async (page, data) => {
+  const result = await client
+    .get(`/pills/search?search=${data[0].searchWord}&domestic=${data[0].domestic}&functionalities=${data[0].functionalityList}&materials=${data[0].nutrientList}&page=${page}`,)
+    .then(response => response);
+  return result;
+};
 
 // 자동완성
 export const AutoComplete = createAsyncThunk(
@@ -139,16 +128,6 @@ const searchSlice = createSlice({
       state.nutrients = payload;
     })
     builder.addCase(NutrientsFetch.rejected, (state, action) => {
-      state.status = 'failed';
-    })
-    builder.addCase(SearchPill.pending, (state, action) => {
-      state.status = '';
-    })
-    builder.addCase(SearchPill.fulfilled, (state, { payload }) => {
-      state.status = 'succeeded';
-      state.searchResult = payload;
-    })
-    builder.addCase(SearchPill.rejected, (state, action) => {
       state.status = 'failed';
     })
     builder.addCase(AutoComplete.pending, (state, action) => {
