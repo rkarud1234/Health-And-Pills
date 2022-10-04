@@ -1,10 +1,10 @@
 import { useInfiniteQuery, useQueryClient, useMutation } from "react-query";
 
-const useFetchData = (fetchUrl, queryKey, updateFn, deleteFn) => {
+const useFetchData = (fetchUrl, queryKey, updateFn, deleteFn, ...rest) => {
   const queryClient = useQueryClient();
   const res = useInfiniteQuery(
     [queryKey],
-    ({ pageParam = 0 }) => fetchUrl(pageParam),
+    ({ pageParam = 0 }) => fetchUrl(pageParam, rest),
     {
       getNextPageParam: ({ data: { last, number } }) =>
         last ? undefined : number + 1,
