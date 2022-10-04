@@ -70,9 +70,11 @@ max-width: 500px;
 `
 const CategoryBtn = styled.div`
 display: flex;
-margin: 4px;
-border: 2px solid transparent;
+margin: 4px 2px 4px 4px;
+// border: 1.5px solid transparent;
+border: 1px solid #646464;
 border-radius: 20px;
+font-size: 12px;
 &.noselected {
   background-image: linear-gradient(#fff, #fff), 
   linear-gradient(to right, #537CFE 0%,  #6A53FE 100%);
@@ -81,30 +83,35 @@ border-radius: 20px;
   cursor: pointer;
 }
 &.selected {
-  background-image: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%); 
-  background-origin: border-box;
+  // background-image: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%); 
+  background-image: #fff;
   background-clip: content-box, border-box;
-  color:#fff;
+  background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  border: 1px solid #537cfe;  
   cursor: pointer;
-  :hover{
-    background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
-  }
+  // :hover{
+  //   background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
+  // }
 }
-:hover{
-  background-image: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%); 
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  color:#fff;
-}
+// :hover{
+//   background-image: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%); 
+//   background-origin: border-box;
+//   background-clip: content-box, border-box;
+//   color:#fff;
+// }
 `
 const CategoryOpenBtn = styled.div`
 margin: 4px;
 height: 36px;
-border: 2px solid #DDDDDD;
+border: 1.5px solid #e0e0e0;
 font-size: 16px;
 line-height: 18px;
 color: #7B7B7B;
-border-radius: 20px;
+border-radius: 10px;
 cursor: pointer;
 `
 const CustomBtn = styled.button`
@@ -113,21 +120,23 @@ const CustomBtn = styled.button`
   cursor: pointer;
   padding: 8px;
   border: solid 2px;
-  border-radius: 12px;
+  border-radius: 30px;
   margin: 8px;
   &.search {
-    background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
-    border-radius: 30px;
-    color: #FFFFFF;
-    :hover{
-      background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
-    }
+  background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border: 1px solid #537cfe; 
+    // :hover{
+    //   background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
+    // }
   }
   &.cancel {
     background-image: linear-gradient(#fff, #fff);
     border-radius: 30px;
-    border-color: #718096;
-    color: #718096;
+    border: 1px solid #6d6d6d;
+    color: #6d6d6d;
     :hover{
       border-color: black;
       color:black;
@@ -271,7 +280,7 @@ const SearchSlide = ({ openHandler }) => {
                   key={nutrient.nutrientId}
                   style={{ cursor: 'auto' }}
                   className='selected'>
-                  <div style={{ margin: '8px', display: 'flex' }}>
+                  <div style={{ margin: '8px 12px', display: 'flex' }}>
                     <div style={{ marginRight: isOpened ? '8px' : '0px' }}>
                       {nutrient.nutrientName}
                     </div>
@@ -280,7 +289,7 @@ const SearchSlide = ({ openHandler }) => {
                         style={{ cursor: 'pointer' }}
                         onClick={() => { nutrientHandler(nutrient.nutrientId) }}
                       >
-                        <i className="fa-solid fa-xmark fa-lg"></i>
+                        <i className="fa-regular fa-xmark fa-lg"></i>
                       </div>
                     }
                   </div>

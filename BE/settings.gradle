@@ -1,0 +1,6 @@
+rootProject.name = 'hp'
+include 'hp-api'
+include 'hp-common'
+include 'hp-domain'
+include 'hp-external'
+
