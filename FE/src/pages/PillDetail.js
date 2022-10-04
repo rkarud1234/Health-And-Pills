@@ -26,7 +26,7 @@ height: 48px;
 cursor: pointer;
 text-align: center;
 background: ${(props) => props.background};
-border: 1px solid #A6A4A4;
+// border: 1px solid #A6A4A4;
 font-style: normal;
 font-weight: 400;
 font-size: 16px;
@@ -62,13 +62,13 @@ const PillDetail = () => {
   let Tabs = ''
   if (tabNum === 1) {
     Tabs = <TabList>
-      <Tab background='#7B7B7B' onClick={() => { setTabNum(1) }}>상세정보</Tab>
-      <Tab background='#A6A4A4' onClick={() => { setTabNum(2) }}>리뷰 ({pillDetail.pillReviewCount})</Tab>
+      <Tab background='linear-gradient(to right, #537CFE, #6A53FE);' onClick={() => { setTabNum(1) }}>상세정보</Tab>
+      <Tab background='#d6d6d6' onClick={() => { setTabNum(2) }}>리뷰 ({pillDetail.pillReviewCount})</Tab>
     </TabList>
   } else {
     Tabs = <TabList>
-      <Tab background='#A6A4A4' onClick={() => { setTabNum(1) }}>상세정보</Tab>
-      <Tab background='#7B7B7B' onClick={() => { setTabNum(2) }}>리뷰 ({pillDetail.pillReviewCount})</Tab>
+      <Tab background='#d6d6d6' onClick={() => { setTabNum(1) }}>상세정보</Tab>
+      <Tab background='linear-gradient(to right, #537CFE, #6A53FE);' onClick={() => { setTabNum(2) }}>리뷰 ({pillDetail.pillReviewCount})</Tab>
     </TabList>
   }
 

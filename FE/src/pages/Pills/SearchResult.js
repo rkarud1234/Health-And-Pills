@@ -7,7 +7,7 @@ import HorizPillCard from '../../components/cards/HorizPillCard'
 import { SearchPill } from '../../store/actions/search';
 
 const CardDiv = styled.div`
-margin: 0px 16px;
+margin: 0px;
 width: 100%;
 `
 const Box = styled.div`

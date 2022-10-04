@@ -50,12 +50,11 @@ text-fill-color: transparent;
 const ReviewBtn = styled.button`
 display: block;
 font-family: 'GmarketSans';
-background: #EAEFF1;
-border: 1px solid #CAD1D5;
+background: #537CFE;
 border-radius: 8px;
-color: #A6A4A4;
-font-size: 16px;
-padding: 12px 32px;
+color: #fff;
+font-size: 15px;
+padding: 4px 60px;
 margin: 8px
 `
 const GradientIcon = styled.i`
@@ -66,10 +65,23 @@ background-clip: text;
 text-fill-color: transparent;
 `
 const BtnDiv = styled.div`
-font-size: 16px;
+// background: linear-gradient(to right, #537CFE 0%, #6A53FE 100%);
+font-size: 12px;
 text-align: center;
-margin: 8px 12px;
-font-weight: bold;
+border: 1.1px solid #537CFE;
+border-radius: 8px;
+padding: 6px 10px;
+margin: 8px 6px;
+cursor: pointer;
+color: #537CFE;
+`
+const BtnDivCancel = styled.div`
+font-size: 12px;
+text-align: center;
+border: 1px solid #e0e0e0;
+border-radius: 8px;
+padding: 6px 10px;
+margin: 8px 6px;
 cursor: pointer;
 `
 const ReviewContainer = styled.div`
@@ -271,14 +283,15 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
                   </div>
                   {review.isMyReview ?
                     <div style={{ display: 'flex' }}>
-                      <BtnDiv onClick={() => { updatingHandler(review.reviewId, review.reviewScore, review.reviewContent) }} style={{ paddingRight: '24px', margin: '0 0' }}>
-                        수정
-                      </BtnDiv>
-                      <BtnDiv
+                      <BtnDivCancel
                         onClick={() => { showModal(review.reviewId) }}
                         style={{ margin: '0 0' }}>
                         삭제
+                      </BtnDivCancel>
+                      <BtnDiv onClick={() => { updatingHandler(review.reviewId, review.reviewScore, review.reviewContent) }} style={{ margin: '0 6px' }}>
+                        수정
                       </BtnDiv>
+
                     </div>
                     : <></>}
                 </div>

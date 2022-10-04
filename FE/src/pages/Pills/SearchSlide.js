@@ -38,12 +38,13 @@ const CategoryBox = styled.div`
 display: flex;
 flex-direction: row;
 flex-wrap: wrap;
+align-content: baseline;
 ::-webkit-scrollbar {
   display: none;
 } /* Chrome, Safari, Opera 환경*/
 scrollbar-height: none; /* firefox 환경 */
 overflow-y: scroll;
-height: 40vh;
+height: 32vh;
 `
 const SelectedBox = styled.div`
 display: flex;
@@ -74,6 +75,7 @@ margin: 4px 2px 4px 4px;
 border: 1px solid #646464;
 border-radius: 20px;
 font-size: 12px;
+height: fit-content;
 &.noselected {
   background-image: linear-gradient(#fff, #fff), 
   linear-gradient(to right, #537CFE 0%,  #6A53FE 100%);
