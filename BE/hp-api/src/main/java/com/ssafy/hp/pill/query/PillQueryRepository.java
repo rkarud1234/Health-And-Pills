@@ -79,15 +79,17 @@ public class PillQueryRepository {
             builder.and(pill.pillDomestic.eq(request.getDomestic()));
         }
 
-        List<Pill> results = queryFactory
+        QueryResults<Pill> results = queryFactory
                 .selectFrom(pill)
                 .where(builder)
                 .orderBy(pill.pillId.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(results);
+        List<Pill> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public Page<PillReview> findReviewByPillId(int pillId, Pageable pageable) {
