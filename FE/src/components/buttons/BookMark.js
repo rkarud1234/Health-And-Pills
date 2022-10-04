@@ -3,20 +3,23 @@ import styled from "styled-components";
 const MarkStyled = styled.button`
   border: none;
   cursor: pointer;
-  padding: 4px 6px;
   background-color: transparent;
   color: #39f2ac;
-  background: linear-gradient(#537CFE, #6A53FE);
+  background: linear-gradient(#537cfe, #6a53fe);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: large;
-`
+  font-size: 27px;
+`;
 
-const BookMark = ({onClick}) => {
-
+const BookMark = ({ onClick }) => {
   return (
-    <MarkStyled onClick={() => onClick("Y")}>
-      <i className="fa-regular fa-bookmark"/>
+    <MarkStyled
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick("Y");
+      }}
+    >
+      <i className="fa-regular fa-bookmark" />
     </MarkStyled>
   );
 };
