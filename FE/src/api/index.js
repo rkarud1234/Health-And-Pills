@@ -3,6 +3,9 @@ const BASE_URL = "https://j7b203.p.ssafy.io/api/";
 
 export const client = axios.create({
   baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json'
+},
 });
 
 client.interceptors.request.use(function (config) {

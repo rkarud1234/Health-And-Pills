@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { SearchPill, AutoComplete, resetSelector } from '../../store/actions/search'
+import Modal from '../../components/modals/Modal'
+import ModalCloseButton from '../../components/buttons/ModalCloseButton'
+import VisionContent from '../../components/modals/contents/VisionContent'
 
 const CustomInput = styled.input`
 width: 98%;
@@ -68,8 +71,28 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
     setAutoCompleteOpened(false)
     setIsOpened(false)
   }
+  
+  const [modalState, setModalState] = useState(false);
+
+  const openModal = () => {
+    setModalState(true);
+  };
+
+  const closeModal = () => {
+    setModalState(false);
+  };
   return (
     <div>
+      
+      <Modal
+        isOpen={modalState}
+        modalContent={<VisionContent setSearchWord={setSearchWord} close={closeModal}/>}
+        closeButton={<ModalCloseButton onClick={closeModal} />}
+        close={closeModal}
+        width="1000px"
+        height="1000px"
+      />
+
       <SearchDiv>
         <div style={{ display: 'flex', justifyContent: 'center', borderBottom: '1px solid #AEB0B4' }}>
           <SearchButton onClick={openHandler}><i className="fa-solid fa-angle-left fa-lg"></i></SearchButton>
@@ -89,7 +112,10 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
             e.preventDefault()
             searchHandler()
           }}><i className="fa-solid fa-magnifying-glass fa-lg" ></i></SearchButton>
-          <SearchButton><i className="fa-light fa-camera-viewfinder fa-lg"></i></SearchButton>
+          <SearchButton onClick={(e) => {
+            e.preventDefault();
+            openModal();
+          }}><i className="fa-light fa-camera-viewfinder fa-lg"/></SearchButton>
         </div>
       </SearchDiv >
       <div>
