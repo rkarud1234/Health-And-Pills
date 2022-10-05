@@ -28,7 +28,7 @@ const WeeklyWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  height: 120px;
+  height: 60px;
   text-align: center;
 `;
 
