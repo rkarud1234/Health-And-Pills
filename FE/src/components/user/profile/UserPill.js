@@ -51,7 +51,7 @@ const UserPill = () => {
   };
 
   const goToDetail = (id) => {
-    navigate(`/pill/detail/${id}`);
+    navigate(`/pills/detail/${id}`);
   };
   return (
     <UserInfoListWrapper className="list-area">

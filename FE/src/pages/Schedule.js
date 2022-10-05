@@ -126,7 +126,7 @@ const Schedule = () => {
       <Modal
         isOpen={isOpen}
         closeButton={<ModalCloseButton onClick={closeModal} />}
-        modalContent={<ScheduleCreate yoil={yoil} />}
+        modalContent={<ScheduleCreate yoil={yoil} close={closeModal} />}
         // modalContent={modalPage[schedulePage]}
         // closeButton={<ModalCloseButton onClick={closeModal} />}
         // yoil={yoil}
