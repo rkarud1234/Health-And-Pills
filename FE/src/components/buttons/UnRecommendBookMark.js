@@ -16,7 +16,7 @@ const RecommendBookMark = ({ onClick }) => {
     <MarkStyled
       onClick={(event) => {
         event.stopPropagation();
-        onClick("Y");
+        onClick("N");
       }}
     >
       <i className="fa-solid fa-bookmark" />

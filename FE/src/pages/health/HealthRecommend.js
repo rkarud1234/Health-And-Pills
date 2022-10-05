@@ -6,14 +6,13 @@ import imgUrl4 from "../../assets/carousel/health/004.jpg";
 import imgUrl5 from "../../assets/carousel/health/005.jpg";
 import RecommendWrapper from "./RecommenWrapper";
 
-
 const HealthRecommend = ({
   bestExercises,
   customExercises,
   userExercises,
   ageGroup,
   gender,
-  user
+  user,
 }) => {
   const images = [
     { id: 1, url: imgUrl1 },
@@ -21,16 +20,28 @@ const HealthRecommend = ({
     { id: 3, url: imgUrl3 },
     { id: 4, url: imgUrl4 },
     { id: 5, url: imgUrl5 },
-  ]
+  ];
 
   return (
     <>
       <div>
         <Carousel images={images} />
       </div>
-      <RecommendWrapper exercises={bestExercises} text='베스트 10 운동 추천' />
-      <RecommendWrapper exercises={customExercises} text={user + '님을 위한 맞춤 운동 추천'} />
-      <RecommendWrapper exercises={userExercises} text={ageGroup + ' ' + gender + '이 자주하는 운동'} />
+      <RecommendWrapper
+        exercises={bestExercises}
+        user="BEST 10"
+        text=" 운동 추천"
+      />
+      <RecommendWrapper
+        exercises={customExercises}
+        user={user}
+        text="님을 위한 맞춤 운동 추천"
+      />
+      <RecommendWrapper
+        exercises={userExercises}
+        user={ageGroup + " " + gender}
+        text="이 자주하는 운동"
+      />
     </>
   );
 };
