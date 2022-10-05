@@ -1,5 +1,6 @@
 from codecs import ascii_encode
 from time import strftime
+import random
 from itertools import chain
 import pandas as pd
 import numpy as np
