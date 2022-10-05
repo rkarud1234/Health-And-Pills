@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const StyledFooter = styled.footer`
   position: fixed;
   bottom: 0;
@@ -16,34 +16,42 @@ const StyledFooter = styled.footer`
   }
 `;
 
+const NavLinkStyle = styled(NavLink)`
+  &.active i {
+    background: linear-gradient(to right, #537cfe, #6a53fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+`;
+
 const Footer = () => {
   return (
     <StyledFooter>
       <ul>
         <li>
-          <Link to="/">
+          <NavLinkStyle to="/" activeclassname="active">
             <i className="fa-solid fa-house"></i>
-          </Link>
+          </NavLinkStyle>
         </li>
         <li>
-          <Link to="/health">
+          <NavLinkStyle to="/health" activeclassname="active">
             <i className="fas fa-dumbbell"></i>
-          </Link>
+          </NavLinkStyle>
         </li>
         <li>
-          <Link to="/pills">
+          <NavLinkStyle to="/pills" activeclassname="active">
             <i className="fas fa-capsules"></i>
-          </Link>
+          </NavLinkStyle>
         </li>
         <li>
-          <Link to="/schedule">
+          <NavLinkStyle to="/schedule" activeclassname="active">
             <i className="far fa-calendar-check"></i>
-          </Link>
+          </NavLinkStyle>
         </li>
         <li>
-          <Link to="/profiles">
+          <NavLinkStyle to="/profiles" activeclassname="active">
             <i className="fas fa-user"></i>
-          </Link>
+          </NavLinkStyle>
         </li>
       </ul>
     </StyledFooter>

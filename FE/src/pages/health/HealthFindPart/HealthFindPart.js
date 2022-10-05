@@ -1,4 +1,4 @@
-import HealthCard from "../../../components/cards/HealthCard";
+import HealthListCard from "../../../components/cards/HealthListCard";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { client } from "../../../api";
 import styled from "styled-components";
@@ -8,7 +8,7 @@ import { Card } from "@mui/material";
 
 const HealthButton = styled.button`
   /* background-color: ${({ color }) => color}; */
-  background-color:transparent;
+  background-color: transparent;
   color: ${({ textColor }) => textColor};
   font-size: 16px;
   cursor: pointer;
@@ -20,29 +20,29 @@ const HealthButton = styled.button`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; */
   font-weight: ${({ fontWeight }) => fontWeight};
-`
+`;
 
 const TypeBox = styled.div`
   width: 500px;
   padding: 4px;
   overflow: scroll;
   ::-webkit-scrollbar {
-  display: none;
+    display: none;
   }
   overflow: auto;
   white-space: nowrap;
   scrollbar-width: none;
-`
+`;
 
 const TapWrapper = styled.div`
   width: 100vw;
-  `
+`;
 const CardWrapper = styled.div`
+  background-color: #f5f5f5;
   margin-left: auto;
-`
+`;
 
 const HealthFindPart = () => {
-
   const [part, setPart] = useState([]);
   const [partItems, setPartItems] = useState([]);
 
@@ -50,7 +50,6 @@ const HealthFindPart = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   // const [ref, inView] = useInView();
-
 
   // 메뉴 횡스크롤
   const scrollRef = useRef(null);
@@ -77,10 +76,9 @@ const HealthFindPart = () => {
   // 운동 부위별 반환
   const getExerPart = async () => {
     await client
-      .get('/exercise/part-categories')
+      .get("/exercise/part-categories")
       .then((res) => {
-        if (res.status === 200)
-        setPart([...res.data])
+        if (res.status === 200) setPart([...res.data]);
       })
       .catch((e) => e.res);
   };
@@ -90,21 +88,26 @@ const HealthFindPart = () => {
 
   // 운동 부위별 클릭시 렌더링
   const onHandlePart = async (exercisePartCategoryId) => {
-    setPartNum(exercisePartCategoryId)
-  }
+    setPartNum(exercisePartCategoryId);
+  };
 
   // 운동 부위별 조회
-  const getPartItems = useCallback(async (partNum) => {
-    setLoading(true);
-    await client
-      .get(`/exercise/part?part=${partNum}&page=${page}`)
-      .then((res) => {
-        setPartItems([...res.data.content]);
-      })
-      .catch((e) => {console.log(e)})
+  const getPartItems = useCallback(
+    async (partNum) => {
+      setLoading(true);
+      await client
+        .get(`/exercise/part?part=${partNum}&page=${page}`)
+        .then((res) => {
+          setPartItems([...res.data.content]);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoading(false);
-  }, [partNum, page]);
+    },
+    [partNum, page],
+  );
   useEffect(() => {
     getPartItems(1);
   }, []);
@@ -116,11 +119,9 @@ const HealthFindPart = () => {
   //   }
   // }, [inView, loading]);
 
-
   return (
     <>
       <CardWrapper>
-
         <TypeBox
           onMouseDown={onDragStart}
           onMouseMove={onDragMove}
@@ -130,42 +131,41 @@ const HealthFindPart = () => {
         >
           {part.map((parts) => (
             <HealthButton
-            {...parts} key={parts.exercisePartCategoryId}
-            onClick={() => {onHandlePart(parts.exercisePartCategoryId); getPartItems(parts.exercisePartCategoryId)}}
-            textColor = {parts.exercisePartCategoryId === partNum ? "black" : "#7B7B7B"}
-            fontWeight = {parts.exercisePartCategoryId === partNum ? "bolder" : "normal"}
+              {...parts}
+              key={parts.exercisePartCategoryId}
+              onClick={() => {
+                onHandlePart(parts.exercisePartCategoryId);
+                getPartItems(parts.exercisePartCategoryId);
+              }}
+              textColor={
+                parts.exercisePartCategoryId === partNum ? "black" : "#7B7B7B"
+              }
+              fontWeight={
+                parts.exercisePartCategoryId === partNum ? "bolder" : "normal"
+              }
             >
               {/* {parts.exercisePartCategoryId} */}
               {parts.exercisePartCategoryName}
             </HealthButton>
           ))}
         </TypeBox>
-          <div>
-            {partItems.map((item, idx) => (
-                <React.Fragment key={idx}>
-                  {partItems.length - 1 == idx ? (
-                    <>
-                      {/* <div ref={ref}> */}
-                        <HealthCard
-                          {...item}
-                          key={idx}
-                        >
-                        </HealthCard>
-                      {/* </div> */}
-                    </>
-                  ) : (
-                    <>
-                      <HealthCard
-                        {...item}
-                        key={idx}
-                        width="320px"
-                      >
-                      </HealthCard>
-                    </>
-                  )}
-                </React.Fragment>
-              ))}
-          </div>
+        <div>
+          {partItems.map((item, idx) => (
+            <React.Fragment key={idx}>
+              {partItems.length - 1 == idx ? (
+                <>
+                  {/* <div ref={ref}> */}
+                  <HealthListCard {...item} key={idx}></HealthListCard>
+                  {/* </div> */}
+                </>
+              ) : (
+                <>
+                  <HealthListCard {...item} key={idx}></HealthListCard>
+                </>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </CardWrapper>
     </>
   );

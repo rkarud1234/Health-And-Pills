@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { createProfile } from "../../../api/users";
 import FirstInformation from "./FirstInformation";
 import Introduce from "./Introduce";
 import SecondInformation from "./SecondInformation";
 import RequireStep from "./RequireStep";
+import { useSelector } from "react-redux";
 
 const RequiredInformationWrapper = styled.div`
   padding: 100px 20px;
@@ -17,6 +18,7 @@ const RequiredInformation = () => {
     purposeOfExercise: 1,
     timesOfExercise: 1,
   });
+  const data = useSelector((state) => state.user.data);
   const [typeState, setTypeState] = useState("intro");
   const navigate = useNavigate();
   const onHandleChangeType = useCallback((type) => {
@@ -74,12 +76,19 @@ const RequiredInformation = () => {
         <Introduce />;
     }
   };
-  return (
-    <RequiredInformationWrapper>
-      <RequireStep type={typeState} />
-      {renderPage()}
-    </RequiredInformationWrapper>
-  );
+
+  if (data === "") {
+    return (
+      <>
+        <RequiredInformationWrapper>
+          <RequireStep type={typeState} />
+          {renderPage()}
+        </RequiredInformationWrapper>
+      </>
+    );
+  } else {
+    return <Navigate to="/" />;
+  }
 };
 
 export default RequiredInformation;

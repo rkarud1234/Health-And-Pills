@@ -56,11 +56,7 @@ function App() {
               element={<PrivateRoute component={<Schedule />} />}
             />
             <Route path="/social/redirect" element={<SocialLogin />} />
-            />
-            <Route
-              path="/require"
-              element={<PrivateRoute component={<RequiredInformation />} />}
-            />
+            <Route path="/require" element={<RequiredInformation />} />
             <Route
               path="/form"
               element={<PrivateRoute component={<BodyAgeTest />} />}

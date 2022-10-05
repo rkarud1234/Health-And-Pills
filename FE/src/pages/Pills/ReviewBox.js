@@ -20,15 +20,31 @@ const TextBox = styled.textarea`
  width: 92%;
  height: 80px;
  border: 1px solid #CAD1D5;
+ border-radius: 8px;
+ padding: 6px;
  :focus {outline: none;};
  overflow-y: hidden;
  resize: none;
 `
 const BtnDiv = styled.div`
-font-size: 16px;
+// background: linear-gradient(to right, #537CFE 0%, #6A53FE 100%);
+font-size: 14px;
 text-align: center;
-margin: 8px 12px;
-font-weight: bold;
+border: 1.1px solid #537CFE;
+border-radius: 8px;
+padding: 6px 10px;
+margin: 8px 6px;
+cursor: pointer;
+color: #537CFE;
+`
+
+const BtnDivCancel = styled.div`
+font-size: 14px;
+text-align: center;
+border: 1px solid #e0e0e0;
+border-radius: 8px;
+padding: 6px 10px;
+margin: 8px 6px;
 cursor: pointer;
 `
 
@@ -75,18 +91,18 @@ const ReviewBox = ({
         />
       </div>
       {createReviewHandler ?
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <BtnDiv onClick={cancelHandler}>
-            닫기
-          </BtnDiv>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight:'10px' }}>
+          <BtnDivCancel onClick={cancelHandler}>
+            취소
+          </BtnDivCancel>
           <BtnDiv onClick={createReviewHandler}>
             등록
           </BtnDiv>
         </div>
         : <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <BtnDiv onClick={updatingHandler}>
-            닫기
-          </BtnDiv>
+          <BtnDivCancel onClick={updatingHandler}>
+            취소
+          </BtnDivCancel>
           <BtnDiv onClick={() => { updateReviewHandler(reviewId) }}>
             수정
           </BtnDiv>

@@ -1,11 +1,23 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-// import { loginAlert } from "../utils/sweetAlert";
+import { profile } from "../store/actions/user";
 
-function PrivateRoute({ component: Component }) {
-  const authenticated = useSelector((props) => props.user.isLogin);
+const loadCheck = () => {
+  return sessionStorage.getItem("ACCESS_TOKEN") !== null ? true : false;
+};
+const PrivateRoute = ({ component: Component }) => {
+  // const authenticated = useSelector((props) => props.user.isLogin);
+  const authenticated = loadCheck();
+  if (authenticated) {
+    const data = useSelector((state) => state.user.data);
+    if (data !== "" && data !== null) {
+      return Component;
+    } else {
+      return <Navigate to="/" />;
+    }
+  }
   return authenticated ? Component : <Navigate to="/" />;
-}
+};
 
 export default PrivateRoute;
