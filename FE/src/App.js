@@ -37,7 +37,7 @@ function App() {
         const fcmToken = await messaging.getToken({
           vapidKey:"BFV5UXzU24Y0YpYbAZYgkJfo0b5q42iy5cthyTKAl7to2zX5oe5DEn89_qEXrvOGpFidSO2lu5q00_LYIaS84yA",
         });
-        console.log(fcmToken);
+        
         window.localStorage.setItem("FCM_TOKEN", fcmToken);
         //토큰을 받는 함수를 추가!
       })
