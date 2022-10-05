@@ -75,7 +75,7 @@ const SearchResult = ({ searchData, data }) => {
             return (
               <CardDiv
                 key={pill.pillId}
-                onClick={() => { navigate(`/pill/detail/${pill.pillId}`) }}
+                onClick={() => { navigate(`/pills/detail/${pill.pillId}`) }}
               >
                 <HorizPillCard
                   name={pill.pillName}

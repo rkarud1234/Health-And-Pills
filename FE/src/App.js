@@ -36,7 +36,7 @@ function App() {
               element={<PrivateRoute component={<Pill />} />}
             />
             <Route
-              path="/pill/detail/:id"
+              path="/pills/detail/:id"
               element={<PrivateRoute component={<PillDetail />} />}
             />
             <Route

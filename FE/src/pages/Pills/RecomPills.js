@@ -77,7 +77,7 @@ const RecomPills = ({ pills, user, text }) => {
                 key={pill.pillId}
                 onClick={() => {
                   if (startPageX === endPageX) {
-                    navigate(`/pill/detail/${pill.pillId}`);
+                    navigate(`/pills/detail/${pill.pillId}`);
                   }
                 }}
               >

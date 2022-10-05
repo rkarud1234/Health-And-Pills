@@ -44,7 +44,6 @@ margin: 4px;
 const DailyCard = ({ calendarDate, pillCount, exerciseCount, onHandleYoil, yoil }) => {
 
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
-  console.log(yoil, calendarDate)
 
   return (
     <>
