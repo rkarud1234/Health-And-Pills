@@ -319,6 +319,9 @@ const HealthDetail = ({
                     },
                   });
                 }
+                if (state.toHealthHome) {
+                  navigate("/health");
+                }
               }
             }}
           />
@@ -482,7 +485,9 @@ const HealthDetail = ({
                     e.stopPropagation();
                     if (startPageX === endPageX) {
                       navigate(`/health/detail/${recoExers.id}`, {
-                        state: true,
+                        state: {
+                          toHealthHome: true,
+                        },
                       });
                     }
                   }}
