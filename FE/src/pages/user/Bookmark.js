@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import UserBookmark from "../../components/user/profile/UserBookmark";
 
@@ -15,9 +16,10 @@ const StyledTypeButton = styled.button`
   }
 `;
 
-const Bookmark = () => {
-  const [type, setType] = useState("pill");
-
+const Bookmark = ({ bookmarkType }) => {
+  console.log(bookmarkType);
+  const [type, setType] = useState(bookmarkType ? bookmarkType : "pill");
+  console.log(type);
   const onHandleTypeChange = (type) => {
     setType(type);
   };
