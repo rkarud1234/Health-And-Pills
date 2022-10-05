@@ -11,6 +11,7 @@ import ScheduleCreate from "../components/modals/contents/ScheduleCreate";
 import { getYoilInfo, getYoilDetail, doneSchedule } from "../api/schedule";
 import DailyDetailCard from "../components/cards/DailyDetailCard";
 import ScheduleDone from "../components/buttons/ScheduleDone";
+import PillScheduleCreate from "../components/modals/contents/PillScheduleCreate";
 
 const BackWrapper = styled.div`
   background-color: #EAEFF1;
@@ -39,7 +40,7 @@ const Schedule = () => {
   // 모달 설정
   const [isOpen, setIsOpen] = useState(false);
   const [schedulePage, setSchedulePage] = useState("");
-  const modalPage = {scheduleCreate: <ScheduleCreate/>};
+  const modalPage = {scheduleCreate: <ScheduleCreate/>, pillScheduleCreate: <PillScheduleCreate/>};
 
   const openModal = () => {
     setIsOpen(true);
@@ -60,7 +61,7 @@ const Schedule = () => {
   const yearLastTwo = yearTwo.toString().slice(-2);
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
   const monthFirstDay = new Date(date.year, (date.month) -1 , 1).getDay()
-  const nthWeek = ((date.date + monthFirstDay -1) % 7) 
+  const nthWeek = ((date.date + monthFirstDay -1) % 7) -1
 
  // 오늘의 요일 설정
 const [yoil, setYoil] = useState(date.day);
@@ -123,16 +124,19 @@ const onToggleScheduleDone = async (calendarId) => {
     <>
       <Modal
         isOpen={isOpen}
+        closeButton={<ModalCloseButton onClick={closeModal} />}
         modalContent={
           <ScheduleCreate
             yoil={yoil}
           />
         }
-        closeButton={<ModalCloseButton onClick={closeModal} />}
+        // modalContent={modalPage[schedulePage]}
+        // closeButton={<ModalCloseButton onClick={closeModal} />}
+        // yoil={yoil}
       />
       <Header leftNone={true} leftChildren={<BackButton />}/>
         <BackWrapper>
-          <div style={{textAlign: "center", padding: "12px 0 24px 0"}}>
+          <div style={{textAlign: "center", padding: "12px 0 24px 0", fontWeight: "600"}}>
             {yearLastTwo}년 {date.month}월 {nthWeek}주차
           </div>
           <WeeklyWrapper>
@@ -143,6 +147,7 @@ const onToggleScheduleDone = async (calendarId) => {
                   key={idx}
                   {...weekly}
                   onHandleYoil={onHandleYoil}
+                  yoil={yoil}
                 />
               ))}
             </div>
@@ -155,13 +160,21 @@ const onToggleScheduleDone = async (calendarId) => {
           >
             <SchedulePlusButton/>
           </ButtonWrapper>
-          <div>
+          {/* <ButtonWrapper
+            onClick={() => {
+              openModal();
+              setSchedulePage("pillScheduleCreate");
+            }}
+          >
+            <SchedulePlusButton/>
+          </ButtonWrapper> */}
+          <div style={{textAlign: "center"}}>
             {detail.length !== 0 ? (
-              <>
+              <div>
                 {detail.map((item, idx) => (
                   <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone}/>
                 ))}
-              </>
+              </div>
             ) : (
               <>
                 등록된 일정이 없습니다
