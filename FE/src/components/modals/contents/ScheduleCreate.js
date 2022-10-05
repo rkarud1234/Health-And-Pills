@@ -69,11 +69,6 @@ const CommentInput = styled.textarea`
   padding: 8px;
 `;
 
-const DailyWrapper = styled.button`
-  border: none;
-  border-radius: 4px;
-  background-color: #eaeff1;
-`;
 
 // 시간 입력 폼
 const ScheduleTimeForm = styled.input`
@@ -134,7 +129,7 @@ const initialContent = {
   pillId: null,
   exerciseId: null,
 };
-const ScheduleCreate = ({ yoil, close }) => {
+const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
   const [hp, setHP] = useState("2");
   const onClickRadioButton = (e) => {
     setHP(e.target.value);
@@ -214,6 +209,8 @@ const ScheduleCreate = ({ yoil, close }) => {
     } else {
       alert("이미 등록된 일정입니다.");
     }
+    closeModal()
+    setFlag(!flag)
   };
 
   useEffect(() => {
@@ -331,7 +328,7 @@ const ScheduleCreate = ({ yoil, close }) => {
               ? "active end"
               : "active"
           }
-          // onKeyUp={handleDropDownKey}
+        // onKeyUp={handleDropDownKey}
         />
         {isHaveInputValue && result.length !== 0 ? (
           <SearchResultWrapper
