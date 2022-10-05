@@ -73,6 +73,8 @@ const Modal = ({
       className={isOpen ? "active" : ""}
       zIndex={zIndex}
       bgColor={bgColor}
+      width={width}
+      height={height}
     >
       <ModalContentWrapper
         width={width}
