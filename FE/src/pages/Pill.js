@@ -109,9 +109,9 @@ const Pill = () => {
 
   const images = [
     { id: 1, url: imgUrl1 },
-    { id: 2, url: imgUrl2 },
+    { id: 2, url: imgUrl4 },
     { id: 3, url: imgUrl3 },
-    { id: 4, url: imgUrl4 },
+    { id: 4, url: imgUrl2 },
     { id: 5, url: imgUrl5 },
     { id: 6, url: imgUrl6 },
   ]

@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import ReviewProgress from './ReviewProgress'
 import styled from 'styled-components'
 import { Rating } from '@mui/material'
-import { createReviewFetch, PillReviewFetch, updateReviewFetch } from '../../store/actions/pills'
+import useFetchData from "../../hooks/useFetchData";
+import useIntersect from "../../hooks/useIntersect";
+import { createReviewFetch, PillDetailFetch, updateReviewFetch } from '../../store/actions/pills'
 import { useDispatch } from 'react-redux'
 import CancelModal from './CancelModal.js'
 import ReviewBox from './ReviewBox'
-
+import { fetchPillMyReview, fetchPillReview } from '../../store/actions/pills'
 const Container = styled.div`
 box-sizing: border-box;
 margin: 8px 16px;
@@ -92,9 +94,34 @@ background: #FFFFFF;
 border: 1px solid #CAD1D5;
 border-radius: 8px;
 `
-
+const Target = styled.div`
+  height: 1px;
+`;
 const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores }) => {
   const dispatch = useDispatch()
+  const { res } = useFetchData(
+    fetchPillReview,
+    "searchPill",
+    () => { },
+    () => { },
+    id
+  );
+  const reviewList = useMemo(
+    () =>
+      res.data
+        ? res.data.pages.flatMap((item) => {
+          return item.data.content;
+        })
+        : [],
+    [res.data]
+  );
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (res.hasNextPage && !res.isFetching) {
+      res.fetchNextPage();
+    }
+  });
+
   const starRating = {
     fiveRating: scores[5],
     fourRating: scores[4],
@@ -114,7 +141,15 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
   const [updating, setUpdating] = useState(false)
   const [text, setText] = useState('')
   const [reviewId, setReviewId] = useState(0)
+  const [myReview, setMyReview] = useState(null)
 
+  useEffect(() => {
+    fetchPillMyReview(id)
+      .then((res) => {
+        setMyReview(res.data)
+      })
+  }, [id])
+  console.log(myReview, reviewList)
   const createReviewHandler = () => {
     const review = {
       score: score,
@@ -124,7 +159,7 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
     setIsOpened(!isOpened)
     dispatch(createReviewFetch(review))
       .then(() => {
-        dispatch(PillReviewFetch(id))
+        dispatch(PillDetailFetch(id))
       })
   }
 
@@ -137,7 +172,7 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
     setUpdating(!updating)
     dispatch(updateReviewFetch(review))
       .then(() => {
-        dispatch(PillReviewFetch(id))
+        dispatch(PillDetailFetch(id))
       })
   }
 
@@ -242,14 +277,16 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
               </ProFlexBox>
             </div>
           </div>}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ marginTop: '8px' }}>
-            당신의 경험을 공유해 주세요!
+        {!myReview &&
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ marginTop: '8px' }}>
+              당신의 경험을 공유해 주세요!
+            </div>
+            <div>
+              <ReviewBtn onClick={cancelHandler}>리뷰 작성하기</ReviewBtn>
+            </div>
           </div>
-          <div>
-            <ReviewBtn onClick={cancelHandler}>리뷰 작성하기</ReviewBtn>
-          </div>
-        </div>
+        }
       </Container>
       {
         isOpened ?
@@ -262,56 +299,79 @@ const PillReview = ({ id, pillReviewAverage, pillReviewCount, reviews, scores })
             text={text} />
           : <></>
       }
+      {myReview ?
+        <div>
+          {!updating ?
+            <ReviewContainer>
+              {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={reviewId} pillID={id} />}
+              <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ marginTop: '2px' }}>
+                  {myReview.nickName.substr(0, 1) + '*'.repeat(myReview.nickName.length - 2) + myReview.nickName.substr(-1)}
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <BtnDiv onClick={() => { updatingHandler(myReview.reviewId, myReview.reviewScore, myReview.reviewContent) }} style={{ paddingRight: '24px', margin: '0 0' }}>
+                    수정
+                  </BtnDiv>
+                  <BtnDiv
+                    onClick={() => { showModal(myReview.reviewId) }}
+                    style={{ margin: '0 0' }}>
+                    삭제
+                  </BtnDiv>
+                </div>
+              </div>
+              <div style={{ borderBottom: '1px solid #CAD1D5' }}>
+                <Rating
+                  style={{ padding: '0px 10px 6px' }}
+                  name="simple-controlled"
+                  readOnly
+                  value={myReview.reviewScore}
+                  size="small"
+                  icon={<GradientIcon className="fas fa-star"></GradientIcon>}
+                  emptyIcon={<i className="fa-thin fa-star"></i>}
+                />
+              </div>
+              <div style={{ margin: '12px 12px' }}>
+                {myReview.reviewContent}
+              </div>
+            </ReviewContainer>
+            : <ReviewBox
+              key={myReview.reviewId}
+              reviewId={myReview.reviewId}
+              updatingHandler={updatingHandler}
+              updateReviewHandler={updateReviewHandler}
+              defaultScore={myReview.reviewScore}
+              defaultText={myReview.reviewContent}
+              setScore={setScore}
+              textHandler={textHandler} />
+          }
+        </div>
+        : <></>}
       {
-        reviews ? reviews.map(review => {
+        pillReviewCount !== 0 ? reviewList.map(review => {
           return (
-            updating && reviewId === review.reviewId ?
-              <ReviewBox
-                key={review.reviewId}
-                reviewId={review.reviewId}
-                updatingHandler={updatingHandler}
-                updateReviewHandler={updateReviewHandler}
-                defaultScore={review.reviewScore}
-                defaultText={review.reviewContent}
-                setScore={setScore}
-                textHandler={textHandler} />
-              : <ReviewContainer key={review.reviewId}>
-                {modalOpen && <CancelModal setModalOpen={setModalOpen} reviewId={reviewId} pillID={id} />}
-                <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
-                  <div style={{ marginTop: '2px' }}>
-                    {review.nickName.substr(0, 1) + '*'.repeat(review.nickName.length - 2) + review.nickName.substr(-1)}
-                  </div>
-                  {review.isMyReview ?
-                    <div style={{ display: 'flex' }}>
-                      <BtnDivCancel
-                        onClick={() => { showModal(review.reviewId) }}
-                        style={{ margin: '0 0' }}>
-                        삭제
-                      </BtnDivCancel>
-                      <BtnDiv onClick={() => { updatingHandler(review.reviewId, review.reviewScore, review.reviewContent) }} style={{ margin: '0 6px' }}>
-                        수정
-                      </BtnDiv>
-
-                    </div>
-                    : <></>}
+            <ReviewContainer key={review.reviewId}>
+              <div style={{ padding: '12px 12px', display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ marginTop: '2px' }}>
+                  {review.nickName.substr(0, 1) + '*'.repeat(review.nickName.length - 2) + review.nickName.substr(-1)}
                 </div>
-                <div style={{ borderBottom: '1px solid #CAD1D5' }}>
-                  <Rating
-                    style={{ padding: '0px 10px 6px' }}
-                    name="simple-controlled"
-                    readOnly
-                    value={review.reviewScore}
-                    size="small"
-                    icon={<GradientIcon className="fas fa-star"></GradientIcon>}
-                    emptyIcon={<i className="fa-thin fa-star"></i>}
-                  />
-                </div>
-                <div style={{ margin: '12px 12px' }}>
-                  {review.reviewContent}
-                </div>
-              </ReviewContainer>)
-        }) : <></>
-      }
+              </div>
+              <div style={{ borderBottom: '1px solid #CAD1D5' }}>
+                <Rating
+                  style={{ padding: '0px 10px 6px' }}
+                  name="simple-controlled"
+                  readOnly
+                  value={review.reviewScore}
+                  size="small"
+                  icon={<GradientIcon className="fas fa-star"></GradientIcon>}
+                  emptyIcon={<i className="fa-thin fa-star"></i>}
+                />
+              </div>
+              <div style={{ margin: '12px 12px' }}>
+                {review.reviewContent}
+              </div>
+            </ReviewContainer>)
+        }) : <></>}
+      <Target ref={ref} />
     </>
   )
 }
