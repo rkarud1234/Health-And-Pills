@@ -14,6 +14,7 @@ import com.ssafy.hp.pill.service.PillServiceImpl;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
 import com.ssafy.hp.user.query.UserQueryRepository;
+import com.ssafy.hp.user.request.CreateFcmTokenRequest;
 import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
@@ -48,11 +49,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createFcmToken(User user, String fcmToken) {
+    public void createFcmToken(User user, CreateFcmTokenRequest request) {
         User findUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        findUser.updateFcmToken(fcmToken);
+        findUser.updateFcmToken(request.getFcmToken());
     }
 
     @Transactional
