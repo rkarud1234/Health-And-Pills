@@ -8,12 +8,7 @@ import { client } from "../../api";
     background-color: transparent;
     padding-left: 12px;
     padding-right: 12px;
-  `
-  
-  const DayWrapper = styled.div`
     text-align: center;
-    align-items: center;
-    font-size: small;
   `
 
   const DailyButton = styled.button`
@@ -21,6 +16,8 @@ import { client } from "../../api";
     width: 40px;
     height: 40px;
     font-size: large;
+    background-color: white;
+    border-radius: 4px;
   `
 
   const HpSection = styled.div`
@@ -41,15 +38,18 @@ import { client } from "../../api";
     font-size: small;
   `
   
-const DailyCard = ({calendarDate, pillCount, exerciseCount, onHandleYoil}) => {
+  const DailyCard = ({calendarDate, pillCount, exerciseCount, onHandleYoil, yoil}) => {
 
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
     <>
       <DailyCardWrapper>
-        <DailyButton onClick={() => onHandleYoil(calendarDate)}>
             {weekly[calendarDate]}
+        <DailyButton
+          onClick={() => onHandleYoil(calendarDate)} style={{fontSize: "small"}}
+          // textColor = {}
+          >
           <HpSection>
             <HpIconWrapper>
               <i className="fa-regular fa-capsules"/>

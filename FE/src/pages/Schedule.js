@@ -124,14 +124,15 @@ const onToggleScheduleDone = async (calendarId) => {
     <>
       <Modal
         isOpen={isOpen}
-        // modalContent={
-        //   <ScheduleCreate
-        //     yoil={yoil}
-        //   />
-        // }
-        modalContent={modalPage[schedulePage]}
         closeButton={<ModalCloseButton onClick={closeModal} />}
-        yoil={yoil}
+        modalContent={
+          <ScheduleCreate
+            yoil={yoil}
+          />
+        }
+        // modalContent={modalPage[schedulePage]}
+        // closeButton={<ModalCloseButton onClick={closeModal} />}
+        // yoil={yoil}
       />
       <Header leftNone={true} leftChildren={<BackButton />}/>
         <BackWrapper>
@@ -159,14 +160,14 @@ const onToggleScheduleDone = async (calendarId) => {
           >
             <SchedulePlusButton/>
           </ButtonWrapper>
-          <ButtonWrapper
+          {/* <ButtonWrapper
             onClick={() => {
               openModal();
               setSchedulePage("pillScheduleCreate");
             }}
           >
             <SchedulePlusButton/>
-          </ButtonWrapper>
+          </ButtonWrapper> */}
           <div style={{textAlign: "center"}}>
             {detail.length !== 0 ? (
               <div>
