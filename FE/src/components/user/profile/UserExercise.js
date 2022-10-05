@@ -51,7 +51,9 @@ const UserExercise = () => {
   };
 
   const goToDetail = (id) => {
-    navigate(`/health/detail/${id}`);
+    navigate(`/health/detail/${id}`, {
+      state: { prevPath: "exercise", title: "내 운동 정보" },
+    });
   };
   return (
     <UserInfoListWrapper className="list-area">

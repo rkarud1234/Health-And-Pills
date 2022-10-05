@@ -168,6 +168,7 @@ const HealthDetail = ({
   const [startX, setStartX] = useState();
   const [startPageX, setStartPageX] = useState();
   const [endPageX, setendPageX] = useState();
+  const { state } = useLocation();
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
@@ -298,17 +299,29 @@ const HealthDetail = ({
   if (exer.exerciseName) {
     searchQuery = exer.exerciseName.replaceAll(" ", "+") + " 배우기";
   }
-  const location = useLocation();
+
   return (
     <>
       <Header
         leftNone={true}
         leftChildren={
-          location.state ? (
-            <BackButton onClick={() => navigate("/health")} />
-          ) : (
-            <BackButton onClick={() => window.history.go(-1)} />
-          )
+          <BackButton
+            onClick={() => {
+              if (state === null) {
+                navigate(-1);
+              } else {
+                if (state.prevPath) {
+                  navigate("/profiles", {
+                    state: {
+                      infoType: state.prevPath,
+                      title: state.title,
+                      type: state.type,
+                    },
+                  });
+                }
+              }
+            }}
+          />
         }
       />
       <ScrollBox id="scroll-box">

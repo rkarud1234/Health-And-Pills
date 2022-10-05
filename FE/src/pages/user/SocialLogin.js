@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { client } from "../../api";
 import { profile } from "../../store/actions/user";
 
 const SocialLogin = () => {
@@ -12,7 +13,11 @@ const SocialLogin = () => {
   sessionStorage.setItem("ACCESS_TOKEN", accessToken);
   sessionStorage.setItem("REFRESH_TOKEN", refreshToken);
   const { isLogin, data, loading } = useSelector((state) => state.user);
+  const fcmToken = window.localStorage.getItem("FCM_TOKEN");
+  const postFcmToken = () => {client.post("/users/fcm", {fcmToken : fcmToken})}
   useEffect(() => {
+    postFcmToken();
+    console.log("fcm token send success");
     dispatch(profile());
     if (isLogin && data === "") {
       navigate("/require");
