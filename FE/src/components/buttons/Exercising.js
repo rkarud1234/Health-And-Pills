@@ -9,6 +9,7 @@ const ExerWrapper = styled.div`
   font-size: large;
   cursor: pointer;
   margin: auto;
+  font-size: 23px;
 `;
 
 const Excercising = ({ onClick }) => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const MarkStyled = styled.button`
+const MarkStyled = styled.div`
   border: none;
   cursor: pointer;
   background-color: transparent;
