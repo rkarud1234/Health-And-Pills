@@ -69,12 +69,15 @@ const CommentInput = styled.textarea`
   padding: 8px;
 `;
 
-
 // 시간 입력 폼
 const ScheduleTimeForm = styled.input`
   text-align: center;
   outline: none;
-  width: 80px;
+  width: 40px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px;
 `;
 
 const SearchResultWrapper = styled.div`
@@ -109,7 +112,7 @@ const SearchResultWrapper = styled.div`
   }
 `;
 const TimeWrapper = styled.div`
-  margin-top: 10px;
+  margin: 10px auto 0;
 `;
 
 const ButtonWrapper = styled.div`
@@ -209,8 +212,8 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
     } else {
       alert("이미 등록된 일정입니다.");
     }
-    closeModal()
-    setFlag(!flag)
+    closeModal();
+    setFlag(!flag);
   };
 
   useEffect(() => {
@@ -328,7 +331,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
               ? "active end"
               : "active"
           }
-        // onKeyUp={handleDropDownKey}
+          // onKeyUp={handleDropDownKey}
         />
         {isHaveInputValue && result.length !== 0 ? (
           <SearchResultWrapper
