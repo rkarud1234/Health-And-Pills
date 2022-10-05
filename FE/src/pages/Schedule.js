@@ -14,7 +14,7 @@ import ScheduleDone from "../components/buttons/ScheduleDone";
 import PillScheduleCreate from "../components/modals/contents/PillScheduleCreate";
 
 const BackWrapper = styled.div`
-  background-color: #eaeff1;
+  background-color: #fff;
   background-size: cover;
   margin: auto;
 `;
@@ -111,7 +111,6 @@ const Schedule = () => {
     getDetail();
   }, [yoil, flag]);
 
-
   // 일정 완료 체크 or 해제
   const onToggleScheduleDone = async (calendarId) => {
     const response = await doneSchedule(calendarId);
@@ -135,9 +134,9 @@ const Schedule = () => {
             setFlag={setFlag}
           />
         }
-      // modalContent={modalPage[schedulePage]}
-      // closeButton={<ModalCloseButton onClick={closeModal} />}
-      // yoil={yoil}
+        // modalContent={modalPage[schedulePage]}
+        // closeButton={<ModalCloseButton onClick={closeModal} />}
+        // yoil={yoil}
       />
       <Header leftNone={true} leftChildren={<BackButton />} />
       <BackWrapper>
@@ -151,23 +150,15 @@ const Schedule = () => {
           {yearLastTwo}년 {date.month}월 {nthWeek}주차
         </div>
         <WeeklyWrapper>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            {list.map((item, idx) => (
-              <DailyCard
-                {...item}
-                key={idx}
-                {...weekly}
-                onHandleYoil={onHandleYoil}
-                yoil={yoil}
-              />
-            ))}
-          </div>
+          {list.map((item, idx) => (
+            <DailyCard
+              {...item}
+              key={idx}
+              {...weekly}
+              onHandleYoil={onHandleYoil}
+              yoil={yoil}
+            />
+          ))}
         </WeeklyWrapper>
         <ButtonWrapper>
           <SchedulePlusButton
@@ -189,7 +180,13 @@ const Schedule = () => {
           {detail.length !== 0 ? (
             <div>
               {detail.map((item, idx) => (
-                <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone} flag={flag} setFlag={setFlag} />
+                <DailyDetailCard
+                  {...item}
+                  key={idx}
+                  onToggleScheduleDone={onToggleScheduleDone}
+                  flag={flag}
+                  setFlag={setFlag}
+                />
               ))}
             </div>
           ) : (
