@@ -41,7 +41,7 @@ const SearchButton = styled.button`
   margin: 8px 0px 0px;
 `
 
-const SearchPills = ({ openHandler, setIsSearched, setIsOpened, setSearchWord, searchWord }) => {
+const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) => {
 
   const dispatch = useDispatch()
   const [autoCompleteOpened, setAutoCompleteOpened] = useState(false)
@@ -60,14 +60,12 @@ const SearchPills = ({ openHandler, setIsSearched, setIsOpened, setSearchWord, s
   const searchHandler = () => {
     setAutoCompleteOpened(false)
     dispatch(resetSelector())
-    setIsSearched(true)
     setIsOpened(false)
   }
 
   const autoCompleteSearch = (e) => {
     setSearchWord(e)
     setAutoCompleteOpened(false)
-    setIsSearched(true)
     setIsOpened(false)
   }
   return (
