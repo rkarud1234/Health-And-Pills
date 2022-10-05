@@ -11,41 +11,15 @@ from exercise import recommend
 
 class RecommendCustomApi(APIView):
 
-    def getExercisePartName(self, id):
-        return ExercisePartCategory.objects.get(exercise_part_category_id=id)
-
     def get(self, request, userId):
 
         pill_list = recommend.recommendCustom(userId)
         
         serializer = ExerciseSerializer(pill_list, many=True)
         data = serializer.data
-        context = []
-        for id in data:
-            parts = []
-            for part in id['exercisePart']:
-                partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
-                parts.append(partName)
-
-            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
-
-            context.append(
-                {
-                    'id':id['exercise_id'],
-                    'name':id['exercise_name'],
-                    'aerobic':id['exercise_aerobic'],
-                    'bookmark':temp[0],
-                    'doing':temp[1],
-                    'like':temp[2],
-                    'parts':parts,                    
-                }
-            )
-        return Response(context)
+        return Response(createContext(data, userId))
 
 class RecommendBestApi(APIView):
-
-    def getExercisePartName(self, id):
-        return ExercisePartCategory.objects.get(exercise_part_category_id=id)
 
     def get(self, request, userId):
 
@@ -53,33 +27,11 @@ class RecommendBestApi(APIView):
         
         serializer = ExerciseSerializer(pill_list, many=True)
         data = serializer.data
-        context = []
-        for id in data:
-            parts = []
-            for part in id['exercisePart']:
-                partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
-                parts.append(partName)
-
-            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
-
-            context.append(
-                {
-                    'id':id['exercise_id'],
-                    'name':id['exercise_name'],
-                    'aerobic':id['exercise_aerobic'],
-                    'bookmark':temp[0],
-                    'doing':temp[1],
-                    'like':temp[2],
-                    'parts':parts,                    
-                }
-            )
-        return Response(context)
+        
+        return Response(createContext(data, userId))
 
 
 class RecommendUserApi(APIView):
-
-    def getExercisePartName(self, id):
-        return ExercisePartCategory.objects.get(exercise_part_category_id=id)
 
     def get(self, request, userId):
 
@@ -91,82 +43,44 @@ class RecommendUserApi(APIView):
         
         serializer = ExerciseSerializer(pill_list, many=True)
         data = serializer.data
-        context = []
-        for id in data:
-            parts = []
-            for part in id['exercisePart']:
-                partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
-                parts.append(partName)
+        return Response(createContext(data, userId))
 
-            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
-
-            context.append(
-                {
-                    'id':id['exercise_id'],
-                    'name':id['exercise_name'],
-                    'aerobic':id['exercise_aerobic'],
-                    'bookmark':temp[0],
-                    'doing':temp[1],
-                    'like':temp[2],
-                    'parts':parts,                    
-                }
-            )
-        return Response(context)
 
 class RecommendItemApi(APIView):
-    def getExercisePartName(self, id):
-        return ExercisePartCategory.objects.get(exercise_part_category_id=id)
         
     def get(self, request, userId, exerciseId):
         
         exercise_list = recommend.recommendItem(userId, exerciseId)
         serializer = ExerciseSerializer(exercise_list, many=True)
         data = serializer.data
-        context = []
-        for id in data:
-            parts = []
-            for part in id['exercisePart']:
-                partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
-                parts.append(partName)
 
-            temp =list(UserExercise.objects.filter(user_id=userId).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like'))[0]
+        return Response(createContext(data, userId))
 
-            context.append(
-                {
-                    'id':id['exercise_id'],
-                    'name':id['exercise_name'],
-                    'aerobic':id['exercise_aerobic'],
-                    'bookmark':temp[0],
-                    'doing':temp[1],
-                    'like':temp[2],
-                    'parts':parts,                    
-                }
-            )
-        return Response(context)
-
-class ExerciseListApi(APIView):
-    
-    def getExercisePartName(self, id):
+def getExercisePartName(id):
         return ExercisePartCategory.objects.get(exercise_part_category_id=id)
 
-    def get(self, request):
-        queryset = Exercise.objects.all()[:10]
-        serializer = ExerciseSerializer(queryset, many=True)
-        data = serializer.data
-    
-        context = []
-        for id in data:
-            parts = []
-            for part in id['exercisePart']:
-                partName = self.getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
-                parts.append(partName)
+def createContext(data, userId):
+    context = []
+    for id in data:
+        parts = []
+        for part in id['exercisePart']:
+            partName = getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
+            parts.append(partName)
+        temp = UserExercise.objects.filter(user_id=userId,exercise_id=id['exercise_id']).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like')
 
-            context.append(
-                {
-                    'id':id['exercise_id'],
-                    'name':id['exercise_name'],
-                    'parts':parts
-                }
-            )
-        return Response(context)
-
+        if len(temp) > 0:
+            temp = list(temp)[0]
+        else:
+            temp = ['N','N',None]
+        context.append(
+            {
+                'id':id['exercise_id'],
+                'name':id['exercise_name'],
+                'aerobic':id['exercise_aerobic'],
+                'bookmark':temp[0],
+                'doing':temp[1],
+                'like':temp[2],
+                'parts':parts,                    
+            }
+        )
+    return context
