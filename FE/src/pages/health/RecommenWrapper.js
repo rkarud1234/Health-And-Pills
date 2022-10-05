@@ -8,7 +8,8 @@ const RecoDivWrapper = styled.div`
 
 const RecomWrapper = styled.div`
   font-size: large;
-  padding: 4px 2px 4px 2px;
+  font-weight: bold;
+  padding: 4px 2px 4px 12px;
 `;
 const FlexBox = styled.div`
   ::-webkit-scrollbar {
@@ -18,10 +19,10 @@ const FlexBox = styled.div`
   cursor: pointer;
   display: flex;
   overflow-x: scroll;
-  padding: 16px 0px 24px;
+  margin: 0px 0px 16px;
 `;
 
-const RecommendWrapper = ({ text, exercises }) => {
+const RecommendWrapper = ({ text, user, exercises }) => {
   const navigate = useNavigate();
 
   const scrollRef = useRef(null);
@@ -49,7 +50,10 @@ const RecommendWrapper = ({ text, exercises }) => {
   };
   return (
     <RecoDivWrapper>
-      <RecomWrapper>{text}</RecomWrapper>
+      <RecomWrapper>
+        <span style={{ color: "#537cfe" }}>{user}</span>
+        {text}
+      </RecomWrapper>
       <FlexBox
         ref={scrollRef}
         onMouseDown={onDragStart}
@@ -61,7 +65,7 @@ const RecommendWrapper = ({ text, exercises }) => {
           exercises.map((exercise) => (
             <div
               className="onclick-div"
-              style={{ position: "relative", zIndex: "100" }}
+              style={{ position: "relative" }}
               key={exercise.id}
               onClick={(e) => {
                 e.stopPropagation();
