@@ -17,6 +17,7 @@ const SocialLogin = () => {
   const postFcmToken = () => {client.post("/users/fcm", fcmToken)}
   useEffect(() => {
     postFcmToken();
+    
     dispatch(profile());
     if (isLogin && data === "") {
       navigate("/require");
