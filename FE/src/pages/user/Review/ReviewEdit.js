@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewButton from "../../../components/buttons/review/ReviewButton";
 import Loading from "../../../components/layouts/Loading";
+import imgUrl from "../../../assets/pillImg.png";
+import { GradientIcon } from "../../../components/cards/HorizPillCard";
 
 const ReviewEditWrapper = styled.div`
   position: relative;
@@ -17,6 +19,7 @@ const ReviewEditWrapper = styled.div`
   }
 `;
 const RatingWrapper = styled.div`
+  margin-top: 10px;
   text-align: center;
 `;
 
@@ -41,7 +44,7 @@ const ReviewContentWrapper = styled.div`
     position: absolute;
     background-color: #fff;
     border: none;
-    @media screen and (min-width: 280px) {
+    @media screen and (max-width: 280px) {
       font-size: 14px;
     }
   }
@@ -53,17 +56,21 @@ const ReviewContentWrapper = styled.div`
     height: 500px;
     border-radius: 6px;
     resize: none;
-    @media screen and (min-width: 500px) {
+    @media screen and (max-width: 500px) {
+      font-size: 16px;
+      height: 380px;
+    }
+    @media screen and (max-width: 395px) {
       font-size: 16px;
       height: 450px;
     }
-    @media screen and (max-width: 390px) {
+    @media screen and (max-width: 377px) {
       font-size: 16px;
-      height: 400px;
+      height: 320px;
     }
     @media screen and (max-width: 280px) {
       font-size: 14px;
-      height: 220px;
+      height: 280px;
     }
   }
 `;
@@ -105,10 +112,7 @@ const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
           {img !== "" ? (
             <img src={img} width={200} height={200} alt={"상품이미지"} />
           ) : (
-            <img
-              src={process.env.PUBLIC_URL + "/review/pills.png"}
-              alt="상품 이미지 준비중"
-            />
+            <img src={imgUrl} alt="상품 이미지 준비중" />
           )}
         </ReviewItemImageWrapper>
         <div>
@@ -119,6 +123,8 @@ const ReviewEdit = ({ id, img, rating, reviewContent, onClick, close }) => {
               onChange={(e, newRating) => {
                 setReview({ ...review, [e.target.name]: newRating });
               }}
+              icon={<GradientIcon className="fas fa-star"></GradientIcon>}
+              emptyIcon={<i className="fa-thin fa-star"></i>}
               size="large"
             />
           </RatingWrapper>

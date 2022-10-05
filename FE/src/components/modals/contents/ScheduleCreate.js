@@ -6,32 +6,67 @@ import { postSchedule, searchExerSchedule } from "../../../api/schedule";
 const CreateWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 240px;
+  height: 380px;
+  align-items: baseline;
+  margin: 0 auto;
+  margin-top: 40px;
 `;
 
 const RadioWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 14px;
+  font-size: 14px;
+  align-items: center;
+  & div {
+    margin: 0 4px;
+    padding: 6px;
+    color: white;
+    border-radius: 6px;
+    background: linear-gradient(#537cfe, #6a53fe);
+  }
+  & input {
+    margin: 0 5px;
+  }
 `;
 
 const CreateButton = styled.button`
   background-color: #eaeff1;
+  padding: 4px 12px;
+  color: white;
+  border-radius: 6px;
+  background: linear-gradient(#537cfe, #6a53fe);
 `;
 
 const SearchBar = styled.input`
-  border: 2px solid;
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  width: 80%;
+  width: 100%;
   height: 30px;
+  margin-bottom: 10px;
+  outline: none;
+  padding: 0px 8px;
+  &.active {
+    border-bottom: transparent;
+    border-radius: 8px 8px 0px 0px;
+  }
+  &.end {
+    border-bottom: 1px solid #e1e1e1;
+    border-radius: 8px;
+  }
 `;
 
 const CommentInput = styled.textarea`
   border: 2px solid;
   border-radius: 8px;
-  width: 80%;
-  height: 80px;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  outline: none;
+  height: 100px;
   resize: none;
+  padding: 8px;
 `;
 
 const DailyWrapper = styled.button`
@@ -44,6 +79,48 @@ const DailyWrapper = styled.button`
 const ScheduleTimeForm = styled.input`
   text-align: center;
   outline: none;
+  width: 80px;
+`;
+
+const SearchResultWrapper = styled.div`
+  position: relative;
+  top: -14px;
+  font-size: 12px;
+  width: 100%;
+  padding: 0px 8px;
+  &.first {
+    padding-top: 10px;
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+  }
+  &.end {
+    border-bottom: 1px solid #e1e1e1;
+    border-radius: 0 0 8px 8px;
+    padding-bottom: 4px;
+  }
+  &.second {
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    border-radius: 0px 0px 8px 8px;
+    margin-bottom: 10px;
+  }
+  &.down {
+    padding-top: 10px;
+  }
+
+  & div {
+    margin-bottom: 4px;
+  }
+`;
+const TimeWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-top: 10px;
+  width: 100%;
+  text-align: end;
 `;
 const searchType = {
   1: "영양제",
@@ -63,8 +140,37 @@ const ScheduleCreate = ({ yoil }) => {
     setHP(e.target.value);
     setContent({ ...initialContent });
     setInputValue("");
+    setResult([]);
+    setUnResult([]);
+    setChoiceValue(false);
     setIsHaveInputValue(false);
   };
+  // 운동 검색
+  const [word, setWord] = useState({
+    search: "",
+  });
+  // 안하는 운동 검색 결과
+  const [unResult, setUnResult] = useState([]);
+  // 하는 운동 검색 결과
+  const [result, setResult] = useState([]);
+  const [search, setSearch] = useState([]);
+  const weekly = ["일", "월", "화", "수", "목", "금", "토"];
+
+  // 자동완성 --> array안에 객체로 담아야됨 (iterable)
+
+  // 검색어 입력
+  const [inputValue, setInputValue] = useState("");
+  // 검색어에 단어 존재유무
+  const [isHaveInputValue, setIsHaveInputValue] = useState(false);
+  // 하는 운동 중에 검색어 일치
+  const [droppDownList, setDroppDownList] = useState();
+  // 하고 있지 않은 운동 중에 검색어 일치
+  const [dropDownList, setDropDownList] = useState();
+  // 클릭했을 때
+  const [dropDownItemIndex, setDropDownItemIndex] = useState(-1);
+
+  const [choiceValue, setChoiceValue] = useState(false);
+
   // 인풋 입력
   const [content, setContent] = useState({ ...initialContent });
 
@@ -119,11 +225,6 @@ const ScheduleCreate = ({ yoil }) => {
     setContent({ ...content, [e.target.name]: e.target.value });
   };
 
-  // 운동 검색
-  const [word, setWord] = useState({
-    search: "",
-  });
-
   // 운동 단어 입력 === updateChange(e)
   const onExerWordInput = (e) => {
     setWord({ ...word, [e.target.name]: e.target.value });
@@ -151,46 +252,8 @@ const ScheduleCreate = ({ yoil }) => {
     setSearch([...response.data]);
   };
 
-  // 안하는 운동 검색 결과
-  const [unResult, setUnResult] = useState([]);
-  // 하는 운동 검색 결과
-  const [result, setResult] = useState([]);
-  const [search, setSearch] = useState([]);
-  const weekly = ["일", "월", "화", "수", "목", "금", "토"];
-
-  // 자동완성 --> array안에 객체로 담아야됨 (iterable)
-
-  // 검색어 입력
-  const [inputValue, setInputValue] = useState("");
-  // 검색어에 단어 존재유무
-  const [isHaveInputValue, setIsHaveInputValue] = useState(false);
-  // 하는 운동 중에 검색어 일치
-  const [droppDownList, setDroppDownList] = useState();
-  // 하고 있지 않은 운동 중에 검색어 일치
-  const [dropDownList, setDropDownList] = useState();
-  // 클릭했을 때
-  const [dropDownItemIndex, setDropDownItemIndex] = useState(-1);
-
-  const [choiceValue, setChoiceValue] = useState(false);
-
-  // const showDropDownList = () => {
-  //   if (inputValue === "") {
-  //     setIsHaveInputValue(false);
-  //     setDropDownList([]);
-  //     setDroppDownList([]);
-  //   } else {
-  //     const choosenTextList = unResultArray.filter((textItem) =>
-  //       textItem.includes(inputValue)
-  //     );
-  //     const chosenTextList = resultArray.filter((textItem) =>
-  //       textItem.includes(inputValue)
-  //     );
-  //     setDropDownList(choosenTextList);
-  //     setDroppDownList(chosenTextList);
-  //   }
-  // };
-
   const changeInputValue = (event) => {
+    setChoiceValue(false);
     setInputValue(event.target.value);
     if (event.target.value.length === 0) {
       setUnResult([]);
@@ -241,7 +304,7 @@ const ScheduleCreate = ({ yoil }) => {
     <>
       <CreateWrapper>
         <RadioWrapper>
-          {weekly[yoil]}
+          <div>{weekly[yoil]}</div>
           <input
             type="radio"
             value="1"
@@ -262,10 +325,17 @@ const ScheduleCreate = ({ yoil }) => {
           type="text"
           value={inputValue}
           onChange={changeInputValue}
+          className={
+            (result.length === 0 && unResult.length === 0) || choiceValue
+              ? "active end"
+              : "active"
+          }
           // onKeyUp={handleDropDownKey}
         />
-        {isHaveInputValue && (
-          <div>
+        {isHaveInputValue && result.length !== 0 ? (
+          <SearchResultWrapper
+            className={unResult.length !== 0 ? "first" : "first end"}
+          >
             {result.map((item, idx) => {
               return (
                 <>
@@ -279,10 +349,14 @@ const ScheduleCreate = ({ yoil }) => {
                 </>
               );
             })}
-          </div>
+          </SearchResultWrapper>
+        ) : (
+          <></>
         )}
-        {isHaveInputValue && (
-          <div>
+        {isHaveInputValue && unResult.length !== 0 ? (
+          <SearchResultWrapper
+            className={result.length !== 0 ? "second" : "second down"}
+          >
             {unResult.map((item, idx) => {
               return (
                 <div
@@ -294,7 +368,9 @@ const ScheduleCreate = ({ yoil }) => {
                 </div>
               );
             })}
-          </div>
+          </SearchResultWrapper>
+        ) : (
+          <></>
         )}
         <CommentInput
           maxLength={130}
@@ -304,7 +380,7 @@ const ScheduleCreate = ({ yoil }) => {
           name="content"
           onChange={onHandleInput}
         ></CommentInput>
-        <div>
+        <TimeWrapper>
           <ScheduleTimeForm
             value={content.hour}
             name="hour"
@@ -317,8 +393,10 @@ const ScheduleCreate = ({ yoil }) => {
             onChange={onScheduleTimeInput}
           />
           분
-        </div>
-        <CreateButton onClick={() => onSchedulePost()}>확인</CreateButton>
+        </TimeWrapper>
+        <ButtonWrapper>
+          <CreateButton onClick={() => onSchedulePost()}>확인</CreateButton>
+        </ButtonWrapper>
       </CreateWrapper>
     </>
   );

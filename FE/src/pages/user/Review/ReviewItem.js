@@ -2,7 +2,8 @@ import { Rating } from "@mui/material";
 import { useState } from "react";
 import styled from "styled-components";
 import ReviewButton from "../../../components/buttons/review/ReviewButton";
-
+import imgUrl from "../../../assets/pillImg.png";
+import { GradientIcon } from "../../../components/cards/HorizPillCard";
 const ReviewItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -89,17 +90,20 @@ const ReviewItem = ({
           {review.img ? (
             <img src={review.img} alt={"pillImage"} />
           ) : (
-            <img
-              src={process.env.PUBLIC_URL + "/review/pills.png"}
-              alt="상품 이미지 준비중"
-              className="default"
-            />
+            <img src={imgUrl} alt="상품 이미지 준비중" className="default" />
           )}
         </ReviewImageWrapper>
         <ReviewInfoWrapper>
           <h1>{review.name}</h1>
           <div>
-            <Rating name="rating" value={review.rating} readOnly={true} />
+            <Rating
+              name="rating"
+              value={review.rating}
+              readOnly={true}
+              size="small"
+              icon={<GradientIcon className="fas fa-star"></GradientIcon>}
+              emptyIcon={<i className="fa-thin fa-star"></i>}
+            />
           </div>
         </ReviewInfoWrapper>
       </ReviewImageInfoWrapper>

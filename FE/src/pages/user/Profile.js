@@ -36,21 +36,20 @@ const ProfileTitleWrapper = styled.div`
     margin-left: 3px;
     color: #ffed08;
   }
-  @media screen and (min-width: 500px) {
-    padding: 50px 20px 0px 20px;
+  @media screen and (max-width: 500px) {
+    padding: 60px 20px 0px 20px;
   }
 
-  @media screen and (min-width: 390px) {
+  @media screen and (max-width: 395px) {
     padding: 80px 20px 0px 20px;
     & p {
       font-size: 30px;
     }
   }
-
-  @media (max-width: 390px) and (min-width: 375px) {
+  @media screen and (max-width: 377px) {
     padding: 50px 20px 0px 20px;
     & p {
-      font-size: 30px;
+      font-size: 28px;
     }
   }
 
@@ -137,6 +136,9 @@ const ProfileList = styled.div`
   padding: 8px 0px 4px 0px;
   box-shadow: 0px 5px 10px 2px rgb(0 0 0 / 10%);
   margin-top: 30px;
+  @media screen and (max-width: 377px) {
+    height: 65px;
+  }
 `;
 const ProfileListItem = styled.button`
   display: flex;
@@ -150,6 +152,14 @@ const ProfileListItem = styled.button`
   cursor: pointer;
   & img {
     margin-bottom: 10px;
+  }
+  @media screen and (max-width: 377px) {
+    & img {
+      width: 30px;
+      margin-bottom: 8px;
+    }
+    width: 70px;
+    font-size: 10px;
   }
   @media screen and (max-width: 280px) {
     & img {
@@ -173,6 +183,9 @@ const ProfileEditButton = styled.button`
   cursor: pointer;
   & div i {
     margin-right: 10px;
+  }
+  @media screen and (max-width: 377px) {
+    font-size: 14px;
   }
   @media screen and (max-width: 280px) {
     font-size: 12px;
