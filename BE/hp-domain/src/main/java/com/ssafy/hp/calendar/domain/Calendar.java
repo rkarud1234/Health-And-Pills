@@ -33,6 +33,14 @@ public class Calendar {
     @Column(nullable = false)
     private YN calendarComplete;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private YN notificationSend;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private YN completeSend;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User users;
@@ -51,6 +59,8 @@ public class Calendar {
         calendar.calendarTime = calendarTime;
         calendar.calendarContent = calendarContent;
         calendar.calendarComplete = YN.N;
+        calendar.notificationSend = YN.N;
+        calendar.completeSend = YN.N;
         calendar.users = users;
         calendar.exercise = exercise;
         calendar.pill = pill;
