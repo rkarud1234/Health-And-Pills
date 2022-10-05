@@ -16,6 +16,15 @@ import { profile } from "../../store/actions/user";
 //   align-items: center;
 // `
 
+const ScrollBox = styled.div`
+  ::-webkit-scrollbar {
+    display: none;
+  } /* Chrome, Safari, Opera 환경*/
+  scrollbar-height: none; /* firefox 환경 */
+  overflow-y: scroll;
+  height: 88vh;
+`;
+
 const Box = styled.div`
   ::-webkit-scrollbar {
     display: none;
@@ -33,7 +42,7 @@ const HealthButton = styled.button`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: ${({ fontWeight }) => fontWeight};
-  padding: 8px;
+  padding: 12px 8px 12px 8px;
 `;
 
 const Health = () => {
@@ -134,7 +143,7 @@ const Health = () => {
           >
             직접 운동 찾기
           </HealthButton>
-          <div>{tabPage[healthPage]}</div>
+          <ScrollBox>{tabPage[healthPage]}</ScrollBox>
           <Footer />
         </div>
       ) : (

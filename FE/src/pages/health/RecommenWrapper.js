@@ -9,7 +9,7 @@ const RecoDivWrapper = styled.div`
 const RecomWrapper = styled.div`
   font-size: large;
   font-weight: bold;
-  padding: 4px 2px 4px 2px;
+  padding: 4px 2px 4px 12px;
 `;
 const FlexBox = styled.div`
   ::-webkit-scrollbar {
@@ -19,7 +19,7 @@ const FlexBox = styled.div`
   cursor: pointer;
   display: flex;
   overflow-x: scroll;
-  margin: 8px 0px 16px;
+  margin: 0px 0px 16px;
 `;
 
 const RecommendWrapper = ({ text, user, exercises }) => {
