@@ -8,7 +8,7 @@ const MarkStyled = styled.button`
   background: linear-gradient(#537cfe, #6a53fe);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 27px;
+  font-size: 24px;
 `;
 
 const RecommendBookMark = ({ onClick }) => {

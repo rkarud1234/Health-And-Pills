@@ -14,10 +14,10 @@ import ScheduleDone from "../components/buttons/ScheduleDone";
 import PillScheduleCreate from "../components/modals/contents/PillScheduleCreate";
 
 const BackWrapper = styled.div`
-  background-color: #EAEFF1;
+  background-color: #eaeff1;
   background-size: cover;
   margin: auto;
-`
+`;
 
 const WeeklyWrapper = styled.div`
   display: flex;
@@ -25,23 +25,25 @@ const WeeklyWrapper = styled.div`
   margin-bottom: 32px;
   justify-content: space-around;
   /* background-color: transparent; */
-`
+`;
 
 const ButtonWrapper = styled.div`
   height: 120px;
   text-align: center;
-`
+`;
 
 const WeekDayWrapper = styled.div`
   text-align: center;
-`
-
+`;
 
 const Schedule = () => {
   // 모달 설정
   const [isOpen, setIsOpen] = useState(false);
   const [schedulePage, setSchedulePage] = useState("");
-  const modalPage = { scheduleCreate: <ScheduleCreate />, pillScheduleCreate: <PillScheduleCreate /> };
+  const modalPage = {
+    scheduleCreate: <ScheduleCreate />,
+    pillScheduleCreate: <PillScheduleCreate />,
+  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -58,18 +60,18 @@ const Schedule = () => {
     date: new Date().getDate(),
     day: new Date().getDay(),
   });
-  const yearTwo = date.year
+  const yearTwo = date.year;
   const yearLastTwo = yearTwo.toString().slice(-2);
-  const weekly = ['일', '월', '화', '수', '목', '금', '토'];
-  const monthFirstDay = new Date(date.year, (date.month) - 1, 1).getDay()
-  const nthWeek = ((date.date + monthFirstDay - 1) % 7) - 1
+  const weekly = ["일", "월", "화", "수", "목", "금", "토"];
+  const monthFirstDay = new Date(date.year, date.month - 1, 1).getDay();
+  const nthWeek = ((date.date + monthFirstDay - 1) % 7) - 1;
 
   // 오늘의 요일 설정
   const [yoil, setYoil] = useState(date.day);
 
   // 다른 요일로 바꾸기
   const onHandleYoil = async (calendarDate) => {
-    setYoil(calendarDate)
+    setYoil(calendarDate);
   };
 
   // 각 요일에 운, 영 개수 집어넣기
@@ -80,21 +82,21 @@ const Schedule = () => {
     const response = await getYoilInfo();
     const array = new Array(7);
     for (let data of response.data) {
-      array[data.calendarDate] = data
+      array[data.calendarDate] = data;
     }
     for (let i = 0; i < 7; i++) {
       if (!array[i]) {
-        array[i] = { calendarDate: i, pillCount: 0, exerciseCount: 0 }
+        array[i] = { calendarDate: i, pillCount: 0, exerciseCount: 0 };
       }
     }
-    setList([...array])
+    setList([...array]);
   };
 
   // 요일별 상세 일정 불러오기 (디폴트는 오늘 요일)
   const getDetail = async () => {
     const response = await getYoilDetail(yoil);
-    setDetail([...response.data])
-  }
+    setDetail([...response.data]);
+  };
 
   // 요일별 상세 일정 변수 초기화
   const [detail, setDetail] = useState([]);
@@ -109,17 +111,15 @@ const Schedule = () => {
     getDetail();
   }, [yoil, flag]);
 
-
   // 일정 완료 체크 or 해제
   const onToggleScheduleDone = async (calendarId) => {
     const response = await doneSchedule(calendarId);
     if (response.status === 200) {
       setFlag((prevState) => {
-        return { ...prevState, flag: !flag }
+        return { ...prevState, flag: !flag };
       });
     }
   };
-
 
   return (
     <>
@@ -185,7 +185,7 @@ const Schedule = () => {
       </BackWrapper>
       <Footer />
     </>
-  )
-}
+  );
+};
 
 export default Schedule;

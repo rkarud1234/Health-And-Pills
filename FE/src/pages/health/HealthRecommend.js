@@ -24,7 +24,7 @@ const HealthRecommend = ({
 
   return (
     <>
-      <div>
+      <div style={{ marginBottom: "12px" }}>
         <Carousel images={images} />
       </div>
       <RecommendWrapper
