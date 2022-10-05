@@ -13,6 +13,7 @@ import org.springframework.stereotype.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -20,14 +21,11 @@ import java.util.List;
 
 public class DetectText {
     // Detects text in the specified image.
-    public String detectText(byte[] data) throws IOException {
-        for(byte bb : data){
-            System.out.println("byte = " + bb);
-        }
+    public String detectText(String data) throws IOException {
         List<AnnotateImageRequest> requests = new ArrayList<>();
 
-        ByteString imgBytes = ByteString.copyFrom(data);
-        System.out.println("imgBytes = " + imgBytes);
+        Base64.Decoder decoder = Base64.getDecoder();
+        ByteString imgBytes = ByteString.copyFrom(decoder.decode(data.substring(1, data.length() - 1)));
 
         Image img = Image.newBuilder().setContent(imgBytes).build();
         Feature feat = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
@@ -46,19 +44,17 @@ public class DetectText {
 
             for (AnnotateImageResponse res : responses) {
                 if (res.hasError()) {
-                    System.out.format("Error: %s%n", res.getError().getMessage());
                     return null;
                 }
 
-                System.out.println("res = " + res);
-
                 // For full list of available annotations, see http://g.co/cloud/vision/docs
                 for (EntityAnnotation annotation : res.getTextAnnotationsList()) {
-                    sb.append(annotation.getDescription()).append(" ");
+                    if (!annotation.getLocale().isEmpty()) {
+                        sb.append(annotation.getDescription().replaceAll("\n", " "));
+                    }
                 }
             }
         }
-        System.out.println("결과: " + sb.toString());
         return sb.toString().replaceAll("  ", " ");
     }
 }

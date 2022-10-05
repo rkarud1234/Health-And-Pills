@@ -209,10 +209,9 @@ public class PillServiceImpl implements PillService {
         }
     }
 
-    public VisionResponse getDetectText(byte[] data) {
+    public String findKeyWordByImg(String data) {
         try {
-            String result = detectText.detectText(data);
-            return new VisionResponse(result, result);
+            return detectText.detectText(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

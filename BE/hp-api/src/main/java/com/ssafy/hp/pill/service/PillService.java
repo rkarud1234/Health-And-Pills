@@ -47,7 +47,7 @@ public interface PillService {
     void updateUserPillByUserAndPill(User user, Integer pillId, YN check, int cmd);
 
     // 이미지 감지
-    VisionResponse getDetectText(byte[] data);
+    String findKeyWordByImg(String data);
 
     List<String> findTop10PillNameByPillNameContainingOrderByPillNameAsc(String keyword);
 
