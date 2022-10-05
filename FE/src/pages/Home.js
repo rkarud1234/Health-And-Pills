@@ -152,7 +152,11 @@ const Main = ({ user }) => {
         </UserTitleWrapper>
         <div>
           {/* <HeartBeat /> */}
-          <img src={process.env.PUBLIC_URL + "pill.png"} />
+          <img
+            src={process.env.PUBLIC_URL + "pillLogo.png"}
+            width={72}
+            height={72}
+          />
         </div>
       </HomeTitleWrapper>
       <div>
