@@ -33,8 +33,6 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
 
   // 모달 설정
   const [isOpen, setIsOpen] = useState(false);
-  const [schedulePage, setSchedulePage] = useState("");
-  const modalPage = {scheduleUpdateDelete: <ScheduleUpdateDelete/>};
 
   const openModal = () => {
     setIsOpen(true);
