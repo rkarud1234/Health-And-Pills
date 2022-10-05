@@ -37,7 +37,8 @@ const CardWrapper = styled.div`
   margin-left: auto;
 `;
 
-const HealthFindPart = () => {
+const HealthFindPart = ({ tag }) => {
+  console.log(tag);
   const [part, setPart] = useState([]);
   const [partNum, setPartNum] = useState(1);
 
@@ -108,11 +109,7 @@ const HealthFindPart = () => {
             </HealthButton>
           ))}
         </TypeBox>
-        <HealthFindList
-          typeNum={partNum}
-          key={partNum + "part"}
-          type={"part"}
-        />
+        <HealthFindList typeNum={partNum} key={partNum + tag} type={"part"} />
       </CardWrapper>
     </>
   );

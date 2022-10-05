@@ -35,7 +35,7 @@ const TypeBox = styled.div`
   scrollbar-width: none;
 `;
 
-const HealthFindType = ({ exerciseId }) => {
+const HealthFindType = ({ exerciseId, tag }) => {
   const [cate, setCate] = useState([]);
   const [cateNum, setCateNum] = useState(1);
   // 메뉴 횡스크롤

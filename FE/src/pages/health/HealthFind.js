@@ -19,8 +19,8 @@ const PageWrapper = styled.div`
 const HealthFind = () => {
   const [healthFindPage, setHealthFindPage] = useState("healthType");
   const tabPage = {
-    healthType: <HealthFindType />,
-    healthPart: <HealthFindPart />,
+    healthType: <HealthFindType tag={"type"} />,
+    healthPart: <HealthFindPart tag={"part"} />,
   };
 
   return (
