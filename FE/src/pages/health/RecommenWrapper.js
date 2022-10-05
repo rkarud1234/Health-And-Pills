@@ -70,7 +70,9 @@ const RecommendWrapper = ({ text, user, exercises }) => {
               onClick={(e) => {
                 e.stopPropagation();
                 if (startPageX === endPageX) {
-                  navigate(`/health/detail/${exercise.id}`);
+                  navigate(`/health/detail/${exercise.id}`, { state: {
+                    toHealthHome: true
+                  } });
                 }
               }}
             >

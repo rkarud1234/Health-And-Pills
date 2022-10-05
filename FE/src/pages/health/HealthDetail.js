@@ -208,16 +208,21 @@ const HealthDetail = ({
   };
   useEffect(() => {
     getDetail();
-  }, [exer.bookmark, exer.like, exer.doing, exerciseId]);
+    getReco();
+    document.getElementById("scroll-box").scrollTo(0, 0);
+    document.getElementById("x-scroll-box").scrollTo(0, 0);
+    setStartPageX(0);
+  }, [exerciseId]);
 
   // 현재 운동과 유사한 운동 추천 받기
   const getReco = async () => {
     const response = await getExerciseItemReco(exerciseId);
     setRecoExer([...response.data]);
   };
-  useEffect(() => {
-    getReco();
-  }, [recoExer.id]);
+  // useEffect(() => {
+  //   // getReco();
+  //   console.log("getReco");
+  // }, [recoExer.id]);
 
   // const [params, setParams] = useState({
   //   key: 'AIzaSyC5XUXYoD-TVqapYPw-T4_0vo6nsdjbQYg',
@@ -314,12 +319,15 @@ const HealthDetail = ({
                     },
                   });
                 }
+                if (state.toHealthHome) {
+                  navigate("/health");
+                }
               }
             }}
           />
         }
       />
-      <ScrollBox>
+      <ScrollBox id="scroll-box">
         <div style={{ width: "100%", padding: "0px 16px" }}>
           <HealthWrapper
             display={"flex"}
@@ -461,6 +469,7 @@ const HealthDetail = ({
               </div>
             </div>
             <RecoItemBox
+              id="x-scroll-box"
               ref={scrollRef}
               onMouseDown={onDragStart}
               onMouseMove={onDragMove}
@@ -468,13 +477,29 @@ const HealthDetail = ({
               onMouseLeave={onDragEnd}
             >
               {recoExer.map((recoExers) => (
-                <HealthCard
-                  {...recoExers}
+                <div
+                  className="onclick-div"
+                  style={{ position: "relative" }}
                   key={recoExers.id}
-                  exerciseName={recoExers.name}
-                  exerciseId={recoExers.id}
-                  exerciseParts={recoExers.parts}
-                />
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (startPageX === endPageX) {
+                      navigate(`/health/detail/${recoExers.id}`, {
+                        state: {
+                          toHealthHome: true,
+                        },
+                      });
+                    }
+                  }}
+                >
+                  <HealthCard
+                    {...recoExers}
+                    key={recoExers.id}
+                    exerciseName={recoExers.name}
+                    exerciseId={recoExers.id}
+                    exerciseParts={recoExers.parts}
+                  />
+                </div>
               ))}
             </RecoItemBox>
           </BlockWrapper>
