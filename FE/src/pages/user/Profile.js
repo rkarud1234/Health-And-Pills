@@ -37,15 +37,31 @@ const ProfileTitleWrapper = styled.div`
     color: #ffed08;
   }
   @media screen and (min-width: 500px) {
-    padding: 100px 20px 0px 20px;
+    padding: 50px 20px 0px 20px;
   }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (min-width: 390px) {
     padding: 80px 20px 0px 20px;
+    & p {
+      font-size: 30px;
+    }
+  }
+
+  @media (max-width: 390px) and (min-width: 375px) {
+    padding: 50px 20px 0px 20px;
+    & p {
+      font-size: 30px;
+    }
   }
 
   @media screen and (max-width: 280px) {
-    padding: 40px 20px 0px 20px;
+    padding: 50px 20px 0px 20px;
+    & p {
+      font-size: 24px;
+    }
+    & div:last-child {
+      font-size: 20px;
+    }
   }
 `;
 const ProfileBackGround = styled.div`
@@ -72,6 +88,14 @@ const ReviewLikeWrapper = styled.div`
     cursor: pointer;
     background-color: #aba9ff57;
     position: relative;
+    @media screen and (min-width: 375px) {
+      font-size: 18px;
+      height: 50px;
+    }
+    @media screen and (max-width: 280px) {
+      font-size: 15px;
+      height: 45px;
+    }
     & span {
       position: relative;
       margin-top: 4px;
@@ -300,7 +324,8 @@ const Profile = () => {
             <ProfileBackGround>
               <ProfileTitleWrapper>
                 <div>
-                  {user.data.userProfileNickname}님<p>안녕하세요</p>
+                  <p>{user.data.userProfileNickname}님</p>
+                  <p>안녕하세요</p>
                 </div>
                 <div>
                   {getUserAge(user.data.userProfileBirthday)}세,{" "}
