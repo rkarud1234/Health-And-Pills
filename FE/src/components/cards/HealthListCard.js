@@ -158,7 +158,7 @@ const HealthListCard = ({
                 </DoingWrapper>
               </div>
               {exerciseParts.map((item, i) => {
-                return <TagCard item={item} />;
+                return <TagCard item={item} key={item + i} />;
               })}
             </HealthNameWrapper>
           </HealthContentWrapper>
@@ -173,13 +173,5 @@ export default HealthListCard;
 StyledHealthCard.defaultProps = {
   width: "120px",
   height: "72px",
-  // padding: "6px 8px 6px 8px",
   fontWeight: "600",
 };
-
-// HealthCard.defaultProps = {
-//   width: "120px",
-//   height: "60px",
-//   // padding: "6px 8px 6px 8px",
-//   fontWeight: "600",
-// }
