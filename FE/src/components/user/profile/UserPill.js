@@ -51,7 +51,9 @@ const UserPill = () => {
   };
 
   const goToDetail = (id) => {
-    navigate(`/pills/detail/${id}`);
+    navigate(`/pills/detail/${id}`, {
+      state: { prevPath: "pill", title: "내 영양제 정보" },
+    });
   };
   return (
     <UserInfoListWrapper className="list-area">

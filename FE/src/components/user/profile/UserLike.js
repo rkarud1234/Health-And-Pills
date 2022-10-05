@@ -42,7 +42,9 @@ const UserLike = () => {
     }
   });
   const goToDetail = (id) => {
-    navigate(`/health/detail/${id}`);
+    navigate(`/health/detail/${id}`, {
+      state: { prevPath: "like", title: "좋아요" },
+    });
   };
   return (
     <UserInfoListWrapper className="list-area">
