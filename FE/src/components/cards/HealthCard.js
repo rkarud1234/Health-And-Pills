@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import BookMark from "../buttons/BookMark";
-import UnBookMark from "../buttons/UnBookMark";
+import RecommendBookMark from "../buttons/RecommendBookMark";
+import UnRecommendBookMark from "../buttons/UnRecommendBookMark";
 import { useNavigate } from "react-router-dom";
 import { exerciseBookMark } from "../../api/HealthAPI";
 import { useEffect } from "react";
@@ -17,14 +17,13 @@ const HealthCardWrapper = styled.div`
 `
 
 const StyledHealthCard = styled.div`
-  border-radius: 12px;
-  box-shadow: rgb(100 100 111 / 35%) 0px 7px 29px 0px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),0 1px 2px 0 rgba(0, 0, 0, 0.06);
   background-color: #fff;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  padding:  "6px 8px 6px 8px";
+  padding: "6px 8px";
   cursor: pointer;
-  /* justify-content: center; */
   position: relative;
   /* background: linear-gradient(#537CFE, #6A53FE);
   -webkit-background-clip: text;
@@ -67,23 +66,21 @@ const DoingWrapper = styled.div`
 const HealthCard = ({
   width, height, fontWeight,
   exerciseName, aerobic, exerciseParts, exerciseId,
-}) => {
-  const navigate = useNavigate()
-
+}) => {  
   const [detail, setDetail] = useState({
     bookmark: "",
     doing: "",
     exerciseId: ""
   })
 
-  // 운동 상세 정보 조회
-  const getDetail = async () => {
-    const response = await getExerciseDetail(exerciseId);
-    setDetail({ ...response.data })
-  };
-  useEffect(() => {
-    getDetail();
-  }, [detail.bookmark, detail.doing, exerciseId]);
+  // // 운동 상세 정보 조회
+  // const getDetail = async () => {
+  //   const response = await getExerciseDetail(exerciseId);
+  //   setDetail({ ...response.data })
+  // };
+  // useEffect(() => {
+  //   getDetail();
+  // }, [detail.bookmark, detail.doing, exerciseId]);
 
   const onToggleBookMark = async (value) => {
     const data = {
@@ -119,13 +116,16 @@ const HealthCard = ({
             {detail.doing === "Y" ? <Excercising onClick={onToggleDoing} /> : <UnExercising onClick={onToggleDoing} />}
           </DoingWrapper>
           <BookMarkWrapper>
-            {detail.bookmark === "Y" ? <UnBookMark onClick={onToggleBookMark} /> : <BookMark onClick={onToggleBookMark} />}
+            {detail.bookmark === "Y" ? <UnRecommendBookMark onClick={onToggleBookMark} /> : <RecommendBookMark onClick={onToggleBookMark} />}
           </BookMarkWrapper>
-          <StyledHealthNameWrapper padding="16px 4px 4px" fontWeight={fontWeight}>
-            <div onClick={() => { navigate(`/health/detail/${exerciseId}`) }} style={{ display: "block", cursor: 'pointer' }}>
-              {exerciseName}
-            </div>
-          </StyledHealthNameWrapper>
+          <div>
+            <StyledHealthNameWrapper padding="16px 4px 4px" fontWeight={fontWeight}>
+              <div>
+                {exerciseName}
+              </div>
+            </StyledHealthNameWrapper>
+          </div>
+          -----
           <HealthInfoWrapper padding="0px 4px">
             {aerobic} | {exerciseParts}
           </HealthInfoWrapper>
@@ -139,7 +139,7 @@ export default HealthCard;
 
 StyledHealthCard.defaultProps = {
   width: "120px",
-  height: "72px",
+  height: "80px",
   // padding: "6px 8px 6px 8px",
   fontWeight: "600",
 }

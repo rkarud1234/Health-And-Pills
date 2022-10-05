@@ -4,6 +4,7 @@ import Carousel from "../../components/carousel/Carousel";
 import imgUrl from "../../assets/togetherX.jpg";
 import { useRef, useState, useEffect } from 'react'
 import { getExerciseBest, getExerciseCustom, getExerciseUser } from "../../api/HealthAPI";
+import RecommendWrapper from "./RecommenWrapper";
 
 const RecoDivWrapper = styled.div`
   padding: 4px;
@@ -13,13 +14,6 @@ const RecomWrapper = styled.div`
   font-size: large;
   padding: 4px 2px 4px 2px;
 `
-
-const RecommendWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
 const FlexBox = styled.div`
 ::-webkit-scrollbar {
   display: none;
@@ -66,36 +60,35 @@ const HealthRecommend = () => {
       scrollRef.current.scrollLeft = startX - e.pageX;
     }
   };
+  // // 베스트 운동 추천
+  // const [best, setBest] = useState([]);
+  // const getBest = async () => {
+  //   const response = await getExerciseBest();
+  //   if (response.status === 200)
+  //   setBest([...response.data])
+  // };
 
-  // 베스트 운동 추천
-  const [best, setBest] = useState([]);
-  const getBest = async () => {
-    const response = await getExerciseBest();
-    if (response.status === 200)
-    setBest([...response.data])
-  };
+  // // 사용자 맞춤 운동 추천
+  // const [custom, setCustom] = useState([]);
+  // const getCustom = async () => {
+  //   const response = await getExerciseCustom();
+  //   if (response.status === 200)
+  //   setCustom([...response.data])
+  // };
 
-  // 사용자 맞춤 운동 추천
-  const [custom, setCustom] = useState([]);
-  const getCustom = async () => {
-    const response = await getExerciseCustom();
-    if (response.status === 200)
-    setCustom([...response.data])
-  };
+  // // 유사한 사용자 운동 추천
+  // const [user, setUser] = useState([]);
+  // const getUser = async () => {
+  //   const response = await getExerciseUser();
+  //   if (response.status === 200)
+  //   setUser([...response.data])
+  // };
 
-  // 유사한 사용자 운동 추천
-  const [user, setUser] = useState([]);
-  const getUser = async () => {
-    const response = await getExerciseUser();
-    if (response.status === 200)
-    setUser([...response.data])
-  };
-
-  useEffect(() => {
-    getBest();
-    getCustom();
-    getUser();
-  }, [best.id, custom.id, user.id])
+  // useEffect(() => {
+  //   getBest();
+  //   getCustom();
+  //   getUser();
+  // }, [best.id, custom.id, user.id])
   
 
 
@@ -104,7 +97,10 @@ const HealthRecommend = () => {
       <div>
         <Carousel images={images} />
       </div>
-      <RecoDivWrapper>
+      <RecommendWrapper/>
+      <RecommendWrapper/>
+      <RecommendWrapper/>
+      {/* <RecoDivWrapper>
         <RecomWrapper>
             베스트 운동
         </RecomWrapper>
@@ -151,12 +147,13 @@ const HealthRecommend = () => {
           유사한 사용자 추천
         </RecomWrapper>
         <FlexBox
+        className="hi"
         ref={scrollRef}
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}
         onMouseLeave={onDragEnd}
-      >
+        >
         {user.map((users) => (
           <HealthCard
             {...users} key={users.id}
@@ -166,7 +163,7 @@ const HealthRecommend = () => {
           />
         ))}
       </FlexBox>
-      </RecoDivWrapper>
+      </RecoDivWrapper> */}
     </>
   );
 };
