@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { client } from "../../../api";
-import { postSchedule, searchExerSchedule } from "../../../api/schedule";
+import { postSchedule } from "../../../api/schedule";
 
 const CreateWrapper = styled.div`
   display: block;
@@ -36,32 +36,21 @@ const ScheduleTimeForm = styled.input`
   text-align: center;
   outline: none;
 `
-const searchType = {
-  "1" : "영양제",
-  "2" : "운동"
-}
 
-const initialContent = {
-  content: "",
-  hour: "12",
-  minute: "00",
-  pillId: null,
-  exerciseId: null,
-}
-const ScheduleCreate = ({yoil}) => {
-  const [hp, setHP] = useState("2");
+const PillScheduleCreate = ({yoil}) => {
+  const [hp, setHP] = useState("1");
 
   const onClickRadioButton = (e) => {
     setHP(e.target.value)
-    setContent({...initialContent})
-    setInputValue("")
-    setIsHaveInputValue(false)
   };
 
-  
-
   // 인풋 입력
-  const [content, setContent] = useState({...initialContent});
+  const [content, setContent] = useState({
+    content: "",
+    hour: "12",
+    minute: "00",
+    pillId: "",
+  });
 
   // 시간 입력 조건
   const onScheduleTimeInput = (e) => {
@@ -85,15 +74,13 @@ const ScheduleCreate = ({yoil}) => {
 
   // 일정 등록
   const onSchedulePost = async (e) => {
-
     const data = {
-      exerciseId: content.exerciseId,
       pillId: content.pillId,
+      exerciseId: null,
       calendarContent: content.content,
       calendarDate: yoil,
       calendarTime: (content.hour + ":" + content.minute),
     };
-    console.log(data)
     const response = await postSchedule(data);
     if (response.status === 200) {
       console.log("일정 등록 완료")
@@ -107,38 +94,13 @@ const ScheduleCreate = ({yoil}) => {
     setContent({ ...content, [e.target.name]: e.target.value })
   };
 
-  // 운동 검색
-  const [word, setWord] = useState({
-    search: "",
-  })
-
-  // 운동 단어 입력 === updateChange(e)
-  const onExerWordInput = (e) => {
-    setWord({...word, [e.target.name]: e.target.value})
-  }  
-
-
-  const onSearchExercise = async (value) => {
-    console.log(value)
-    const response = await client
-      .get(`/exercise/calendar-list`, {
-        params: {
-          search: value
-        },
-      })
-      setResult([...response.data[0]])
-      setUnResult([...response.data[1]])
-      setSearch([...response.data])
-  };
-
-  const onSearchPill = async (value) => {
+  const onSearchPill = async () => {
     const response = await client
       .get(`/pills/calendar-list`, {
         params: {
-          search: value,
+          search: inputValue,
         },
       })
-      console.log(response.data);
       setResult([...response.data[0]])
       setUnResult([...response.data[1]])
       setSearch([...response.data])
@@ -150,72 +112,51 @@ const ScheduleCreate = ({yoil}) => {
   // 하는 운동 검색 결과
   const [result, setResult] = useState([]);
   const [search, setSearch] = useState([]);
-
-  let unResultArray = []
-  unResult.map(({exerciseName, exerciseId}) => {
-    unResultArray.push({exerciseId} + ":" + exerciseName)
-    // unResultArray.push({exerciseId, exerciseName})
-  })
-
+  // console.log("하는거", result)
+  // console.log("안함", unResult)
+  // console.log("전체목록", search)
   let resultArray = []
-  result.map(({exerciseName, exerciseId}) => {
-    resultArray.push(exerciseId +":" + exerciseName)
+  unResult.map(({pillName, pillId}) => {
+    resultArray.push(pillId +":" + pillName)
   })
-
+  // console.log(resultArray)
 
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
 
   // 자동완성 --> array안에 객체로 담아야됨 (iterable)
 
-  // 검색어 입력
   const [inputValue, setInputValue] = useState('')
-  // 검색어에 단어 존재유무
   const [isHaveInputValue, setIsHaveInputValue] = useState(false)
-  // 하는 운동 중에 검색어 일치
-  const [droppDownList, setDroppDownList] = useState()
-  // 하고 있지 않은 운동 중에 검색어 일치
   const [dropDownList, setDropDownList] = useState()
-  // 클릭했을 때 
   const [dropDownItemIndex, setDropDownItemIndex] = useState(-1)
 
   const showDropDownList = () => {
     if (inputValue === '') {
       setIsHaveInputValue(false)
       setDropDownList([])
-      setDroppDownList([])
     } else {
-      const choosenTextList = unResultArray.filter(textItem =>
-        textItem.includes(inputValue)
-      )
-      const chosenTextList = resultArray.filter(textItem => 
+      const choosenTextList = resultArray.filter(textItem =>
         textItem.includes(inputValue)
       )
       setDropDownList(choosenTextList) 
-      setDroppDownList(chosenTextList)
     }
   }
 
   const changeInputValue = event => {
     setInputValue(event.target.value)
-    {parseInt(hp) === 1? onSearchPill(event.target.value):onSearchExercise(event.target.value)}
-    
     setIsHaveInputValue(true)
   }
 
   const clickDropDownItem = clickedItem => {
-    const value = parseInt(hp) === 1? clickedItem.pillName :clickedItem.exerciseName
-    const id = parseInt(hp) === 1? clickedItem.pillId :clickedItem.exerciseId
-    const key = parseInt(hp) === 1? "pillId" : "exerciseId"
-    setInputValue(value)
+    setInputValue(clickedItem)
     setIsHaveInputValue(false)
-    setContent({...content, [key]: id})
+    setContent({...content, pillId: clickedItem.split(':')[0]})
   }
-
 
   const handleDropDownKey = event => {
     //input에 값이 있을때만 작동
     if (isHaveInputValue) {
-      onSearchExercise()
+      onSearchPill()
       if (
         event.key === 'ArrowDown' &&
         dropDownList.length - 1 > dropDownItemIndex
@@ -233,6 +174,8 @@ const ScheduleCreate = ({yoil}) => {
   }
 
   useEffect(showDropDownList, [inputValue])
+
+
   return (
     <>
     <CreateWrapper>
@@ -259,42 +202,21 @@ const ScheduleCreate = ({yoil}) => {
         type="text"
         value={inputValue}
         onChange={changeInputValue}
-        // onKeyUp={handleDropDownKey}
+        onKeyUp={handleDropDownKey}
       />
-       {isHaveInputValue && (
-        <div style={{border:"1px solid red"}}>
-          {result.length === 0 && (
-            <div>하고 있는 운동중에 없다</div>
-          )}
-          {result.map((item, idx) => {
-            return (
-              <>
-                <div
-                  key={idx + "doing"}
-                  onClick={() => clickDropDownItem(item)}
-                  onMouseOver={() => setDropDownItemIndex(item.idx)}
-                >
-
-                  {parseInt(hp) === 1? item.pillName :item.exerciseName}
-                </div>
-              </>
-            )
-          })}
-        </div>
-      )}
       {isHaveInputValue && (
-        <div style={{border:"1px solid blue"}}>
-          {unResult.length === 0 && (
-            <div>일치하는 운동이 없습니다</div>
+        <div>
+          {dropDownList.length === 0 && (
+            <div>해당하는 영양제가 없습니다</div>
           )}
-          {unResult.map((item, idx) => {
+          {dropDownList.map((item) => {
             return (
               <div
-                key={idx + "notDoing"}
+                key={item.idx}
                 onClick={() => clickDropDownItem(item)}
                 onMouseOver={() => setDropDownItemIndex(item.idx)}
               >
-                {parseInt(hp) === 1? item.pillName :item.exerciseName}
+                {item}
               </div>
             )
           })}
@@ -331,4 +253,4 @@ const ScheduleCreate = ({yoil}) => {
   );
 };
 
-export default ScheduleCreate;
+export default PillScheduleCreate;
