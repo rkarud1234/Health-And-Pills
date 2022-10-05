@@ -25,21 +25,32 @@ const FlexBox = styled.div`
     padding: 16px 0px 24px;
     `
 
-const RecommendWrapper = () => {
+const RecommendWrapper = ({type}) => {
     const navigate = useNavigate()
-
+    
     const scrollRef = useRef(null);
     const [isDrag, setIsDrag] = useState(false);
     const [startX, setStartX] = useState();
     const [startPageX, setStartPageX] = useState();
     const [endPageX, setendPageX] = useState();
+    
+    const category = {
+        best: '베스트 운동',
+        custom: '사용자 맞춤 운동',
+        user: '00대 00 운동'
+    }
+    const requestType = {
+        best: getExerciseBest(),
+        custom: getExerciseCustom(),
+        user: getExerciseUser()
+    }
+    // console.log(category[type])
 
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
     setStartPageX(e.pageX)
     setStartX(e.pageX + scrollRef.current.scrollLeft);
-    console.log(startPageX, endPageX)
   };
 
   const onDragEnd = (e) => {
@@ -53,20 +64,22 @@ const RecommendWrapper = () => {
     }
   };
     // 베스트 운동 추천
-    const [best, setBest] = useState([]);
-    const getBest = async () => {
+    const [exercises, setExercises] = useState([]);
+    const getExercise = async () => {
+        
         const response = await getExerciseBest();
         if (response.status === 200)
-        setBest([...response.data])
+        setExercises([...response.data])
+        console.log(response.data)
     };
     useEffect(() => {
-    getBest();
-  }, [best.id])
+    getExercise();
+  }, [exercises.id])
 
     return (
         <RecoDivWrapper>
             <RecomWrapper>
-                베스트 운동
+                {category[type]}
             </RecomWrapper>
             <FlexBox
             ref={scrollRef}
@@ -75,19 +88,19 @@ const RecommendWrapper = () => {
             onMouseUp={onDragEnd}
             onMouseLeave={onDragEnd}
         >
-            {best.map((bests) => (
+            {exercises.map((exercise) => (
                 <div className="onclick-div"
                 onClick={(e) => {
                     if (startPageX === endPageX) {
-                    navigate(`/health/detail/${bests.id}`)
+                    navigate(`/health/detail/${exercise.id}`)
                     }
                 }}
                 >
                 <HealthCard
-                {...bests} key={bests.id}
-                exerciseName={bests.name}
-                exerciseId={bests.id}
-                exerciseParts={bests.parts} />
+                {...exercise} key={exercise.id}
+                exerciseName={exercise.name}
+                exerciseId={exercise.id}
+                exerciseParts={exercise.parts} />
                 </div>
             )                
             )}

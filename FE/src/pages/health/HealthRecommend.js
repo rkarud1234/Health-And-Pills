@@ -59,37 +59,7 @@ const HealthRecommend = () => {
     if (isDrag) {
       scrollRef.current.scrollLeft = startX - e.pageX;
     }
-  };
-  // // 베스트 운동 추천
-  // const [best, setBest] = useState([]);
-  // const getBest = async () => {
-  //   const response = await getExerciseBest();
-  //   if (response.status === 200)
-  //   setBest([...response.data])
-  // };
-
-  // // 사용자 맞춤 운동 추천
-  // const [custom, setCustom] = useState([]);
-  // const getCustom = async () => {
-  //   const response = await getExerciseCustom();
-  //   if (response.status === 200)
-  //   setCustom([...response.data])
-  // };
-
-  // // 유사한 사용자 운동 추천
-  // const [user, setUser] = useState([]);
-  // const getUser = async () => {
-  //   const response = await getExerciseUser();
-  //   if (response.status === 200)
-  //   setUser([...response.data])
-  // };
-
-  // useEffect(() => {
-  //   getBest();
-  //   getCustom();
-  //   getUser();
-  // }, [best.id, custom.id, user.id])
-  
+  };  
 
 
   return (
@@ -97,73 +67,9 @@ const HealthRecommend = () => {
       <div>
         <Carousel images={images} />
       </div>
-      <RecommendWrapper/>
-      <RecommendWrapper/>
-      <RecommendWrapper/>
-      {/* <RecoDivWrapper>
-        <RecomWrapper>
-            베스트 운동
-        </RecomWrapper>
-        <FlexBox
-        ref={scrollRef}
-        onMouseDown={onDragStart}
-        onMouseMove={onDragMove}
-        onMouseUp={onDragEnd}
-        onMouseLeave={onDragEnd}
-      >
-        {best.map((bests) => (
-          <HealthCard
-            {...bests} key={bests.id}
-            exerciseName={bests.name}
-            exerciseId={bests.id}
-            exerciseParts={bests.parts}
-          />
-        ))}
-      </FlexBox>
-      </RecoDivWrapper>
-      <RecoDivWrapper>
-        <RecomWrapper>
-          사용자 맞춤 운동 추천
-        </RecomWrapper>
-        <FlexBox
-        ref={scrollRef}
-        onMouseDown={onDragStart}
-        onMouseMove={onDragMove}
-        onMouseUp={onDragEnd}
-        onMouseLeave={onDragEnd}
-      >
-        {custom.map((customs) => (
-          <HealthCard
-            {...customs} key={customs.id}
-            exerciseName={customs.name}
-            exerciseId={customs.id}
-            exerciseParts={customs.parts}
-          />
-        ))}
-      </FlexBox>
-      </RecoDivWrapper>
-      <RecoDivWrapper>
-        <RecomWrapper>
-          유사한 사용자 추천
-        </RecomWrapper>
-        <FlexBox
-        className="hi"
-        ref={scrollRef}
-        onMouseDown={onDragStart}
-        onMouseMove={onDragMove}
-        onMouseUp={onDragEnd}
-        onMouseLeave={onDragEnd}
-        >
-        {user.map((users) => (
-          <HealthCard
-            {...users} key={users.id}
-            exerciseName={users.name}
-            exerciseId={users.id}
-            exerciseParts={users.parts}
-          />
-        ))}
-      </FlexBox>
-      </RecoDivWrapper> */}
+      <RecommendWrapper type='best' />
+      <RecommendWrapper type='custom'/>
+      <RecommendWrapper type='user'/>
     </>
   );
 };
