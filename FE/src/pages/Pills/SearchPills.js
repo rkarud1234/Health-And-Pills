@@ -71,7 +71,7 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
     setAutoCompleteOpened(false)
     setIsOpened(false)
   }
-  
+
   const [modalState, setModalState] = useState(false);
 
   const openModal = () => {
@@ -83,17 +83,17 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
   };
   return (
     <div>
-      
-      <Modal
-        isOpen={modalState}
-        modalContent={<VisionContent setSearchWord={setSearchWord} close={closeModal}/>}
-        closeButton={<ModalCloseButton onClick={closeModal} />}
-        close={closeModal}
-        width="1000px"
-        height="1000px"
-      />
+
 
       <SearchDiv>
+        <Modal
+          isOpen={modalState}
+          modalContent={<VisionContent setSearchWord={setSearchWord} close={closeModal} />}
+          closeButton={<ModalCloseButton onClick={closeModal} />}
+          close={closeModal}
+          width="500px"
+          height="600px"
+        />
         <div style={{ display: 'flex', justifyContent: 'center', borderBottom: '1px solid #AEB0B4' }}>
           <SearchButton onClick={openHandler}><i className="fa-solid fa-angle-left fa-lg"></i></SearchButton>
           <div style={{ width: '94%', position: 'relative' }}>
@@ -115,7 +115,7 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
           <SearchButton onClick={(e) => {
             e.preventDefault();
             openModal();
-          }}><i className="fa-light fa-camera-viewfinder fa-lg"/></SearchButton>
+          }}><i className="fa-light fa-camera-viewfinder fa-lg" /></SearchButton>
         </div>
       </SearchDiv >
       <div>
