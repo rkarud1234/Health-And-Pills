@@ -9,11 +9,17 @@ const ExerWrapper = styled.div`
   font-size: large;
   cursor: pointer;
   margin: auto;
+  font-size: 23px;
 `;
 
 const Excercising = ({ onClick }) => {
   return (
-    <ExerWrapper onClick={() => onClick("N")}>
+    <ExerWrapper
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick("N");
+      }}
+    >
       <i className="fa-solid fa-square-check"></i>
     </ExerWrapper>
   );

@@ -6,14 +6,20 @@ const ExerWrapper = styled.div`
   background: linear-gradient(#537cfe, #6a53fe);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: large;
+  font-size: ;
   cursor: pointer;
   margin: auto;
+  font-size: 23px;
 `;
 
 const UnExercising = ({ onClick }) => {
   return (
-    <ExerWrapper onClick={() => onClick("Y")}>
+    <ExerWrapper
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick("Y");
+      }}
+    >
       <i className="fa-regular fa-square-check"></i>
     </ExerWrapper>
   );
