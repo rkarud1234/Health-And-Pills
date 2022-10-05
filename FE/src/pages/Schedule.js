@@ -161,13 +161,13 @@ const Schedule = () => {
             ))}
           </div>
         </WeeklyWrapper>
-        <ButtonWrapper
-          onClick={() => {
-            openModal();
-            setSchedulePage("scheduleCreate");
-          }}
-        >
-          <SchedulePlusButton />
+        <ButtonWrapper>
+          <SchedulePlusButton
+            onClick={() => {
+              openModal();
+              setSchedulePage("scheduleCreate");
+            }}
+          />
         </ButtonWrapper>
         {/* <ButtonWrapper
             onClick={() => {

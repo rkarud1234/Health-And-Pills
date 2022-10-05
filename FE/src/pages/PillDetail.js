@@ -3,7 +3,7 @@ import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import BackButton from "../components/buttons/BackButton";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PillInfo from "./Pills/PillInfo";
 import PillReview from "./Pills/PillReview";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,6 +42,7 @@ const TabList = styled.div`
 const PillDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [tabNum, setTabNum] = useState(1);
 
   const id = useParams().id;
@@ -96,6 +97,7 @@ const PillDetail = () => {
       </TabList>
     );
   }
+  console.log(state);
 
   return (
     <>
@@ -106,7 +108,19 @@ const PillDetail = () => {
             leftChildren={
               <BackButton
                 onClick={() => {
-                  navigate("/pills");
+                  if (state === null) {
+                    navigate(-1);
+                  } else {
+                    if (state.prevPath) {
+                      navigate("/profiles", {
+                        state: {
+                          infoType: state.prevPath,
+                          title: state.title,
+                          type: state.type,
+                        },
+                      });
+                    }
+                  }
                 }}
               />
             }

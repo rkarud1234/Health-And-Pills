@@ -321,7 +321,7 @@ const Profile = () => {
       } else if (slidingMenuState.infoType === "like") {
         return <UserLike />;
       } else if (slidingMenuState.infoType === "bookmark") {
-        return <Bookmark />;
+        return <Bookmark bookmarkType={state !== null ? state.type : null} />;
       } else if (slidingMenuState.infoType === "pill") {
         return <UserPill />;
       } else return <UserExercise />;

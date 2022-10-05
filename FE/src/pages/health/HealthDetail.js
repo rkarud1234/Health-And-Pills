@@ -19,7 +19,7 @@ import {
   exerciseBookMark,
   exerciseDoing,
 } from "../../api/HealthAPI";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const BlockWrapper = styled.div`
   background-color: transparent;
@@ -168,6 +168,7 @@ const HealthDetail = ({
   const [startX, setStartX] = useState();
   const [startPageX, setStartPageX] = useState();
   const [endPageX, setendPageX] = useState();
+  const { state } = useLocation();
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
@@ -298,7 +299,25 @@ const HealthDetail = ({
     <>
       <Header
         leftNone={true}
-        leftChildren={<BackButton onClick={() => window.history.go(-1)} />}
+        leftChildren={
+          <BackButton
+            onClick={() => {
+              if (state === null) {
+                navigate(-1);
+              } else {
+                if (state.prevPath) {
+                  navigate("/profiles", {
+                    state: {
+                      infoType: state.prevPath,
+                      title: state.title,
+                      type: state.type,
+                    },
+                  });
+                }
+              }
+            }}
+          />
+        }
       />
       <ScrollBox>
         <div style={{ width: "100%", padding: "0px 16px" }}>

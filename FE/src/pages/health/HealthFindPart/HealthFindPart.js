@@ -5,14 +5,14 @@ import React from "react";
 import HealthFindList from "../HealthFindList";
 
 const HealthButton = styled.button`
-  background-color: transparent;
+  background-color: #fcfcfc;
   color: ${({ textColor }) => textColor};
   font-size: 16px;
   cursor: pointer;
-  padding: 8px;
+  padding: 5px 12px;
   border: solid 2px;
-  border-radius: 12px;
-  margin: 8px;
+  border-radius: 18px;
+  margin: 5px;
   font-weight: ${({ fontWeight }) => fontWeight};
 `;
 
@@ -99,7 +99,7 @@ const HealthFindPart = ({ tag }) => {
                 onHandlePart(parts.exercisePartCategoryId);
               }}
               textColor={
-                parts.exercisePartCategoryId === partNum ? "black" : "#7B7B7B"
+                parts.exercisePartCategoryId === partNum ? "#537CFE" : "#7B7B7B"
               }
               fontWeight={
                 parts.exercisePartCategoryId === partNum ? "bolder" : "normal"
