@@ -24,6 +24,7 @@ public class CalendarQueryRepository {
                 .leftJoin(calendar.exercise, exercise).fetchJoin()
                 .where(calendar.calendarDate.eq(calendarDate),
                         calendar.users.eq(user))
+                .orderBy(calendar.calendarTime.asc())
                 .fetch();
     }
 }
