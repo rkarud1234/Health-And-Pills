@@ -1,4 +1,5 @@
 from itertools import chain
+import random
 from time import strftime
 import pandas as pd
 import numpy as np
@@ -50,6 +51,7 @@ def recommendBest(userId):
 def recommendCustom(user_id):
     ratings = PillReview.toDataFrame(cols=['user_id','pill_id','pill_review_score'])
     ratings = ratings.groupby(['user_id','pill_id'])['pill_review_score'].mean().reset_index()
+    # print(ratings)
 
     x = ratings.copy()
     y = ratings['user_id']
@@ -61,15 +63,20 @@ def recommendCustom(user_id):
     matrix_dummy = rating_matrix.copy().fillna(0)
     user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
     user_similarity = pd.DataFrame(user_similarity, index=rating_matrix.index, columns=rating_matrix.index)
-    user_pill = matrix_dummy.loc[user_id].copy()
+    try:
+        user_pill = matrix_dummy.loc[user_id].copy()
+    except:
+        user_pill = matrix_dummy.iloc[1].copy()
+        for i in range(1, len(user_pill)):
+            user_pill[i] = 0.0
 
     for pill in rating_matrix.columns:
         if pd.notnull(user_pill.loc[pill]):
             user_pill.loc[pill] = 0
         else:
-            user_pill.loc[pill] = CF_knn(32, pill, rating_matrix, user_similarity, 1)
+            user_pill.loc[pill] = CF_knn(user_id, pill, rating_matrix, user_similarity, 29)
 
-    pill_sort = user_pill.sort_values(ascending=False)
+    pill_sort = user_pill.sort_values(ascending=False).drop(1)
     return pk_list_to_queryset(pill_sort.reset_index()['pill_id'][:10])
     
 # 현재 보고있는 영양제와 비슷한 영양제
@@ -93,17 +100,23 @@ def recommendItem(user_id, pill_id):
     matrix_dummy = rating_matrix.copy().fillna(0)
     user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
     user_similarity = pd.DataFrame(user_similarity, index=rating_matrix.index, columns=rating_matrix.index)
-    user_pill = matrix_dummy.loc[user_id].copy()
+    try:
+        user_pill = matrix_dummy.loc[user_id].copy()
+    except:
+        user_pill = matrix_dummy.iloc[1].copy()
+        for i in range(1, len(user_pill)):
+            user_pill[i] = 0.0
 
     for pill in rating_matrix.columns:
         if pd.notnull(user_pill.loc[pill]):
             user_pill.loc[pill] = 0
         else:
-            user_pill.loc[pill] = CF_knn(32, pill, rating_matrix, user_similarity, 1)
+            user_pill.loc[pill] = CF_knn(user_id, pill, rating_matrix, user_similarity, 29)
 
-    pill_sort = user_pill.sort_values(ascending=False)
-
-    return pk_list_to_queryset(pill_sort.reset_index()['pill_id'][:10])
+    pill_sort = user_pill.sort_values(ascending=False).drop(1)
+    print(pill_sort)
+    rand = random.randint(0,20)
+    return pk_list_to_queryset(pill_sort.reset_index()['pill_id'][rand:rand+10])
 
 # 생년월일 -> 연령대
 def get_age_group(birthday):
