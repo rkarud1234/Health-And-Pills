@@ -11,8 +11,10 @@ const PrivateRoute = ({ component: Component }) => {
   const authenticated = loadCheck();
   if (authenticated) {
     const data = useSelector((state) => state.user.data);
-    if (data !== "") {
+    if (data !== "" && data !== null) {
       return Component;
+    } else {
+      return <Navigate to="/" />;
     }
   }
   return authenticated ? Component : <Navigate to="/" />;
