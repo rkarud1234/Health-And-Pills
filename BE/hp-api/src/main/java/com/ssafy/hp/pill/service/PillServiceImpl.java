@@ -17,6 +17,7 @@ import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserPill;
 import com.ssafy.hp.user.service.UserService;
+import com.ssafy.hp.vision.DetectText;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -208,9 +209,9 @@ public class PillServiceImpl implements PillService {
         }
     }
 
-    public VisionResponse getDetectText(String data) {
+    public VisionResponse getDetectText(byte[] data) {
         try {
-            String result = detectText.detectText(data.getBytes());
+            String result = detectText.detectText(data);
             return new VisionResponse(result, result);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -86,7 +86,7 @@ public class PillController {
 
     // 이미지 검색
     @PostMapping("/vision")
-    public ResponseEntity<VisionResponse> getDetectText(@RequestBody @Valid String data) {
+    public ResponseEntity<VisionResponse> getDetectText(@RequestBody @Valid byte[] data) {
         VisionResponse body = pillService.getDetectText(data);
         return ResponseEntity.ok().body(body);
     }
