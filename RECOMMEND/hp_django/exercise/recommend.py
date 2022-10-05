@@ -95,7 +95,8 @@ def recommendCustom(user_id):
     y = ratings['user_id']
     
     x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.25)
-    
+
+
     rating_matrix = x_train.pivot(index='user_id', columns='exercise_id', values='score')
 
     matrix_dummy = rating_matrix.copy().fillna(0)
@@ -103,6 +104,10 @@ def recommendCustom(user_id):
     user_similarity = pd.DataFrame(user_similarity, index=rating_matrix.index, columns=rating_matrix.index)
     user_exercise = matrix_dummy.loc[user_id].copy()
 
+    print("trainSet",x_train.shape, y_train.shape)
+    print("testSet",x_test.shape, y_test.shape)
+
+    
     for pill in rating_matrix.columns:
         if pd.notnull(user_exercise.loc[pill]):
             user_exercise.loc[pill] = 0
@@ -172,38 +177,38 @@ def pk_list_to_queryset(pk_list):
 
 
 # 정확도 RMSE를 계산하는 함수
-def RMSE(self, y_true, y_pred):
+def RMSE(y_true, y_pred):
 
     return np.sqrt(np.mean((np.array(y_true) - np.array(y_pred))**2))
 
 # 모델별 RMSE를 계산하는 함수
-def score(self, model):
-    id_pairs = zip(x_test['user_id'],x_test['movie_id'])
-    y_pred = np.array([model(user,movie) for (user,movie) in id_pairs])
+def score(model, x_test):
+    id_pairs = zip(x_test['user_id'],x_test['exercise_id'])
+    y_pred = np.array([model(user,exercise) for (user,exercise) in id_pairs])
     y_true = np.array(x_test['rating'])
-    return self.RMSE(y_true, y_pred)
+    return RMSE(y_true, y_pred)
 
 
 ## 이웃 크기를 정해서 예측치 계산 하는  함수 KNN
-def CF_knn(user_id, movie_id, ratings_matrix, user_similarity ,neighbor_size=0):
-  if movie_id in ratings_matrix.columns:
+def CF_knn(user_id, exercise_id, ratings_matrix, user_similarity ,neighbor_size):
+  if exercise_id in ratings_matrix.columns:
     sim_scores = user_similarity[user_id].copy()
-    movie_ratings = ratings_matrix[movie_id].copy()
-    none_rating_idx = movie_ratings[movie_ratings.isnull()].index
-    movie_ratings = movie_ratings.dropna()
+    exercise_ratings = ratings_matrix[exercise_id].copy()
+    none_rating_idx = exercise_ratings[exercise_ratings.isnull()].index
+    exercise_ratings = exercise_ratings.dropna()
     sim_scores = sim_scores.drop(none_rating_idx)
 
     if neighbor_size == 0:
-      mean_rating = np.dot(sim_scores,movie_ratings) / sim_scores.sum()
+      mean_rating = np.dot(sim_scores,exercise_ratings) / sim_scores.sum()
     else:
       if len(sim_scores) > 1:
         neighbor_size = min(neighbor_size, len(sim_scores))
         sim_scores = np.array(sim_scores)
-        movie_ratings = np.array(movie_ratings)
+        exercise_ratings = np.array(exercise_ratings)
         user_idx = np.argsort(sim_scores)
         sim_scores = sim_scores[user_idx][-neighbor_size:]
-        movie_ratings = movie_ratings[user_idx][-neighbor_size:]
-        mean_rating = np.dot(sim_scores,movie_ratings) / sim_scores.sum()
+        exercise_ratings = exercise_ratings[user_idx][-neighbor_size:]
+        mean_rating = np.dot(sim_scores,exercise_ratings) / sim_scores.sum()
       else:
         mean_rating = 3.0
   else:
