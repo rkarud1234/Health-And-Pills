@@ -25,13 +25,15 @@ const ScheduleListWrapper = styled.button`
   background-color: transparent;
 `
 
-const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
-  calendarId, calendarTime, exerciseId, name, pillId, onToggleScheduleDone
+const DailyDetailCard = ({
+  calendarComplete, calendarContent, calendarDate,
+  calendarId, calendarTime, exerciseId, name,
+  pillId, onToggleScheduleDone, flag, setFlag
 }) => {
   // 시, 분 까지만 자르기
   const scheduleTime = calendarTime.toString().substr(0, 5);
-
   // 모달 설정
+
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -56,6 +58,9 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
             calendarId={calendarId}
             calendarTime={calendarTime}
             calendarDate={calendarDate}
+            closeModal={closeModal}
+            flag={flag}
+            setFlag={setFlag}
           />}
         closeButton={<ModalCloseButton onClick={closeModal} />}
       />
@@ -63,7 +68,7 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
         <DailyItemWrapper>
           {scheduleTime} |
           <HpIconWrapper>
-            {exerciseId === null ? <i className="fa-regular fa-capsules"/> : <i className="fa-solid fa-dumbbell"/>}
+            {exerciseId === null ? <i className="fa-regular fa-capsules" /> : <i className="fa-solid fa-dumbbell" />}
           </HpIconWrapper>
           <ScheduleListWrapper
             name={name}
