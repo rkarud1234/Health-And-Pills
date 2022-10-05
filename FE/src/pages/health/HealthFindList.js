@@ -7,7 +7,7 @@ import useIntersect from "../../hooks/useIntersect";
 
 const ExerciseCategoryListWrapper = styled.div`
   overflow: scroll;
-  height: 80vh;
+  height: calc(100vh - 60px);
 `;
 const Target = styled.div`
   height: 1px;
@@ -33,7 +33,7 @@ const fetchUrl = {
 const HealthFindList = ({ typeNum, type }) => {
   const { res } = useFetchData(
     fetchUrl[type],
-    "searchExerciseCategory",
+    "searchExerciseCategory" + type + typeNum,
     () => {},
     () => {},
     typeNum
@@ -54,8 +54,10 @@ const HealthFindList = ({ typeNum, type }) => {
       res.fetchNextPage();
     }
   });
+  console.log("res ::: ", res);
+  console.log("findExerciseList :::", findExerciseList);
   return (
-    <ExerciseCategoryListWrapper>
+    <ExerciseCategoryListWrapper className="hello">
       {findExerciseList.length !== 0 ? (
         findExerciseList.map((item) => (
           <HealthListCard
@@ -68,7 +70,7 @@ const HealthFindList = ({ typeNum, type }) => {
           <h1>등록된 정보가 없습니다.</h1>
         </>
       )}
-      <Target ref={ref} />
+      <Target ref={ref} className="dfdf" />
     </ExerciseCategoryListWrapper>
   );
 };

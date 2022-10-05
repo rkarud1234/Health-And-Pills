@@ -212,7 +212,7 @@ const ScheduleCreate = ({ yoil, close }) => {
       alert("일정 등록이 완료되었습니다.");
       close();
     } else {
-      console.log(response);
+      alert("이미 등록된 일정입니다.");
     }
   };
 

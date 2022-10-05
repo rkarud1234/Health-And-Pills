@@ -21,7 +21,7 @@ const ScrollBox = styled.div`
     display: none;
   } /* Chrome, Safari, Opera 환경*/
   scrollbar-height: none; /* firefox 환경 */
-  overflow-y: hidden;
+  overflow-y: auto;
   height: 88vh;
 `;
 
@@ -30,7 +30,7 @@ const Box = styled.div`
     display: none;
   } /* Chrome, Safari, Opera 환경*/
   scrollbar-height: none; /* firefox 환경 */
-  overflow-y: hidden;
+  overflow-y: auto;
   height: 92vh;
 `;
 

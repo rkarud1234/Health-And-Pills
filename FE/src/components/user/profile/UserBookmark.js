@@ -65,7 +65,7 @@ const UserBookmark = ({ type }) => {
 
   const goToDetail = (type, id) => {
     type === "pill"
-      ? navigate(`/pill/detail/${id}`)
+      ? navigate(`/pills/detail/${id}`)
       : navigate(`/health/detail/${id}`);
   };
 
