@@ -9,12 +9,13 @@ const StyeldSocialLoginContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 const SocialLinkWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
+  margin-top: 40px;
 `;
 
 const GoogleLink = styled.a`
@@ -34,7 +35,6 @@ const GoogleLink = styled.a`
 `;
 const GoogleText = styled.span``;
 const SocialLoginContent = () => {
-  // 임시 코드
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onHandleTempLogin = () => {
@@ -42,7 +42,9 @@ const SocialLoginContent = () => {
   };
   return (
     <StyeldSocialLoginContent>
-      <div>LOGO</div>
+      <div>
+        <img src={process.env.PUBLIC_URL + "/modalLogo.png"} />
+      </div>
       <SocialLinkWrapper>
         <a href="https://j7b203.p.ssafy.io/oauth2/authorization/kakao">
           <img
