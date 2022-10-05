@@ -41,17 +41,19 @@ const ScheduleTimeForm = styled.input`
   outline: none;
 `
 
-const ScheduleUpdateDelete = ({calendarContent, calendarTime,
-  name, exerciseId, pillId, calendarDate, calendarId
+const ScheduleUpdateDelete = ({
+  calendarContent, calendarTime,
+  name, calendarDate, calendarId,
+  closeModal, flag, setFlag
 }) => {
-
   const onClickDeleteSchedule = async (calendarId) => {
     const response = await deleteSchedule(calendarId);
     if (response.status === 200) {
       console.log("삭제됨")
     }
+    closeModal()
+    setFlag(!flag)
   }
-
   // 시간 자르기
   const slicedCalendarTime = calendarTime.toString().split(':', 2);
 
@@ -83,13 +85,16 @@ const ScheduleUpdateDelete = ({calendarContent, calendarTime,
 
   // 일정 시간 수정
   const onScheduleEdit = (calendarId) => {
-    client
-      .put(`/calendars/${calendarId}`, {
-        calendarContent: content.content,
-        calendarTime: (content.hour + ":" + content.minute)
+    client.put(`/calendars/${calendarId}`, {
+      calendarContent: content.content,
+      calendarTime: (content.hour + ":" + content.minute)
+    })
+      .then((response) => {
+        response
+        setFlag(!flag)
       })
-      .then((response) => response)
       .catch((error) => error.response);
+    closeModal()
   }
 
   // 일정 내용 수정
@@ -98,41 +103,40 @@ const ScheduleUpdateDelete = ({calendarContent, calendarTime,
   };
 
   const weekly = ['일', '월', '화', '수', '목', '금', '토'];
-
   return (
     <>
       <UpdateDeleteWrapper>
-      <div>{weekly[calendarDate]}: {name}</div>
-      <CommentInput
-        placeholder={calendarContent}
-        type="string"
-        value={content.content}
-        name="content"
-        onChange={onHandleInput}
-      >
-      </CommentInput>
-      <div>
-        <ScheduleTimeForm
-          value={content.hour}
-          placeholder={slicedCalendarTime[0]}
-          name="hour"
-          onChange={onScheduleTimeInput}
-        />
-        시
-        <ScheduleTimeForm
-          value={content.minute}
-          placeholder={slicedCalendarTime[1]}
-          name="minute"
-          onChange={onScheduleTimeInput}
-        />
-        분
-      </div>
-      <UpdateButton onClick={() => onScheduleEdit(calendarId)}>
-        수정
-      </UpdateButton>
-      <DelteButton onClick={() => onClickDeleteSchedule(calendarId)}>
-        삭제
-      </DelteButton>
+        <div>{weekly[calendarDate]}: {name}</div>
+        <CommentInput
+          placeholder={calendarContent}
+          type="string"
+          value={content.content}
+          name="content"
+          onChange={onHandleInput}
+        >
+        </CommentInput>
+        <div>
+          <ScheduleTimeForm
+            value={content.hour}
+            placeholder={slicedCalendarTime[0]}
+            name="hour"
+            onChange={onScheduleTimeInput}
+          />
+          시
+          <ScheduleTimeForm
+            value={content.minute}
+            placeholder={slicedCalendarTime[1]}
+            name="minute"
+            onChange={onScheduleTimeInput}
+          />
+          분
+        </div>
+        <UpdateButton onClick={() => onScheduleEdit(calendarId)}>
+          수정
+        </UpdateButton>
+        <DelteButton onClick={() => onClickDeleteSchedule(calendarId)}>
+          삭제
+        </DelteButton>
       </UpdateDeleteWrapper>
     </>
   );

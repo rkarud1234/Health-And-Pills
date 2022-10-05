@@ -106,10 +106,11 @@ const Schedule = () => {
   const [flag, setFlag] = useState(false);
   useEffect(() => {
     getInfo();
-  }, []);
+  }, [flag]);
   useEffect(() => {
     getDetail();
   }, [yoil, flag]);
+
 
   // 일정 완료 체크 or 해제
   const onToggleScheduleDone = async (calendarId) => {
@@ -126,10 +127,17 @@ const Schedule = () => {
       <Modal
         isOpen={isOpen}
         closeButton={<ModalCloseButton onClick={closeModal} />}
-        modalContent={<ScheduleCreate yoil={yoil} close={closeModal} />}
-        // modalContent={modalPage[schedulePage]}
-        // closeButton={<ModalCloseButton onClick={closeModal} />}
-        // yoil={yoil}
+        modalContent={
+          <ScheduleCreate
+            yoil={yoil}
+            closeModal={closeModal}
+            flag={flag}
+            setFlag={setFlag}
+          />
+        }
+      // modalContent={modalPage[schedulePage]}
+      // closeButton={<ModalCloseButton onClick={closeModal} />}
+      // yoil={yoil}
       />
       <Header leftNone={true} leftChildren={<BackButton />} />
       <BackWrapper>
@@ -181,11 +189,7 @@ const Schedule = () => {
           {detail.length !== 0 ? (
             <div>
               {detail.map((item, idx) => (
-                <DailyDetailCard
-                  {...item}
-                  key={idx}
-                  onToggleScheduleDone={onToggleScheduleDone}
-                />
+                <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone} flag={flag} setFlag={setFlag} />
               ))}
             </div>
           ) : (
