@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import React from "react";
 import { useState } from "react";
 import Loading from "../../layouts/Loading";
+import styled from "styled-components";
 
 ChartJS.register(
   RadialLinearScale,
@@ -24,6 +25,7 @@ ChartJS.register(
   Legend
 );
 
+const RadarWrapper = styled.div``;
 const UserChart = () => {
   const [inbodyAvg, setInbodyAvg] = useState({ isLoading: true });
   const {
@@ -56,8 +58,8 @@ const UserChart = () => {
           userProfileWater,
         ],
         fill: true,
-        backgroundColor: "rgb(210 218 255 / 80%)",
-        borderColor: "rgb(210 218 255 / 80%)",
+        backgroundColor: "rgb(210 218 255 / 50%)",
+        borderColor: "rgb(210 218 255 / 50%)",
         pointBackgroundColor: "rgb(210 218 255)",
         pointBorderColor: "#fff",
         pointHoverBackgroundColor: "#fff",
@@ -73,8 +75,8 @@ const UserChart = () => {
           inbodyAvg.userProfileWater,
         ],
         fill: true,
-        backgroundColor: "rgb(255 235 173 / 50%)",
-        borderColor: "rgb(255 235 173 / 50%)",
+        backgroundColor: "rgb(255 235 173 / 80%)",
+        borderColor: "rgb(255 235 173 / 80%)",
         pointBackgroundColor: "rgb(255 235 173)",
         pointBorderColor: "#fff",
         pointHoverBackgroundColor: "#fff",
@@ -88,7 +90,7 @@ const UserChart = () => {
       <Loading />
     </>
   ) : (
-    <div>{<Radar data={data} />}</div>
+    <RadarWrapper>{<Radar data={data} />}</RadarWrapper>
   );
 };
 
