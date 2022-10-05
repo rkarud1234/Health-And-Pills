@@ -14,6 +14,7 @@ import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.exercise.ExerciseRepository;
 import com.ssafy.hp.exercise.domain.Exercise;
 import com.ssafy.hp.exercise.service.ExerciseService;
+import com.ssafy.hp.fcm.FirebaseClient;
 import com.ssafy.hp.pill.PillRepository;
 import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.service.PillService;
@@ -48,6 +49,7 @@ public class CalendarServiceImpl implements CalendarService{
     private final UserExerciseRepository userExerciseRepository;
     private final ExerciseService exerciseService;
     private final PillService pillService;
+    private final FirebaseClient firebaseClient;
 
     @Override
     // 회원의 요일별 영양제 & 운동 갯수 조회
@@ -139,9 +141,36 @@ public class CalendarServiceImpl implements CalendarService{
         }
     }
 
-    @Scheduled(cron = "0 0 * * 1")
+    //매주 일요일 0시 0분 정각에 수행
+    @Scheduled(cron = "0 0 0 * * 0")
     @Transactional
     public void deleteAll() {
         calendarRepository.deleteAll();
+    }
+
+    // 5분 전에 일정 수행하라고 알림
+    @Scheduled(cron = "* * * * * *")
+    @Transactional
+    public void sendNotificationCalendar(){
+        // 5분 이상 차이나면서 처리가 안된것 조회 (queryDsl)-> update 처리 (queryDsl 벌크성 쿼리)
+        List<Calendar> findCalendars = calendarQueryRepository.findByCalendarTimeAndNotificationSend();
+        calendarQueryRepository.updateNotificationSend(findCalendars);
+        // 해당 애들의 fcm토큰으로 알림 보내기
+        findCalendars
+                .forEach(calendar -> firebaseClient.send(calendar.getUsers().getFcmToken(), calendar.getUsers().getUserNickname() + "님! 일정을 수행해주세요!"));
+    }
+
+
+    // 일정시간 후에 1시간 지나도 미완료상태일때 -> 일정 수행하라고 알림
+    @Scheduled(cron = "* * * * * *")
+    @Transactional
+    public void sendNotificationNotCompleteCalendar(){
+        // 1시간 이상 애들 중에 미완료 상태이고 알림이 안보내진것 조회 -> Update 처리
+        List<Calendar> findCalendars = calendarQueryRepository.findByCalendarTimeAndCalendarCompleteAndCompleteSend();
+        calendarQueryRepository.updateCompleteSend(findCalendars);
+        // 해당 애들의 fcm토큰으로 알림 보내기
+        findCalendars
+                .forEach(calendar -> firebaseClient.send(calendar.getUsers().getFcmToken(), calendar.getUsers().getUserNickname() + "님! 아직 완료되지 않은 일정이 있습니다!"));
+
     }
 }
