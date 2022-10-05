@@ -20,7 +20,7 @@ const Excercising = ({ onClick }) => {
         onClick("N");
       }}
     >
-      <i className="fa-solid fa-check"></i>
+      <i className="fa-solid fa-square-check"></i>
     </ExerWrapper>
   );
 };
