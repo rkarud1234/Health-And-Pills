@@ -6,56 +6,75 @@ import { client } from "../../../api";
 
 const UpdateDeleteWrapper = styled.div`
   display: block;
-`
+  width: 100%;
+`;
 const UpdateButton = styled.button`
-  background-color: #EAEFF1;
-`
+  background: #537cfe;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  padding: 4px 6px;
+  margin: 8px;
+`;
 
 const DelteButton = styled.button`
-  background-color: #EAEFF1;
-`
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  // color: #fff;
+  font-size: 15px;
+  padding: 4px 6px;
+  margin: 8px;
+`;
 
 const SearchBar = styled.input`
   border: 2px solid;
   border-radius: 8px;
   width: 80%;
   height: 30px;
-`
+`;
 
 const CommentInput = styled.textarea`
   border: 2px solid;
   border-radius: 8px;
   width: 80%;
-  height: 80px;
-`
+  height: 120px;
+  resize: none;
+  outline: none;
+`;
 
 const DailyWrapper = styled.button`
   border: none;
   border-radius: 4px;
   background-color: #eaeff1;
-`
+`;
 
 // 시간 입력 폼
 const ScheduleTimeForm = styled.input`
   text-align: center;
   outline: none;
-`
+`;
 
 const ScheduleUpdateDelete = ({
-  calendarContent, calendarTime,
-  name, calendarDate, calendarId,
-  closeModal, flag, setFlag
+  calendarContent,
+  calendarTime,
+  name,
+  calendarDate,
+  calendarId,
+  closeModal,
+  flag,
+  setFlag,
 }) => {
   const onClickDeleteSchedule = async (calendarId) => {
     const response = await deleteSchedule(calendarId);
     if (response.status === 200) {
-      console.log("삭제됨")
+      console.log("삭제됨");
     }
-    closeModal()
-    setFlag(!flag)
-  }
+    closeModal();
+    setFlag(!flag);
+  };
   // 시간 자르기
-  const slicedCalendarTime = calendarTime.toString().split(':', 2);
+  const slicedCalendarTime = calendarTime.toString().split(":", 2);
 
   const [content, setContent] = useState({
     content: calendarContent,
@@ -85,38 +104,56 @@ const ScheduleUpdateDelete = ({
 
   // 일정 시간 수정
   const onScheduleEdit = (calendarId) => {
-    client.put(`/calendars/${calendarId}`, {
-      calendarContent: content.content,
-      calendarTime: (content.hour + ":" + content.minute)
-    })
+    client
+      .put(`/calendars/${calendarId}`, {
+        calendarContent: content.content,
+        calendarTime: content.hour + ":" + content.minute,
+      })
       .then((response) => {
-        response
-        setFlag(!flag)
+        response;
+        setFlag(!flag);
       })
       .catch((error) => error.response);
-    closeModal()
-  }
+    closeModal();
+  };
 
   // 일정 내용 수정
   const onHandleInput = (e) => {
     setContent({ ...content, [e.target.name]: e.target.value });
   };
 
-  const weekly = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekly = ["일", "월", "화", "수", "목", "금", "토"];
   return (
     <>
       <UpdateDeleteWrapper>
-        <div>{weekly[calendarDate]}: {name}</div>
+        <div
+          style={{
+            marginBottom: "10px",
+          }}
+        >
+          {/* {weekly[calendarDate]}  */}
+          {name}
+        </div>
         <CommentInput
+          style={{
+            border: "1px solid #e1e1e1",
+            width: "100%",
+          }}
           placeholder={calendarContent}
           type="string"
           value={content.content}
           name="content"
           onChange={onHandleInput}
-        >
-        </CommentInput>
+        ></CommentInput>
         <div>
           <ScheduleTimeForm
+            style={{
+              width: "40px",
+              border: "1px solid #e1e1e1",
+              padding: "8px",
+              borderRadius: "8px",
+              margin: "8px",
+            }}
             value={content.hour}
             placeholder={slicedCalendarTime[0]}
             name="hour"
@@ -124,6 +161,13 @@ const ScheduleUpdateDelete = ({
           />
           시
           <ScheduleTimeForm
+            style={{
+              width: "40px",
+              border: "1px solid #e1e1e1",
+              padding: "8px",
+              borderRadius: "8px",
+              margin: "8px",
+            }}
             value={content.minute}
             placeholder={slicedCalendarTime[1]}
             name="minute"

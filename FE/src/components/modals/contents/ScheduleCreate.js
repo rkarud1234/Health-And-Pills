@@ -73,7 +73,11 @@ const CommentInput = styled.textarea`
 const ScheduleTimeForm = styled.input`
   text-align: center;
   outline: none;
-  width: 80px;
+  width: 40px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px;
 `;
 
 const SearchResultWrapper = styled.div`
@@ -108,7 +112,7 @@ const SearchResultWrapper = styled.div`
   }
 `;
 const TimeWrapper = styled.div`
-  margin-top: 10px;
+  margin: 10px auto 0;
 `;
 
 const ButtonWrapper = styled.div`
