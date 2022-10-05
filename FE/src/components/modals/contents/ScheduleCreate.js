@@ -134,7 +134,7 @@ const initialContent = {
   pillId: null,
   exerciseId: null,
 };
-const ScheduleCreate = ({ yoil }) => {
+const ScheduleCreate = ({ yoil, close }) => {
   const [hp, setHP] = useState("2");
   const onClickRadioButton = (e) => {
     setHP(e.target.value);
@@ -210,6 +210,7 @@ const ScheduleCreate = ({ yoil }) => {
     const response = await postSchedule(data);
     if (response.status === 200) {
       alert("일정 등록이 완료되었습니다.");
+      close();
     } else {
       console.log(response);
     }
