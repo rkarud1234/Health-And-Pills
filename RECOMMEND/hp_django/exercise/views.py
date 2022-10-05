@@ -18,7 +18,7 @@ class RecommendCustomApi(APIView):
         serializer = ExerciseSerializer(pill_list, many=True)
         data = serializer.data
         return Response(createContext(data, userId))
-        
+
 class RecommendBestApi(APIView):
 
     def get(self, request, userId):
@@ -67,14 +67,11 @@ def createContext(data, userId):
             partName = getExercisePartName(part['exercise_part_category_id']).exercise_part_category_name
             parts.append(partName)
         temp = UserExercise.objects.filter(user_id=userId,exercise_id=id['exercise_id']).values_list('user_exercise_bookmark','user_exercise_doing','user_exercise_like')
-        print(temp)
+
         if len(temp) > 0:
             temp = list(temp)[0]
         else:
             temp = ['N','N',None]
-        
-        # print(userId)
-        print(temp)
         context.append(
             {
                 'id':id['exercise_id'],
