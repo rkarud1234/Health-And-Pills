@@ -1,9 +1,11 @@
 package com.ssafy.hp.exercise.query;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.*;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.exercise.domain.*;
 import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
+import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.user.domain.User;
 import lombok.*;
 import org.springframework.data.domain.*;
@@ -23,7 +25,7 @@ public class ExerciseQueryRepository {
 
     // 해당 부위의 운동들을 반환
     public Page<Exercise> findExerciseByExercisePartCategory(ExercisePartCategory exercisePartCategory, Pageable pageable) {
-        List<Exercise> results = queryFactory
+        QueryResults<Exercise> results = queryFactory
                 .selectFrom(exercise)
                 .join(exercisePart)
                 .on(exercise.eq(exercisePart.exercise))
@@ -31,9 +33,11 @@ public class ExerciseQueryRepository {
                 .orderBy(exercise.exerciseName.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(results);
+        List<Exercise> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public List<List<ExerciseCalendarResponse>> findExerciseByUserExercise(User user, String search) {
