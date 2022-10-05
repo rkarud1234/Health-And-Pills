@@ -14,10 +14,12 @@ const SocialLogin = () => {
   sessionStorage.setItem("REFRESH_TOKEN", refreshToken);
   const { isLogin, data, loading } = useSelector((state) => state.user);
   const fcmToken = window.localStorage.getItem("FCM_TOKEN");
-  const postFcmToken = () => {client.post("/users/fcm", fcmToken)}
+  const postFcmToken = () => {
+    client.post("/users/fcm", { fcmToken: fcmToken });
+  };
   useEffect(() => {
     postFcmToken();
-    
+
     dispatch(profile());
     if (isLogin && data === "") {
       navigate("/require");
