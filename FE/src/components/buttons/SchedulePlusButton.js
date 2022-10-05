@@ -11,10 +11,10 @@ const PlusButtonWrapper = styled.button`
   cursor: pointer;
 `;
 
-const SchedulePlusButton = () => {
+const SchedulePlusButton = ({ onClick }) => {
   return (
     <>
-      <PlusButtonWrapper>
+      <PlusButtonWrapper onClick={onClick}>
         <i className="fa-solid fa-circle-plus" />
       </PlusButtonWrapper>
     </>
