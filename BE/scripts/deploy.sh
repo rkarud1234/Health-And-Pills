@@ -34,6 +34,7 @@ sudo docker pull gksekqls9808/hp-api:latest
 
 echo "> 도커 실행 포트:$IDLE_PORT"
 sudo docker run -d --name $IDLE_PORT -p ${IDLE_PORT}:${IDLE_PORT} -e "server.port=${IDLE_PORT}" -e TZ=Asia/Seoul gksekqls9808/hp-api:latest
+docker cp /var/jenkins_home/workspace/backend/vision.json $IDLE_PORT:/home/vision.json
 
 echo "> 사용하지 않는 도커 이미지 삭제"
 docker rmi -f $(docker images -f "dangling=true" -q) || true
