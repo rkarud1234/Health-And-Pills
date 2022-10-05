@@ -156,7 +156,7 @@ const SearchSlide = ({ openHandler }) => {
   const domestic = useSelector(state => state.search.domestic)
   const functionalityList = useSelector(state => state.search.functionalityList)
   const nutrientList = useSelector(state => state.search.nutrientList)
-  // console.log(domestic, functionalities, nutrients)
+
 
   // 선택한 카테고리 횡스크롤
   const scrollRef = useRef(null);
