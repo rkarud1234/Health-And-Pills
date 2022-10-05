@@ -69,7 +69,6 @@ const CommentInput = styled.textarea`
   padding: 8px;
 `;
 
-
 // 시간 입력 폼
 const ScheduleTimeForm = styled.input`
   text-align: center;
@@ -200,7 +199,8 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
       pillId: content.pillId,
       calendarContent: content.content,
       calendarDate: yoil,
-      calendarTime: content.hour + ":" + content.minute,
+      calendarTime:
+        content.hour.toString().padStart(2, "0") + ":" + content.minute,
     };
     const response = await postSchedule(data);
     if (response.status === 200) {
@@ -209,8 +209,8 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
     } else {
       alert("이미 등록된 일정입니다.");
     }
-    closeModal()
-    setFlag(!flag)
+    closeModal();
+    setFlag(!flag);
   };
 
   useEffect(() => {
@@ -328,7 +328,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
               ? "active end"
               : "active"
           }
-        // onKeyUp={handleDropDownKey}
+          // onKeyUp={handleDropDownKey}
         />
         {isHaveInputValue && result.length !== 0 ? (
           <SearchResultWrapper
