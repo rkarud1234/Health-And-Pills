@@ -64,6 +64,13 @@ export const SearchPill = async (page, data) => {
   return result;
 };
 
+export const SearchImg = async (data) => {
+  const result = await client
+    .post(`/pills/vision`, data)
+    .then(response => {return response.data});
+  return result;
+};
+
 // 자동완성
 export const AutoComplete = createAsyncThunk(
   'Search/AutoComplete',
