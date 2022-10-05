@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import PillInfo from './Pills/PillInfo'
 import PillReview from './Pills/PillReview'
 import { useDispatch, useSelector } from 'react-redux'
-import { PillDetailFetch, PillReviewFetch } from '../store/actions/pills'
+import { PillDetailFetch } from '../store/actions/pills'
 
 
 const ScrollDiv = styled.div`
@@ -48,14 +48,9 @@ const PillDetail = () => {
   const id = useParams().id
   const pillDetail = useSelector(state => state.pill.pillDetail)
   const status = useSelector(state => state.pill.status)
-  const reviewInfo = useSelector(state => state.pill.reviewInfo)
 
   useEffect(() => {
     dispatch(PillDetailFetch(id))
-  }, [reviewInfo, id])
-
-  useEffect(() => {
-    dispatch(PillReviewFetch(id))
   }, [id])
 
 
@@ -81,7 +76,7 @@ const PillDetail = () => {
             {Tabs}
             {tabNum === 1
               ? <PillInfo id={id} {...pillDetail} />
-              : <PillReview id={id} {...pillDetail} reviews={reviewInfo.content} />
+              : <PillReview id={id} {...pillDetail} />
             }
           </ScrollDiv>
           <Footer />

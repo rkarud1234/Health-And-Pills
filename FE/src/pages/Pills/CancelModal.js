@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { DeleteReview, PillReviewFetch } from '../../store/actions/pills'
+import { DeleteReview, PillDetailFetch } from '../../store/actions/pills'
 import { useDispatch } from 'react-redux'
 
 const Container = styled.div`
@@ -48,7 +48,7 @@ const CancelModal = ({ setModalOpen, reviewId, pillID }) => {
   const deleteReviewHandler = () => {
     dispatch(DeleteReview(reviewId))
       .then(() => {
-        dispatch(PillReviewFetch(pillID))
+        dispatch(PillDetailFetch(pillID))
         setModalOpen(false)
       })
 

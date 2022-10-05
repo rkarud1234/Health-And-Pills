@@ -23,7 +23,7 @@ const DivNext = styled.div`
   width: 16px;
   height: 16px;
   position: absolute;
-  right: 4px;
+  right: 16px;
   z-index: 99;
   fill: rgba(0, 0, 0, 0.5);
 `;
@@ -31,7 +31,7 @@ const DivPre = styled.div`
   width: 16px;
   height: 16px;
   position: absolute;
-  left: 4px;
+  left: 16px;
   z-index: 99;
   fill: rgba(0, 0, 0, 0.5);
 `;

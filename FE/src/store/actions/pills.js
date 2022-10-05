@@ -5,10 +5,6 @@ const initialState = {
   status: '',
   pillDetail: [],
 
-  //영양제 리뷰 정보
-  reviewInfo: [],
-  reviewStatus: '',
-
   // 영양제 리뷰 작성
   ceateReviewStatus: ''
 }
@@ -30,20 +26,19 @@ export const PillDetailFetch = createAsyncThunk(
 )
 
 //영양제 리뷰
-export const PillReviewFetch = createAsyncThunk(
-  'Pills/PillReviewFetch',
-  async (pillID) => {
-    return client.get(`pills/${pillID}/review`)
-      .then(res => {
-        if (res.status === 200) {
-          return res.data
-        } else {
-          alert('영양제 상세정보를 불러올 수 없습니다.')
-          window.history.go(-1)
-        }
-      })
-  }
-)
+export const fetchPillReview = async (page, pillID) => {
+  const result = await client
+    .get(`pills/${pillID}/review`, { params: { page } })
+    .then(response => response);
+  return result;
+};
+//영양제애 대한 나의 리뷰
+export const fetchPillMyReview = async (pillID) => {
+  const result = await client
+    .get(`pills/${pillID}/review/my`)
+    .then(response => response);
+  return result;
+};
 
 // 영양제 리뷰 작성
 export const createReviewFetch = createAsyncThunk(
@@ -195,16 +190,6 @@ const pillSlice = createSlice({
     })
     builder.addCase(PillDetailFetch.rejected, (state, action) => {
       state.status = 'failed';
-    })
-    builder.addCase(PillReviewFetch.pending, (state, action) => {
-      state.reviewStatus = '';
-    })
-    builder.addCase(PillReviewFetch.fulfilled, (state, { payload }) => {
-      state.reviewStatus = 'succeeded';
-      state.reviewInfo = payload;
-    })
-    builder.addCase(PillReviewFetch.rejected, (state, action) => {
-      state.reviewStatus = 'failed';
     })
   }
 })
