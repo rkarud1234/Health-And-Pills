@@ -65,11 +65,9 @@ export const SearchPill = async (page, data) => {
 };
 
 export const SearchImg = async (data) => {
-  console.log('##data', data)
-  console.log('dddddd')
   const result = await client
     .post(`/pills/vision`, data)
-    .then(response => {console.log(response)});
+    .then(response => {return response.data});
   return result;
 };
 

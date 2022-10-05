@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import baseAxios from "axios";
 import { SearchImg } from '../../../store/actions/search';
 
 
-const VisionContent = () => {
+const VisionContent = ({setSearchWord, close}) => {
 
     const cropperRef = useRef(null);
   // 유저가 첨부한 이미지
@@ -24,6 +23,14 @@ const VisionContent = () => {
     convertImage = croppedImage.replace(/^data:image\/(png|jpg);base64,/, "")
   }
 
+  const requestHandler = () => {
+    SearchImg(convertImage)
+    .then(res=> {
+        setSearchWord(res);
+    })
+    close();
+  }
+
 
     return (
         <><input type="file" accept="image/*" onChange={(e) => setInputImage(URL.createObjectURL(e.target.files[0]))} />
@@ -39,8 +46,8 @@ const VisionContent = () => {
         checkOrientation={false}
         zoomable={false}
       />
-      <img src={croppedImage} />
-      <button onClick={() => { SearchImg(convertImage) }}>요청</button>
+      <img width="100px" src={croppedImage} />
+      <button onClick={requestHandler}>요청</button>
 
         </>
     );
