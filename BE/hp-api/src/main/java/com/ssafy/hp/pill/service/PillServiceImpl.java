@@ -18,6 +18,7 @@ import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserPill;
 import com.ssafy.hp.user.response.UserPillInfoResponse;
 import com.ssafy.hp.user.service.UserService;
+import com.ssafy.hp.vision.DetectText;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -159,7 +160,10 @@ public class PillServiceImpl implements PillService {
     // 모든 리뷰 조회
     @Override
     public Page<PillReviewListResponse> findReviewByPillId(User user, int pillId, Pageable pageable) {
-        return pillQueryRepository.findReviewByPillId(pillId, pageable)
+        Pill pill = pillRepository.findById(pillId)
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
+        return pillReviewRepository.findByPillAndUsersNotOrderByPillReviewIdDesc(pill, user, pageable)
                 .map(pillReview -> PillReviewListResponse.from(
                                 pillReview,
                                 user.getUserId().equals(pillReview.getUsers().getUserId())
@@ -216,10 +220,9 @@ public class PillServiceImpl implements PillService {
         }
     }
 
-    public VisionResponse getDetectText(String data) {
+    public String findKeyWordByImg(String data) {
         try {
-            String result = detectText.detectText(data.getBytes());
-            return new VisionResponse(result, result);
+            return detectText.detectText(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -234,5 +237,13 @@ public class PillServiceImpl implements PillService {
     @Override
     public List<List<PillCalendarResponse>> findPillByUserPill(User user, String search) {
         return pillQueryRepository.findPillByUserPill(user, search);
+    }
+
+    @Override
+    public Optional<PillReviewResponse> findPillReviewByUser(User user, int pillId) {
+        Pill pill = pillRepository.findById(pillId)
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+        return pillReviewRepository.findByUsersAndPill(user, pill)
+                .map(PillReviewResponse::from);
     }
 }

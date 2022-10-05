@@ -1,6 +1,7 @@
 package com.ssafy.hp.pill.controller;
 
 import com.ssafy.hp.config.LoginUser;
+import com.ssafy.hp.pill.domain.*;
 import com.ssafy.hp.pill.request.PillCheckRequest;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
@@ -15,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/api/pills")
 @RestController
@@ -51,7 +52,7 @@ public class PillController {
 
     // 리뷰 목록 조회
     @GetMapping("/{pill_id}/review")
-    public ResponseEntity<Page<PillReviewListResponse>> findReviewByPillId(@LoginUser User user, @PageableDefault(size =15) Pageable pageable, @PathVariable("pill_id") int pillId) {
+    public ResponseEntity<Page<PillReviewListResponse>> findReviewByPillId(@LoginUser User user, @PageableDefault(size = 15) Pageable pageable, @PathVariable("pill_id") int pillId) {
         Page<PillReviewListResponse> body = pillService.findReviewByPillId(user, pillId, pageable);
         return ResponseEntity.ok().body(body);
     }
@@ -86,8 +87,8 @@ public class PillController {
 
     // 이미지 검색
     @PostMapping("/vision")
-    public ResponseEntity<VisionResponse> getDetectText(@RequestBody @Valid String data) {
-        VisionResponse body = pillService.getDetectText(data);
+    public ResponseEntity<String> findKeyWordByImg(@RequestBody @Valid String data) {
+        String body = pillService.findKeyWordByImg(data);
         return ResponseEntity.ok().body(body);
     }
 
@@ -116,6 +117,14 @@ public class PillController {
     @GetMapping("/calendar-list")
     public ResponseEntity<List<List<PillCalendarResponse>>> findPillByUserPill(@LoginUser User user, @RequestParam String search) {
         List<List<PillCalendarResponse>> body = pillService.findPillByUserPill(user, search);
+        return ResponseEntity.ok().body(body);
+    }
+
+
+    // 해당 영양제에 대한 나의 리뷰
+    @GetMapping("/{pill_id}/review/my")
+    public ResponseEntity<Optional<PillReviewResponse>> findPillReviewByUser(@LoginUser User user, @PathVariable("pill_id") int pillId) {
+        Optional<PillReviewResponse> body = pillService.findPillReviewByUser(user, pillId);
         return ResponseEntity.ok().body(body);
     }
 }
