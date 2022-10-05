@@ -9,7 +9,7 @@ const ExerWrapper = styled.div`
   font-size: large;
   cursor: pointer;
   margin: auto;
-  font-size: 23px;
+  font-size: 20px;
 `;
 
 const Excercising = ({ onClick }) => {
@@ -20,7 +20,7 @@ const Excercising = ({ onClick }) => {
         onClick("N");
       }}
     >
-      <i className="fa-solid fa-square-check"></i>
+      <i className="fa-solid fa-check"></i>
     </ExerWrapper>
   );
 };

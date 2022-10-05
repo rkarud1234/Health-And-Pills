@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getExerciseDetail, exerciseDoing } from "../../api/HealthAPI";
 import Excercising from "../buttons/Exercising";
 import UnExercising from "../buttons/UnExercising";
+import TagCard from "./TagCard";
 
 const HealthCardWrapper = styled.div`
   background-color: transparent;
@@ -22,7 +23,7 @@ const StyledHealthCard = styled.div`
   background-color: #fff;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  padding: "6px 8px";
+  // padding: "6px 8px";
   cursor: pointer;
   position: relative;
   /* background: linear-gradient(#537CFE, #6A53FE);
@@ -32,9 +33,9 @@ const StyledHealthCard = styled.div`
 
 const StyledHealthNameWrapper = styled.div`
   display: flex;
-  font-size: 13px;
+  font-size: 16px;
+  font-weight: bold;
   padding: ${(props) => props.padding};
-  font-weight: ${(props) => props.fontWeight};
   text-align: center;
   background: linear-gradient(#537cfe, #6a53fe);
   -webkit-background-clip: text;
@@ -42,22 +43,32 @@ const StyledHealthNameWrapper = styled.div`
 `;
 
 const HealthInfoWrapper = styled.div`
-  font-size: 0.5rem;
+  font-size: 12px;
   padding: ${(props) => props.padding};
 `;
 
 const BookMarkWrapper = styled.div`
   background-color: ${({ color }) => color};
   position: absolute;
-  top: -10px;
-  right: 0px;
+  top: 64px;
+  right: 6px;
 `;
 
 const DoingWrapper = styled.div`
   background-color: ${({ color }) => color};
   position: absolute;
-  top: -6px;
-  right: 24px;
+  top: 68px;
+  right: 34px;
+`;
+const CustomTagDiv = styled.div`
+  display: inline-block;
+  width: fit-content;
+  margin: 4px 4px 4px 0;
+  font-size: 12px;
+  border: solid 1px lightgray;
+  padding: 4px 6px;
+  border-radius: 40px;
+  color: #888888;
 `;
 
 const HealthCard = ({
@@ -118,13 +129,13 @@ const HealthCard = ({
     <>
       <HealthCardWrapper>
         <StyledHealthCard width={width} height={height}>
-          <DoingWrapper>
+          {/* <DoingWrapper>
             {detail.doing === "Y" ? (
               <Excercising onClick={onToggleDoing} />
             ) : (
               <UnExercising onClick={onToggleDoing} />
             )}
-          </DoingWrapper>
+          </DoingWrapper> */}
           <BookMarkWrapper>
             {detail.bookmark === "Y" ? (
               <UnRecommendBookMark onClick={onToggleBookMark} />
@@ -134,15 +145,27 @@ const HealthCard = ({
           </BookMarkWrapper>
           <div>
             <StyledHealthNameWrapper
-              padding="16px 4px 4px"
+              padding="14px 4px 4px"
               fontWeight={fontWeight}
             >
-              <div>{exerciseName}</div>
+              <div>
+                {exerciseName && exerciseName.length > 10
+                  ? exerciseName.slice(0, 10) + "..."
+                  : exerciseName}
+              </div>
             </StyledHealthNameWrapper>
           </div>
-          -----
           <HealthInfoWrapper padding="0px 4px">
-            {aerobic} | {exerciseParts}
+            <div>{aerobic}</div>
+            <div style={{ marginTop: "10px" }}>
+              {exerciseParts.length <= 3 ? (
+                exerciseParts.map((item, i) => {
+                  return <CustomTagDiv key={item + i}>{item}</CustomTagDiv>;
+                })
+              ) : (
+                <CustomTagDiv>전신</CustomTagDiv>
+              )}
+            </div>
           </HealthInfoWrapper>
         </StyledHealthCard>
       </HealthCardWrapper>
@@ -153,8 +176,8 @@ const HealthCard = ({
 export default HealthCard;
 
 StyledHealthCard.defaultProps = {
-  width: "120px",
-  height: "80px",
+  width: "160px",
+  height: "100px",
   // padding: "6px 8px 6px 8px",
   fontWeight: "600",
 };
