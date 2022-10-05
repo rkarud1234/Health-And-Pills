@@ -62,8 +62,10 @@ def getReviewInfo(id):
         sum += review.pill_review_score  
 
     count = len(reviews)
-    average = round(sum/count,2)
-
+    if count != 0:
+        average = round(sum/count,2)
+    else:
+        return 0,0
     return count, average
 
 def createContext(data):

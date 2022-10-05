@@ -102,26 +102,26 @@ def recommendCustom(user_id):
     matrix_dummy = rating_matrix.copy().fillna(0)
     user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
     user_similarity = pd.DataFrame(user_similarity, index=rating_matrix.index, columns=rating_matrix.index)
-    user_exercise = matrix_dummy.loc[user_id].copy()
-
-    print("trainSet",x_train.shape, y_train.shape)
-    print("testSet",x_test.shape, y_test.shape)
-
-    
-    for pill in rating_matrix.columns:
-        if pd.notnull(user_exercise.loc[pill]):
-            user_exercise.loc[pill] = 0
+    try:
+        user_exercise = matrix_dummy.loc[user_id].copy()
+    except:
+        user_exercise = matrix_dummy.iloc[1].copy()
+        for i in range(1, len(user_exercise)):
+            user_exercise[i] = 0.0
+   
+    for exercise in rating_matrix.columns:
+        if pd.notnull(user_exercise.loc[exercise]):
+            user_exercise.loc[exercise] = 0
         else:
-            user_exercise.loc[pill] = CF_knn(32, pill, rating_matrix, user_similarity, 1)
+            user_exercise.loc[exercise] = CF_knn(32, exercise, rating_matrix, user_similarity, 1)
 
-    pill_sort = user_exercise.sort_values(ascending=False)
-    return pk_list_to_queryset(pill_sort.reset_index()['exercise_id'][:10])
+    exercise_sort = user_exercise.sort_values(ascending=False).drop(1)
+    return pk_list_to_queryset(exercise_sort.reset_index()['exercise_id'][:10])
 
 def recommendItem(user_id, exercise_id):
     exercise_part = list(ExercisePart.objects.filter(exercise=exercise_id).values())
     exercise_part_list = []
     for exp in exercise_part:
-        print(exp)
         exercise_part_list.append(exp['exercise_part_category_id'])
     
 
@@ -147,16 +147,22 @@ def recommendItem(user_id, exercise_id):
     matrix_dummy = rating_matrix.copy().fillna(0)
     user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
     user_similarity = pd.DataFrame(user_similarity, index=rating_matrix.index, columns=rating_matrix.index)
-    user_exercise = matrix_dummy.loc[user_id].copy()
-
-    for pill in rating_matrix.columns:
-        if pd.notnull(user_exercise.loc[pill]):
-            user_exercise.loc[pill] = 0
+    try:
+        user_exercise = matrix_dummy.loc[user_id].copy()
+    except:
+        user_exercise = matrix_dummy.iloc[1].copy()
+        for i in range(1, len(user_exercise)):
+            user_exercise[i] = 0.0
+   
+    for exercise in rating_matrix.columns:
+        if pd.notnull(user_exercise.loc[exercise]):
+            user_exercise.loc[exercise] = 0
         else:
-            user_exercise.loc[pill] = CF_knn(32, pill, rating_matrix, user_similarity, 10)
+            user_exercise.loc[exercise] = CF_knn(32, exercise, rating_matrix, user_similarity, 1)
 
-    pill_sort = user_exercise.sort_values(ascending=False)
-    return pk_list_to_queryset(pill_sort.reset_index()['exercise_id'][:10])
+    exercise_sort = user_exercise.sort_values(ascending=False).drop(1)
+    rand = random.randint(0,20)
+    return pk_list_to_queryset(exercise_sort.reset_index()['exercise_id'][rand:rand+10])
 
 # 운동에 관한 자체 스코어 생성
 def create_exercise_score(user_exercise_bookmark,user_exercise_doing,user_exercise_like):
