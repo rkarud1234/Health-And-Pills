@@ -26,6 +26,8 @@ const Landing = () => {
         modalContent={<SocialLoginContent />}
         closeButton={<ModalCloseButton onClick={closeModal} />}
         close={closeModal}
+        width={"270px"}
+        height={"345px"}
       />
       <GradationButton
         status={"landing"}
