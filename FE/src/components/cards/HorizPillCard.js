@@ -1,19 +1,19 @@
-import React from 'react'
-import styled from 'styled-components'
-import imgUrl from "../../assets/pillImg.png"
+import React from "react";
+import styled from "styled-components";
+import imgUrl from "../../assets/pillImg.png";
 const StyledPillCard = styled.div`
-  display:flex;
+  display: flex;
   background-color: #fff;
   cursor: pointer;
-  border-bottom: 1px solid #CAD1D5;
+  border-bottom: 1px solid #cad1d5;
 `;
-const GradientIcon = styled.i`
-background: linear-gradient(180deg, #6A53FE 0%, #537CFE 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-text-fill-color: transparent;
-`
+export const GradientIcon = styled.i`
+  background: linear-gradient(180deg, #6a53fe 0%, #537cfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+`;
 const StyledPillCardImgWrapper = styled.div`
   padding: 16px;
   & img {
@@ -32,25 +32,34 @@ const StyledPillCardContentWrapper = styled.div`
 `;
 
 const CompanyDiv = styled.div`
-font-size: 13px;
-font-weight: bold;
-background: linear-gradient(180deg, #537CFE 0%, #6A53FE 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-text-fill-color: transparent;
-padding-top: 4px;
-`
+  font-size: 13px;
+  font-weight: bold;
+  background: linear-gradient(180deg, #537cfe 0%, #6a53fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  padding-top: 4px;
+`;
 
 const NameDiv = styled.div`
-font-size: 16px;
-font-weight: bold;
-margin: 16px 0px 8px;
-`
-const HorizPillCard = ({ url, width, height, padding, name, companyName, reviewAverage, reviewCount }) => {
-  let average = ''
+  font-size: 16px;
+  font-weight: bold;
+  margin: 16px 0px 8px;
+`;
+const HorizPillCard = ({
+  url,
+  width,
+  height,
+  padding,
+  name,
+  companyName,
+  reviewAverage,
+  reviewCount,
+}) => {
+  let average = "";
   if (reviewAverage) {
-    average = reviewAverage.toFixed(1)
+    average = reviewAverage.toFixed(1);
   }
   return (
     <StyledPillCard width={width} height={height}>
@@ -62,11 +71,13 @@ const HorizPillCard = ({ url, width, height, padding, name, companyName, reviewA
         <NameDiv>{name}</NameDiv>
         <div>
           <GradientIcon className="fas fa-star"></GradientIcon>
-          {reviewAverage && reviewCount ? average + '(' + reviewCount + ')' : '0(0)'}
+          {reviewAverage && reviewCount
+            ? average + "(" + reviewCount + ")"
+            : "0(0)"}
         </div>
       </StyledPillCardContentWrapper>
     </StyledPillCard>
-  )
-}
+  );
+};
 
-export default HorizPillCard
+export default HorizPillCard;
