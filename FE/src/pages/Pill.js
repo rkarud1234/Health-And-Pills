@@ -9,12 +9,12 @@ import Loading from "../components/layouts/Loading";
 import { BestPillsFetch, CustomPillsFetch, UserPillsFetch } from "../store/actions/recommend";
 import { profile } from "../store/actions/user";
 
-import imgUrl1 from '../assets/carousel/001.jpg'
-import imgUrl2 from '../assets/carousel/002.jpg'
-import imgUrl3 from '../assets/carousel/003.jpg'
-import imgUrl4 from '../assets/carousel/004.jpg'
-import imgUrl5 from '../assets/carousel/005.jpg'
-import imgUrl6 from '../assets/carousel/006.jpg'
+import imgUrl1 from '../assets/carousel/pills/001.jpg'
+import imgUrl2 from '../assets/carousel/pills/002.jpg'
+import imgUrl3 from '../assets/carousel/pills/003.jpg'
+import imgUrl4 from '../assets/carousel/pills/004.jpg'
+import imgUrl5 from '../assets/carousel/pills/005.jpg'
+import imgUrl6 from '../assets/carousel/pills/006.jpg'
 
 
 const ScrollDiv = styled.div`
