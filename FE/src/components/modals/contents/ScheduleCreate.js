@@ -194,13 +194,16 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
       alert("이름 검색후 아이템을 클릭하여 선택해주세요");
       return;
     }
+    const time = content.hour.toString().padStart(2, "0");
+    const minute = content.minute.toString().padEnd(2, "0");
+    console.log(time);
+    console.log(minute);
     const data = {
       exerciseId: content.exerciseId,
       pillId: content.pillId,
       calendarContent: content.content,
       calendarDate: yoil,
-      calendarTime:
-        content.hour.toString().padStart(2, "0") + ":" + content.minute,
+      calendarTime: `${time}:${minute}`,
     };
     const response = await postSchedule(data);
     if (response.status === 200) {
