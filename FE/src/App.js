@@ -37,6 +37,7 @@ function App() {
         const fcmToken = await messaging.getToken({
           vapidKey:"BFV5UXzU24Y0YpYbAZYgkJfo0b5q42iy5cthyTKAl7to2zX5oe5DEn89_qEXrvOGpFidSO2lu5q00_LYIaS84yA",
         });
+        console.log(fcmToken);
         window.localStorage.setItem("FCM_TOKEN", fcmToken);
         //토큰을 받는 함수를 추가!
       })
@@ -49,7 +50,7 @@ function App() {
           vapidKey:"BFV5UXzU24Y0YpYbAZYgkJfo0b5q42iy5cthyTKAl7to2zX5oe5DEn89_qEXrvOGpFidSO2lu5q00_LYIaS84yA",
         })
         .then(function (refreshedToken) {
-          localStorage.setItem("FCM_TOKEN", refreshedToken); //토큰이 재 생성될 경우 다시 저장
+          window.localStorage.setItem("FCM_TOKEN", refreshedToken); //토큰이 재 생성될 경우 다시 저장
         })
         .catch(function (err) {
           // console.log("Unable to retrieve refreshed token ", err);
