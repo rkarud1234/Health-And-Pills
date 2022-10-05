@@ -106,10 +106,11 @@ const Schedule = () => {
   const [flag, setFlag] = useState(false);
   useEffect(() => {
     getInfo();
-  }, []);
+  }, [flag]);
   useEffect(() => {
     getDetail();
   }, [yoil, flag]);
+
 
   // 일정 완료 체크 or 해제
   const onToggleScheduleDone = async (calendarId) => {
@@ -129,6 +130,9 @@ const Schedule = () => {
         modalContent={
           <ScheduleCreate
             yoil={yoil}
+            closeModal={closeModal}
+            flag={flag}
+            setFlag={setFlag}
           />
         }
       // modalContent={modalPage[schedulePage]}
@@ -173,7 +177,7 @@ const Schedule = () => {
           {detail.length !== 0 ? (
             <div>
               {detail.map((item, idx) => (
-                <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone} />
+                <DailyDetailCard {...item} key={idx} onToggleScheduleDone={onToggleScheduleDone} flag={flag} setFlag={setFlag} />
               ))}
             </div>
           ) : (
