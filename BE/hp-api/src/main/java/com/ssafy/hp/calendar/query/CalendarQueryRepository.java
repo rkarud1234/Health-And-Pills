@@ -57,7 +57,7 @@ public class CalendarQueryRepository {
         return queryFactory
                 .selectFrom(calendar)
                 .leftJoin(calendar.users, user).fetchJoin()
-                .where(calendar.calendarTime.gt(LocalTime.from(LocalDateTime.now().minusHours(1))),
+                .where(calendar.calendarTime.lt(LocalTime.from(LocalDateTime.now().minusHours(1))),
                         calendar.completeSend.eq(N),
                         calendar.calendarComplete.eq(N))
                 .fetch();
