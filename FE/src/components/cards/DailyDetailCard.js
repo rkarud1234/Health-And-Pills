@@ -69,7 +69,6 @@ const DailyDetailCard = ({calendarComplete, calendarContent, calendarDate,
             name={name}
             onClick={() => {
               openModal();
-              setSchedulePage("scheduleUpdateDelete");
             }}>
             {name} |
           </ScheduleListWrapper>
