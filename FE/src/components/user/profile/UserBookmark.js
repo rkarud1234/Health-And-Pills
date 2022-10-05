@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { deleteUserExerciseBookmark } from "../../../api/exercise";
 import { deleteUserPillBookmark } from "../../../api/pill";
@@ -65,8 +65,12 @@ const UserBookmark = ({ type }) => {
 
   const goToDetail = (type, id) => {
     type === "pill"
-      ? navigate(`/pill/detail/${id}`)
-      : navigate(`/health/detail/${id}`);
+      ? navigate(`/pills/detail/${id}`, {
+          state: { prevPath: "bookmark", type: "pill", title: "북마크" },
+        })
+      : navigate(`/health/detail/${id}`, {
+          state: { prevPath: "bookmark", type: "exercise", title: "북마크" },
+        });
   };
 
   return (

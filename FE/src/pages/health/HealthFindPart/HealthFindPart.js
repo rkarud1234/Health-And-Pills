@@ -5,14 +5,14 @@ import React from "react";
 import HealthFindList from "../HealthFindList";
 
 const HealthButton = styled.button`
-  background-color: transparent;
+  background-color: #fcfcfc;
   color: ${({ textColor }) => textColor};
   font-size: 16px;
   cursor: pointer;
-  padding: 8px;
+  padding: 5px 12px;
   border: solid 2px;
-  border-radius: 12px;
-  margin: 8px;
+  border-radius: 18px;
+  margin: 5px;
   font-weight: ${({ fontWeight }) => fontWeight};
 `;
 
@@ -37,7 +37,8 @@ const CardWrapper = styled.div`
   margin-left: auto;
 `;
 
-const HealthFindPart = () => {
+const HealthFindPart = ({ tag }) => {
+  console.log(tag);
   const [part, setPart] = useState([]);
   const [partNum, setPartNum] = useState(1);
 
@@ -98,7 +99,7 @@ const HealthFindPart = () => {
                 onHandlePart(parts.exercisePartCategoryId);
               }}
               textColor={
-                parts.exercisePartCategoryId === partNum ? "black" : "#7B7B7B"
+                parts.exercisePartCategoryId === partNum ? "#537CFE" : "#7B7B7B"
               }
               fontWeight={
                 parts.exercisePartCategoryId === partNum ? "bolder" : "normal"
@@ -108,11 +109,7 @@ const HealthFindPart = () => {
             </HealthButton>
           ))}
         </TypeBox>
-        <HealthFindList
-          typeNum={partNum}
-          key={partNum + "part"}
-          type={"part"}
-        />
+        <HealthFindList typeNum={partNum} key={partNum + tag} type={"part"} />
       </CardWrapper>
     </>
   );

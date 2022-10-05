@@ -9,17 +9,14 @@ const CardWrapper = styled.div`
 `;
 
 const HealthButton = styled.button`
-  background-color: transparent;
+  background-color: #fcfcfc;
   color: ${({ textColor }) => textColor};
   font-size: 16px;
   cursor: pointer;
-  padding: 8px;
+  padding: 5px 12px;
   border: solid 2px;
-  border-radius: 12px;
-  margin: 8px;
-  /* background: linear-gradient(#537CFE, #6A53FE);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
+  border-radius: 18px;
+  margin: 5px;
   font-weight: ${({ fontWeight }) => fontWeight};
 `;
 
@@ -35,7 +32,7 @@ const TypeBox = styled.div`
   scrollbar-width: none;
 `;
 
-const HealthFindType = ({ exerciseId }) => {
+const HealthFindType = ({ exerciseId, tag }) => {
   const [cate, setCate] = useState([]);
   const [cateNum, setCateNum] = useState(1);
   // 메뉴 횡스크롤
@@ -95,7 +92,7 @@ const HealthFindType = ({ exerciseId }) => {
               onHandleType(cates.exerciseCategoryId);
             }}
             textColor={
-              cates.exerciseCategoryId === cateNum ? "black" : "#7B7B7B"
+              cates.exerciseCategoryId === cateNum ? "#537CFE" : "#7B7B7B"
             }
             fontWeight={
               cates.exerciseCategoryId === cateNum ? "bolder" : "normal"

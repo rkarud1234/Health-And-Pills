@@ -141,11 +141,23 @@ const Schedule = () => {
       />
       <Header leftNone={true} leftChildren={<BackButton />} />
       <BackWrapper>
-        <div style={{ textAlign: "center", padding: "12px 0 24px 0", fontWeight: "600" }}>
+        <div
+          style={{
+            textAlign: "center",
+            padding: "12px 0 24px 0",
+            fontWeight: "600",
+          }}
+        >
           {yearLastTwo}년 {date.month}월 {nthWeek}주차
         </div>
         <WeeklyWrapper>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
             {list.map((item, idx) => (
               <DailyCard
                 {...item}
@@ -157,13 +169,13 @@ const Schedule = () => {
             ))}
           </div>
         </WeeklyWrapper>
-        <ButtonWrapper
-          onClick={() => {
-            openModal();
-            setSchedulePage("scheduleCreate");
-          }}
-        >
-          <SchedulePlusButton />
+        <ButtonWrapper>
+          <SchedulePlusButton
+            onClick={() => {
+              openModal();
+              setSchedulePage("scheduleCreate");
+            }}
+          />
         </ButtonWrapper>
         {/* <ButtonWrapper
             onClick={() => {
@@ -181,9 +193,7 @@ const Schedule = () => {
               ))}
             </div>
           ) : (
-            <>
-              등록된 일정이 없습니다
-            </>
+            <>등록된 일정이 없습니다</>
           )}
         </div>
       </BackWrapper>

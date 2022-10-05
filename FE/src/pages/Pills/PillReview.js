@@ -111,17 +111,17 @@ const PillReview = ({
   const dispatch = useDispatch();
   const { res } = useFetchData(
     fetchPillReview,
-    "searchPill",
-    () => { },
-    () => { },
+    "pillReview",
+    () => {},
+    () => {},
     id
   );
   const reviewList = useMemo(
     () =>
       res.data
         ? res.data.pages.flatMap((item) => {
-          return item.data.content;
-        })
+            return item.data.content;
+          })
         : [],
     [res.data]
   );
@@ -390,7 +390,7 @@ const PillReview = ({
       ) : (
         <></>
       )}
-      {pillReviewCount !== 0 ? (
+      {reviewList.length !== 0 ? (
         reviewList.map((review) => {
           return (
             <ReviewContainer key={review.reviewId}>
