@@ -112,16 +112,16 @@ const PillReview = ({
   const { res } = useFetchData(
     fetchPillReview,
     "searchPill",
-    () => {},
-    () => {},
+    () => { },
+    () => { },
     id
   );
   const reviewList = useMemo(
     () =>
       res.data
         ? res.data.pages.flatMap((item) => {
-            return item.data.content;
-          })
+          return item.data.content;
+        })
         : [],
     [res.data]
   );
@@ -158,7 +158,6 @@ const PillReview = ({
       setMyReview(res.data);
     });
   }, [id]);
-  console.log(myReview, reviewList);
   const createReviewHandler = () => {
     const review = {
       score: score,
