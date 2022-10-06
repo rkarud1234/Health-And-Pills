@@ -114,6 +114,7 @@ const PillDetail = () => {
                   } else {
                     if (state.prevPath) {
                       navigate("/profiles", {
+                        replace: true,
                         state: {
                           infoType: state.prevPath,
                           title: state.title,
