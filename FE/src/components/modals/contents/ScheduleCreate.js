@@ -245,9 +245,10 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
     const response = await postSchedule(data);
     if (response.status === 200) {
       alert("일정 등록이 완료되었습니다.");
-      close();
+      closeModal();
     } else {
       alert("이 시간엔 다른 일정이 있습니다.");
+      return;
     }
     closeModal();
     setFlag(!flag);
