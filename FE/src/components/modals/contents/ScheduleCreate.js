@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { client } from "../../../api";
 import { postSchedule, searchExerSchedule } from "../../../api/schedule";
+import React from "react";
 
 const CreateWrapper = styled.div`
   display: flex;
@@ -233,7 +234,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
       return;
     }
     const time = content.hour.toString().padStart(2, "0");
-    const minute = content.minute.toString().padEnd(2, "0");
+    const minute = content.minute.toString().padStart(2, "0");
     const data = {
       exerciseId: content.exerciseId,
       pillId: content.pillId,
@@ -246,7 +247,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
       alert("일정 등록이 완료되었습니다.");
       close();
     } else {
-      alert("이미 등록된 일정입니다.");
+      alert("이 시간엔 다른 일정이 있습니다.");
     }
     closeModal();
     setFlag(!flag);
@@ -395,7 +396,9 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
           >
             {result.map((item, idx) => {
               return (
-                <>
+                <React.Fragment
+                  key={hp === 1 ? item.pillName + idx : item.exerciseName + idx}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -412,7 +415,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
                       {parseInt(hp) === 1 ? item.pillName : item.exerciseName}
                     </div>
                   </div>
-                </>
+                </React.Fragment>
               );
             })}
           </SearchResultWrapper>
@@ -425,7 +428,9 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
           >
             {unResult.map((item, idx) => {
               return (
-                <>
+                <React.Fragment
+                  key={hp === 1 ? item.pillName + idx : item.exerciseName + idx}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -444,7 +449,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
                       {parseInt(hp) === 1 ? item.pillName : item.exerciseName}
                     </div>
                   </div>
-                </>
+                </React.Fragment>
               );
             })}
           </SearchResultWrapper>
