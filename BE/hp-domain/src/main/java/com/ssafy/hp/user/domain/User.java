@@ -60,6 +60,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Calendar> calendars = new ArrayList<>();
 
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserEvent> userEvents = new ArrayList<>();
+
 
     public static User createUser(Provider userProvider, String userProviderId, String userName, Role role, String userNickname) {
         User user = new User();
