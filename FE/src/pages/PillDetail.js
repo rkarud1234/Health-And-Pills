@@ -97,7 +97,6 @@ const PillDetail = () => {
       </TabList>
     );
   }
-  console.log(state);
 
   return (
     <>
@@ -105,6 +104,7 @@ const PillDetail = () => {
         <>
           <Header
             leftNone={true}
+            centerChildren={pillDetail.pillName}
             leftChildren={
               <BackButton
                 onClick={() => {
@@ -113,6 +113,7 @@ const PillDetail = () => {
                   } else {
                     if (state.prevPath) {
                       navigate("/profiles", {
+                        replace: true,
                         state: {
                           infoType: state.prevPath,
                           title: state.title,

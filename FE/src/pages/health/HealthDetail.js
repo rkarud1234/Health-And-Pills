@@ -219,31 +219,6 @@ const HealthDetail = ({
     const response = await getExerciseItemReco(exerciseId);
     setRecoExer([...response.data]);
   };
-  // useEffect(() => {
-  //   // getReco();
-  //   console.log("getReco");
-  // }, [recoExer.id]);
-
-  // const [params, setParams] = useState({
-  //   key: 'AIzaSyC5XUXYoD-TVqapYPw-T4_0vo6nsdjbQYg',
-  //   part: 'snippet',
-  //   q: `필라테스`,
-  //   maxResults: 6,
-  //   type: 'video',
-  // });
-
-  // const [videos, setVideos] = useState({});
-
-  // const getYoutube = useEffect(() => {
-  //   axios.get('https://www.googleapis.com/youtube/v3/search', {params})
-  //   .then((response) => {
-  //     if (response.status === 200)
-  //     setVideos([...response.data.items])
-  //     // setVideos(response.data.items)
-  //     console.log(response.data.items)
-  //     console.log(videos)
-  //   })
-  // }, [])
 
   const onToggleThumbsUp = async (value) => {
     const data = {
@@ -260,12 +235,10 @@ const HealthDetail = ({
     });
     if (response.status === 200) {
     } else {
-      console.log(response);
     }
   };
 
   const onToggleBookMark = async (value) => {
-    console.log(value);
     const data = {
       exerciseId: exerciseId,
       check: value,
@@ -280,7 +253,6 @@ const HealthDetail = ({
   };
 
   const onToggleDoing = async (value) => {
-    console.log(value);
     const data = {
       exerciseId: exerciseId,
       check: value,
@@ -303,6 +275,7 @@ const HealthDetail = ({
     <>
       <Header
         leftNone={true}
+        centerChildren={exer.exerciseName}
         leftChildren={
           <BackButton
             onClick={() => {

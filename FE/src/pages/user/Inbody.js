@@ -38,11 +38,11 @@ const StyledInput = styled.input`
   }
 `;
 const inbodyList = [
-  { title: "키", inbodyType: "userProfileHeight" },
-  { title: "몸무게", inbodyType: "userProfileWeight" },
-  { title: "골격근량", inbodyType: "userProfileFat" },
-  { title: "체지방량", inbodyType: "userProfileSkeleton" },
-  { title: "체수분량", inbodyType: "userProfileWater" },
+  { title: "키(cm)", inbodyType: "userProfileHeight" },
+  { title: "몸무게(kg)", inbodyType: "userProfileWeight" },
+  { title: "골격근량(kg)", inbodyType: "userProfileFat" },
+  { title: "체지방량(kg)", inbodyType: "userProfileSkeleton" },
+  { title: "체수분량(L)", inbodyType: "userProfileWater" },
 ];
 const getEditButtonStatus = (
   userProfileHeight,
@@ -116,6 +116,31 @@ const Inbody = () => {
     ]
   );
 
+  const validInbody = () => {
+    // 최대값 검사
+    if (
+      inBodyState.userProfileFat > 100 ||
+      inBodyState.userProfileWater > 100 ||
+      inBodyState.userProfileSkeleton > 100 ||
+      inBodyState.userProfileHeight > 220 ||
+      inBodyState.userProfileFat > 140
+    ) {
+      return false;
+    }
+    // 최소값 검사
+    if (
+      inBodyState.userProfileFat < 0 ||
+      inBodyState.userProfileWater < 0 ||
+      inBodyState.userProfileSkeleton < 0 ||
+      inBodyState.userProfileHeight < 0 ||
+      inBodyState.userProfileFat < 0
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
   const onEditInbody = () => {
     for (let element of inbodyInput.current) {
       if (emptyZeroValueCheck(element.current.value)) {
@@ -124,8 +149,12 @@ const Inbody = () => {
         return;
       }
     }
-    dispatch(editInbody(inBodyState));
-    alert("수정되었습니다.");
+    if (validInbody() === false) {
+      alert("정확한 인바디 정보를 입력해주세요.");
+    } else {
+      dispatch(editInbody(inBodyState));
+      alert("수정되었습니다.");
+    }
   };
   return (
     <div>

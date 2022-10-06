@@ -24,7 +24,7 @@ const Target = styled.div`
 `;
 
 const UserPill = () => {
-  const { res } = useFetchData(fetchUserPill);
+  const { res } = useFetchData(fetchUserPill, "userPill");
   const navigate = useNavigate();
   const userPills = useMemo(
     () =>
@@ -69,7 +69,7 @@ const UserPill = () => {
                 <DeleteItemButton
                   text={"삭제"}
                   onClick={deleteItem}
-                  id={item.id}
+                  id={item.relatedItemId}
                 />
               }
             />

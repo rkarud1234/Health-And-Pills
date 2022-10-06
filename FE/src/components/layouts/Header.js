@@ -41,5 +41,5 @@ const Header = ({
 export default Header;
 
 Header.defaultProps = {
-  centerChildren: <h1>HP</h1>,
+  centerChildren: "HP",
 };

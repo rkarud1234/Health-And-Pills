@@ -16,6 +16,7 @@ import Loading from "./components/layouts/Loading";
 import PrivateRoute from "./routes/PrivateRoute";
 import NotFound from "./pages/error/NotFound";
 import firebase from "firebase";
+import Event from "./pages/event/Event";
 
 const setFCM = async () => {
   const config = {
@@ -40,9 +41,7 @@ const setFCM = async () => {
       window.localStorage.setItem("FCM_TOKEN", fcmToken);
       //토큰을 받는 함수를 추가!
     })
-    .catch(function (err) {
-      // console.log("fcm에러 : ", err);
-    });
+    .catch(function (err) {});
   messaging.onTokenRefresh(() => {
     messaging
       .getToken({
@@ -52,9 +51,7 @@ const setFCM = async () => {
       .then(function (refreshedToken) {
         window.localStorage.setItem("FCM_TOKEN", refreshedToken); //토큰이 재 생성될 경우 다시 저장
       })
-      .catch(function (err) {
-        // console.log("Unable to retrieve refreshed token ", err);
-      });
+      .catch(function (err) {});
   });
 
   messaging.onMessage((payload) => {
@@ -114,6 +111,10 @@ function App() {
             <Route
               path="/result/:id"
               element={<PrivateRoute component={<Result />} />}
+            />
+            <Route
+              path="/event"
+              element={<PrivateRoute component={<Event />} />}
             />
             <Route path="/*" element={<NotFound />} />
           </Routes>
