@@ -120,23 +120,25 @@ const Schedule = () => {
       });
     }
   };
-console.log(detail)
+  console.log(detail)
   return (
     <>
       <Modal
         isOpen={isOpen}
         closeButton={<ModalCloseButton onClick={closeModal} />}
         modalContent={
-          <ScheduleCreate
-            yoil={yoil}
-            closeModal={closeModal}
-            flag={flag}
-            setFlag={setFlag}
-          />
+          isOpen ?
+            <ScheduleCreate
+              yoil={yoil}
+              closeModal={closeModal}
+              flag={flag}
+              setFlag={setFlag}
+            />
+            : <></>
         }
-        // modalContent={modalPage[schedulePage]}
-        // closeButton={<ModalCloseButton onClick={closeModal} />}
-        // yoil={yoil}
+      // modalContent={modalPage[schedulePage]}
+      // closeButton={<ModalCloseButton onClick={closeModal} />}
+      // yoil={yoil}
       />
       <Header leftNone={true} leftChildren={<BackButton />} />
       <BackWrapper>

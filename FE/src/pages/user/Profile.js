@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
+import { client } from "../../api";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -304,6 +305,14 @@ const Profile = () => {
     navigate("/");
   }, []);
 
+  const onHandleUserQuit = (async () => {
+    if (window.confirm('정말 탈퇴 하시겠습니까?')) {
+      await client.delete('/users')
+      dispatch(logOut());
+      navigate("/");
+    }
+  })
+
   const renderContent = useCallback(() => {
     if (slidingMenuState.active) {
       if (slidingMenuState.infoType === "lifeStyle") {
@@ -391,6 +400,9 @@ const Profile = () => {
               </div>
               <LogOutBtnWrapper as="div">
                 <button onClick={onHandleLogOut}>로그아웃</button>
+              </LogOutBtnWrapper>
+              <LogOutBtnWrapper as="div">
+                <button onClick={onHandleUserQuit}>회원탈퇴</button>
               </LogOutBtnWrapper>
             </ContentWrapper>
             <SlidingMenu
