@@ -13,6 +13,7 @@ const colorTheme = {
   bgColor: "#537CFE",
   bgColorFrom: "#537CFE",
   bgColorTo: "#6A53FE",
+  disableColor: "#E1E1E1",
 };
 const HomeWrapper = styled.div`
   padding: 80px 20px 0px 20px;
@@ -88,6 +89,28 @@ const UserContent = styled.button`
   font-size: 20px;
   margin-top: 20px;
   cursor: pointer;
+  & div i {
+    margin-right: 10px;
+  }
+  @media screen and (max-width: 420px) {
+    font-size: 16px;
+  }
+  @media screen and (max-width: 280px) {
+    font-size: 10px;
+  }
+`;
+const UserContentDisable = styled.button`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10px 20px 15px;
+  border: ${(props) => props.border};
+  color: ${(props) => props.color};
+  background-color: #c1c1c1;
+  border-radius: 10px;
+  font-size: 20px;
+  margin-top: 20px;
+  cursor: default;
   & div i {
     margin-right: 10px;
   }
@@ -179,23 +202,19 @@ const Main = ({ user }) => {
               <i className="fa-solid fa-chevron-right"></i>
             </div>
           </UserContent>
-          <UserContent
-            border={"none"}
-            color={"#fff"}
-            bgColor={colorTheme.bgColor}
-          >
+          <UserContentDisable border={"none"} color={"#fff"}>
             <div style={{ display: "flex" }}>
               <IconWrapper>
                 <i className="fa-solid fa-calendar-star"></i>
               </IconWrapper>
-              진행중인 이벤트 보러가기
+              이벤트 준비중...
             </div>
             <div>
               <div>
                 <i className="fa-solid fa-chevron-right"></i>
               </div>
             </div>
-          </UserContent>
+          </UserContentDisable>
         </div>
       </div>
       <ChartWapper>
