@@ -52,7 +52,6 @@ const DailyDetailCard = ({
   const closeModal = () => {
     setIsOpen(false);
   };
-  console.log("캔린더컴플리트", calendarComplete);
 
   let cardColor = "#fff";
   let cardFontColor = "#000";

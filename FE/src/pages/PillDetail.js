@@ -97,7 +97,6 @@ const PillDetail = () => {
       </TabList>
     );
   }
-  console.log(state);
 
   return (
     <>

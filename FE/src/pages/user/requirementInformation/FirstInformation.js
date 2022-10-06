@@ -222,7 +222,6 @@ const FirstInformation = ({ gender, birth, changeType, changeInformation }) => {
       return;
     }
     const today = new Date();
-    console.log(inputBirth);
     if (today.getFullYear() - inputBirth.getFullYear() > 100) {
       setBirthValidation({
         message: "정말인가요?",

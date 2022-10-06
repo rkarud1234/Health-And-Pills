@@ -7,9 +7,7 @@ export const deleteUserPill = async (pillId) => {
   };
   const result = await client
     .post("/pills/taking", data)
-    .then((response) => response)
-    .catch((error) => console.log(error));
-  console.log(result);
+    .then((response) => response);
   return result;
 };
 
@@ -35,7 +33,6 @@ export const deleteUserPillBookmark = async (pillId) => {
   };
   const result = await client
     .post(`/pills/bookmark`, data)
-    .then((response) => response)
-    .catch((error) => console.log(error));
+    .then((response) => response);
   return result;
 };
