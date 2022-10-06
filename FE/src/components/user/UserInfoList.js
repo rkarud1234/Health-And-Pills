@@ -20,11 +20,8 @@ const fetchUrl = {
   exercise: fetchUserExercise,
 };
 const UserInfoList = ({ infoType }) => {
-  console.log("userINfoList :::", infoType);
   const { data, isFetching } = useInfiniteScroll(fetchUrl[infoType]);
-  const onHandleDeleteData = () => {
-    console.log("데이터 지우기");
-  };
+  const onHandleDeleteData = () => {};
   return (
     <UserInfoListWrapper className="list-area">
       {data.length !== 0 ? (

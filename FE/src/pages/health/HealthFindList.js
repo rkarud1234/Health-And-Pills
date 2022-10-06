@@ -54,8 +54,6 @@ const HealthFindList = ({ typeNum, type }) => {
       res.fetchNextPage();
     }
   });
-  console.log("res ::: ", res);
-  console.log("findExerciseList :::", findExerciseList);
   return (
     <ExerciseCategoryListWrapper className="hello">
       {findExerciseList.length !== 0 ? (

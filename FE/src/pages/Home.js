@@ -257,9 +257,7 @@ const Home = () => {
       dispatch(profile());
     }
   }, []);
-  const renderToNext = () => {
-    console.log("ss");
-  };
+  const renderToNext = () => {};
   if (mainLoader) {
     if (user.isLogin && user.data !== null && user.data !== "") {
       return (
