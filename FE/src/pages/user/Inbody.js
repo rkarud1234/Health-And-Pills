@@ -38,11 +38,11 @@ const StyledInput = styled.input`
   }
 `;
 const inbodyList = [
-  { title: "키", inbodyType: "userProfileHeight" },
-  { title: "몸무게", inbodyType: "userProfileWeight" },
-  { title: "골격근량", inbodyType: "userProfileFat" },
-  { title: "체지방량", inbodyType: "userProfileSkeleton" },
-  { title: "체수분량", inbodyType: "userProfileWater" },
+  { title: "키(cm)", inbodyType: "userProfileHeight" },
+  { title: "몸무게(kg)", inbodyType: "userProfileWeight" },
+  { title: "골격근량(kg)", inbodyType: "userProfileFat" },
+  { title: "체지방량(kg)", inbodyType: "userProfileSkeleton" },
+  { title: "체수분량(L)", inbodyType: "userProfileWater" },
 ];
 const getEditButtonStatus = (
   userProfileHeight,

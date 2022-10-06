@@ -24,7 +24,7 @@ const Target = styled.div`
 `;
 
 const UserPill = () => {
-  const { res } = useFetchData(fetchUserPill);
+  const { res } = useFetchData(fetchUserPill, "userPill");
   const navigate = useNavigate();
   const userPills = useMemo(
     () =>
@@ -45,6 +45,7 @@ const UserPill = () => {
 
   const deleteItem = async (id) => {
     const res = await deleteUserPill(id);
+    console.log(res);
     if (res.status === 200) {
       alert("삭제 되었습니다.");
     }
@@ -69,7 +70,7 @@ const UserPill = () => {
                 <DeleteItemButton
                   text={"삭제"}
                   onClick={deleteItem}
-                  id={item.id}
+                  id={item.relatedItemId}
                 />
               }
             />

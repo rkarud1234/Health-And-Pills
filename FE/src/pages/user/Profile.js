@@ -277,15 +277,9 @@ const Profile = () => {
     dispatch(profile());
   }, []);
 
-  useEffect(() => {
-    if (state !== null) {
-      onHandleSlidingMenu(state.infoType, state.title);
-    }
-  }, []);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const onHandleSlidingMenu = useCallback(
     (infoType, slidingMenuTitle) => {
       setSlidingMenuState({
