@@ -1,10 +1,6 @@
 package com.ssafy.hp.pill.response;
 
-import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.pill.domain.Pill;
-import com.ssafy.hp.pill.domain.PillWarning;
-import com.ssafy.hp.pill.domain.Warning;
-import com.ssafy.hp.user.domain.UserPill;
 import com.ssafy.hp.user.response.UserPillInfoResponse;
 import com.ssafy.hp.util.ScoreUtil;
 import lombok.AllArgsConstructor;
@@ -14,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Data
 @NoArgsConstructor

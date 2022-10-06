@@ -1,8 +1,5 @@
 package com.ssafy.hp.user;
 
-import com.ssafy.hp.user.domain.User;
-import com.ssafy.hp.user.domain.type.Provider;
-import com.ssafy.hp.user.domain.type.Role;
 import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;

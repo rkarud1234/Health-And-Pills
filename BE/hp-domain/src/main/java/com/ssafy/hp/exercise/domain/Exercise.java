@@ -4,7 +4,6 @@ import com.ssafy.hp.calendar.domain.Calendar;
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.exercise.type.*;
 import com.ssafy.hp.user.domain.UserExercise;
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

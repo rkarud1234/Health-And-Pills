@@ -1,8 +1,6 @@
 package com.ssafy.hp.user.response;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.hp.user.domain.UserProfile;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

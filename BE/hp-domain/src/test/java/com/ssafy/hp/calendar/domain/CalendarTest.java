@@ -1,7 +1,5 @@
 package com.ssafy.hp.calendar.domain;
 
-import com.ssafy.hp.common.type.YN;
-import com.ssafy.hp.exercise.domain.Exercise;
 import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.type.Provider;
 import com.ssafy.hp.user.domain.type.Role;
@@ -10,10 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
-import static com.ssafy.hp.common.type.YN.N;
 import static com.ssafy.hp.common.type.YN.Y;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CalendarTest {
     public static final Integer ID = 1;

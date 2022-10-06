@@ -3,25 +3,19 @@ package com.ssafy.hp.security.config;
 import com.ssafy.hp.security.filter.JwtAuthenticationFilter;
 import com.ssafy.hp.security.handler.*;
 import com.ssafy.hp.security.service.*;
-import com.ssafy.hp.user.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.*;
 import org.springframework.security.web.authentication.*;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -33,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final OAuth2UserService oAuth2UserService;
     private final OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
+    private final OAuthAuthenticationFailureHandler oAuthAuthenticationFailureHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -65,12 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(oAuth2UserService)
                 .and()
                 .successHandler(oAuthAuthenticationSuccessHandler)
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                    }
-                });
+                .failureHandler(oAuthAuthenticationFailureHandler);
 
     }
 

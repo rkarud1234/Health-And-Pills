@@ -1,9 +1,7 @@
 package com.ssafy.hp.user.response;
 
-import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.response.PillDetailResponse;
 import com.ssafy.hp.user.domain.UserPill;
-import com.ssafy.hp.util.ScoreUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

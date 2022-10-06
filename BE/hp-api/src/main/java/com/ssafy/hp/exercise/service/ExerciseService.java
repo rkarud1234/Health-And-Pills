@@ -15,14 +15,6 @@ public interface ExerciseService {
     // 운동 부위별 조회
     Page<ExerciseListResponse> findByExercisePart(User user, Integer part, Pageable pageable);
 
-    // 베스트 10 운동 추천
-
-    // 000님을 위한 맞춤 추천
-
-    // 00대 여성이 많이 하는 운동 추천
-
-    // {스쿼트}와 유사한 운동 추천
-
     // 운동 상세정보 조회
     ExerciseDetailResponse findByExerciseId(User user, Integer exerciseId);
 

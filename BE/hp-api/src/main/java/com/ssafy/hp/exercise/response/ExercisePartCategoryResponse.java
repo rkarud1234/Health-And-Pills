@@ -4,7 +4,6 @@ import com.ssafy.hp.exercise.domain.*;
 import lombok.*;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExercisePartCategoryResponse {

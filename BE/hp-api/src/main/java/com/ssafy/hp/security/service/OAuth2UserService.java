@@ -1,13 +1,9 @@
 package com.ssafy.hp.security.service;
 
-import com.ssafy.hp.*;
-import com.ssafy.hp.auth.response.TokenResponse;
-import com.ssafy.hp.auth.service.AuthService;
 import com.ssafy.hp.security.oauth.*;
 import com.ssafy.hp.user.*;
 import com.ssafy.hp.user.domain.*;
 import com.ssafy.hp.user.domain.type.*;
-import io.micrometer.core.instrument.util.*;
 import lombok.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.*;
@@ -17,8 +13,6 @@ import org.springframework.security.oauth2.core.user.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
-
-import static com.ssafy.hp.NotFoundException.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor

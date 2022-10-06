@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.*;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.exercise.domain.*;
 import com.ssafy.hp.exercise.response.ExerciseCalendarResponse;
-import com.ssafy.hp.pill.domain.PillReview;
 import com.ssafy.hp.user.domain.User;
 import lombok.*;
 import org.springframework.data.domain.*;

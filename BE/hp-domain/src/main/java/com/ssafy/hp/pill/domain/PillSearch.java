@@ -1,6 +1,5 @@
 package com.ssafy.hp.pill.domain;
 
-import com.ssafy.hp.user.domain.UserProfile;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
