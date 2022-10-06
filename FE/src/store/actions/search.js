@@ -70,7 +70,8 @@ export const SearchPill = async (page, data) => {
 export const SearchImg = async (data) => {
   const result = await client
     .post(`/pills/vision`, data)
-    .then(response => { return response.data });
+    .then(res => { return res.data })
+    .catch(error => { return error.response });
   return result;
 };
 
