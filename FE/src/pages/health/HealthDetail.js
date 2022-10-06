@@ -237,7 +237,7 @@ const HealthDetail = ({
     } else {
     }
   };
-
+  console.log(exer)
   const onToggleBookMark = async (value) => {
     const data = {
       exerciseId: exerciseId,
@@ -257,7 +257,10 @@ const HealthDetail = ({
       exerciseId: exerciseId,
       check: value,
     };
-    const response = await exerciseDoing(data);
+    const response = await exerciseDoing(data)
+      .then(() => {
+        getDetail()
+      })
     setExer((prevState) => {
       return {
         ...prevState,
