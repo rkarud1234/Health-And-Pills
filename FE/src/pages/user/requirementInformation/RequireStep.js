@@ -13,7 +13,6 @@ const StepWrapper = styled.div`
 const steps = [1, 2, 3];
 const stepCount = { first: 1, second: 3 };
 const RequireStep = ({ type }) => {
-  console.log(type);
   return (
     <StepWrapper>
       <Box sx={{ width: "100%" }}>
