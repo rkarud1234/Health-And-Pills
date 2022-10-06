@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
         userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
-        return userQueryRepository.findTakingPillByUser(user, pageable)
+        return userQueryRepository.findBookmarkPillByUser(user, pageable)
                 .map(userPill -> UserPillResponse.from(userPill, pillService.findByPillId(user, userPill.getPill().getPillId())));
     }
 
