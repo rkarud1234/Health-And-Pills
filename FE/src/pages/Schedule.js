@@ -120,25 +120,28 @@ const Schedule = () => {
       });
     }
   };
-console.log(detail)
   return (
     <>
       <Modal
         isOpen={isOpen}
         closeButton={<ModalCloseButton onClick={closeModal} />}
         modalContent={
-          <ScheduleCreate
-            yoil={yoil}
-            closeModal={closeModal}
-            flag={flag}
-            setFlag={setFlag}
-          />
+          isOpen ? (
+            <ScheduleCreate
+              yoil={yoil}
+              closeModal={closeModal}
+              flag={flag}
+              setFlag={setFlag}
+            />
+          ) : (
+            <></>
+          )
         }
         // modalContent={modalPage[schedulePage]}
         // closeButton={<ModalCloseButton onClick={closeModal} />}
         // yoil={yoil}
       />
-      <Header leftNone={true} leftChildren={<BackButton />} />
+      <Header leftNone={false} />
       <BackWrapper>
         <div
           style={{
@@ -178,7 +181,7 @@ console.log(detail)
           </ButtonWrapper> */}
         <div style={{ textAlign: "center" }}>
           {detail.length !== 0 ? (
-            <div>
+            <div style={{ height: "460px", overflowY: "auto" }}>
               {detail.map((item, idx) => (
                 <DailyDetailCard
                   {...item}
