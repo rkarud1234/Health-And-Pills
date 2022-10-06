@@ -45,8 +45,6 @@ public class CalendarServiceImpl implements CalendarService{
     private final ExerciseRepository exerciseRepository;
     private final PillRepository pillRepository;
     private final CalendarQueryRepository calendarQueryRepository;
-    private final UserPillRepository userPillRepository;
-    private final UserExerciseRepository userExerciseRepository;
     private final ExerciseService exerciseService;
     private final PillService pillService;
     private final FirebaseClient firebaseClient;
@@ -89,7 +87,7 @@ public class CalendarServiceImpl implements CalendarService{
         if (request.getExerciseId() == null){
             Pill findPill = pillRepository.findById(request.getPillId())
                     .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
-            if (calendarRepository.existsByCalendarDateAndUsersAndPillAndCalendarTime(request.getCalendarDate(), user, findPill, request.getCalendarTime())){
+            if (calendarRepository.existsByCalendarDateAndUsersAndCalendarTime(request.getCalendarDate(), user, request.getCalendarTime())){
                 throw new DuplicateException(CALENDAR_DUPLICATE);
             }
             pillService.updateUserPillByUserAndPill(user, request.getPillId(), YN.Y, 1);
@@ -98,7 +96,7 @@ public class CalendarServiceImpl implements CalendarService{
         else {
             Exercise findExercise = exerciseRepository.findById(request.getExerciseId())
                     .orElseThrow(() -> new NotFoundException(EXERCISE_NOT_FOUND));
-            if (calendarRepository.existsByCalendarDateAndUsersAndExerciseAndCalendarTime(request.getCalendarDate(), user, findExercise, request.getCalendarTime())){
+            if (calendarRepository.existsByCalendarDateAndUsersAndCalendarTime(request.getCalendarDate(), user, request.getCalendarTime())){
                 throw new DuplicateException(CALENDAR_DUPLICATE);
             }
             exerciseService.updateUserExerciseByUserAndExercise(user, request.getExerciseId(), YN.Y, 1);
@@ -112,7 +110,18 @@ public class CalendarServiceImpl implements CalendarService{
     // 일정 수정
     public void updateCalendar(User user, Integer calendarId, UpdateCalendarRequest request) {
         Calendar findCalendar = calendarRepository.findById(calendarId)
-                .orElseThrow(() -> new NotFoundException(CALENDAR_NOT_FOUND));
+                .orElseThrow(() -> new DuplicateException(CALENDAR_DUPLICATE));
+
+        if(findCalendar.getExercise() == null){
+            if(calendarRepository.existsByCalendarDateAndUsersAndCalendarTime(findCalendar.getCalendarDate(), user, request.getCalendarTime())){
+                throw new DuplicateException(CALENDAR_DUPLICATE);
+            }
+        }
+        else{
+            if(calendarRepository.existsByCalendarDateAndUsersAndCalendarTime(findCalendar.getCalendarDate(), user, request.getCalendarTime())){
+                throw new DuplicateException(CALENDAR_DUPLICATE);
+            }
+        }
 
         findCalendar.updateCalendar(request.getCalendarContent(), request.getCalendarTime());
     }
