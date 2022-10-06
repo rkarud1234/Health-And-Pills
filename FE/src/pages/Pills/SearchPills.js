@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { SearchPill, AutoComplete, resetSelector } from '../../store/actions/search'
+import { SimilarWordCheck, AutoComplete, resetSelector, resetSimilarWord } from '../../store/actions/search'
 import Modal from '../../components/modals/Modal'
 import ModalCloseButton from '../../components/buttons/ModalCloseButton'
 import VisionContent from '../../components/modals/contents/VisionContent'
@@ -53,6 +53,7 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
   const valueHandler = (e) => {
     setSearchWord(e.target.value)
     setAutoCompleteOpened(true)
+    dispatch(resetSimilarWord())
     if (e.target.value !== '') {
       dispatch(AutoComplete(e.target.value))
     } else {
@@ -63,6 +64,9 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
   const searchHandler = () => {
     setAutoCompleteOpened(false)
     dispatch(resetSelector())
+    if (searchWord) {
+      dispatch(SimilarWordCheck(searchWord))
+    }
     setIsOpened(false)
   }
 
