@@ -107,10 +107,8 @@ public class CalendarServiceImpl implements CalendarService{
         Calendar calendar = calendarRepository.findById(calendarId)
                 .orElseThrow(() -> new DuplicateException(CALENDAR_DUPLICATE));
 
-        // 완전히 다른 일정인데 시간을 원래 등록되어있는 시간으로 바꿀때 에러처리
-        // 원래 일정인데 내용만 수정했을때 바뀌도록 하는 처리 calendarId 5 -> ㄲ 4:30 -> ㄴㄴ 4:30
         Optional<Calendar> findCalendar = calendarRepository.findByCalendarDateAndUsersAndCalendarTime(calendar.getCalendarDate(), user, request.getCalendarTime());
-        if(findCalendar.isPresent() && findCalendar.get().getCalendarId() != calendarId){
+        if(findCalendar.isPresent() && !findCalendar.get().getCalendarId().equals(calendarId)){
             throw new DuplicateException(CALENDAR_DUPLICATE);
         }
 
