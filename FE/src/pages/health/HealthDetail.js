@@ -303,6 +303,7 @@ const HealthDetail = ({
     <>
       <Header
         leftNone={true}
+        centerChildren={exer.exerciseName}
         leftChildren={
           <BackButton
             onClick={() => {
