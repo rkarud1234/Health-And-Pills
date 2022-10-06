@@ -60,4 +60,6 @@ public interface UserService {
 
     // 회원 탈퇴
     void deleteUser(User user);
+
+    Integer createUserEvent(User user);
 }

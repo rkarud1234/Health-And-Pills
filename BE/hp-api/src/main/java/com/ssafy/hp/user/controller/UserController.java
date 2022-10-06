@@ -153,4 +153,12 @@ public class UserController {
         userService.deleteUser(user);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    // 신체검사 count 이벤트
+    @PostMapping("/event")
+    public ResponseEntity<Integer> createUserEvent(@LoginUser User user) {
+        Integer body = userService.createUserEvent(user);
+        return ResponseEntity.ok().body(body);
+    }
+
 }

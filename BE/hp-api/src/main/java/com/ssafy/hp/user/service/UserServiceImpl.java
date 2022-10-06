@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private final UserExerciseRepository userExerciseRepository;
     private final UserPillRepository userPillRepository;
     private final PillService pillService;
+    private final UserEventRepository userEventRepository;
 
 
     @Transactional
@@ -202,5 +203,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         userRepository.delete(findUser);
+    }
+
+    @Override
+    @Transactional
+    public Integer createUserEvent(User user) {
+        userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
+        UserEvent userEvent = userEventRepository.save(UserEvent.createUserEvent(user));
+
+        return userEvent.getUserEventId();
     }
 }
