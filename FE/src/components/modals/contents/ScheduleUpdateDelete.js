@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { deleteSchedule, editSchedule } from "../../../api/schedule";
-import Schedule from "../../../pages/Schedule";
+import { deleteSchedule } from "../../../api/schedule";
 import { client } from "../../../api";
 
 const UpdateDeleteWrapper = styled.div`
@@ -111,9 +110,20 @@ const ScheduleUpdateDelete = ({
       .then((response) => {
         response;
         setFlag(!flag);
+        alert("일정이 수정됐습니다.")
+        closeModal();
       })
-      .catch((error) => error.response);
-    closeModal();
+      .catch((error) => {
+        error;
+        alert("같은 시간에 여러 일정을 등록할 수 없습니다.")
+        setContent((prevState) => {
+          return {
+            ...prevState,
+            hour: slicedCalendarTime[0],
+            minute: slicedCalendarTime[1],
+          }
+        })
+      });
   };
 
   // 일정 내용 수정
@@ -121,7 +131,6 @@ const ScheduleUpdateDelete = ({
     setContent({ ...content, [e.target.name]: e.target.value });
   };
 
-  const weekly = ["일", "월", "화", "수", "목", "금", "토"];
   return (
     <>
       <UpdateDeleteWrapper>
@@ -130,7 +139,6 @@ const ScheduleUpdateDelete = ({
             marginBottom: "10px",
           }}
         >
-          {/* {weekly[calendarDate]}  */}
           {name}
         </div>
         <CommentInput
