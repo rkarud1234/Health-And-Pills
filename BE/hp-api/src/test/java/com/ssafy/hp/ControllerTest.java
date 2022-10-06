@@ -1,12 +1,11 @@
 package com.ssafy.hp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.hp.auth.service.AuthService;
 import com.ssafy.hp.config.LoginUserArgumentResolver;
-import com.ssafy.hp.security.config.SecurityConfig;
 import com.ssafy.hp.security.filter.JwtAuthenticationFilter;
 import com.ssafy.hp.security.handler.CustomAccessDeniedHandler;
 import com.ssafy.hp.security.handler.CustomAuthenticationEntryPoint;
+import com.ssafy.hp.security.handler.OAuthAuthenticationFailureHandler;
 import com.ssafy.hp.security.handler.OAuthAuthenticationSuccessHandler;
 import com.ssafy.hp.security.service.OAuth2UserService;
 import com.ssafy.hp.security.service.UserDetailService;
@@ -15,13 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -58,6 +53,9 @@ public abstract class ControllerTest {
 
     @MockBean
     protected OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
+
+    @MockBean
+    protected OAuthAuthenticationFailureHandler oAuthAuthenticationFailureHandler;
 
     protected MockMvc mockMvc;
 

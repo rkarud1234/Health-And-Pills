@@ -16,10 +16,6 @@ public interface PillReviewRepository extends JpaRepository<PillReview, Integer>
 
     Page<PillReview> findByUsers(User user, Pageable pageable);
 
-    int countByPillPillId(Integer pillId);
-
-    List<PillReview> findByPillPillId(Integer pillId);
-
     Optional<PillReview> findByUsersAndPill(User user, Pill pill);
 
     Page<PillReview> findByPillAndUsersNotOrderByPillReviewIdDesc(Pill pill, User user, Pageable pageable);

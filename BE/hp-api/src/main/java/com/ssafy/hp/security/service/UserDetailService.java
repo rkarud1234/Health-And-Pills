@@ -5,7 +5,6 @@ import com.ssafy.hp.security.oauth.*;
 import com.ssafy.hp.user.UserRepository;
 import com.ssafy.hp.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

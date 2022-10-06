@@ -1,12 +1,9 @@
 package com.ssafy.hp.exercise.response;
 
 
-import com.ssafy.hp.common.type.*;
 import com.ssafy.hp.exercise.domain.*;
-import com.ssafy.hp.exercise.type.*;
 import com.ssafy.hp.user.response.UserExerciseInfoResponse;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExerciseListResponse {

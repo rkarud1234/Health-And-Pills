@@ -37,8 +37,6 @@ public class CalendarController {
     }
 
     // 일정 등록
-    // (운동 & 영양제 구분한뒤 -> 복용중 or 운동중 하지 않았을 경우, 복용중 or 운동중 까지 등록)
-    // * 요일당 99개 까지 가능
     @PostMapping
     public ResponseEntity<Void> createCalendar(@LoginUser User user,
                                                @RequestBody @Valid CreateCalendarRequest request){

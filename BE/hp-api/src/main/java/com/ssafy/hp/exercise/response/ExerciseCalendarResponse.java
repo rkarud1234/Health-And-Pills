@@ -2,12 +2,10 @@ package com.ssafy.hp.exercise.response;
 
 import com.ssafy.hp.exercise.domain.Exercise;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExerciseCalendarResponse {

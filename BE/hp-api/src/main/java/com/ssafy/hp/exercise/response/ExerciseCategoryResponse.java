@@ -1,12 +1,9 @@
 package com.ssafy.hp.exercise.response;
 
 import com.ssafy.hp.exercise.domain.*;
-import com.ssafy.hp.user.domain.*;
-import com.ssafy.hp.user.response.*;
 import lombok.*;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExerciseCategoryResponse {

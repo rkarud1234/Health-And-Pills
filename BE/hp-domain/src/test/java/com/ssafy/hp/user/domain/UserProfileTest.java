@@ -1,13 +1,12 @@
 package com.ssafy.hp.user.domain;
 
-import com.ssafy.hp.user.domain.type.ExPurpose;
+
 import com.ssafy.hp.user.domain.type.Provider;
 import com.ssafy.hp.user.domain.type.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserProfileTest {
     public static final User user = User.createUser(Provider.google, "109764055816357512970", "google_109764055816357512970", Role.ROLE_USER, "한싸피");

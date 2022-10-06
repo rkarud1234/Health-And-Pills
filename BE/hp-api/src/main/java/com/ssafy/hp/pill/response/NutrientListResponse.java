@@ -1,6 +1,5 @@
 package com.ssafy.hp.pill.response;
 
-import com.ssafy.hp.pill.domain.Functionality;
 import com.ssafy.hp.pill.domain.Nutrient;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,5 @@
 package com.ssafy.hp.exercise.domain;
 
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
