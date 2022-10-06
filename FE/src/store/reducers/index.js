@@ -8,7 +8,7 @@ import recommendSlice from "../actions/recommend";
 
 const reducer = combineReducers({
   user: userSlice.reducer,
-  sum: testSlice.reducer,
+  test: testSlice.reducer,
   pill: pillSlice.reducer,
   search: searchSlice.reducer,
   recommend: recommendSlice.reducer

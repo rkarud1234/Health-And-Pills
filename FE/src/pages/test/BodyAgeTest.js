@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Question from './Question'
 import styled from 'styled-components'
 import water from '../../assets/water.jpg'
@@ -11,11 +11,13 @@ import sleep from '../../assets/sleep.jpg'
 import smoking from '../../assets/smoking.jpg'
 import walking from '../../assets/walking.jpg'
 import onefoot from '../../assets/onefoot.jpg'
+import { eventCountNum } from '../../store/reducers/testSlice';
 
 const SurveyDiv = styled.div`
 display: flex;
 justify-content: center;
 background-color: #EAEFF1;
+height: 100%;
 `
 
 const BodyAgeTest = () => {
@@ -89,7 +91,7 @@ const BodyAgeTest = () => {
       imgUrl: back
     }, {
       qNum: 8,
-      question: "제자리에서 사진과 같은 자세를 취했을때, 자세가 무너질때 까지 걸리는 시간이 얼마인가요?",
+      question: "제자리에서 눈을 감고 사진과 같은 자세를 취했을때, 자세가 무너질때 까지 걸리는 시간이 얼마인가요?",
       answers: [
         { value: 20, answer: "1. 80초 이상" },
         { value: 35, answer: "2. 75초 이상" },
@@ -98,12 +100,16 @@ const BodyAgeTest = () => {
       imgUrl: onefoot
     }
   ]
+
   const [num, setNum] = useState(1)
   const navigate = useNavigate()
-  let average = useSelector(state => state.sum.sum)
+  const dispatch = useDispatch()
+  let average = useSelector(state => state.test.sum)
+
   const nextBtnHandler = (value) => {
     setNum(num + 1)
     if (num === 8) {
+      dispatch(eventCountNum())
       average = Math.floor((average + value) / 8)
       if (average < 30) {
         navigate('/result/1')
