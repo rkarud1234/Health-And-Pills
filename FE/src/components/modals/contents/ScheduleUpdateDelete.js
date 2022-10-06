@@ -100,22 +100,24 @@ const ScheduleUpdateDelete = ({
     });
   };
 
+
   // 일정 시간 수정
   const onScheduleEdit = (calendarId) => {
+    const mminute = content.minute.toString().padStart(2, "0");
     client
       .put(`/calendars/${calendarId}`, {
         calendarContent: content.content,
-        calendarTime: content.hour + ":" + content.minute,
+        calendarTime: content.hour + ":" + mminute,
       })
       .then((response) => {
         response;
-        setFlag(!flag);
         alert("일정이 수정됐습니다.")
+        setFlag(!flag);
         closeModal();
       })
       .catch((error) => {
         error;
-        alert("같은 시간에 여러 일정을 등록할 수 없습니다.")
+        alert("이 시간엔 이미 다른 일정이 있습니다.")
         setContent((prevState) => {
           return {
             ...prevState,
