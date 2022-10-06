@@ -68,7 +68,6 @@ const ScheduleUpdateDelete = ({
   const onClickDeleteSchedule = async (calendarId) => {
     const response = await deleteSchedule(calendarId);
     if (response.status === 200) {
-      console.log("삭제됨");
     }
     closeModal();
     setFlag(!flag);

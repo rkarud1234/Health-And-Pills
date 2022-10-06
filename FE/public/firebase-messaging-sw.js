@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "healthpill-53153",
   storageBucket: "healthpill-53153.appspot.com",
   messagingSenderId: "590917719651",
-  appId: "1:590917719651:web:37df51b239cee25ff88a56"
+  appId: "1:590917719651:web:37df51b239cee25ff88a56",
 };
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
@@ -17,9 +17,9 @@ messaging.setBackgroundMessageHandler((payload) => {
   const notificationOptions = {
     body: payload.data.content,
   };
-  console.log("payload" + payload.data.content);
+
   return self.registration.showNotification(
     notificationTitle,
-    notificationOptions,
+    notificationOptions
   );
 });

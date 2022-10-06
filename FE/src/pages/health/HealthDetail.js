@@ -246,7 +246,6 @@ const HealthDetail = ({
   // }, [])
 
   const onToggleThumbsUp = async (value) => {
-    console.log(value);
     const data = {
       exerciseId: exerciseId,
       check: value,

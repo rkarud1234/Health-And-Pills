@@ -100,7 +100,6 @@ const Schedule = () => {
 
   // 요일별 상세 일정 변수 초기화
   const [detail, setDetail] = useState([]);
-  // console.log(detail)
 
   // 일정 완료 체크할때 리렌더링용
   const [flag, setFlag] = useState(false);
@@ -125,20 +124,23 @@ const Schedule = () => {
     <>
       <Modal
         isOpen={isOpen}
+        width={"330px"}
+        height={"450px"}
         closeButton={<ModalCloseButton onClick={closeModal} />}
         modalContent={
-          <ScheduleCreate
-            yoil={yoil}
-            closeModal={closeModal}
-            flag={flag}
-            setFlag={setFlag}
-          />
+          isOpen ? (
+            <ScheduleCreate
+              yoil={yoil}
+              closeModal={closeModal}
+              flag={flag}
+              setFlag={setFlag}
+            />
+          ) : (
+            <></>
+          )
         }
-        // modalContent={modalPage[schedulePage]}
-        // closeButton={<ModalCloseButton onClick={closeModal} />}
-        // yoil={yoil}
       />
-      <Header leftNone={true} leftChildren={<BackButton />} />
+      <Header leftNone={false} />
       <BackWrapper>
         <div
           style={{
@@ -168,14 +170,6 @@ const Schedule = () => {
             }}
           />
         </ButtonWrapper>
-        {/* <ButtonWrapper
-            onClick={() => {
-              openModal();
-              setSchedulePage("pillScheduleCreate");
-            }}
-          >
-            <SchedulePlusButton/>
-          </ButtonWrapper> */}
         <div style={{ textAlign: "center" }}>
           {detail.length !== 0 ? (
             <div>
