@@ -127,4 +127,11 @@ public class PillController {
         Optional<PillReviewResponse> body = pillService.findPillReviewByUser(user, pillId);
         return ResponseEntity.ok().body(body);
     }
+
+    // 유사어 검색
+    @GetMapping("/search/similar/{keyword}")
+    public ResponseEntity<String> findSimilarNameByKeyword(@PathVariable("keyword") String keyword) {
+        String body = pillService.findSimilarNameByKeyword(keyword);
+        return ResponseEntity.ok().body(body);
+    }
 }

@@ -54,4 +54,6 @@ public interface PillService {
     List<List<PillCalendarResponse>> findPillByUserPill(User user, String search);
 
     Optional<PillReviewResponse> findPillReviewByUser(User user, int pillId);
+
+    String findSimilarNameByKeyword(String keyword);
 }

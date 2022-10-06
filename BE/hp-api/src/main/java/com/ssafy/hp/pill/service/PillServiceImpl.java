@@ -2,12 +2,10 @@ package com.ssafy.hp.pill.service;
 
 import com.ssafy.hp.*;
 import com.ssafy.hp.common.type.YN;
-import com.ssafy.hp.pill.FunctionalityRepository;
-import com.ssafy.hp.pill.NutrientRepository;
-import com.ssafy.hp.pill.PillRepository;
-import com.ssafy.hp.pill.PillReviewRepository;
+import com.ssafy.hp.pill.*;
 import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.domain.PillReview;
+import com.ssafy.hp.pill.domain.PillSearch;
 import com.ssafy.hp.pill.query.PillQueryRepository;
 import com.ssafy.hp.pill.request.PillReviewRequest;
 import com.ssafy.hp.pill.request.SearchRequest;
@@ -18,6 +16,8 @@ import com.ssafy.hp.user.domain.User;
 import com.ssafy.hp.user.domain.UserPill;
 import com.ssafy.hp.user.response.UserPillInfoResponse;
 import com.ssafy.hp.user.service.UserService;
+import com.ssafy.hp.util.levenshtein.JasoTokenizer;
+import com.ssafy.hp.util.levenshtein.LevenshteinAlgorithm;
 import com.ssafy.hp.vision.DetectText;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +54,7 @@ public class PillServiceImpl implements PillService {
     private final DetectText detectText;
     private final FunctionalityRepository functionalityRepository;
     private final NutrientRepository nutrientRepository;
+    private final PillSearchRepository pillSearchRepository;
 
     // 검색조건에 맞는 영양제 반환
     @Override
@@ -245,5 +246,18 @@ public class PillServiceImpl implements PillService {
                 .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
         return pillReviewRepository.findByUsersAndPill(user, pill)
                 .map(PillReviewResponse::from);
+    }
+
+    @Override
+    public String findSimilarNameByKeyword(String keyword) {
+        int pillId = LevenshteinAlgorithm.getMosSimilarString(
+                JasoTokenizer.split(keyword),
+                pillSearchRepository.findAll().stream().map(PillSearch::getPillSearchName).collect(Collectors.toList()));
+
+
+        Pill pill = pillRepository.findById(pillId)
+                .orElseThrow(() -> new NotFoundException(PILL_NOT_FOUND));
+
+        return pill.getPillName();
     }
 }
