@@ -16,6 +16,7 @@ import Loading from "./components/layouts/Loading";
 import PrivateRoute from "./routes/PrivateRoute";
 import NotFound from "./pages/error/NotFound";
 import firebase from "firebase";
+import Event from "./pages/event/Event";
 
 const setFCM = async () => {
   const config = {
@@ -114,6 +115,10 @@ function App() {
             <Route
               path="/result/:id"
               element={<PrivateRoute component={<Result />} />}
+            />
+            <Route
+              path="/event"
+              element={<PrivateRoute component={<Event />} />}
             />
             <Route path="/*" element={<NotFound />} />
           </Routes>

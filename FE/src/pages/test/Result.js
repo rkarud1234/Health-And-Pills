@@ -82,6 +82,8 @@ const Result = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
+  const countNum = useSelector(state => state.test.conuntNum)
+  console.log(countNum)
   useEffect(() => {
     let timer = setTimeout(() => { setIsLoading(true) }, 1500)
   }, [])
@@ -132,19 +134,14 @@ const Result = () => {
     Kakao.Link.sendDefault({
       objectType: 'feed',
       content: {
-        title: '나의 신체 나이는??',
-        description: '지금 나의 건강상태를 알아보자!!!',
+        title: '나의 신체 나이는?',
+        description: '지금 나의 건강상태를 알아보자!',
         imageUrl:
-          '웹페이지 url 입력',
+          `https://j7b203.p.ssafy.io/static/media/001.a26b8d48c31fe4e3c8bc.jpg`,
         link: {
-          mobileWebUrl: '웹페이지 url 입력',
-          webUrl: '웹페이지 url 입력',
+          mobileWebUrl: 'https://j7b203.p.ssafy.io/pillLogo.png',
+          webUrl: 'https://j7b203.p.ssafy.io/pillLogo.png',
         },
-      },
-      social: {
-        likeCount: 286,
-        commentCount: 45,
-        sharedCount: 845,
       },
       buttons: [
         {
@@ -157,8 +154,8 @@ const Result = () => {
         {
           title: '테스트 하러가기',
           link: {
-            webUrl: 'http://localhost:3000/form',
-            mobileWebUrl: 'http://localhost:3000/form',
+            webUrl: 'https://j7b203.p.ssafy.io/form',
+            mobileWebUrl: 'https://j7b203.p.ssafy.io/form',
           },
         },
       ],
@@ -193,6 +190,11 @@ const Result = () => {
         </LoadingBox>
         :
         <div style={{ backgroundColor: '#EAEFF1', paddingBottom: '50px' }}>
+          {countNum === 777 &&
+            <TextBox style={{ fontSize: '24px', fontWeight: 'bold', paddingTop: '20px' }}>
+              <h1>축하합니다! 777번째 당첨!</h1>
+            </TextBox>
+          }
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <TextBox style={{ paddingTop: '20px' }}>HP가 확인한 당신의 신체 나이 연령대는</TextBox>
           </div>
