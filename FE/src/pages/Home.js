@@ -202,19 +202,26 @@ const Main = ({ user }) => {
               <i className="fa-solid fa-chevron-right"></i>
             </div>
           </UserContent>
-          <UserContentDisable border={"none"} color={"#fff"}>
+          <UserContent
+            border={"none"}
+            color={"#fff"}
+            bgColor={colorTheme.bgColor}
+            onClick={() => 
+              {navigate("/event")}}
+          >
+
             <div style={{ display: "flex" }}>
               <IconWrapper>
                 <i className="fa-solid fa-calendar-star"></i>
               </IconWrapper>
-              이벤트 준비중...
+              진행중인 이벤트 보러가기
             </div>
             <div>
               <div>
                 <i className="fa-solid fa-chevron-right"></i>
               </div>
             </div>
-          </UserContentDisable>
+          </UserContent>
         </div>
       </div>
       <ChartWapper>
