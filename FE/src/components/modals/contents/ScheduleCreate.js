@@ -16,11 +16,12 @@ const CreateWrapper = styled.div`
 const RadioWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 14px;
   font-size: 14px;
   align-items: center;
-  & div:first-child {
+  width: 100%;
+  & div.day {
     margin: 0 4px;
     padding: 6px;
     color: white;
@@ -35,7 +36,6 @@ const RadioWrapper = styled.div`
     height: 10px;
     border-radius: 100%;
     background: linear-gradient(#78f7f8, #34cccd);
-    margin-left: 75px;
     margin-right: 4px;
     & + span {
       font-size: 12px;
@@ -348,23 +348,31 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
     <>
       <CreateWrapper>
         <RadioWrapper>
-          <div className="day">{weekly[yoil]}</div>
-          <input
-            type="radio"
-            value="1"
-            checked={hp === "1"}
-            onChange={onClickRadioButton}
-          />
-          <label>영양제</label>
-          <input
-            type="radio"
-            value="2"
-            checked={hp === "2"}
-            onChange={onClickRadioButton}
-          />
-          <label>운동</label>
-          <div className="taking"></div>
-          <span>{hp === "1" ? "복용중" : "운동중"}</span>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="day">{weekly[yoil]}</div>
+            <div style={{ display: "flex", textAlign: "center" }}>
+              <input
+                type="radio"
+                value="1"
+                checked={hp === "1"}
+                onChange={onClickRadioButton}
+              />
+              <label>영양제</label>
+            </div>
+            <div style={{ display: "flex", textAlign: "center" }}>
+              <input
+                type="radio"
+                value="2"
+                checked={hp === "2"}
+                onChange={onClickRadioButton}
+              />
+              <label>운동</label>
+            </div>
+          </div>
+          <div style={{ display: "flex", textAlign: "center" }}>
+            <div className="taking"></div>
+            <span>{hp === "1" ? "복용중" : "운동중"}</span>
+          </div>
         </RadioWrapper>
 
         <SearchBar
