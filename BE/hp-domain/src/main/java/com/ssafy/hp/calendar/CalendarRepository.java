@@ -11,8 +11,7 @@ import java.util.List;
 
 
 public interface CalendarRepository extends JpaRepository<Calendar, Integer> {
-    boolean existsByCalendarDateAndUsersAndExerciseAndCalendarTime(Integer calendarDate, User user, Exercise exercise, LocalTime calendarTime);
-    boolean existsByCalendarDateAndUsersAndPillAndCalendarTime(Integer calendarDate, User user, Pill pill, LocalTime calendarTime);
+    boolean existsByCalendarDateAndUsersAndCalendarTime(Integer calendarDate, User user, LocalTime calendarTime);
     List<Calendar> findByUsers(User user);
     Long countByCalendarDate(Integer calendarDate);
 }
