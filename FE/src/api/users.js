@@ -49,7 +49,6 @@ export const fetchUserPillBookmark = async (page) => {
   const result = await client
     .get(`/users/pill/bookmark`, { params: { page } })
     .then((response) => response);
-  console.log(result);
   return result;
 };
 
@@ -57,7 +56,6 @@ export const fetchUserExerciseBookmark = async (page) => {
   const result = await client
     .get(`/users/exercise/bookmark`, { params: { page } })
     .then((response) => response);
-  console.log(result);
   return result;
 };
 
