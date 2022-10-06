@@ -395,7 +395,7 @@ const SearchSlide = ({ openHandler }) => {
           </div>
         </Category>
       }
-      <SearchResult searchData={searchData} data={data} searchWord={searchWord} key={[data.domestic, data.functionalityList, data.nutrientList, searchWord]} ></SearchResult>
+      <SearchResult searchData={searchData} data={data} searchWord={searchWord} key={[data.domestic, data.functionalityList, data.nutrientList, searchWord]} setSearchWord={setSearchWord} ></SearchResult>
     </div>
   );
 };
