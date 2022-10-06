@@ -63,13 +63,16 @@ const VisionContent = ({ setSearchWord, close }) => {
   if (croppedImage) {
     convertImage = croppedImage.replace(/^data:image\/(png|jpg);base64,/, "");
   }
-
   const requestHandler = () => {
     SearchImg(convertImage).then((res) => {
-      setSearchWord(res);
-      dispatch(SimilarWordCheck(res))
+      if (res.status !== 413) {
+        setSearchWord(res);
+        dispatch(SimilarWordCheck(res))
+        close();
+      } else {
+        alert('용량이 너무 큽니다. 검색할 이미지의 용량을 줄여주세요.')
+      }
     });
-    close();
   };
 
   return (

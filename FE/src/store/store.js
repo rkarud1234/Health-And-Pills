@@ -6,7 +6,7 @@ const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sessionStorageMiddleware, profileMiddleware),
-  devTools: true,
+  devTools: false,
 });
 
 export default store;
