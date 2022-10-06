@@ -49,8 +49,8 @@ class PillFunctionality(models.Model):
         db_table = 'pill_functionality'
 
     pill_functionality_id = models.AutoField(primary_key=True)
-    pill_id = models.ForeignKey('Pill', related_name='functionality_pill', on_delete=models.CASCADE)
-    functionality_id = models.ForeignKey('Functionality', related_name='functionality', on_delete=models.CASCADE)
+    pill = models.ForeignKey('Pill', related_name='functionality_pill', on_delete=models.CASCADE)
+    functionality_id = models.IntegerField()
 
 class Functionality(models.Model):
     class Meta:
