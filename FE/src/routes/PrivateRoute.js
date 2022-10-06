@@ -10,7 +10,6 @@ const loadCheck = () => {
 };
 const PrivateRoute = ({ component: Component }) => {
   const authenticated = useSelector((state) => state.user.isLogin);
-  console.log(authenticated);
   const data = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
   useEffect(() => {
