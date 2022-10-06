@@ -140,7 +140,7 @@ const Schedule = () => {
           )
         }
       />
-      <Header leftNone={false} />
+      <Header centerChildren="일정관리" leftNone={false} />
       <BackWrapper>
         <div
           style={{

@@ -105,6 +105,7 @@ const PillDetail = () => {
         <>
           <Header
             leftNone={true}
+            centerChildren={pillDetail.pillName}
             leftChildren={
               <BackButton
                 onClick={() => {
