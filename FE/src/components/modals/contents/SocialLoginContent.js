@@ -43,7 +43,7 @@ const SocialLoginContent = () => {
   return (
     <StyeldSocialLoginContent>
       <div>
-        <img src={process.env.PUBLIC_URL + "/modalLogo.png"} />
+        <img width={80} src={process.env.PUBLIC_URL + "/modalLogo.png"} />
       </div>
       <SocialLinkWrapper>
         <a href="https://j7b203.p.ssafy.io/oauth2/authorization/kakao">
