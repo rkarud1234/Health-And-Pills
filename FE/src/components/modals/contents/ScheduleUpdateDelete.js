@@ -103,11 +103,12 @@ const ScheduleUpdateDelete = ({
 
   // 일정 시간 수정
   const onScheduleEdit = (calendarId) => {
+    const hhour = content.hour.toString().padStart(2, "0")
     const mminute = content.minute.toString().padStart(2, "0");
     client
       .put(`/calendars/${calendarId}`, {
         calendarContent: content.content,
-        calendarTime: content.hour + ":" + mminute,
+        calendarTime: hhour + ":" + mminute,
       })
       .then((response) => {
         response;
@@ -116,7 +117,7 @@ const ScheduleUpdateDelete = ({
         closeModal();
       })
       .catch((error) => {
-        error;
+        console.log(error.response)
         alert("이 시간엔 이미 다른 일정이 있습니다.")
         setContent((prevState) => {
           return {
