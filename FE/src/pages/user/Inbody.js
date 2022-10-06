@@ -149,7 +149,6 @@ const Inbody = () => {
         return;
       }
     }
-    console.log(validInbody());
     if (validInbody() === false) {
       alert("정확한 인바디 정보를 입력해주세요.");
     } else {
@@ -157,7 +156,6 @@ const Inbody = () => {
       alert("수정되었습니다.");
     }
   };
-  console.log(inBodyState);
   return (
     <div>
       <InbodyWrapper>

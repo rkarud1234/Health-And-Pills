@@ -45,7 +45,6 @@ const UserPill = () => {
 
   const deleteItem = async (id) => {
     const res = await deleteUserPill(id);
-    console.log(res);
     if (res.status === 200) {
       alert("삭제 되었습니다.");
     }
