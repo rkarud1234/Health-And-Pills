@@ -85,7 +85,7 @@ const UserBookmark = ({ type }) => {
             children={
               <DeleteItemButton
                 text={"해제"}
-                id={type === "pill" ? item.id : item.relatedItemId}
+                id={type === "pill" ? item.relatedItemId : item.relatedItemId}
                 onClick={deleteBookmarkItem}
               />
             }
