@@ -5,7 +5,7 @@ import useIntersect from "../../hooks/useIntersect";
 import { useNavigate } from 'react-router-dom'
 import HorizPillCard from '../../components/cards/HorizPillCard'
 import { SearchPill } from '../../store/actions/search';
-
+import { useSelector } from 'react-redux';
 const CardDiv = styled.div`
 margin: 0px;
 width: 100%;
@@ -22,8 +22,9 @@ const Target = styled.div`
   height: 1px;
 `;
 
-const SearchResult = ({ searchData, data }) => {
+const SearchResult = ({ searchData, data, setSearchWord }) => {
   const navigate = useNavigate()
+  const similarWord = useSelector(state => state.search.similarWord)
 
   let searchParams = {}
 
@@ -64,8 +65,19 @@ const SearchResult = ({ searchData, data }) => {
   return (
     <div>
       {searchRes.length === 0 &&
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-          <div>{text}</div>
+        <div style={{ marginLeft: "16px" }}>
+          <div style={{ marginBottom: "8px" }}>{text}</div>
+          {similarWord &&
+            <div style={{ display: 'flex' }}>
+              <div>
+                이 단어를 찾으셨나요?
+              </div>
+              <div
+                style={{ marginLeft: "8px", color: "#537CFE", cursor: 'pointer' }}
+                onClick={() => { setSearchWord(similarWord) }}>
+                {similarWord}
+              </div>
+            </div>}
         </div>
       }
       <Box>

@@ -3,6 +3,8 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { SearchImg } from "../../../store/actions/search";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { SimilarWordCheck } from "../../../store/actions/search";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -45,6 +47,7 @@ const CustomBtn = styled.button`
   }
   `;
 const VisionContent = ({ setSearchWord, close }) => {
+  const dispatch = useDispatch()
   const cropperRef = useRef(null);
   // 유저가 첨부한 이미지
   const [inputImage, setInputImage] = useState(null);
@@ -64,6 +67,7 @@ const VisionContent = ({ setSearchWord, close }) => {
   const requestHandler = () => {
     SearchImg(convertImage).then((res) => {
       setSearchWord(res);
+      dispatch(SimilarWordCheck(res))
     });
     close();
   };

@@ -14,6 +14,9 @@ const initialState = {
 
   //자동완성 리스트
   autoComplete: [],
+
+  //유사 단어
+  similarWord: ""
 }
 
 // 생리활성 기능 리스트 불러오기
@@ -67,9 +70,26 @@ export const SearchPill = async (page, data) => {
 export const SearchImg = async (data) => {
   const result = await client
     .post(`/pills/vision`, data)
-    .then(response => {return response.data});
+    .then(response => { return response.data });
   return result;
 };
+
+//영양제 유사단어 확인
+export const SimilarWordCheck = createAsyncThunk(
+  'Search/SimilarWordCheck',
+  async (word) => {
+    return client.get(`/pills/search/similar/${word}`)
+      .then(res => {
+        if (res.status === 200) {
+          return res.data
+        } else {
+        }
+      })
+      .catch(error => {
+        return false
+      })
+  }
+)
 
 // 자동완성
 export const AutoComplete = createAsyncThunk(
@@ -114,6 +134,9 @@ const searchSlice = createSlice({
       state.nutrientList = [];
       state.functionalityList = [];
       state.searchResult = [];
+    },
+    resetSimilarWord: (state, action) => {
+      state.similarWord = '';
     }
   },
   extraReducers: (builder) => {
@@ -147,8 +170,12 @@ const searchSlice = createSlice({
     builder.addCase(AutoComplete.rejected, (state, action) => {
       state.status = 'failed';
     })
+    builder.addCase(SimilarWordCheck.fulfilled, (state, { payload }) => {
+      state.status = 'succeeded';
+      state.similarWord = payload;
+    })
   }
 })
 
 export default searchSlice
-export const { domesticSelector, nutrientSelector, functionalitySelector, resetSelector } = searchSlice.actions;
+export const { domesticSelector, nutrientSelector, functionalitySelector, resetSelector, resetSimilarWord } = searchSlice.actions;
