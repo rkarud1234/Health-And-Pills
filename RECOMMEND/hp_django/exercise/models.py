@@ -9,6 +9,7 @@ class Exercise(models.Model):
     exercise_name = models.CharField(max_length=100)
     exercise_content = models.TextField()
     exercise_aerobic = models.CharField(max_length=255)
+    exercise_category_id = models.IntegerField()
     created_date = models.DateTimeField()
     modified_date = models.DateTimeField()
     
@@ -25,7 +26,15 @@ class ExercisePart(models.Model):
 
     def __str__(self):
         return self.exercise_part_category.exercise_part_category_name
+class ExerciseCategory(models.Model):
+    class Meta:
+        db_table = 'exercse_category'
 
+    exercise_category_id = models.AutoField(primary_key=True)
+    exercise_category_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.exercise_category_name
 
 class ExercisePartCategory(models.Model):
     class Meta:

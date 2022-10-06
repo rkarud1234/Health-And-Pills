@@ -4,7 +4,7 @@ import random
 from itertools import chain
 import pandas as pd
 import numpy as np
-from exercise.models import Exercise, ExercisePart
+from exercise.models import Exercise, ExercisePart, ExercisePartCategory
 from user.models import UserProfile,UserExercise
 from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import cosine_similarity
@@ -120,50 +120,12 @@ def recommendCustom(user_id):
     return pk_list_to_queryset(exercise_sort.reset_index()['exercise_id'][:10])
 
 def recommendItem(user_id, exercise_id):
-    exercise_part = list(ExercisePart.objects.filter(exercise=exercise_id).values())
-    exercise_part_list = []
-    for exp in exercise_part:
-        exercise_part_list.append(exp['exercise_part_category_id'])
-    
+    exercise = Exercise.objects.get(exercise_id=exercise_id)
 
-    ratings = UserExercise.toDataFrame(cols=['user_id','exercise_id','user_exercise_bookmark','user_exercise_doing','user_exercise_like'])
-    queryset = UserExercise.objects.all()
-    temp =[]
-    for t in queryset:
-        temp.append({
-            'user_id': t.user_id,
-            'exercise_id': t.exercise_id,
-            'score': create_exercise_score(t.user_exercise_bookmark,t.user_exercise_doing,t.user_exercise_like)
-        })
-    ratings = pd.DataFrame(temp, columns=['user_id','exercise_id','score'])
-    ratings = ratings.groupby(['user_id','exercise_id'])['score'].mean().reset_index()
+    exercise_list = Exercise.objects.filter(exercise_category_id=exercise.exercise_category_id).exclude(exercise_id=exercise_id).order_by('?')
+    print(exercise_list)    
 
-    x = ratings.copy()
-    y = ratings['user_id']
-    
-    x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.25)
-    
-    rating_matrix = x_train.pivot(index='user_id', columns='exercise_id', values='score')
-
-    matrix_dummy = rating_matrix.copy().fillna(0)
-    user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
-    user_similarity = pd.DataFrame(user_similarity, index=rating_matrix.index, columns=rating_matrix.index)
-    try:
-        user_exercise = matrix_dummy.loc[user_id].copy()
-    except:
-        user_exercise = matrix_dummy.iloc[1].copy()
-        for i in range(1, len(user_exercise)):
-            user_exercise[i] = 0.0
-   
-    for exercise in rating_matrix.columns:
-        if pd.notnull(user_exercise.loc[exercise]):
-            user_exercise.loc[exercise] = 0
-        else:
-            user_exercise.loc[exercise] = CF_knn(32, exercise, rating_matrix, user_similarity, 1)
-
-    exercise_sort = user_exercise.sort_values(ascending=False).drop(1)
-    rand = random.randint(0,20)
-    return pk_list_to_queryset(exercise_sort.reset_index()['exercise_id'][rand:rand+10])
+    return exercise_list[:10]
 
 # 운동에 관한 자체 스코어 생성
 def create_exercise_score(user_exercise_bookmark,user_exercise_doing,user_exercise_like):
