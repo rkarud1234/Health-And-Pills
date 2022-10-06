@@ -38,7 +38,6 @@ const CardWrapper = styled.div`
 `;
 
 const HealthFindPart = ({ tag }) => {
-  console.log(tag);
   const [part, setPart] = useState([]);
   const [partNum, setPartNum] = useState(1);
 

@@ -17,9 +17,7 @@ const StyledTypeButton = styled.button`
 `;
 
 const Bookmark = ({ bookmarkType }) => {
-  console.log(bookmarkType);
   const [type, setType] = useState(bookmarkType ? bookmarkType : "pill");
-  console.log(type);
   const onHandleTypeChange = (type) => {
     setType(type);
   };

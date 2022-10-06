@@ -6,7 +6,7 @@ import { postSchedule, searchExerSchedule } from "../../../api/schedule";
 const CreateWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 240px;
+  width: 260px;
   height: 380px;
   align-items: baseline;
   margin: 0 auto;
@@ -20,7 +20,7 @@ const RadioWrapper = styled.div`
   margin-bottom: 14px;
   font-size: 14px;
   align-items: center;
-  & div {
+  & div:first-child {
     margin: 0 4px;
     padding: 6px;
     color: white;
@@ -29,6 +29,40 @@ const RadioWrapper = styled.div`
   }
   & input {
     margin: 0 5px;
+  }
+  & div.taking {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: linear-gradient(#78f7f8, #34cccd);
+    margin-left: 75px;
+    margin-right: 4px;
+    & + span {
+      font-size: 12px;
+    }
+  }
+`;
+
+const TakingDot = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: linear-gradient(#78f7f8, #34cccd);
+  margin-left: 4px;
+  margin-right: 4px;
+`;
+
+const TransparencyDot = styled.div`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background: transparent;
+  margin-left: 4px;
+  margin-right: 4px;
+  &.hide {
+    display: none;
   }
 `;
 
@@ -47,7 +81,7 @@ const SearchBar = styled.input`
   height: 30px;
   margin-bottom: 10px;
   outline: none;
-  padding: 0px 8px;
+  padding: 4px 8px;
   &.active {
     border-bottom: transparent;
     border-radius: 8px 8px 0px 0px;
@@ -200,8 +234,6 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
     }
     const time = content.hour.toString().padStart(2, "0");
     const minute = content.minute.toString().padEnd(2, "0");
-    console.log(time);
-    console.log(minute);
     const data = {
       exerciseId: content.exerciseId,
       pillId: content.pillId,
@@ -222,7 +254,14 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
 
   useEffect(() => {
     setContent({ ...initialContent });
-    console.log("안녕?");
+    return () => {
+      setContent({ ...initialContent });
+      setIsHaveInputValue(false);
+      setInputValue("");
+      setWord({
+        search: "",
+      });
+    };
   }, []);
 
   // 일정 내용 입력
@@ -309,7 +348,7 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
     <>
       <CreateWrapper>
         <RadioWrapper>
-          <div>{weekly[yoil]}</div>
+          <div className="day">{weekly[yoil]}</div>
           <input
             type="radio"
             value="1"
@@ -324,18 +363,23 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
             onChange={onClickRadioButton}
           />
           <label>운동</label>
+          <div className="taking"></div>
+          <span>{hp === "1" ? "복용중" : "운동중"}</span>
         </RadioWrapper>
 
         <SearchBar
           type="text"
           value={inputValue}
+          placeholder={"이름으로 검색 후 선택해주세요."}
           onChange={changeInputValue}
+          // className={
+          //   (result.length === 0 && unResult.length === 0) || choiceValue
+          //     ? "active end"
+          //     : "active"
+          // }
           className={
-            (result.length === 0 && unResult.length === 0) || choiceValue
-              ? "active end"
-              : "active"
+            choiceValue || inputValue.length === 0 ? "active end" : "active"
           }
-          // onKeyUp={handleDropDownKey}
         />
         {isHaveInputValue && result.length !== 0 ? (
           <SearchResultWrapper
@@ -345,11 +389,20 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
               return (
                 <>
                   <div
-                    key={idx + "doing"}
-                    onClick={() => clickDropDownItem(item)}
-                    onMouseOver={() => setDropDownItemIndex(item.idx)}
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      alignItems: "center",
+                    }}
                   >
-                    {parseInt(hp) === 1 ? item.pillName : item.exerciseName}
+                    <TakingDot />
+                    <div
+                      key={idx + "doing"}
+                      onClick={() => clickDropDownItem(item)}
+                      onMouseOver={() => setDropDownItemIndex(item.idx)}
+                    >
+                      {parseInt(hp) === 1 ? item.pillName : item.exerciseName}
+                    </div>
                   </div>
                 </>
               );
@@ -364,15 +417,35 @@ const ScheduleCreate = ({ yoil, closeModal, flag, setFlag }) => {
           >
             {unResult.map((item, idx) => {
               return (
-                <div
-                  key={idx + "notDoing"}
-                  onClick={() => clickDropDownItem(item)}
-                  onMouseOver={() => setDropDownItemIndex(item.idx)}
-                >
-                  {parseInt(hp) === 1 ? item.pillName : item.exerciseName}
-                </div>
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TransparencyDot
+                      className={result.length === 0 ? "hide" : ""}
+                    />
+                    <div
+                      key={idx + "notDoing"}
+                      onClick={() => clickDropDownItem(item)}
+                      onMouseOver={() => setDropDownItemIndex(item.idx)}
+                    >
+                      {parseInt(hp) === 1 ? item.pillName : item.exerciseName}
+                    </div>
+                  </div>
+                </>
               );
             })}
+          </SearchResultWrapper>
+        ) : (
+          <></>
+        )}
+        {isHaveInputValue && unResult.length === 0 && result.length === 0 ? (
+          <SearchResultWrapper className={"second end"}>
+            <div style={{ marginTop: "4px" }}>검색결과가 없습니다.</div>
           </SearchResultWrapper>
         ) : (
           <></>
