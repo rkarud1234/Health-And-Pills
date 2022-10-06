@@ -2,7 +2,6 @@ package com.ssafy.hp.config;
 
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ public class DjangoConnectConfig {
 
     public static JSONArray connect(String uri) {
         final String BASE_URL = "http://j7b203.p.ssafy.io:8000/recommend";
-        int responseCode;
         try {
             URL url = new URL(BASE_URL+uri+"?format=json");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -36,7 +34,6 @@ public class DjangoConnectConfig {
             }
             JSONParser parser = new JSONParser();
             JSONArray response = (JSONArray) parser.parse(sb.toString());
-            System.out.println(response.toString());
 
             return response;
 

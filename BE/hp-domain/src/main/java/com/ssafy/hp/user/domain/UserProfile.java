@@ -1,7 +1,6 @@
 package com.ssafy.hp.user.domain;
 
 import com.ssafy.hp.common.BaseEntity;
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

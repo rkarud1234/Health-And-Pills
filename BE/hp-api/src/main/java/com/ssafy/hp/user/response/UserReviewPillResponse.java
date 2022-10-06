@@ -1,6 +1,5 @@
 package com.ssafy.hp.user.response;
 
-import com.ssafy.hp.pill.domain.Pill;
 import com.ssafy.hp.pill.domain.PillReview;
 import lombok.AllArgsConstructor;
 import lombok.Data;

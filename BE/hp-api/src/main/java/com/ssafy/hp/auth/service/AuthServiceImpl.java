@@ -12,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import static com.ssafy.hp.NotFoundException.AUTH_NOT_FOUND;
 import static com.ssafy.hp.NotFoundException.USER_NOT_FOUND;
 

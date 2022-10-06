@@ -4,16 +4,12 @@ import com.ssafy.hp.calendar.domain.Calendar;
 import com.ssafy.hp.common.BaseEntity;
 import com.ssafy.hp.common.type.YN;
 import com.ssafy.hp.user.domain.UserPill;
-import com.ssafy.hp.user.domain.UserProfile;
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
