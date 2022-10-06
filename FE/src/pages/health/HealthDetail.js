@@ -237,7 +237,6 @@ const HealthDetail = ({
     } else {
     }
   };
-  console.log(exer)
   const onToggleBookMark = async (value) => {
     const data = {
       exerciseId: exerciseId,
