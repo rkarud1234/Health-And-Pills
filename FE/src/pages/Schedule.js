@@ -141,7 +141,7 @@ const Schedule = () => {
         // closeButton={<ModalCloseButton onClick={closeModal} />}
         // yoil={yoil}
       />
-      <Header leftNone={false} />
+      <Header leftNone={false} centerChildren={""} />
       <BackWrapper>
         <div
           style={{
