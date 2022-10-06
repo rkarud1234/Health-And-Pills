@@ -2,6 +2,7 @@ package com.ssafy.hp.user.controller;
 
 import com.ssafy.hp.config.LoginUser;
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.request.CreateFcmTokenRequest;
 import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
@@ -26,8 +27,8 @@ public class UserController {
 
     //fcm 토큰 받기
     @PostMapping("/fcm")
-    public ResponseEntity<Void> createFcmToken(@LoginUser User user, @RequestBody String fcmToken){
-        userService.createFcmToken(user, fcmToken);
+    public ResponseEntity<Void> createFcmToken(@LoginUser User user, @RequestBody @Valid CreateFcmTokenRequest request){
+        userService.createFcmToken(user, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

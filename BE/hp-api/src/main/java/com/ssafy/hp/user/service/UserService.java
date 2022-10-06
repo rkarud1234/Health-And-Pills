@@ -1,6 +1,7 @@
 package com.ssafy.hp.user.service;
 
 import com.ssafy.hp.user.domain.User;
+import com.ssafy.hp.user.request.CreateFcmTokenRequest;
 import com.ssafy.hp.user.request.CreateUserProfileRequest;
 import com.ssafy.hp.user.request.UpdateUserExerciseRequest;
 import com.ssafy.hp.user.request.UpdateUserInbodyRequest;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface UserService {
 
     //fcm 토큰 받기
-    void createFcmToken(User user, String fcmToken);
+    void createFcmToken(User user, CreateFcmTokenRequest request);
 
     // 필수정보 등록
     void createUserProfile(User user, CreateUserProfileRequest request);
