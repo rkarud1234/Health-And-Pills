@@ -68,18 +68,19 @@ const DailyDetailCard = ({
       <Modal
         isOpen={isOpen}
         modalContent={
-          <ScheduleUpdateDelete
-            calendarContent={calendarContent}
-            name={name}
-            exerciseId={exerciseId}
-            pillId={pillId}
-            calendarId={calendarId}
-            calendarTime={calendarTime}
-            calendarDate={calendarDate}
-            closeModal={closeModal}
-            flag={flag}
-            setFlag={setFlag}
-          />
+          isOpen ?
+            <ScheduleUpdateDelete
+              calendarContent={calendarContent}
+              name={name}
+              exerciseId={exerciseId}
+              pillId={pillId}
+              calendarId={calendarId}
+              calendarTime={calendarTime}
+              calendarDate={calendarDate}
+              closeModal={closeModal}
+              flag={flag}
+              setFlag={setFlag}
+            /> : <></>
         }
         closeButton={<ModalCloseButton onClick={closeModal} />}
       />
