@@ -92,7 +92,7 @@ const SearchPills = ({ openHandler, setIsOpened, setSearchWord, searchWord }) =>
       <SearchDiv>
         <Modal
           isOpen={modalState}
-          modalContent={<VisionContent setSearchWord={setSearchWord} close={closeModal} />}
+          modalContent={modalState ? <VisionContent setSearchWord={setSearchWord} close={closeModal} /> : <></>}
           closeButton={<ModalCloseButton onClick={closeModal} />}
           close={closeModal}
           width="500px"

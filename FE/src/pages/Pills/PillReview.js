@@ -101,6 +101,15 @@ const ReviewContainer = styled.div`
 const Target = styled.div`
   height: 1px;
 `;
+const MyDiv = styled.div`
+  font-size: 12px;
+  background: linear-gradient(180deg, #537cfe 0%, #6a53fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  padding: 4px 8px;
+`;
 const PillReview = ({
   id,
   pillReviewAverage,
@@ -112,16 +121,16 @@ const PillReview = ({
   const { res } = useFetchData(
     fetchPillReview,
     "pillReview",
-    () => {},
-    () => {},
+    () => { },
+    () => { },
     id
   );
   const reviewList = useMemo(
     () =>
       res.data
         ? res.data.pages.flatMap((item) => {
-            return item.data.content;
-          })
+          return item.data.content;
+        })
         : [],
     [res.data]
   );
@@ -331,10 +340,11 @@ const PillReview = ({
                   justifyContent: "space-between",
                 }}
               >
-                <div style={{ marginTop: "2px" }}>
-                  {myReview.nickName.substr(0, 1) +
-                    "*".repeat(myReview.nickName.length - 2) +
-                    myReview.nickName.substr(-1)}
+                <div style={{ marginTop: "2px", display: 'flex' }}>
+                  {myReview.nickName}
+                  <MyDiv>
+                    내가 쓴 리뷰
+                  </MyDiv>
                 </div>
                 <div style={{ display: "flex" }}>
                   <BtnDiv
