@@ -120,7 +120,6 @@ const Schedule = () => {
       });
     }
   };
-  console.log(detail);
   return (
     <>
       <Modal
@@ -142,7 +141,7 @@ const Schedule = () => {
         // closeButton={<ModalCloseButton onClick={closeModal} />}
         // yoil={yoil}
       />
-      <Header leftNone={true} leftChildren={<BackButton />} />
+      <Header leftNone={false} />
       <BackWrapper>
         <div
           style={{
