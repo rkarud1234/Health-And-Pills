@@ -14,7 +14,7 @@ const GifImage = styled.img`
   ${(props) =>
     props.status === "logo" &&
     css`
-      width: 50px;
+      width: 90px;
       height: 40px;
       top: 10px;
       left: 10px;
