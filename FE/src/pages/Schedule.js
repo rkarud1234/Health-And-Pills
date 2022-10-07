@@ -63,8 +63,11 @@ const Schedule = () => {
   const yearTwo = date.year;
   const yearLastTwo = yearTwo.toString().slice(-2);
   const weekly = ["일", "월", "화", "수", "목", "금", "토"];
-  const monthFirstDay = new Date(date.year, date.month - 1, 1).getDay();
-  const nthWeek = ((date.date + monthFirstDay - 1) % 7) - 1;
+  const monthFirstDay = new Date(date.year, date.month - 1 , 1).getDay();
+  console.log(new Date(date.year, date.month - 1 , 1))
+  console.log(date.date)
+  console.log(monthFirstDay)
+  const nthWeek = parseInt(((date.date + monthFirstDay - 1) / 7)) + 1;
 
   // 오늘의 요일 설정
   const [yoil, setYoil] = useState(date.day);
