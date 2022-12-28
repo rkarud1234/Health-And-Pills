@@ -1,7 +1,7 @@
 ### 1. dump를 위한 스크립트 생성
 ```sh
 FILE_NAME=DB_`date "+%Y%m%d%H%M"`
-docker exec ce90 /usr/bin/mysqldump -uroot --password=He110W0r1d@ --all-databases > /home/ubuntu/dump/${FILE_NAME}.sql
+docker exec ce90 /usr/bin/mysqldump -uroot --password={PASSWORD} --all-databases > /home/ubuntu/dump/${FILE_NAME}.sql
 ```
 
 ### 2. cron에 일정 등록
